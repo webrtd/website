@@ -1,0 +1,13 @@
+What is this?
+========================================================================
+This repository holds the source code for Round Table Denmarks website. 
+The code is Open Source under GPL license and free for anyone to use. 
+
+The vision of sharing the code is to get a common platform for other 
+national Round Table associations around the world. 
+
+Contact
+========================================================================
+If you need assistance or have additional questions, please contact
+the national webmaster of Round Table Denmark at web@rtd.dk or National
+President at lf@rtd.dk
