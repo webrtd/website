@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>RTD | %%TITLE%%</title>
+	<link rel="stylesheet" href="/scripts/jquery/css/cupertino/jquery-ui-1.9.1.custom.min.css"/>
+	
+	
+	<script src="/scripts/ckeditor/ckeditor.js"></script>
+  	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+  
+	<script src="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.js"></script>
+	<link href="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.css" rel="stylesheet" />
+  	<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>	
+	<script src="/scripts/timepicker/timepicker.js"></script>
+	
+	<script type="text/javascript" src="/template/js/actions.js"></script>
+	<script type="text/javascript" src="/template/js/mobile.js"></script>
+
+	
+
+	<script type="text/javascript" src="/scripts/nivo-slider/jquery.nivo.slider.js"></script>
+	
+  	<link rel="shortcut icon" href="/img/rtdnew_favicon.gif" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="/template/css/rtl_danmark1.css"> 
+
+    <link rel="stylesheet" href="/scripts/nivo-slider/themes/bar/bar.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/scripts/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+
+	  
+</head>
+<body bgcolor=black>
+
+<div style="background-color:white">
+
+
+<table border="0" cellspacing=5 cellpadding=0 align="center">
+	<!--- menu --->
+	<tr>
+		<td colspan=3 >
+			<div id="header">
+				<div id="logo">
+					<a href="/" title="Round Table Denmark"><img border=0 src="/template/images/logo.png" alt="Round Table Denmark" /></a>
+				</div>
+				<div id="search">
+					<form action="/">
+						<input class="bar" name="search" type="search" title="Indtast søgesætning. Skriv f.eks. 'danske bank' for at finde alle forekomster af sætningen 'danske bank' eller skriv 'danske +bank' for at søge efter alle forekomster af ordene 'danske' og 'bank'" value="">
+						<input class="soeg" type="submit" value="SØG"><br>
+						<a href=?biz>Branchekartotek</a>
+					</form>
+				</div>
+			</div>
+<div id="menu">
+	<ul id="menu_container">
+		%%ADMINBOX%%
+		%%ARTICLEBOX%%
+	</ul>
+</div>			
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"  width=195px id=content>
+			<!-- left column -->
+			<div class="box" id="leftbox">
+				%%LOGINBOX%%
+			</div>
+			<div class="box" id="soeg">
+				%%STATSBOX%%
+			</div>
+			%%BANNER_1%%
+		</td>
+		<td valign="top" width=570px id=content>
+		<!-- content -->
+    
+		<div class=box>
+		<div style="padding:5px" id=contentbox>%%CONTENT%%</div></div>
+		
+		</td>
+		<td valign=top width=195px id=content>
+			<!-- right column -->
+			<script src="/scripts/rtd/randomtabler.js.php"></script>
+			%%BANNER_2%%
+			%%BANNER_3%%		
+		</td>
+	</tr>
+</table>
+
+</div>
+<div style="display:none" id=send_message_dialog>
+	<form action=/ method=post>
+	<input type=hidden name=msg[uid] id=send_message_uid value=0>
+	<h1>Send besked</h1>
+	Besked til <span id=send_message_name></span><br>
+	<b>Emne</b><br>
+	<input type=text name=msg[subject]><br>
+	<b>Besked</b><br>
+	<textarea style="width:100%;height:200px" name=msg[message]></textarea><br>
+	<input type=submit value=Send>
+	</form>	
+</div>
+<script>
+	function send_message(uid,name)
+	{
+		$("#send_message_name").append(name);
+		$("#send_message_uid").val(uid);
+		$("#send_message_dialog").dialog({modal:true});
+	}
+</script>
+<div style="background-color:black">
+<table align=center style="color:gray;height:100%" cellspacing=10 cellpadding=5>
+	<tr>
+		<td valign=top>
+		<b>RT Links</b><br>
+		<li><a href=http://m.rtd.dk target=_blank>RTD Mobil</a>
+		<li><a href=http://shop.rtd.dk target=_blank>RTD Shop</a>
+		<li><a href=?ts>Tabler Service</a>
+		<li><a href=http://www.rtinternational.org target=_blank>Round Table International</a>
+		</td>
+		<td valign=top>
+		<b>Seneste referater</b><br>
+		%%LATEST_MINUTES%%
+		</td>
+		<td valign=top>
+		<b>Næste møder</b><br>
+		%%LATEST_MEETINGS%%
+		</td>
+		<td valign=top>
+		<b>Kontakt og info</b><br>
+		<li><a href=?aid=3>Kontakt via mail</a>
+		<li><a href=http://www.linkedin.com/groups?gid=48578 target=_blank>Kontakt via LinkedIn</a>
+		<li><a href=https://www.facebook.com/roundtabledk target=_blank>Kontakt via Facebook</a>
+		</td>
+	</tr>
+</table>
+</div>
+<a title="Web Analytics" href="http://clicky.com/100596967"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" width=0 border="0" /></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100596967); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100596967ns.gif" /></p></noscript>
+<script type="text/javascript">
+var _urq = _urq || [];
+_urq.push(['initSite', 'ea490a01-4019-4999-b660-3222522d0685']);
+(function() {
+var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+ur.src = 'http://sdscdn.userreport.com/userreport.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+})();
+</script>
+</body>
+</html>

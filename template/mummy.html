@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>RTD | %%TITLE%%</title>
+	<link rel="stylesheet" href="/scripts/jquery/css/cupertino/jquery-ui-1.9.1.custom.min.css"/>
+	
+	
+	<script src="/scripts/ckeditor/ckeditor.js"></script>
+  	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+  
+	<script src="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.js"></script>
+	<link href="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.css" rel="stylesheet" />
+  	<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>	
+	<script src="/scripts/timepicker/timepicker.js"></script>
+	
+	<script type="text/javascript" src="/template/js/actions.js"></script>
+	<script type="text/javascript" src="/template/js/mobile.js"></script>
+	
+
+	<script type="text/javascript" src="/scripts/nivo-slider/jquery.nivo.slider.js"></script>
+	
+  	<link rel="shortcut icon" href="/img/rtdnew_favicon.gif" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="/template/css/rtl_danmark.css">
+
+    <link rel="stylesheet" href="/scripts/nivo-slider/themes/bar/bar.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/scripts/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+
+	<script>
+			if (isMobile.any())
+			{
+				document.location.href='http://m.rtd.dk';
+			}
+	</script>
+	  
+</head>
+ 
+<body>
+<div id="wrapper">
+
+	<div id="header">
+		<div id="logo">
+			<a href="/" title="Round Table Denmark"><img border=0 src="/template/images/logo.png" alt="Round Table Denmark" /></a>
+		</div>
+		<div id="search">
+			<form action="/">
+				<input class="bar" name="search" type="search" title="Indtast søgesætning. Skriv f.eks. 'danske bank' for at finde alle forekomster af sætningen 'danske bank' eller skriv 'danske +bank' for at søge efter alle forekomster af ordene 'danske' og 'bank'" value="">
+				<input class="soeg" type="submit" value="SØG"><br>
+				<a href=?biz>Branchekartotek</a>
+			</form>
+		</div>
+	</div>
+	
+	<div id="menu">
+		<ul id="menu_container">
+			%%ADMINBOX%%
+			%%ARTICLEBOX%%
+		</ul>
+	</div>
+	
+	<div id="content">
+	
+		<div id="left">
+			<div class="box" id="leftbox">
+				%%LOGINBOX%%
+			</div>
+			<div class="box" id="soeg">
+				%%STATSBOX%%
+			</div>
+			%%BANNER_1%%
+		</div>
+		
+		<div id="center">
+			<div class="box" id="banner">
+			%%CONTENT%%
+			</div>
+			
+			<div class="box" id="news_left">
+				<a href="/?country=0" title="Distriktsnyheder">
+					<img src="/template/images/distriktsnyhed.png" alt="Distriktsnyheder" />
+					<div class="cover">
+						<a href="/?country=0" title="Distriktsnyheder">Distriktsnyheder</a>
+						<a class="readmore" href="/?country=0" title="Distriktsnyheder">Læs her >></a>
+					</div>
+				</a>
+			</div>
+			
+			<div class="box" id="news_right">
+				<a href="?aid=9" title="#">
+					<img src="/template/images/world.png" alt="Verdenskort" />
+					<div class="cover">
+						<a href="?aid=9" title="">Nyheder RT International</a>
+						<a class="readmore" href="?aid=9" title="">Læs her >></a>
+					</div>
+				</a>
+			</div>
+			
+			<div id="box_small_wrap">
+				<div class="box" id="box_small_1">
+					<h3>Seneste referater:</h3>
+          <div class=stats>%%LATEST_MINUTES%%</div>
+				</div>
+				<div class="box" id="box_small_2">
+					<h3>Næste møder:</h3>
+          <div class=stats>%%LATEST_MEETINGS%%</div>
+				</div>
+				<div class="box" id="box_small_3">
+					<a href="http://shop.rtd.dk" target=_blank title="RTD Shop">Rtd shop</a>
+					<a href="?ts" title="Tabler Service">Tabler service</a>
+					<a href="http://www.rtinternational.org" title="RTI" target=_blank>RTI</a>
+				</div>
+			</div>
+		
+		</div>
+		
+		<div id="right">
+			%%BANNER_2%%
+			%%BANNER_3%%
+		</div>
+		
+	</div>
+	
+	<div id="footer">
+	
+	</div>
+
+</div>
+<a title="Web Analytics" href="http://clicky.com/100596967"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" width=0 border="0" /></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100596967); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100596967ns.gif" /></p></noscript>
+</body>
+</html>
