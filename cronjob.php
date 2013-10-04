@@ -6,6 +6,7 @@
 	26-02-2013  rasmus@3kings.dk mass mails with attachments
 	12-03-2013	rasmus@3kings.dk fixed addslashes in db logning
 	01-05-2013	rasmus@3kings.dk only failing crons are mailed to admin
+	04-10-2013	rasmus@3kings.dk filtered out special clubs (e.g. RTI)
 */
   $path = "/var/www/vhosts/rtd.dk/test2012/";
   
@@ -13,7 +14,6 @@
 	require_once $path.'/config_terms.php';
 	require_once $path.'/includes/mysqlconnect.php';
 	require_once $path.'/includes/logic.php';
-//	require_once './includes/mail.php';
 	
 	
 	require_once $path.'/includes/PHPMailer-phpmailer-5.2.0/class.phpmailer.php';
@@ -37,34 +37,21 @@
   {
 	
   		$mail = new PHPMailer();
-  		// $mail->IsSMTP();
-		//$mail->IsSendMail();
 		$mail->IsMail();
 		
   		$mail->Host     = SMTP_SERVER;
   		
 		$mail->SMTPDebug =1;
-		/*
-		$mail->SMTPAuth = true;
-		$mail->Username   = "php@roundtable.dk"; // SMTP account username
-		$mail->Password   = "KoDe0rd";        // SMTP account password
-		*/
-		
-		// $body = strip_tags(html_entity_decode($body,ENT_COMPAT | ENT_HTML401,'UTF-8'));
 		$subj = strip_tags(html_entity_decode($subj,ENT_COMPAT,'UTF-8'));
 		
-		//$mail->IsHTML(false);
 		$mail->IsHTML(true);
 		
 		$mail->SetFrom($from, $from_name);
   		$mail->AddAddress($to, $to);  
   		$mail->Subject  =  $subj;
-  		//$mail->Body     =  $body;
 		$mail->Body = nl2br($body);
 		$mail->AltBody = strip_tags(html_entity_decode($body,ENT_COMPAT,'UTF-8'));
 		$mail->CharSet   = "UTF-8";
-		//$mail->ContentType = "text/plain";
-		//$mail->Encoding     = "base64";
 
       if ($attachment)
       {
@@ -139,41 +126,18 @@
         $sender_mail = MASS_MAILER_REPLY_MAIL;  
       }
       
-/*      
-  		$mail = new PHPMailer();
-  		$mail->IsSMTP();
-      $mail->IsHTML(false);
-  		$mail->Host     = SMTP_SERVER;
-  		$mail->SMTPAuth = false;
-*/
       if ($row['aid']>0)
       {
         $attachment = get_attachment($row['aid']);
       	$fn = sys_get_temp_dir()."/".$attachment['filename'];
         $files = array();
-/*
-		$mail->From     = $sender_mail;
-		$mail->FromName = $sender;
-		$mail->AddAddress($row['mail_receiver'], $row['mail_receiver']);  
-		$mail->Subject  =  ($subj);
-		$mail->Body     =  ($body);
-*/
-/*
-		if (!file_exists($fn)) 
-		{
-			echo "<li>coyping $fn";
-			@copy(MAIL_ATTACHMENT_UPLOAD_PATH.$row['aid'], $attachment['filename']);
-		}
-	*/	
 	if ($attachment['filename']!='')
 	{
 		$files[] = array( "att"=>$attachment,
 			"path" => MAIL_ATTACHMENT_UPLOAD_PATH.$row['aid'],
 			"name" => $attachment['filename'], $row );
 			
-		//die("<pre>".print_r($files,true));
 	}	
-				//if(!$mail->Send())
 		if ($row['mail_receiver']=='')
 		{
 			do_error("Error sending {$row['id']} to {$row['mail_receiver']}");
@@ -183,7 +147,6 @@
 		{
 			do_error("Error sending {$row['id']} to {$row['mail_receiver']}");
 			$log .= "<li>Error sending {$row['id']} to {$row['mail_receiver']}\n";
-			//$log .= "<pre>".print_r($mail->ErrorInfo,true)."</pre>\n";
 		}
 		else
 		{
@@ -193,19 +156,10 @@
       }
       else
       {
-/*
-				$mail->From     = $sender_mail;
-				$mail->FromName = $sender;
-				$mail->AddAddress($row['mail_receiver'], $row['mail_receiver']);  
-				$mail->Subject  =  ($subj);
-				$mail->Body     =  ($body);
- */
-				//if(!$mail->Send())
         if (!do_mail($row['mail_receiver'],$sender_mail,$subj,$body,$sender))
 				{
 					do_error("Error sending {$row['id']} to {$row['mail_receiver']}");
 					$log .= "<li>Error sending {$row['id']} to {$row['mail_receiver']}\n";
-					//$log .= "<pre>".print_r($mail->ErrorInfo,true)."</pre>\n";
 				}
 				else
 				{
@@ -215,7 +169,6 @@
       }
 			
 			
-			//$log .= "<li>Mail {$row['id']} sent to {$row['mail_receiver']}";
 		}
 		$log .= "<p>Done</p>\n";
 		return $log;
@@ -244,7 +197,7 @@
 		{
 			if (!logic_is_honorary($d['uid']))
 			{
-        $u = logic_get_user_by_id($d['uid']);
+				$u = logic_get_user_by_id($d['uid']);
 				$log .= "<li>Removing {$d['uid']} {$u['profile_firstname']} {$u['profile_lastname']} from {$d['mid']}";
 				delete_meeting_attendance_for_uid($d['mid'],$d['uid']);
 			}
@@ -257,14 +210,17 @@
 			$rs = $g_db->execute($sql);
 			while ($d = $g_db->fetchassoc($rs))
 			{
-				$c = logic_get_club($d['cid']);
-				$i = logic_check_clubmail($c);
-				if ($i>0)
+				if (!logic_is_special_club($d['cid']))
 				{
-					$s = logic_get_club_secretary($c['cid']);
-					$p = logic_get_club_chairman($c['cid']);
-					logic_send_mail($s['uid'], term('clubmail_notify_subj'), term('clubmail_notify_body'));
-					$log .= "<li>Sending unread notify mail to {$c['name']}";
+					$c = logic_get_club($d['cid']);
+					$i = logic_check_clubmail($c);
+					if ($i>0)
+					{
+						$s = logic_get_club_secretary($c['cid']);
+						$p = logic_get_club_chairman($c['cid']);
+						logic_send_mail($s['uid'], term('clubmail_notify_subj'), term('clubmail_notify_body'));
+						$log .= "<li>Sending unread notify mail to {$c['name']}";
+					}
 				}
 			}
 		}
@@ -280,12 +236,15 @@
 		$rs = $g_db->execute($sql);
 		while ($m = $g_db->fetchassoc($rs))
 		{
-			$s = logic_get_club_secretary($m['cid']);
-			// $f = logic_get_club_chairman($m['cid']);
-			$subj = term_unwrap('minutes_reminder_5days_subject', $m);
-			$text = term_unwrap('minutes_reminder_5days_text', $m);
-			logic_save_mail($s['private_email'], $subj, $text);
-			$log .= "<li>5 {$s['private_email']} $text\n";
+			if (!logic_is_special_club($m['cid']))
+			{
+				$s = logic_get_club_secretary($m['cid']);
+				// $f = logic_get_club_chairman($m['cid']);
+				$subj = term_unwrap('minutes_reminder_5days_subject', $m);
+				$text = term_unwrap('minutes_reminder_5days_text', $m);
+				logic_save_mail($s['private_email'], $subj, $text);
+				$log .= "<li>5 {$s['private_email']} $text\n";
+			}
 		}
 
 		// 14 days
@@ -299,13 +258,16 @@
 		$rs = $g_db->execute($sql);
 		while ($m = $g_db->fetchassoc($rs))
 		{
-			$s = logic_get_club_secretary($m['cid']);
-			$f = logic_get_club_chairman($m['cid']);
-			$subj = term_unwrap('minutes_reminder_14days_subject', $m);
-			$text = term_unwrap('minutes_reminder_14days_text', $m);
-			$recv = array($s['private_email'],$f['private_email']);
-			logic_save_mail($recv, $subj, $text);
-			$log .= "<li>14 {$s['private_email']}  $text\n";
+			if (!logic_is_special_club($m['cid']))
+			{
+				$s = logic_get_club_secretary($m['cid']);
+				$f = logic_get_club_chairman($m['cid']);
+				$subj = term_unwrap('minutes_reminder_14days_subject', $m);
+				$text = term_unwrap('minutes_reminder_14days_text', $m);
+				$recv = array($s['private_email'],$f['private_email']);
+				logic_save_mail($recv, $subj, $text);
+				$log .= "<li>14 {$s['private_email']}  $text\n";
+			}
 		}
 		
 		// 19 days
@@ -319,13 +281,16 @@
 		$rs = $g_db->execute($sql);
 		while ($m = $g_db->fetchassoc($rs))
 		{
-			$s = logic_get_club_secretary($m['cid']);
-			$f = logic_get_club_chairman($m['cid']);
-			$subj = term_unwrap('minutes_reminder_19days_subject', $m);
-			$text = term_unwrap('minutes_reminder_19days_text', $m);
-			$recv = array($s['private_email'],$f['private_email']);
-			logic_save_mail($recv, $subj, $text);
-			$log .= "<li>19 {$s['private_email']} $text\n";
+			if (!logic_is_special_club($m['cid']))
+			{
+				$s = logic_get_club_secretary($m['cid']);
+				$f = logic_get_club_chairman($m['cid']);
+				$subj = term_unwrap('minutes_reminder_19days_subject', $m);
+				$text = term_unwrap('minutes_reminder_19days_text', $m);
+				$recv = array($s['private_email'],$f['private_email']);
+				logic_save_mail($recv, $subj, $text);
+				$log .= "<li>19 {$s['private_email']} $text\n";
+			}
 		}
 		
 		return utf8_decode($log);
