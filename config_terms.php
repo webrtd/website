@@ -1148,6 +1148,7 @@ $('#prev').click(function() {
 		<td id=lf></td>
 		<td id=vlf></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=iro></td>
 		<td id=blank></td>
@@ -1158,14 +1159,17 @@ $('#prev').click(function() {
 		<td id=df1 valign=top></td>
 		<td id=df2 valign=top></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=df3 valign=top></td>
 		<td id=df4 valign=top></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=df5 valign=top></td>
 		<td id=df6 valign=top></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=df7 valign=top></td>
 		<td id=df8 valign=top></td>
@@ -1177,10 +1181,12 @@ $('#prev').click(function() {
 		<td id=ls valign=top></td>
 		<td id=lk valign=top></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=shop valign=top></td>
 		<td id=web valign=top></td>
 	</tr>
+	<tr><td colspan=2><hr></td></tr>
 	<tr>
 		<td id=red valign=top></td>
 		
@@ -1201,7 +1207,7 @@ $('#prev').click(function() {
 			if (v)
 			{
 				var html = "";
-				html += "<a href=?uid="+v.uid+"><img src=/uploads/user_image?uid="+v.uid+"&quad&s=200><br>";
+				html += "<a href=?uid="+v.uid+" title=\""+v.role+": "+v.profile_firstname+" "+v.profile_lastname+"\"><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=200&h=333><br>";
 				html += "<b>"+v.role+"</b><br>";
 				html += v.profile_firstname+" "+v.profile_lastname+"<br>";
 				html += v.district+", ";
