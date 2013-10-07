@@ -498,7 +498,7 @@ $('#prev').click(function() {
       $("#company").append(data.company_name);
       $("#position").append(data.company_position);
       $("#mobil").append("<a title=Opkald href=\'tel:"+data.private_mobile+"\'><h3>Mobil privat</h3><p>"+data.private_mobile+"</p></a>");
-      $("#email").append("<a title=Mail href=\'mailto:"+data.private_email+"\'><h3>Mobil privat</h3><p>"+data.private_email+"</p></a>");
+      $("#email").append("<a title=Mail href=\'mailto:"+data.private_email+"\'><h3>Mail privat</h3><p>"+data.private_email+"</p></a>");
       var road = data.private_address+" "+data.private_houseno+data.private_houseletter+" "+data.private_housefloor+data.private_houseplacement;
       var city = data.private_zipno+" "+data.private_city;
       $("#address").append("<a href=\'http://maps.google.com?q="+road+","+city+"\' title=Kort><h3>Bopæl</h3><p>"+road+"<br>"+city+"</p></a>");
