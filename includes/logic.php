@@ -2231,22 +2231,4 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	return $m>=NEWBOARD_SUBMISSION_PERIOD_START && $m<=NEWBOARD_SUBMISSION_PERIOD_END;
   }
-	
-	
-	if (isset($_REQUEST['test']))
-	{
-		$login_ok = logic_login("kaae", "f261619ca5a9c22dd7c39c21c0c22cfc");
-		$login_fail = logic_login("kaae", "123");
-		echo 
-			"
-				<h1>Logic - OK</h1>
-				<pre>".print_r($login_ok,true)."</pre>		
-				<h1>Logic - Fail</h1>
-				<pre>".print_r($login_fail,true)."</pre>		
-				<h1>Logic - Future meetings</h1>
-				<pre>".print_r(logic_fetch_future_meetings_for_club(167),true)."</pre>
-				<h1>Logic - Minutes</h1>
-				<pre>".print_r(logic_fetch_minutes(167),true)."</pre>
-			";
-	} 
 	?>
