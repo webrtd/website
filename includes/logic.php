@@ -42,22 +42,26 @@
   06-08-2013	rasmus@3kings.dk	logic_club_board_submission_period
   */ 
 
-  if (PHP_SAPI == 'cli')
+  if (UNITTEST !== true)
   {
-    $path = "/var/www/vhosts/rtd.dk/test2012/";
-  	require_once $path.'/includes/datafetcher.php';
-  	require_once $path.'/plugins/events.php';
-	require_once $path.'/includes/pop.php';
-	require_once $path.'/includes/stacktrace.php';
-  }
-  else
-  {
-  	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/datafetcher.php';
-  	require_once $_SERVER['DOCUMENT_ROOT'].'/plugins/events.php';
-	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/pop.php';
-	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/stacktrace.php';
-  }
-
+  
+	  if (PHP_SAPI == 'cli')
+	  {
+		$path = "/var/www/vhosts/rtd.dk/test2012/";
+		require_once $path.'/includes/datafetcher.php';
+		require_once $path.'/plugins/events.php';
+		require_once $path.'/includes/pop.php';
+		require_once $path.'/includes/stacktrace.php';
+	  }
+	  else
+	  {
+		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/datafetcher.php';
+		require_once $_SERVER['DOCUMENT_ROOT'].'/plugins/events.php';
+		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/pop.php';
+		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/stacktrace.php';
+	  }
+	}
+	
 	$error_messages = "";
 	
 
@@ -2196,7 +2200,8 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
   
   function logic_get_other_meetings($cid)
   {
-    return get_other_meetings($cid);
+	if (is_numeric($cid)) return get_other_meetings($cid);
+	else return false;
   }
   
   function logic_js_debug($what)
@@ -2225,10 +2230,9 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	return false;
   }
   
-  function logic_club_board_submission_period()
+  function logic_club_board_submission_period($m="")
   {
-	$m = date("n");
-	
+	if ($m=="") $m = date("n");
 	return $m>=NEWBOARD_SUBMISSION_PERIOD_START && $m<=NEWBOARD_SUBMISSION_PERIOD_END;
   }
 	?>
