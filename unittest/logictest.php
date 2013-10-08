@@ -46,21 +46,66 @@ class GetOtherMeetings extends UnitTest
 	}
 }
 
+class DeleteOtherMeeting extends UnitTest
+{
+	function Run()
+	{
+		DBCallCountReset();
+		mock_session_setup();
+		logic_delete_other_meeting("fest");
+		$this->AssertEqual(DBCallCountGet(),0);
+
+		DBCallCountReset();
+		logic_delete_other_meeting(1);
+		$this->AssertEqual(DBCallCountGet(),1);
+	}
+}
+
+class IsAdmin extends UnitTest
+{
+	function Run()
+	{
+		mock_session_setup();
+		$this->Assert(logic_is_admin());
+		
+		mock_session_clear();
+		$this->AssertFalse(logic_is_admin());
+	}
+}
+
+class PutOtherMeeting extends UnitTest
+{
+	function Run()
+	{
+		DBCallCountReset();
+		mock_session_clear();
+		logic_put_other_meeting(array());
+		$this->AssertEqual(DBCallCountGet(),0);
+
+		DBCallCountReset();
+		mock_session_setup();
+		logic_put_other_meeting(array());
+		$this->AssertEqual(DBCallCountGet(),0);
+		
+		DBCallCountReset();
+		mock_session_setup();
+		logic_put_other_meeting(array('title'=>'title','description'=>'desc','location'=>'nowhere','start_time'=>'2012-10-10','end_time'=>'2012-11-11'));
+		$this->AssertEqual(DBCallCountGet(),1);
+		
+	}
+}
+
 
 $tests = array(
 	new SubmissionPeriod(),
 	new IsHonorary(),
 	new GetUsername(),
-	new GetOtherMeetings()
+	new GetOtherMeetings(),
+	new DeleteOtherMeeting(),
+	new IsAdmin(),
+	new PutOtherMeeting()
 );
 
-
-echo "\nTest suite running ....\n";
-foreach ($tests as $t)
-{
-	echo "Running ".get_class($t)."\n";
-	$t->Run();
-}
-TestExecutionReport();
+RunUnitTests($tests);
 
 ?>

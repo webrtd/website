@@ -1980,7 +1980,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_is_admin()
 	{
-		if (isset($_SESSION['user']))
+		if (isset($_SESSION['user']) && isset($_SESSION['user']['active_roles']))
 		{
 			foreach ($_SESSION['user']['active_roles'] as $key => $data)
 			{
@@ -2184,14 +2184,24 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
   
   function logic_put_other_meeting($data)
   {
-    if (logic_may_edit_meeting($_SESSION['user']['cid']))
+    if (logic_is_member() && logic_may_edit_meeting($_SESSION['user']['cid']))
     {
-      put_other_meeting($_SESSION['user']['cid'], $data['title'], $data['description'], $data['location'], $data['start_time'], $data['end_time'] );
+		if (is_array($data) 
+		&& isset($data['title']) 
+		&& isset($data['description']) 
+		&& isset($data['location'])
+		&& isset($data['start_time'])
+		&& isset($data['end_time'])
+		&& $data['title']!='' 
+		&& $data['description']!='')
+		{
+			put_other_meeting($_SESSION['user']['cid'], $data['title'], $data['description'], $data['location'], $data['start_time'], $data['end_time'] );
+		}
     }
   }
   function logic_delete_other_meeting($omid)
   {
-    if (logic_may_edit_meeting($_SESSION['user']['cid']))
+    if (is_numeric($omid) && logic_is_member() && logic_may_edit_meeting($_SESSION['user']['cid']))
     {
 		delete_other_meeting($omid);
     }

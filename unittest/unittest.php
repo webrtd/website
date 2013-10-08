@@ -2,23 +2,58 @@
 
 define("UNITTEST", TRUE);
 
-$__test_data__failed__ =  Array();
 
 class UnitTest
 {
+	function ReportError($w)
+	{
+		echo "<div style='background:red;color:white'>";
+		echo "<h3>".get_class($this).": $w failed</h3>";
+		echo "<pre>".$this->StackTrace()."</pre>";
+		echo "</div>";
+	}
+	
+	function ReportOK($w)
+	{
+		echo "<div style='background:green;color:white'>";
+		echo "<h3>".get_class($this).": $w</h3>";
+		echo "</div>";
+	}
+	
+	function AssertEqual($a,$b)
+	{
+		if ($a == $b)
+		{
+			$this->ReportOK("AssertEqual");
+		}
+		else
+		{
+			$this->ReportError("AssertEqual");
+		}
+	}
 	
 	function Assert($w)
 	{
-		global $__test_data__failed__;
 		if (!$w)
 		{
-			$__test_data__failed__[] = get_class($this).": Assert failed\n".$this->StackTrace();
+			$this->ReportError("Assert");
+		}
+		else
+		{
+			$this->ReportOK("Assert");
 		}
 	}
 	
 	function AssertFalse($w)
 	{
-		Assert(!$w);
+		if ($w)
+		{
+			$this->ReportError("AssertFalse");
+		}
+		else
+		{
+			$this->ReportOK("AssertFalse");
+		}
 	}
 	
 	function StackTrace()
@@ -33,22 +68,14 @@ class UnitTest
 	
 }
 
-function TestExecutionReport()
+function RunUnitTests(&$tests)
 {
-	global $__test_data__failed__;
-	
-	if (empty($__test_data__failed__))
+	echo "<h1>Test suite running </H1>";
+	foreach ($tests as $t)
 	{
-		echo "\n\nTest OK\n\n";
-	}
-	else
-	{
-		echo "\n\nTest failed\n\n";
-		foreach ($__test_data__failed__ as $d)
-		{
-			echo $d;
-		}
+		echo "<h2>Running ".get_class($t)."</h2><ul>";
+		$t->Run();
+		echo "</ul>";
 	}
 }
-
 ?>

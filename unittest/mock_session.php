@@ -8,7 +8,9 @@
 	{
 		$_SESSION['user'] = array(
 			'uid' => 1,
-			'username' => 'Dummy'
+			'username' => 'Dummy',
+			'cid' => 1,
+			'active_roles' => array(array('rid'=>ADMIN_ROLE_RID))
 		);
 	}
 ?>
