@@ -1,8 +1,7 @@
 <?
 /*
-	logic layer for round table system (c) 3kings.dk 2012
+	logic layer for round table system (c) 3kings.dk 2012-2013
 	
-	call with logic.php?test to run internal sanity check
 		
 	28-10-2012	rasmus@3kings.dk	draft
 	29-10-2012	rasmus@3kings.dk	meetings logic
@@ -1433,6 +1432,8 @@ END:VCALENDAR"
 
 	function logic_may_edit_meeting($cid=0)
 	{
+		if (!logic_is_member()) return false;
+		
 		if (logic_is_admin()) return true;
 		else if (logic_is_secretary())
 		{
@@ -1477,6 +1478,7 @@ END:VCALENDAR"
 
 	function logic_get_all_club_members($cid)
 	{
+		if (!is_numeric($cid)) return false;
 		$members = fetch_all_club_members($cid);
 		for ($i=0;$i<sizeof($members);$i++)
 		{
@@ -1494,6 +1496,8 @@ END:VCALENDAR"
 	
 	function logic_get_active_club_members($cid)
 	{
+		if (!is_numeric($cid)) return false;
+
 		$members = fetch_active_club_members($cid);
 		for ($i=0;$i<sizeof($members);$i++)
 		{
@@ -1569,7 +1573,7 @@ END:VCALENDAR"
 	
 	function logic_new_updates($ts)
 	{
-    $uid = $_SESSION['user']['uid'];
+		$uid = $_SESSION['user']['uid'];
 		
 		$articles = get_data("select title, aid as id, last_update as ts from article where last_update>'$ts' order by last_update desc limit 5");
 		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time as ts from meeting M inner join club C on M.cid=C.cid where end_time>now() and start_time<now() order by start_time desc limit 5");
@@ -1607,6 +1611,7 @@ END:VCALENDAR"
 	
 	function logic_get_club_stats($cid)
 	{
+		if (!is_numeric($cid)) return false;
 		$data = array();
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
@@ -1625,12 +1630,6 @@ END:VCALENDAR"
 			
 			$key = substr($ys, 0, 4)."-".substr($ye,0,4);
 			$data[$key] = array(
-/*
-Tilgang: Alle medlemmer hvis charter_dato er før NÆSTE klubår STARTER samt efter FORRIGE klubår start
-Afgang: Alle medlemmer der er udmeldt i perioden før NÆSTE klubår STARTER men efter FORRIGE klubårS SLUTNING
-Antal ved start klubår: Alle medlemmer der har en udmeldelsesdato senere end FORRIGE klubårS SLUTdato og som er chartret inden klubårets startdato
-Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutdato og som er chartret inden klubårets slutdato			
-			*/
 				"new" => fetch_num_active_roles("and U.cid={$cid} and R.rid={$member} and R.start_date<'$ys1' and R.start_date>'$ye0'"),
 				"newmembers" => fetch_num_active_roles("and U.cid={$cid} and R.rid={$member} and R.start_date<'$ys1' and R.start_date>'$ye0'"),
 				"exit" => fetch_num_active_roles("and U.cid={$cid} and R.rid={$member} and R.end_date<'$ys1' and R.end_date>'$ye0'"),
@@ -1639,14 +1638,6 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 			);
 
 
-			/*
-			$data[$key] = array(
-				"new" => fetch_member_count("and cid=$cid and profile_started<'$ye' and profile_started>='$ys'"),
-				"exit" => fetch_member_count("and cid=$cid and profile_ended<'$ye' and profile_ended>='$ys'"),
-				"start" => fetch_member_count("and cid=$cid and profile_ended>='$ys' and profile_started<='$ys'"),
-				"end" => fetch_member_count("and cid=$cid and profile_ended>='$ye' and profile_started<='$ye'")
-			);
-			*/
 		}
 		return $data;
 	}
@@ -1660,6 +1651,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 
 	function logic_delete_meeting_file($mfid)
 	{
+		if (!is_numeric($mfid)) return false;
 		$f = get_meeting_file($mfid);;
 		@unlink($_SERVER['DOCUMENT_ROOT'].'/'.$i['filepath']);
 		delete_meeting_file($mfid);
@@ -1667,6 +1659,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 
   function logic_get_club_logo($cid)
   {
+		if (!is_numeric($cid)) return false;
     if (file_exists(CLUB_LOGO_PATH.$cid.".jpg")) $c="{$cid}.jpg"; 
     else if (file_exists(CLUB_LOGO_PATH.$cid.".gif")) $c="{$cid}.gif"; 
     else if (file_exists(CLUB_LOGO_PATH.$cid.".png")) $c="{$cid}.png";
@@ -1676,13 +1669,15 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_get_club($cid)
 	{
-    $c =fetch_club($cid);
-    $c['logo']=logic_get_club_logo($cid);
+		if (!is_numeric($cid)) return false;
+		$c =fetch_club($cid);
+		$c['logo']=logic_get_club_logo($cid);
 		return $c; 
 	}
 
 	function logic_get_club_board_period($cid,$year=0)
 	{
+		if (!is_numeric($cid)) return false;
 		$ys = logic_get_club_year_start($year);
 		$ye = logic_get_club_year_end($year);
 		return fetch_club_board($cid,$ys,$ye);
@@ -1691,6 +1686,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_get_club_board($cid)
 	{
+		if (!is_numeric($cid)) return false;
 		return fetch_club_board($cid);
 	}
 	
@@ -1702,30 +1698,37 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 
 	function logic_get_meeting_duties($mid)
 	{
-		$meeting = fetch_meeting($mid);
-		$duties = array();
-		foreach ($meeting as $key => $value)
+		if (is_numeric($mid))
 		{
-			if (strstr($key, "duty")!==false && $value!=0)
+			$meeting = fetch_meeting($mid);
+			$duties = array();
+			foreach ($meeting as $key => $value)
 			{
-        if (is_numeric($value))	$duties[$key] = fetch_user($value);
+				if (strstr($key, "duty")!==false && $value!=0)
+				{
+			if (is_numeric($value))	$duties[$key] = fetch_user($value);
+				}
 			}
+			return $duties;
 		}
-		return $duties;
 	}
 
 	function logic_delete_meeting($mid)
 	{
-		$m = logic_get_meeting($mid);
-		if (logic_is_admin() || logic_is_club_secretary($m['cid']))
+		if (is_numeric($mid))
 		{
-			delete_meeting($mid);
-			delete_meeting_attendance($mid);
+			$m = logic_get_meeting($mid);
+			if (logic_is_admin() || logic_is_club_secretary($m['cid']))
+			{
+				delete_meeting($mid);
+				delete_meeting_attendance($mid);
+			}
 		}
 	}
 
 	function logic_get_meeting($mid)
 	{
+		if (!is_numeric($mid)) return false;
 		if ($mid<0)
 		{
 			$meeting = fetch_meetings("", 1);
@@ -1774,14 +1777,17 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_get_meeting_image($miid)
 	{
-		$baseurl = fetch_meeting_image($miid);
-		if (strpos($baseurl, "sites/rtd")!==false)
+		if (is_numeric($miid))
 		{
-      return logic_migrate_meeting_image(fetch_meeting_image_data($miid));
-		}
-		else
-		{
-			return $baseurl;
+			$baseurl = fetch_meeting_image($miid);
+			if (strpos($baseurl, "sites/rtd")!==false)
+			{
+				return logic_migrate_meeting_image(fetch_meeting_image_data($miid));
+			}
+			else
+			{
+				return $baseurl;
+			}
 		}
 	}
 	
@@ -1801,9 +1807,12 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 
 	function logic_get_club_meetings($cid)
 	{
-		$ys = logic_get_club_year_start();
-		$ye = logic_get_club_year_end();
-		return fetch_meetings("where start_time>'$ys' and start_time<'$ye' and C.cid=$cid");
+		if (is_numeric($cid))
+		{
+			$ys = logic_get_club_year_start();
+			$ye = logic_get_club_year_end();
+			return fetch_meetings("where start_time>'$ys' and start_time<'$ye' and C.cid=$cid");
+		}
 	}
 
   function logic_get_latest_meetings()
@@ -1834,7 +1843,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
   
 	function logic_get_country($did,$meeting_count=10)
 	{		
-		if ($did=="")
+		if ($did=="" || !is_numeric($did))
 		{
 			$data = array(
 			"districts" => fetch_country(),
@@ -2001,6 +2010,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_fetch_future_meetings_for_club($cid,$order="asc",$limit=10,$fix=true)
 	{
+		if (!is_numeric($cid)) return false;
 		$meetings = fetch_meetings_for_club($cid,  "and end_time>now()",$order,$limit);
 		for($i=0;$i<sizeof($meetings);$i++)
 		{
@@ -2016,6 +2026,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_fetch_minutes_this_year($cid)
 	{
+		if (!is_numeric($cid)) return false;
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		$meetings = fetch_meetings_for_club($cid,  "and (minutes_date is not null and minutes_date!='0000-00-00') and start_time>'$ys' and start_time<'$ye'","desc",999);
@@ -2031,6 +2042,7 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
 	
 	function logic_fetch_minutes($cid,$order="asc",$limit=10)
 	{
+		if (!is_numeric($cid)) return false;
 		$meetings = fetch_meetings_for_club($cid,  "and (minutes_date is not null and minutes_date!='0000-00-00')",$order,$limit);
 		for($i=0;$i<sizeof($meetings);$i++)
 		{
@@ -2064,10 +2076,13 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
   function logic_log($section, $text)
   {
   
-	store_log($_SERVER['REMOTE_ADDR'], $section, $text);
+	store_log(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"localhost", $section, $text);
   }
 	function logic_login($username, $password)
 	{
+		
+		if ($username=="" || $password=="" || strpos($username,"'")!==false || strpos($password,"'")!==false) return false;
+		
 		$user = fetch_user_by_username($username);
 		if (!$user) 
 		{
@@ -2152,7 +2167,10 @@ Antal ved slut klubår: Alle medlemmer der udmeldes senere end klubårets slutda
   
   function logic_update_club($cid, $data)
   {
-	update_club($cid, $data);
+	if (logic_may_edit_meeting($cid) && is_numeric($cid) && is_array($data))
+	{
+		update_club($cid, $data);
+	}
   }
   
   function logic_best_club_meetings()

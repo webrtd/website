@@ -96,6 +96,81 @@ class PutOtherMeeting extends UnitTest
 }
 
 
+class UpdateClub extends UnitTest
+{
+	function Run()
+	{
+		DBCallCountReset();
+		mock_session_clear();
+		logic_update_club(1, array());
+		$this->AssertEqual(DBCallCountGet(),0);
+		
+		mock_session_setup();
+		DBCallCountReset();
+		logic_update_club(1, array());
+		$this->AssertEqual(DBCallCountGet(),1);
+
+		mock_session_setup();
+		DBCallCountReset();
+		logic_update_club("ok", array());
+		$this->AssertEqual(DBCallCountGet(),0);
+
+		mock_session_setup();
+		DBCallCountReset();
+		logic_update_club(1, "ok");
+		$this->AssertEqual(DBCallCountGet(),0);
+	}
+}
+
+class Login extends UnitTest
+{
+	function EmptyLogin()
+	{
+		mock_session_clear();
+		DBCallCountReset();
+		logic_login("","");
+		$this->AssertEqual(DBCallCountGet(),0);
+	}
+	
+	function UsernameLogin()
+	{
+		DBCallCountReset();
+		$l=logic_login("test","test");
+		$this->Assert(!empty($l));
+	}
+
+	function PrivateMailLogin()
+	{
+		DBCallCountReset();
+		$l=logic_login("private@test.com","test");
+		$this->Assert(!empty($l));
+	}
+
+	function CompanyMailLogin()
+	{
+		DBCallCountReset();
+		$l=logic_login("company@test.com","test");
+		$this->Assert(!empty($l));
+	}
+	
+	function InjectionTest()
+	{
+		DBCallCountReset();
+		$l=logic_login("' or 1=1 ; --", "test");
+		$this->AssertEqual(DBCallCountGet(),0);
+	}
+
+	
+	function Run()
+	{
+		$this->InjectionTest();
+		$this->EmptyLogin();
+		$this->UsernameLogin();
+		$this->PrivateMailLogin();
+		$this->CompanyMailLogin();
+	}
+}
+
 $tests = array(
 	new SubmissionPeriod(),
 	new IsHonorary(),
@@ -103,7 +178,9 @@ $tests = array(
 	new GetOtherMeetings(),
 	new DeleteOtherMeeting(),
 	new IsAdmin(),
-	new PutOtherMeeting()
+	new PutOtherMeeting(),
+	new UpdateClub(),
+	new Login()
 );
 
 RunUnitTests($tests);
