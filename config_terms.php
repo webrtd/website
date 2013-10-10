@@ -853,30 +853,22 @@ $('#prev').click(function() {
 		
 	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');		
-		
-		/*
-			"aid" => $articles,
-			"mid" => $meetings,
-			"nid" => array_merge($news,$news_comment),
-			"ts" => $tabler_service,
-			"uid" => $users		    
-			*/
 		$.each(data.notifications, function(cat,catdata) {
 			if (catdata.length>0)
 			{
 				switch(cat)
 				{
-					"aid" : $("#notmsg").append("<b>Artikler</b><br>"); break;
-					"mid" : $("#notmsg").append("<b>Møder</b><br>"); break;
-					"nid" : $("#notmsg").append("<b>Nyheder</b><br>"); break;
-					"ts" : $("#notmsg").append("<b>Tabler Service</b><br>"); break;
-					"uid" : $("#notmsg").append("<b>Nye medlemmer</b><br>"); break;
+					case "aid" : $("#notmsg").append("<b>Artikler</b><br>"); break;
+					case "mid" : $("#notmsg").append("<b>Møder</b><br>"); break;
+					case "nid" : $("#notmsg").append("<b>Nyheder</b><br>"); break;
+					case "ts" : $("#notmsg").append("<b>Tabler Service</b><br>"); break;
+					case "uid" : $("#notmsg").append("<b>Nye medlemmer</b><br>"); break;
 				};
 				$("#notmsg").append("<ul>");
 				$.each(catdata, function(i,e) {
 					$("#notmsg").append("<li><a href=?"+cat+"="+e.id+">"+e.title+", "+e.ts);
 				});
-				$("#notmsg").append("</ul>");
+				$("#notmsg").append("</ul><br><br>");
 			}
 		});
 		

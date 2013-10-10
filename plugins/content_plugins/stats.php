@@ -20,7 +20,6 @@
 		  die();
 		}
 	
-		echo "<!--- ".print_r(logic_new_updates('2013-10-08 '),true)."-->";
 		if (isset($_REQUEST['modify']))
 		{
 			$modify = $_REQUEST['modify'];
@@ -35,7 +34,8 @@
 		$data['details'] = logic_get_detailed_stats();
 		$data['meetings'] = logic_best_club_meetings();
 		$data['modify']=$modify;
-		$data['notifications'] = logic_new_updates('2013-10-08');
+		$data['notifications'] = logic_new_updates(date("Y-m-d", time() - 60 * 60 * 24););
+
 
     if (isset($_REQUEST['debug']))echo "<pre>".print_r($data,true)."</pre>";
     $html = term_unwrap('stats', $data, true);
