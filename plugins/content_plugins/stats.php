@@ -34,7 +34,7 @@
 		$data['details'] = logic_get_detailed_stats();
 		$data['meetings'] = logic_best_club_meetings();
 		$data['modify']=$modify;
-		$data['notifications'] = logic_new_updates(date("Y-m-d", time() - 60 * 60 * 24););
+		$data['notifications'] = logic_new_updates(date("Y-m-d", time() - 60 * 60 * 24));
 
 
     if (isset($_REQUEST['debug']))echo "<pre>".print_r($data,true)."</pre>";
