@@ -14,6 +14,7 @@
 
 	if (!defined("CONFIG_LOADED"))
 	{
+		define("UNITTEST", FALSE);
 		define("NEWBOARD_SUBMISSION_PERIOD_START", 4); // starting first of april
 		define("NEWBOARD_SUBMISSION_PERIOD_END", 6); // ending 30th of june
 		

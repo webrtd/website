@@ -171,6 +171,20 @@ class Login extends UnitTest
 	}
 }
 
+class SaveMail extends UnitTest
+{
+	function BlankReceiver()
+	{
+		DBCallCountReset();
+		logic_save_mail(" ", "subj", "body");	
+		$this->AssertEqual(DBCallCountGet(),0);
+	}
+	function Run()
+	{
+		$this->BlankReceiver();
+	}
+}
+
 $tests = array(
 	new SubmissionPeriod(),
 	new IsHonorary(),
@@ -180,7 +194,8 @@ $tests = array(
 	new IsAdmin(),
 	new PutOtherMeeting(),
 	new UpdateClub(),
-	new Login()
+	new Login(),
+	new SaveMail()
 );
 
 RunUnitTests($tests);

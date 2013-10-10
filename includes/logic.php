@@ -39,6 +39,7 @@
 	21-05-2013	rasmus@3kings.dk	logic_get_old_roles, logic_update_user_view_tracker
   28-06-2013  rasmus@3kings.dk  logic_delete_role
   06-08-2013	rasmus@3kings.dk	logic_club_board_submission_period
+	10-10-2013	rasmus@3kings.dk	fixed issue in logic_save_mail
   */ 
 
   if (UNITTEST !== true)
@@ -288,19 +289,15 @@
 	 */
   function logic_save_mail($to, $subj, $body,$attachment_id=0,$uid=0)
   {
+	$to = trim($to);
   	$subj = html_entity_decode($subj);
   	$body = html_entity_decode($body);
     if (is_array($to))
     {
       for ($i=0;$i<sizeof($to);$i++) save_mail($to[$i],$subj,$body,true,$attachment_id,$uid);
     }
-    else 
+    else if ($to!="")
 	{
-		if ($to=="")
-		{
-			$trace = stacktrace();
-			save_mail(ADMIN_MAIL,"Error mailing", $trace,true,0,0);
-		}
 		save_mail($to,$subj, $body, true, $attachment_id,$uid);
 	}
   }

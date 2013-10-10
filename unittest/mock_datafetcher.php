@@ -89,7 +89,12 @@ function fetch_user_by_company_email($email)
 function store_log($ip,$sec,$t)
 {
 	DBCallCountIncrease();
-	echo "<i>{$ip}/{$sec}: $t</i>";
+//	echo "<i>{$ip}/{$sec}: $t</i>";
+}
+
+function save_mail($to,$subj,$body,$a=0,$b=0,$c=0)
+{
+	DBCallCountIncrease();
 }
 
 ?>
