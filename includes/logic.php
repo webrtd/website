@@ -1577,14 +1577,14 @@ END:VCALENDAR"
 		$news = get_data("select title, nid as id, posted as ts from news where posted>'$ts' order by posted desc limit 5");
 		$news_comment = get_data("select NC.nid as id ,NC.posted as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where NC.posted>'$ts' order by NC.posted desc limit 5");
 		$tabler_service = get_data("select tsid as id, headline as title, posted as ts from tabler_service_item where posted>'$ts' order by posted desc limit 5");
-		/*$users = get_data("select concat_ws(' ',profile_firstname, profile_lastname) as title, uid as id, profile_started as ts from user where ts>'$ts' order by ts desc limit 5");*/
+		$users = get_data("select concat_ws(' ',profile_firstname, profile_lastname) as title, uid as id, profile_started as ts from user where ts>'$ts' order by ts desc limit 5");
 		
 		return array(
 			"aid" => $articles,
 			"mid" => $meetings,
 			"nid" => array_merge($news,$news_comment),
-			"ts" => $tabler_service/*,
-      "uid" => $users*/
+			"ts" => $tabler_service,
+			"uid" => $users
 		);
 	}
 	

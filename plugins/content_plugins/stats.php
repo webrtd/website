@@ -35,7 +35,7 @@
 		$data['details'] = logic_get_detailed_stats();
 		$data['meetings'] = logic_best_club_meetings();
 		$data['modify']=$modify;
-		$data['updates'] = logic_new_updates('2013-10-08');
+		$data['notifications'] = logic_new_updates('2013-10-08');
 
     if (isset($_REQUEST['debug']))echo "<pre>".print_r($data,true)."</pre>";
     $html = term_unwrap('stats', $data, true);

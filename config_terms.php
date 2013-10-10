@@ -751,7 +751,7 @@ $('#prev').click(function() {
 		    		<li><a href="#tabs-1" id=clubtitle>Oversigt</a></li>
 		        <li><a href="#tabs-2" id=usrtitle>Jubilæum</a></li>
 		        <li><a href="#tabs-3" id=arttitle>Møderating</a></li>
-		        <!--<li><a href="#tabs-4" id=mtgtitle>Møder</a></li>-->
+		        <li><a href="#tabs-4" id=mtgtitle>Siden sidst</a></li>
 		    </ul>
 		    <div id="tabs-1">
 					<div id=overview>
@@ -846,14 +846,39 @@ $('#prev').click(function() {
 					<p>Bedst ratede møder:</p>
 					<ol id=meetrate></ol>
 		    </div>
-<!--		    <div id="tabs-4">
-					<b>Møder</b>
-					<div id=mtgres></div>
-		    </div>-->
+		    <div id="tabs-4">
+				<div id=notmsg></div>
+			</div>
 		</div>
 		
 	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');		
+		
+		/*
+			"aid" => $articles,
+			"mid" => $meetings,
+			"nid" => array_merge($news,$news_comment),
+			"ts" => $tabler_service,
+			"uid" => $users		    
+			*/
+		$.each(data.notifications, function(cat,catdata) {
+			if (catdata.length>0)
+			{
+				switch(cat)
+				{
+					"aid" : $("#notmsg").append("<b>Artikler</b><br>"); break;
+					"mid" : $("#notmsg").append("<b>Møder</b><br>"); break;
+					"nid" : $("#notmsg").append("<b>Nyheder</b><br>"); break;
+					"ts" : $("#notmsg").append("<b>Tabler Service</b><br>"); break;
+					"uid" : $("#notmsg").append("<b>Nye medlemmer</b><br>"); break;
+				};
+				$("#notmsg").append("<ul>");
+				$.each(catdata, function(i,e) {
+					$("#notmsg").append("<li><a href=?"+cat+"="+e.id+">"+e.title+", "+e.ts);
+				});
+				$("#notmsg").append("</ul>");
+			}
+		});
 		
 		if (data.modify>0) 
 		{
@@ -864,6 +889,8 @@ $('#prev').click(function() {
 		{
 			$("#curryear").hide();
 		}
+		
+		
 		
 		$.each(data.meetings.best_club, function(i, c) {
 			$("#clubrate").append("<li><a href=?cid="+c.cid+" target=_blank>"+c.data.name+"</a><br>Stemmer: "+c.count+"<br> Gennemsnit: "+c.average+"</li>");
