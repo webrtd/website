@@ -1206,6 +1206,13 @@ else
 			$db->execute($sql);
 		}
 	}
+	
+	function get_meeting_attendance_uid($uid,$mid)
+	{
+		$db = get_db();
+		$rs = $db->execute("select maid from meeting_attendance where uid=$uid and mid=$mid");
+		return $db->numrows($rs);
+	}
 
 
 	/**

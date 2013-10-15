@@ -40,6 +40,7 @@
   28-06-2013  rasmus@3kings.dk  logic_delete_role
   06-08-2013	rasmus@3kings.dk	logic_club_board_submission_period
 	10-10-2013	rasmus@3kings.dk	fixed issue in logic_save_mail
+	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
   */ 
 
   if (UNITTEST !== true)
@@ -681,6 +682,21 @@
 		else $expire_year = $by+40;
 		
 		$expire_date = "{$expire_year}-06-30";
+		
+		// sign up for future meetings
+		$ts = strtotime($expire_date);
+		if ($ts>time())
+		{
+			$u = logic_get_user_by_id($uid);
+			$meetings = logic_fetch_future_meetings_for_club($u['cid'],"asc",100,false);
+			foreach ($meetings as $m)
+			{
+				if (get_meeting_attendance_uid($uid,$m['mid'])==0)
+				{
+					logic_save_meeting_attendance($u['cid'],$m['mid'],$uid,1,"");
+				}
+			}
+		}
 		
 //		die("m:$bm d:$expire_date f:$bm-$by");
 		
