@@ -179,9 +179,27 @@ class SaveMail extends UnitTest
 		logic_save_mail(" ", "subj", "body");	
 		$this->AssertEqual(DBCallCountGet(),0);
 	}
+	
+	function ArrayReceivers()
+	{
+		DBCallCountReset();
+		$data = array("foo@bar.com", "example.com", "test@test.com");
+		logic_save_mail($data, "subj", "body");
+		$this->AssertEqual(DBCallCountGet(), 3);
+	}
+	
+	function SingleReceiver()
+	{
+		DBCallCountReset();
+		logic_save_mail("foo@bar.com", "subj", "body");
+		$this->AssertEqual(DBCallCountGet(), 1);
+	}
+	
 	function Run()
 	{
 		$this->BlankReceiver();
+		$this->ArrayReceivers();
+		$this->SingleReceiver();
 	}
 }
 

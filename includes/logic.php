@@ -290,7 +290,7 @@
 	 */
   function logic_save_mail($to, $subj, $body,$attachment_id=0,$uid=0)
   {
-	$to = trim($to);
+	if (!is_array($to)) $to = trim($to);
   	$subj = html_entity_decode($subj);
   	$body = html_entity_decode($body);
     if (is_array($to))
