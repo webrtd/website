@@ -1,4 +1,5 @@
 Changelog for RT Website
 ==================================================================
-03-10-2013 web@rtd.dk Initial version
+31-10-2013 web@rtd.dk Fixed issue with creation of new meetings
 09-10-2013 web@rtd.dk Added unit tests for a number of logic functions
+03-10-2013 web@rtd.dk Initial version

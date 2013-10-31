@@ -2138,15 +2138,17 @@ END:VCALENDAR"
 		$omitc = "0";
 		
 		// exclude previously used minutes
-		$omit_data = get_minutes_collection_cache($cid,'');
+		$omit_data = get_minutes_collection_cache($cid,'',logic_get_club_year_start());
 		foreach($omit_data as $d) $omit .= ",{$d['mid']}";
 
 
-		$district = get_minutes_collection($cid,$seed,$did,5,0,$cid);
+		$district = get_minutes_collection($cid,$seed,$did,5,$omit,$cid);
 		foreach($district as $m) $omit .= ",{$m['mid']}";
-		foreach($district as $m) $omitc .= ",{$m['cid']}";
+		foreach($district as $m)  $omitc .= ",{$m['cid']}";
+		
+		$remainder = max(0,10 - sizeof($district));
 
-		$whole_country = get_minutes_collection($cid,$seed,-1,5,$omit,$omitc);
+		$whole_country = get_minutes_collection($cid,$seed,-1,$remainder,$omit,$omitc);
 		
 		foreach($whole_country as $m)
 		{
@@ -2156,7 +2158,7 @@ END:VCALENDAR"
 		{
 			add_minutes_collection_cache($cid,$seed,$m['mid']);
 		}
-	
+//		echo "<pre>".print_r(array_merge($whole_country,$district)).$omit."</pre>";
 		return array_merge($whole_country,$district);
 	}
 	else 

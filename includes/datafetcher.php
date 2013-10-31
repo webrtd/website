@@ -2069,7 +2069,7 @@ limit 1");
 	}
   }
   
-  function get_minutes_collection_cache($cid,$seed)
+  function get_minutes_collection_cache($cid,$seed,$club_year=false)
   {
 	if ($seed == '')
 	{
@@ -2081,11 +2081,24 @@ limit 1");
 	}
 	else
 	{
-		$sql = "select M.cid as cid,C.name as club,M.mid,M.title,M.start_time from meeting_letters ML 
-				inner join meeting M on M.mid=ML.letter_mid
-				inner join club C on C.cid=M.cid
-				where ML.cid='$cid' and ML.collid='$seed'
+		if ($club_year!==false)
+		{
+			$sql = "select M.cid as cid,C.name as club,M.mid,M.title,M.start_time from meeting_letters ML 
+					inner join meeting M on M.mid=ML.letter_mid
+					inner join club C on C.cid=M.cid
+					where ML.cid='$cid' 
+					and ML.collid='$seed'
+					and M.start_time>'$club_year'
 		";
+		}
+		else
+		{
+			$sql = "select M.cid as cid,C.name as club,M.mid,M.title,M.start_time from meeting_letters ML 
+					inner join meeting M on M.mid=ML.letter_mid
+					inner join club C on C.cid=M.cid
+					where ML.cid='$cid' and ML.collid='$seed'
+		";
+		}
 	}
 	return get_data($sql);
   }
@@ -2134,7 +2147,7 @@ limit 1");
               order by rand($seed)
               limit $limit";
     }
-	//echo "<!--- $sql --->\n";
+//echo "$sql \n";
   return get_data($sql);
    }           
    

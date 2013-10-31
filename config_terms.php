@@ -3662,6 +3662,12 @@ http://www.rtd.dk/?mid=%%mid%%
 												
 													$("#start_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
 													$("#end_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
+													
+													$("#start_time").change(
+														function() {
+															$("#end_time").val( $("#start_time").val() );
+														}
+													);
 												});
 												
 												function validatemeeting()
