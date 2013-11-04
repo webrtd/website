@@ -2250,6 +2250,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<input type=text name=data[private_zipno] value="%%private_zipno%%"></p>
 		<p>By<br>
 		<input type=text name=data[private_city] value="%%private_city%%"></p>
+		<p>By<br>
+		<input type=text name=data[private_country] value="%%private_country%%"></p>
 		<p>Telefon<br>
 		<input type=text name=data[private_phone] value="%%private_phone%%"></p>
 		<p>Mobil<br>
@@ -2407,7 +2409,15 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			<p>By<br>
 			<input type=text name=data[private_city] value="%%private_city%%"></p>
 		</td>
-		</tr></table>
+		</tr>
+		<tr>
+			<td valign=top>
+			<p>Land<br>
+			<input type=text name=data[private_country] value="%%private_country%%"></p>
+			</td>
+			<td></td>
+		</tr>
+		</table>
 		<table>
 		<tr>
 		<td>
