@@ -2697,6 +2697,11 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			$("<br><input type=file name=minutes_images[] onchange=verify_image(this);>").appendTo($("#pics"));
 		}
 		
+		function add_links()
+		{
+			$("<br>Link: <input type=text name=links_link[]><select name=links_source[]><option value=fb>Facebook</option><option value=yt>Youtube</option><option value=vm>Vimeo</option></select>").appendTo($("#links"));
+		}
+		
 		function verify_image(what)
 		{
 			var fn = what.value;
@@ -2723,6 +2728,11 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<textarea class=ckeditor name=minutes[minutes_3min] id=meeting_minutes_3min>%%minutes_3min%%</textarea>
 		<h2>Brevgennemgang referat</h2>
 		<textarea class=ckeditor name=minutes[minutes_letters] id=meeting_minutes_letters>%%minutes_letters%%</textarea>
+		<h2>Links</h2>
+		%%links_html%%
+		<div id="links">
+			<input type=button value="Tilføj flere links..." onclick="add_links();">
+		</div>
 		<h2>Billeder</h2>
 		%%images_html%%
 		<div id="pics">

@@ -118,6 +118,28 @@
 		}		
 	}
 	
+	function logic_add_meeting_link($cid,$mid, $source, $link)
+	{
+		if (logic_may_edit_meeting($cid))
+		{
+			save_meeting_link($mid,$source,$link);
+		}
+	}
+	
+	function logic_get_meeting_links($mid)
+	{
+		return get_meeting_links($mid);
+	}
+	
+	function logic_delete_meeting_link($mlid,$cid)
+	{
+		if (logic_may_edit_meeting($cid))
+		{
+			delete_meeting_link($mlid);
+		}
+	}
+	
+	
 	function logic_get_random_user()
 	{
 		return get_random_user();

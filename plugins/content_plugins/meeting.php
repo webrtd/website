@@ -12,7 +12,7 @@
 	content_plugin_register('mid', 'content_handle_meeting', 'Møde');
 
  
-    function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br>')
+    function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br><div>')
     {
 		return strip_tags($text, "<b><p><a><li><ul><img>");
         mb_regex_encoding('UTF-8');
@@ -136,6 +136,8 @@
 			{
 				logic_upload_meeting_image($_FILES['file'], $mid);
 			}
+			
+			
 			
 			if (!empty($_REQUEST['deleteimage']))
 			{

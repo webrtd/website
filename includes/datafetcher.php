@@ -142,6 +142,40 @@ else
 	}
 	
 	/**
+	 *	get facebook, youtube, etc. links for a meeting
+	 *	@param int $mid meeting id
+	 *	@return mixed[] meeting links
+	 */
+	function get_meeting_links($mid)
+	{
+		$sql = "select * from meeting_link where mid='$mid'";
+		return get_data($sql);
+	}
+	
+	/**
+	 *	save facebook, youtube, etc. links for a meeting
+	 * @param int $mid meeting id
+	 * @param string $source fb,yt
+	 * @param string $link link
+	 */
+	function save_meeting_link($mid, $source, $link)
+	{
+			$sql = "insert into meeting_link (mid, media_source, media_link) values ('{$mid}', '{$media_source}', '{$media_link}')";
+			fire_sql($sql);
+	}
+	
+	/**
+	 * delete facebook, youtube, etc. links for a meeting
+	 * @param int $mlid meeting link id
+	 */
+	function delete_meeting_link($mlid)
+	{
+		$sql = "delete from meeting_link where mlid='{$mlid}'";
+		fire_sql($sql);
+	}
+	
+	
+	/**
 	 * 	get club's from uids
 	 *	@param mixed[] $uids user id's
 	 *	@return mixed[] club data
