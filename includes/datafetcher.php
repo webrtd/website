@@ -160,7 +160,7 @@ else
 	 */
 	function save_meeting_link($mid, $source, $link)
 	{
-			$sql = "insert into meeting_link (mid, media_source, media_link) values ('{$mid}', '{$media_source}', '{$media_link}')";
+			$sql = "insert into meeting_link (mid, media_source, media_link) values ('{$mid}', '{$source}', '{$link}')";
 			fire_sql($sql);
 	}
 	

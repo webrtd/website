@@ -1250,15 +1250,17 @@ END:VCALENDAR"
 	}
 
 	function logic_upload_meeting_image($filestruct, $mid)
-	{
-		$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
-		if (!is_dir(MEETING_IMAGES_UPLOAD_PATH.$mid))
-		{
-			assert(mkdir($folder,0777));
-		}
+	{		
+		if (empty($filestruct)) return;
+		else if ($filestruct['size'][0]==0) return;
 		
+		$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
 		if (!is_array($filestruct['name']))
 		{
+			if (!is_dir(MEETING_IMAGES_UPLOAD_PATH.$mid))
+			{
+				assert(mkdir($folder,0777));
+			}
 			$fn = $folder."/".$filestruct['name'];
 			
 			if (file_exists($fn))
@@ -1275,6 +1277,11 @@ END:VCALENDAR"
 		{
 			for($i=0;$i<sizeof($filestruct['name']);$i++)
 			{
+				if (!is_dir(MEETING_IMAGES_UPLOAD_PATH.$mid))
+				{
+					assert(mkdir($folder,0777));
+				}
+
 				$fn = $folder."/".$filestruct['name'][$i];
 				
 				if (file_exists($fn))
@@ -1292,6 +1299,8 @@ END:VCALENDAR"
 
 	function logic_upload_meeting_file($filestruct, $mid)
 	{
+		if (empty($filestruct)) return;
+		else if ($filestruct['size'][0]==0) return;
 		$folder = MEETING_FILES_UPLOAD_PATH.$mid;
 		if (!is_dir(MEETING_FILES_UPLOAD_PATH.$mid))
 		{

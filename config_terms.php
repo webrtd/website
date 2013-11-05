@@ -2689,7 +2689,34 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</form>
 	',
 	'club_missing_minutes' => '<a name=nominutes><h1>Møder uden referat</h1></a>',
-	
+	'meeting_links' => '
+		<div id=links><h1>Links</h1></div>
+		
+		<script>
+		  var links_data = jQuery.parseJSON(\'%%data%%\');
+		  
+		  $.each(links_data, function(i,j) {
+			var s = j.media_source;
+			var l = j.media_link;
+			
+			if (s == "vm")
+			{
+				var id = l.replace("http://vimeo.com/","");
+				$(\'<iframe src="//player.vimeo.com/video/\'+id+\'" width="100%" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\').appendTo($("#links"));
+			}
+			else if (s == "yt")
+			{
+				
+				var id = l.replace("http://youtu.be/", "");
+				var id = id.replace("http://www.youtube.com/watch?v=", "");
+				$(\'<iframe width="100%" height="300" src="//www.youtube.com/embed/\'+id+\'" frameborder="0" allowfullscreen></iframe>\').appendTo($("#links"));
+				
+			}
+		  });
+		  
+		</script>
+		
+	',
 	'meeting_minutes_edit' => '
 		<script>
 		function add_pics()
@@ -2731,8 +2758,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<h2>Links</h2>
 		%%links_html%%
 		<div id="links">
-			<input type=button value="Tilføj flere links..." onclick="add_links();">
 		</div>
+		<input type=button value="Tilføj flere links..." onclick="add_links();">
 		<h2>Billeder</h2>
 		%%images_html%%
 		<div id="pics">

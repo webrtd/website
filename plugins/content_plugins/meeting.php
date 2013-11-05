@@ -58,6 +58,27 @@
 				logic_upload_meeting_image($_FILES['minutes_images'],$meeting['mid']);
 				logic_upload_meeting_file($_FILES['minutes_file'],$meeting['mid']);
 				
+				if (!empty($_REQUEST['links_link']))
+				{
+					for ($i=0; $i<sizeof($_REQUEST['links_link']); $i++)
+					{
+						$s = $_REQUEST['links_source'][$i];
+						$l = $_REQUEST['links_link'][$i];
+						logic_add_meeting_link($meeting['cid'],$meeting['mid'], $s, $l);
+					}
+				}
+				
+				
+				if (!empty($_REQUEST['deletelink']))
+				{
+					foreach($_REQUEST['deletelink'] as $key => $mlid)
+					{
+						logic_delete_meeting_link($mlid, $meeting['cid']);
+					}
+				}
+				
+				//die("<pre>".print_r($_REQUEST,true));
+				
 				if (!empty($_REQUEST['deleteimage']))
 				{
 					foreach($_REQUEST['deleteimage'] as $key => $img)
@@ -119,6 +140,25 @@
       $files .= "</ul>";
       
 			$meeting['files_html'] = $files;
+			
+		$links = logic_get_meeting_links($meeting['mid']);
+		$links_html = "<ul>";
+			
+		foreach($links as $l)
+		{
+			switch ($l['media_source'])
+			{
+				case 'vm': $icon = "http://www.imagineersystems.com/front-page/++resource++imagineer.style.images/vimeoLogo.png"; break;
+				case 'fb': $icon = "http://www.gscsga.org/_/rsrc/1254623087646/home/facebook-logo-PNG.png"; break;
+				case 'yt': $icon = "http://www.imagineersystems.com/products/plug-ins/++resource++imagineer.style.images/youtubeLogo.png"; break;
+				
+			}
+			$links_html .= "<a href='{$l['media_link']}' target=_blank><img src='{$icon}'></a> Slet: <input type=checkbox name=deletelink[] value={$l['mlid']}><br>";
+		}
+		
+		$links_html .= "</ul>";
+		
+		$meeting['links_html'] = $links_html;
 
 			$html .= term_unwrap('meeting_minutes_edit', $meeting);
 			
@@ -309,9 +349,16 @@
 				$top_img = array('img' => $meeting['images'][0]['miid']);
 				$html .= term_unwrap('meeting_top_image', $top_img);
 			}
+			
 					
 			// show invitation
 			$html .= term_unwrap('meeting_invite', $meeting);
+
+			$links = logic_get_meeting_links($meeting['mid']);
+			if (!empty($links))
+			{
+				$html .= term_unwrap('meeting_links', $links, true);
+			}
 	
 			// show duties
 			$html .= term_unwrap('meeting_duties', $meeting);
