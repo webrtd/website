@@ -64,6 +64,27 @@
 	}
 	
 	$error_messages = "";
+   
+	$online_debug_log_msg = array();
+	function online_log($msg)
+	{
+		global $online_debug_log_msg;
+		$bt = debug_backtrace();
+		$caller = array_shift($bt);
+		$online_debug_log_msg[] = "{$caller['file']}@{$caller['function']}:{$caller['line']} - {$msg}";
+	}
+	
+	function get_online_log_html()
+	{
+		global $online_debug_log_msg;
+		$html = "";
+		foreach($online_debug_log_msg as $msg)
+		{
+			$html .= "<li>{$msg}\n";
+		}
+		return $html;
+	}
+	
 	
 
 	// validate array
@@ -1251,8 +1272,6 @@ END:VCALENDAR"
 
 	function logic_upload_meeting_image($filestruct, $mid)
 	{		
-		if (empty($filestruct)) return;
-		else if ($filestruct['size'][0]==0) return;
 		
 		$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
 		if (!is_array($filestruct['name']))
@@ -1299,45 +1318,54 @@ END:VCALENDAR"
 
 	function logic_upload_meeting_file($filestruct, $mid)
 	{
-		if (empty($filestruct)) return;
-		else if ($filestruct['size'][0]==0) return;
+		online_log("start");
 		$folder = MEETING_FILES_UPLOAD_PATH.$mid;
 		if (!is_dir(MEETING_FILES_UPLOAD_PATH.$mid))
 		{
+			online_log("Creating folder {$folder}");
 			assert(mkdir($folder,0777));
 		}
 		
 		if (!is_array($filestruct['name']))
 		{
+			online_log("Upload single file");
 			$fn = $folder."/".$filestruct['name'];
 			
 			if (file_exists($fn))
 			{
+				online_log("Overwrite file");
 				move_uploaded_file($filestruct['tmp_name'], $fn);
 			}
 			else
 			{
+				online_log("New file");
 				move_uploaded_file($filestruct['tmp_name'], $fn);
 				save_meeting_file($fn, $filestruct['name'], $mid);
 			}
 		}
 		else
 		{
-			for($i=0;$i<sizeof($filestruct['name']);$i++)
+			$n = sizeof($filestruct['name']);
+			for($i=0;$i<$n;$i++)
 			{
+				online_log("Uploading file {$i} of {$n}");
 				$fn = $folder."/".$filestruct['name'][$i];
 				
 				if (file_exists($fn))
 				{
+					online_log("Overwrite file");
 					move_uploaded_file($filestruct['tmp_name'][$i], $fn);
 				}
 				else
 				{
+					online_log("New file");
 					move_uploaded_file($filestruct['tmp_name'][$i], $fn);
 					save_meeting_file(addslashes($fn), addslashes($filestruct['name'][$i]), $mid);
 				}
 			}
 		}
+		online_log("Done");
+		// die(get_online_log_html());
 	}
 
 
