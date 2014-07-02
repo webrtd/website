@@ -274,7 +274,14 @@
 	{
 		if (!logic_is_member()) return term('article_must_be_logged_in');
 		    
-        
+		if (isset($_REQUEST['vcard']))
+		{
+			
+			header('Content-type: text/x-vcard');
+			header('Content-Disposition: attachment; filename="info.vcard"');
+			die(logic_get_vcard($_REQUEST['uid']));
+		}
+	 
 		if (isset($_REQUEST['delete_role']) && logic_is_admin())
 		{
 			logic_delete_role($_REQUEST['uid'], $_REQUEST['delete_role']);

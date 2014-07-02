@@ -84,18 +84,37 @@ function event_user_resign($uid,$why)
  */
 function event_news_comment($nid,$did)
 {
+	$news_item = logic_fetch_specific_news($nid);
+	
+	$subj = term_unwrap('news_comment_subj', array('did'=>$did, 'nid'=>$nid, 'title'=>$news_item['title']));
+	$body = term_unwrap('news_comment_body', array('did'=>$did, 'nid'=>$nid, 'title'=>$news_item['title']));
 
-	$subj = term('news_comment_subj');
-	$body = term_unwrap('news_comment_body', array('did'=>$did, 'nid'=>$nid));
+	$already_mailed = array();
+	
 	if ($did != 0)
 	{
 		$dc = logic_get_district_chairman($did);
+		$already_mailed[$dc['private_email']] = true;
 		logic_save_mail($dc['private_email'], $subj, $body);
 	}
 	else
 	{
+		$already_mailed[ADMIN_MAIL] = true;
+		
 		logic_save_mail(ADMIN_MAIL, $subj, $body);
 	}
+	
+	$comments = logic_get_news_comments($nid);
+	for ($i=0;$i<sizeof($comments)-1;$i++)
+	{
+		$email = $comments[$i]['user']['private_email'];
+		if (!isset($already_mailed[$email]))
+		{
+			logic_save_mail($email, $subj, $body);
+			$already_mailed[$email]=true;
+		}
+	}
+	
 }
 
 /**
@@ -140,45 +159,48 @@ function event_nomination_accepted($nid)
  * chairman
  * @param int $mid id of meeting  
  */ 
-function event_minutes_finished($mid)
+function event_minutes_finished($mid,$mail_to_members)
 {
-	$meeting = logic_get_meeting($mid);
-	$club = logic_get_club($meeting['cid']);
-	$members = fetch_active_club_members($meeting['cid']);
-	$dc = logic_get_district_chairman($club['district_did']);
-	
-	$receivers = array();
-	$receivers[] = $dc['private_email'];
-	$error_users = array();
-	
-	for ($i=0;$i<sizeof($members);$i++) 
+	if ($mail_to_members)
 	{
-		//if (filter_var($members[$i]['private_email'], FILTER_VALIDATE_EMAIL)) 
+		$meeting = logic_get_meeting($mid);
+		$club = logic_get_club($meeting['cid']);
+		$members = fetch_meeting_attendance($mid); // fetch_active_club_members($meeting['cid']);
+		$dc = logic_get_district_chairman($club['district_did']);
+		
+		$receivers = array();
+		$receivers[] = $dc['private_email'];
+		$error_users = array();
+		
+		for ($i=0;$i<sizeof($members);$i++) 
 		{
-			$receivers[] = $members[$i]['private_email'];
+			//if (filter_var($members[$i]['private_email'], FILTER_VALIDATE_EMAIL)) 
+			{
+				$receivers[] = $members[$i]['private_email'];
+			}
+	/*		else
+			{
+				$error_users[] = $members[$i];
+			}*/
 		}
-/*		else
+		
+		if (!empty($error_users))
 		{
-			$error_users[] = $members[$i];
-		}*/
-	}
-	
-	if (!empty($error_users))
-	{
-		$s = logic_get_club_secretary($club['cid']);
-		$body = "";
-		foreach($error_users as $u)
-		{
-			$body .= "{$u['profile_firstname']} {$u['profile_lastname']}\n";
+			$s = logic_get_club_secretary($club['cid']);
+			$body = "";
+			foreach($error_users as $u)
+			{
+				$body .= "{$u['profile_firstname']} {$u['profile_lastname']}\n";
+			}
+			$subj = term_unwrap('users_missing_email_subj', $club);
+			logic_save_mail($s['private_email'], $subj, $body);
 		}
-		$subj = term_unwrap('users_missing_email_subj', $club);
-		logic_save_mail($s['private_email'], $subj, $body);
+		
+		$subj = term_unwrap('minutes_completed_subject', $club);
+		$text = term_unwrap('minutes_completed_content', $meeting);
+		
+		logic_save_mail($receivers, $subj, $text);
 	}
-	
-	$subj = term_unwrap('minutes_completed_subject', $club);
-	$text = term_unwrap('minutes_completed_content', $meeting);
-	
-	logic_save_mail($receivers, $subj, $text);
 }
 
 /**

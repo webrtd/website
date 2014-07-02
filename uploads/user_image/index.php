@@ -107,7 +107,7 @@
 		else {$fn = "rtd.jpg"; $mime = "image/jpeg";}
 		
 
-		$hashfile = sys_get_temp_dir().'/rtd-uid-'.$user['uid'].'-'.md5($_SERVER['REQUEST_URI']);
+		$hashfile = sys_get_temp_dir().'/rtd-uid-'.$user['uid'].'-'.md5($_SERVER['REQUEST_URI'].filemtime($filepath));
 		
 		if (isset($_REQUEST['landscape']))
 		{

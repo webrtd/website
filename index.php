@@ -10,6 +10,8 @@
 	require_once './includes/cache.php';
 	require_once './includes/sessionhandler.php';
 
+	setlocale(LC_ALL,RT_LOCALE);
+	
 	$plugins = array();
 	$title = '--NOT SET--';
 	
@@ -58,7 +60,7 @@
 	}
 
 
-	setlocale(LC_ALL,RT_LOCALE);
+	
   
 	
   

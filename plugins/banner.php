@@ -3,6 +3,7 @@
 		banner plugin (c) 3kings.dk
 		
 		03-11-2012	rasmus@3kings.dk	draft
+		13-01-2014	rasmus@3kings.dk	rewamped for new banner system
 	*/
 	
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
@@ -14,21 +15,42 @@
 	function banner1()
 	{
 		if (!logic_is_member() && !logic_is_mummy()) return "";
-		$b = current(logic_get_banners(1, 1));
-		return "<a target=_blank href=?banner&click={$b['bid']} title=\"{$b['title']}\"><img src=?banner&img={$b['bid']} class=box id=left_ad1></a>";
+    if (logic_is_mummy())
+    {
+  		return term_unwrap('banner_1',array());
+    }
+    else
+    {
+  		$dn = logic_get_district_name(logic_get_district_for_user($_SESSION['user']['uid']));		
+  		return term_unwrap('banner_1',array('district'=>$dn));
+    }
 	}
 	
 	function banner2()
 	{
 		if (!logic_is_member() && !logic_is_mummy()) return "";
-		$b = current(logic_get_banners(2, 1));
-		return "<a target=_blank href=?banner&click={$b['bid']} title=\"{$b['title']}\"><img src=?banner&img={$b['bid']} class=box id=right_ad1></a>";
+    if (logic_is_mummy())
+    {
+  		return term_unwrap('banner_2',array());
+    }
+    else
+    {
+  		$dn = logic_get_district_name(logic_get_district_for_user($_SESSION['user']['uid']));		
+  		return term_unwrap('banner_2',array('district'=>$dn));
+    }
 	}
 	
 	function banner3()
 	{
 		if (!logic_is_member() && !logic_is_mummy()) return "";
-		$b = current(logic_get_banners(3, 1));
-		return "<a target=_blank href=?banner&click={$b['bid']} title=\"{$b['title']}\"><img src=?banner&img={$b['bid']} class=box id=right_ad2></a>";
+    if (logic_is_mummy())
+    {
+  		return term_unwrap('banner_3',array());
+    }
+    else
+    {
+  		$dn = logic_get_district_name(logic_get_district_for_user($_SESSION['user']['uid']));		
+  		return term_unwrap('banner_3',array('district'=>$dn));
+    }
 	}
 ?>

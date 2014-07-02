@@ -1,4 +1,4 @@
-<?
+<? 
 	/*
 		article box plugin (c) 3kings.dk
 		
@@ -30,10 +30,10 @@
 			}
 			else
 			{
-				$box_article_html .= "<li><a href=?aid={$item['aid']}>{$item['title']}</a>";
+				$box_article_html .= "<li>\n<a href=?aid={$item['aid']}>{$item['title']}</a>";
 			}
 			
-			$box_article_html .= "</li>";
+			$box_article_html .= "</li>\n";
 		}
 	}
 

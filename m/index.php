@@ -26,6 +26,11 @@
 		$value = $callback();
 		$template_html = str_replace("%%$keyword%%", $value, $template_html);
 	}
+	
+	function get_title()
+	{
+		return "RTD Mobil";
+	}
 
   echo $template_html;
   if (logic_is_member()) logic_update_last_page_view();

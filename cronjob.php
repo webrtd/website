@@ -35,46 +35,56 @@
 	
   function do_mail($to,$from,$subj,$body,$from_name="Mailsystem",$attachment=false)
   {
-	
-  		$mail = new PHPMailer();
-		$mail->IsMail();
-		
-  		$mail->Host     = SMTP_SERVER;
-  		
-		$mail->SMTPDebug =1;
-		$subj = strip_tags(html_entity_decode($subj,ENT_COMPAT,'UTF-8'));
-		
-		$mail->IsHTML(true);
-		
-		$mail->SetFrom($from, $from_name);
-  		$mail->AddAddress($to, $to);  
-  		$mail->Subject  =  $subj;
-		$mail->Body = nl2br($body);
-		$mail->AltBody = strip_tags(html_entity_decode($body,ENT_COMPAT,'UTF-8'));
-		$mail->CharSet   = "UTF-8";
+		try
+		{
+			$mail = new PHPMailer(true);
+			//$mail->IsSMTP();
+			$mail->IsMail();
+			
+			 $mail->Host     = SMTP_SERVER;
+			
+			$mail->SMTPDebug =2;
+			$subj = strip_tags(html_entity_decode($subj,ENT_COMPAT,'UTF-8'));
+			
+			$mail->IsHTML(true);
+			
+			$mail->SetFrom($from);
+			$mail->AddAddress($to, $to);  
+			$mail->Subject  =  $subj;
+			$mail->Body = nl2br($body);
+			
+			if ($body == '') return;
+			
+			$mail->AltBody = strip_tags(html_entity_decode($body,ENT_COMPAT,'UTF-8'));
+			$mail->CharSet   = "UTF-8";
 
-      if ($attachment)
-      {
-        foreach($attachment as $f)
-        {
-          if (!$mail->AddAttachment($f['path'],$f['name']))
+			
+			  if ($attachment)
 		  {
-			do_error(print_r($f,true));	  
-			do_error(print_r($mail->ErrorInfo,true));	  
-			return false;
+			foreach($attachment as $f)
+			{
+			  if (!$mail->AddAttachment($f['path'],$f['name']))
+			  {
+				do_error(print_r($f,true));	  
+				do_error(print_r($mail->ErrorInfo,true));	  
+				return false;
+			  }
+			}
 		  }
-        }
-      }
-	  $res = $mail->Send();
-	  if (!$res)
-	  {
-		do_error(print_r($mail->ErrorInfo,true));	  
-	  }
-	  else
-	  {
-		usleep(1);
-	  }
-      return $res;
+		  $res = $mail->Send();
+		  if (!$res)
+		  {
+			do_error(print_r($mail->ErrorInfo,true));	  
+		  }
+		  else
+		  {
+			usleep(1);
+		  }
+		  return $res;
+		} catch (Exception $e)
+		{
+			do_error($e->getMessage());
+		}
   }
 
 	/**
@@ -113,7 +123,18 @@
 		{
 			if ($n['uid'] == $u['uid'])
 			{
-				$sender_mail = $n['role_short'].NB_MAIL_POSTFIX;
+				if ($n['role_short'] == DISTRICT_CHAIRMAN_SHORT)
+				{
+					$did = logic_get_district_for_user($n['uid']);
+					$dname = logic_get_district_name($did);
+					$ddata = explode(" ", $dname);
+					$dnum = $ddata[1];
+					$sender_mail = $n['role_short'].$dnum.NB_MAIL_POSTFIX;
+				}
+				else
+				{
+					$sender_mail = $n['role_short'].NB_MAIL_POSTFIX;
+				}
 			}
 		}
 		
@@ -243,6 +264,9 @@
 				$subj = term_unwrap('minutes_reminder_5days_subject', $m);
 				$text = term_unwrap('minutes_reminder_5days_text', $m);
 				logic_save_mail($s['private_email'], $subj, $text);
+
+				logic_save_mail(get_district_chairman_mail_from_club($m['cid']), $subj, $text);
+
 				$log .= "<li>5 {$s['private_email']} $text\n";
 			}
 		}
@@ -264,8 +288,9 @@
 				$f = logic_get_club_chairman($m['cid']);
 				$subj = term_unwrap('minutes_reminder_14days_subject', $m);
 				$text = term_unwrap('minutes_reminder_14days_text', $m);
-				$recv = array($s['private_email'],$f['private_email']);
+				$recv = array($s['private_email'],$f['private_email'],get_district_chairman_mail_from_club($m['cid']));
 				logic_save_mail($recv, $subj, $text);
+
 				$log .= "<li>14 {$s['private_email']}  $text\n";
 			}
 		}
@@ -287,7 +312,7 @@
 				$f = logic_get_club_chairman($m['cid']);
 				$subj = term_unwrap('minutes_reminder_19days_subject', $m);
 				$text = term_unwrap('minutes_reminder_19days_text', $m);
-				$recv = array($s['private_email'],$f['private_email']);
+				$recv = array($s['private_email'],$f['private_email'],get_district_chairman_mail_from_club($m['cid']));
 				logic_save_mail($recv, $subj, $text);
 				$log .= "<li>19 {$s['private_email']} $text\n";
 			}
@@ -348,6 +373,8 @@
 		}
 		
 		echo $log;
+		
+		echo file_get_contents("http://intron.roundtable.no/cronjob.php?pwd=kaffeLAKS1");
 	}
 
 ?>

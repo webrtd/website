@@ -5,15 +5,17 @@
 		02-11-2012	rasmus@3kings.dk	draft
 		15-11-2012	rasmus@3kings.dk	minutes
 		20-11-2012 	rasmus@3kings.dk 	minute template, image upload, etc.
+		10-03-2014	rasmus@3kings.dk	secretary may now unlock minutes to update it
 	*/
 
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
-	content_plugin_register('mid', 'content_handle_meeting', 'Møde');
+	content_plugin_register('mid', 'content_handle_meeting', 'M&oslash;de');
 
  
     function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br><div>')
     {
+		return $text;
 		return strip_tags($text, "<b><p><a><li><ul><img>");
         mb_regex_encoding('UTF-8');
         //replace MS special characters first
@@ -98,7 +100,7 @@
 
 				if (isset($_REQUEST['finish_minutes']))
 				{
-					logic_finish_meeting_minutes($meeting['mid']);				
+					logic_finish_meeting_minutes($meeting['mid'],isset($_REQUEST['mail_minutes']));				
 					header("location: ?cid={$meeting['cid']}");
 					die();
 				}
@@ -266,7 +268,7 @@
 
 		if (!logic_is_member() && !logic_is_mummy()) return term('article_must_be_logged_in');
 		
-		if (isset($_REQUEST['unlock']) && logic_is_admin())
+		if (isset($_REQUEST['unlock']) && logic_may_edit_meeting($_SESSION['user']['cid']))
 		{
 			logic_unlock_meeting_minutes($_REQUEST['mid']);
 		}
@@ -338,7 +340,7 @@
 				$html .= term_unwrap('meeting_edit_header', $meeting);
 			}
 			
-			if (logic_is_admin() && logic_meeting_minutes_finished($meeting))
+			if (logic_may_edit_meeting($meeting['cid'])  && logic_meeting_minutes_finished($meeting))
 			{
 				$html .= term_unwrap('meeting_admin_unlock_minutes', $meeting);
 			}

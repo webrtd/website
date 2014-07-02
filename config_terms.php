@@ -1,5 +1,8 @@
 <?
 	$terms = array(
+	'banner_1' => "<script src='http://ads.rtd.dk/?action=getpos&pid=1&sub_param=%%district%%'></script>",
+	'banner_2' => "<script src='http://ads.rtd.dk/?action=getpos&pid=7&sub_param=%%district%%'></script>",
+	'banner_3' => "<script src='http://ads.rtd.dk/?action=getpos&pid=8&sub_param=%%district%%'></script>",
 	'not_club_board_submission_period' => '<h1>Kan ikke indstille bestyrelse</h1><p>Det er kun muligt at indstille kommende bestyrelse i perioden 1. april - 30. juni</p>',
 	'birthday_js' => '
 	{
@@ -91,7 +94,7 @@
 		var peekers = jQuery.parseJSON(\'%%data%%\');
 		var peekhtml = "<table><tr>";
 		$.each(peekers, function(i,m) {
-		 peekhtml += "<td valign=top><center><a href=?uid="+m.uid+"><img src=/uploads/user_image?uid="+m.uid+"&quad&s=64><br>"+m.profile_firstname+" "+m.profile_lastname+"<br></a></center></td>";
+		 peekhtml += "<td valign=top><center><a href=?uid="+m.uid+"><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=100&h=166><br>"+m.profile_firstname+" "+m.profile_lastname+"<br></a></center></td>";
 		});
 		peekhtml += "</tr></table>";
 		$("#peek").append(peekhtml);
@@ -100,26 +103,33 @@
 	"admin_sysstat" => '
 	<h1>Tid</h1>
 	Servertid: %%time%%
+	<h1>Fejl</h1>
+	<div style="height: 330px; overflow: scroll; overflow-x: hidden;">
+	%%syslog%%
+	</div>
 	<h1>Mailkø</h1>
+	<button onclick="document.location.href=\'?admin_download=sysstat&clear_mail_queue=true\';">Slet mailkø</button>
 	%%mailqueuesize%%
 	%%mailqueue%%
+	<h1>Udsendt mail</h1>
+	<div style="height: 330px; overflow: scroll; overflow-x: hidden;">
+	%%mailsent%%
+	</div>
 	<h1>Cronjob</h1>
 	%%log%%
 	<h1>Populæresider</h1>
 	%%popularpages%%
 	<h1>Populæresøgninger</h1>
 	%%popularsearch%%
-	<h1>Bannerclick</h1>
-	%%bannerclick%%
 	',
 	'randomuser_js' => '
 	
-	document.write("<div class=box id=leftbox><h3>Tabler</h3><a href=?uid=%%uid%%><center><br>");
-	document.write("<img src=/uploads/user_image?uid=%%uid%%&quad&s=64><br>");
+	document.write("<div class=box id=leftbox><h3>Tabler</h3><a href=?uid=%%uid%%><br><center><table width=180px ><tr><td width=50px>");
+	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=50&h=84></td><td>");
 	document.write("%%profile_firstname%% %%profile_lastname%%<br>");
 	document.write("%%company_position%%, ");
 	document.write("%%company_name%%");
-	document.write("</center></a></div>");
+	document.write("</td></tr></table></center></a></div>");
 	',
 	'user_on_leave_subj' => 'Orlov fra RTD - %%profile_firstname%% %%profile_lastname%%',
 	'user_on_leave_body' => 'Dags dato er %%profile_firstname%% %%profile_lastname%% på orlov fra RTD. Se mere på http://rtd.dk/?uid=%%uid%%',
@@ -358,6 +368,9 @@ $('#prev').click(function() {
   'role_nomination_body' => "
     %%profile_firstname%% %%profile_lastname%% er d.d. indstillet til %%role%% med følgende begrundelse:\n
     %%comment%%
+	
+	Profil: http://www.rtd.dk/?uid=%%uid%%
+	Klub: http://www.rtd.dk/?cid=%%cid%%
   ",
 	'resignation_nominated' => '<script>alert("Udmeldelsen er modtaget.\nLS skal nu godkende.\nSker dette ikke inden for rimelig tid kan der rettes henvendelse til ls@rtd.dk");document.location.href="/";</script>',
 	'resignation_approved' => '<script>alert("Udmeldelsen er effektureret - medlem, F, DF, VLF og LF er informeret");document.location.href="/";</script>',
@@ -393,35 +406,81 @@ $('#prev').click(function() {
   </script>
   ',
 	'news_item_comment' => '
-	<h1>Kommentar/debat</h1>
-	<div id=comment></div>
+	<h1>Debat</h1>
   <form action=?news method=post>
   <input type=hidden name=news id=nid>
-  <textarea style="width:99%" name=comment></textarea>
-  <input type=submit value="Gem kommentar">
+  <textarea style="width:99%" name=comment placeholder="Din kommentar"></textarea>
+  <input type=submit value="Gem kommentar"> <i>Du modtager en mail når der kommer opdateringer i kommentarene</i>
   </form>
+	<table id=comment width=100%></table>
 	
-	</form>
 	<script>
 		var nc = jQuery.parseJSON(\'%%data%%\');
+		var html = "";
 		$("#nid").val(nc.nid);
 		$.each(nc, function(i,c) {
       if (i!="nid")
       {
-		  	$("#comment").append(
+		html = 
+		"<tr><td colspan=2><hr></td></tr>"+
+		"<tr>"+
+				"<td width=100px><img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=166></td>"+
+				"<td valign=top>"+
+				"<a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p>"+
+				c.content+
+				"</td>"+
+				"</tr>" + html;
+		/*
+		  	$("#comment").append("<tr>"+
+				"<td width=100px><img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=166></td>"+
+				"<td valign=top>"+
+				"<a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p>"+
+				c.content+
+				"</td>"+
+				"</tr>"
+				);
+				*/
+				/*
 		  		c.content+
 		  		"<p><a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p><hr>"
 		  	);
+			*/
       }
 		});
+		$("#comment").append(html);
 	</script>
 	',
-	'latestnews_js' => '
+	'beta_latestnews_js' => '
 		var news_data = jQuery.parseJSON(\'%%data%%\');
 		$("#news").append("<h1>Nyhed - "+news_data.title+"</h1>");
 		$("#news").append("<p><i>Skrevet "+news_data.posted+"</i></p>");
 		$("#news").append(news_data.content);
 		$("#news").append("<a href=?news="+news_data.nid+">Læs mere</a>");
+		
+		$.each(news_data.country.minutes, function(i,m) {
+			if (m.images != null)
+			{
+				$("#news").append("<h1>"+m.name+": "+m.title+"</h1>");
+				$("#news").append(m.images[0].miid);
+			}
+		});
+		
+	',
+	'latestnews_js' => '
+		function latestnewsjs()
+		{
+			var news_data_json = jQuery.parseJSON(\'%%data%%\');
+			var first = true;
+			var html  = "";
+//			$("#news").append();
+			
+			$.each(news_data_json, function(i,news_data) {
+				html = html + "<a href=?news="+news_data.nid+"><h1>"+news_data.title+" ("+news_data.count+" besvarelser)</h1></a>" + news_data.content;
+			});
+			html = html + "<h1>Nyhedsarkiv</h1><p><ul><li><a href=?news>Find gamle nyheder i arkivet</a><li><a href=\"mailto:web@rtd.dk\">Forslå en nyhed</a></ul></p>";
+			$("#news").append(html);
+		}
+		latestnewsjs();
 	',
   'mobile_search_page' => 
   '
@@ -462,7 +521,7 @@ $('#prev').click(function() {
     if (data.keyword=="") $("#results").hide();
     $.each(data.users, function(a,u) {
       mc++;
-      $("#members").append("<li><a data-rel=dialog href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.club+"</p></a></ul>");
+      $("#members").append("<li><a data-rel=dialog rel=external href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.club+"</p></a></ul>");
     });
     $.each(data.meetings, function(a,m) {
       meetc++;
@@ -488,10 +547,12 @@ $('#prev').click(function() {
       <li id=mobil></li>
       <li id=email></li>
       <li id=address></li>
+	  <li id=vcard></li>
       <li id=club></li>
     </ul>
     <script>                
       var data = jQuery.parseJSON(\'%%data%%\');
+	  $("#vcard").append("<a href=?vcard&uid="+data.uid+" rel=external>Download kontakt</a>");
       $("#club").append("<a href=?cid="+data.club.cid+"><h3>"+data.club.name+"</h3></a>");
       $("#name").append(data.profile_firstname+" "+data.profile_lastname);
       $("#pic").attr("src","/uploads/user_image?uid="+data.uid+"&landscape&w=300&h=500");
@@ -531,7 +592,7 @@ $('#prev').click(function() {
     var data = jQuery.parseJSON(\'%%data%%\');
 	var mails = "";
     $.each(data.members, function(a,u) {
-      $("#members").append("<li><a data-rel=dialog href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.roles+"</p></a></ul>");
+      $("#members").append("<li><a data-rel=dialog rel=external href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.roles+"</p></a></ul>");
 	  mails += ","+u.private_email;
     });
 	mails = mails.substring(1);
@@ -945,7 +1006,7 @@ $('#prev').click(function() {
 	',
 	'admin_newsletter_sent' => '<h1>Udsend nyhedsbrev</h1><p>Nyhedsbrevet er udsendt til %%count%% modtagere.</p>',
 	'newsletter_default_content' => 
-	"\n\n---\n%%profile_firstname%% %%profile_lastname%%, %%national_board_member%%\n\nHUSK: Round Table shoppen har døgnåben - http://shop.rtd.dk\n",
+	"\n\n---\n%%profile_firstname%% %%profile_lastname%%, %%national_board_member%%\n\nHUSK:\nRTD på Facebook: https://www.facebook.com/roundtabledk\nRTD på LinkedIn: http://www.linkedin.com/groups?gid=48578\n",
 	
 	'admin_newsletter_form' => '
 	<h1>Udsend nyhedsbrev <span id=who></span></h1>
@@ -1015,7 +1076,7 @@ $('#prev').click(function() {
 	function c(w) { if (w.checked) role_count--; else role_count++; }
 	function cd(w) { if (w.checked) district_count--; else district_count++; }
 	function enable(v) { $(v).removeAttr("disabled"); }
-	if (r == "WEB" || r=="LF" || r=="VLF")
+	if (r == "WEB" || r=="LF" || r=="VLF" || r=="LS")
 	{
     enable("#uid");
     $("#sender").show();
@@ -1039,6 +1100,18 @@ $('#prev').click(function() {
 		enable("#SHOP");
 		enable("#LA");
 		
+		enable("#D1");
+		enable("#D2");
+		enable("#D3");
+		enable("#D4");
+		enable("#D5");
+		enable("#D6");
+		enable("#D7");
+		enable("#D8");
+	}
+	if (r == "ALF") 
+	{
+		enable("#F");
 		enable("#D1");
 		enable("#D2");
 		enable("#D3");
@@ -1077,21 +1150,6 @@ $('#prev').click(function() {
 		enable("#S");
 		enable("#F");
 		enable("#K");
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D6");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "LS") 
-	{
-		enable("#S");
-		enable("#NF");
-		enable("#F");
-		enable("#IRO");
 		enable("#D1");
 		enable("#D2");
 		enable("#D3");
@@ -1482,7 +1540,7 @@ $('#prev').click(function() {
 	</script>
 	',	
 	'meeting_admin_unlock_minutes' =>
-	'<h2>Adminværktøjer</h2><a href=?mid=%%mid%%&unlock>Lås referat op</a>',
+	'<h2>Sekretærværktøjer</h2><a href=?mid=%%mid%%&unlock>Lås referat op</a>',
 	'business_search' => '<h1>Brancheoversigt</h1>
 	<p>
 	Vælg branche:<br>
@@ -1556,8 +1614,8 @@ $('#prev').click(function() {
   'user_resign_subj' => 'Udmeldelse i %%name%%',
   'user_resign_body' => 'Det bekræftes herved at %%profile_firstname%% %%profile_lastname%% er udmeldt per dags dato af %%name%%',
   'user_resign_nb_body' => "%%profile_firstname%% %%profile_lastname%% er udmeldt per dags dato\n\nMotivation:\n\n%%why%%",
-	'news_comment_subj' => 'Der er kommet en kommentar',
-	'news_comment_body' => 'Klik på dette link for at se kommentaren: http://www.rtd.dk/?country=%%did%% - http://www.rtd.dk?news=%%nid%%',
+	'news_comment_subj' => 'Ny kommentar til: %%title%%',
+	'news_comment_body' => 'Klik på dette link for at se kommentaren: http://www.rtd.dk/?news=%%nid%%',
 	'club_member_stat' => '
 	<h1>Medlemsstatistik</h1>
 	<table id=stat width=100%>
@@ -1908,6 +1966,18 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
   Kodeord: %%password%%
   Klub: %%club%%          
   
+  Round Table Danmark har også en mobil webapp der kan tilgåes via følgende detaljer:
+  
+  Link: http://m.rtd.dk
+  Brugernavn: %%username%%
+  Kodeord: %%password%%
+  Klub: %%club%%
+  
+  Yderligere er vi repræsenteret på følgende sociale netværk:
+  
+  Offentlig Facebook side: https://www.facebook.com/roundtabledk
+  Lukket LinkedIn gruppe: http://www.linkedin.com/groups?gid=48578
+  
   Du må meget gerne allerede nu logge ind, og kontrollere dine medlemsdata samt uploade et billede af dig selv - så du kan få maksimalt ud af netværket.
 
   Som en del af medlemsskabet i Round Table Danmark, bliver der 4 gange årligt udsendt et medlemsblad, Excalibur. 
@@ -1927,7 +1997,20 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
 	'new_password_sent' => 'Du skulle gerne modtage en e-mail med informationer inden for 5-10 minutter',
 	'error_user_not_found' => 'Brugernavnet kunne ikke findes',
 	'mail_new_password_subject' => 'Kodeord til RTD.DK',
-	'mail_new_password_content' => 'Brugernavn: %%username%% Kodeord: %%password%%',
+	'mail_new_password_content' => 
+'Du eller en anden har bestilt en nulstilning af kodeordet til rtd.dk
+
+For at logge på skal du bruge følgende oplysninger:
+
+Brugernavn: %%username%% 
+Kodeord: %%password%%
+
+Bemærk at det er HELE teksten efter Kodeord der skal indtastes og ikke kun den del du finder interessant (f.eks. er "123" ikke det rigtige kodeord).
+
+Du opfordres til at skifte kodeord hurtigst muligt - gerne allerede ved næste login!
+
+Mvh
+Round Table Danmark',
 	'search_results' =>
 	'
 		<h1>Søgeresultat - %%search%%</h1>
@@ -2763,9 +2846,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<h2>Billeder</h2>
 		%%images_html%%
 		<div id="pics">
-		<input type=file name=minutes_images[] onchange="verify_image(this);">
+		<input type=file name=minutes_images[]   class=multi accept="gif|jpg|png">
 		</div>
-		<input type=button value="Tilføj flere billeder..." onclick="add_pics();">
     <h2>Vedhæftede filer</h2>
     %%files_html%%
     <input type=file name=minutes_file id=minutes_file>
@@ -2780,6 +2862,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 
 		<h2>Referat</h2>
 		<p>Referat afsluttet <input type=checkbox name=finish_minutes id=finish_minutes></p>
+		<p>Udsend referat til medlemmer <input type=checkbox name=mail_minutes id=mail_minutes checked></p>
 		<input type=submit value="Gem mødereferat">
 		</form>
 		<script>
@@ -2799,10 +2882,9 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er tildelt %%duty_ext1_text%%
 
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -2816,10 +2898,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er tildelt %%duty_ext2_text%%
 
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -2833,10 +2914,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er tildelt %%duty_ext3_text%%
 
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -2850,10 +2930,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er tildelt %%duty_ext4_text%%
 
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -2867,10 +2946,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er mødeansvarlig!
 
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -2884,9 +2962,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er blevet tildelt brevgennemgang (2)!
+
+%%meeting_description%%
 
 Følg dette link for at hente brevene: 
 http://www.rtd.dk/?mid=&collection=%%mid%%/2
@@ -2904,9 +2982,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er blevet tildelt brevgennemgang (1)!
+
+%%meeting_description%%
 
 Følg dette link for at hente brevene: 
 http://www.rtd.dk/?mid=&collection=%%mid%%/1
@@ -2924,9 +3002,9 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
-
 Bemærk: Du er blevet tildelt 3 minutter!
+
+%%meeting_description%%
 
 Arrangementet finder sted:
 %%location%%
@@ -3118,7 +3196,6 @@ http://www.rtd.dk/?mid=%%mid%%
 							<li>Nye i år: %%newmembers%%
 							<li>Afgående i år: %%leavingmembers%%
 							<li>Gns. alder: %%avgage%% år
-							<li>Online: %%online%%		
 						</div>
 						',
 		'club_latest_minutes' => '<h2>Seneste referater</h2>',
@@ -3486,7 +3563,7 @@ http://www.rtd.dk/?mid=%%mid%%
 															<a href=# onclick="javascript:if(confirm(\'Bekræft sletning af møde\')) document.location.href=\'?mid=%%mid%%&delete\';">Slet møde</a> |
 															<a href=?mid=%%mid%%&minutes_edit>Rediger referat</a>
 															',
-		'meeting_duties' => '<h2>Pligter</h2>
+		'meeting_duties' => '<a name=duty><h2>Pligter</h2></a>
 		<p>Brevgennemgang:
 		<ul>
 		<li><a href=?mid=%%mid%%&collection=%%mid%% target=_blank>Brev 1</a></li>
@@ -3534,12 +3611,12 @@ http://www.rtd.dk/?mid=%%mid%%
     'meeting_minutes' => 
 		'<h2>Referat</h2>
 		<p>Skrevet: %%minutes_date%%, Tilmeldte: %%minutes_number_of_participants%%, Afmeldte: %%minutes_number_of_rejections%%</p>
-		<h2 id=ref0>Mødereferat</h2>
-		<p id=ref0_content>%%minutes%%</p>
-		<h2 id=ref1>3 minutter</h2>
-		<p id=ref1_content>%%minutes_3min%%</p>
-		<h2 id=ref2>Brevgenennemgang</h2>
-		<p id=ref2_content>%%minutes_letters%%</p>
+		<div id=ref0_content><h2>Mødereferat</h2>
+		<p>%%minutes%%</p></div>
+		<div id=ref1_content><h2>3 minutter</h2>
+		<p>%%minutes_3min%%</p></div>
+		<div id=id=ref2_content><h2>Brevgenennemgang</h2>
+		<p>%%minutes_letters%%</p></div>
     <script>
       if (!$("#ref0_content").html()) $("#ref0").hide();
       if (!$("#ref1_content").html()) $("#ref1").hide();
@@ -3581,8 +3658,10 @@ http://www.rtd.dk/?mid=%%mid%%
 															$("#locmap").html("<i>Kan ikke vise kort!</i>");
 														}
 														else {
-															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=11&size=400x400&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
-															var url = "https://maps.google.dk/?q="+what;
+															var whaturl = encodeURI(what);
+															
+															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=11&size=400x400&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+															var url = "https://maps.google.dk/?q="+whaturl;
 															$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 														}
 													});																										
@@ -3688,8 +3767,9 @@ http://www.rtd.dk/?mid=%%mid%%
 															$("#locmap").html("<i>Kunne ikke finde adressen. Indtast f.eks. Christiansborg, 1240 København K</i>");
 														}
 														else {
-															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=11&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
-															var url = "https://maps.google.dk/?q="+what;
+															var whaturl = encodeURI(what);
+															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=11&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+															var url = "https://maps.google.dk/?q="+whaturl;
 															$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 														}
 													});																										
@@ -3795,16 +3875,48 @@ http://www.rtd.dk/?mid=%%mid%%
 		
 		'login_pretext' => '<h3>Login</h3>',
 		'login_prompt' => '
-			<form action=/ method=post onsubmit="return verify_login();">
+			<div id=normal_login>
+			<h3>RT Login</h3>
+			<center>
+			<form action=/ method=post>
 			<input type=hidden name=login value=now>
 			<input type=hidden name=redirect value="%%REQUEST_URI%%">
 			<input class=bar type=text id=login_username name=username value="Brugernavn" onfocus="this.value=\'\';"><br>
 			<input class=bar type=password id=login_password name=password value=""><br>
-			<input type=submit value="Login">
-			<a href=# onclick="send_password();">Glemt kodeord</a><br/>
 			
+			<input type=submit value="Login"> <input type=checkbox name=remember> Husk login <br>
+			<a href=# onclick="send_password();">Glemt kodeord</a> |
+			<a href=# onclick="mummy_login();">Mumielogin</a><br/>
 			</form>
+			</center>
+			
+			</div>
+			<div id=mummy_login style="display:none">
+				<h3>Mumie</h3>
+				<center>
+				<form action=?mummy method=post>
+				<input type=text class=bar  name=club placeholder="Klub (f.eks. RT132)"><br>
+				<input type=password class=bar name=password><br>
+				<input type=submit value="Login"><br>
+				<a href="/?aid=3">Glemt kodeord</a> |
+				<a href=# onclick="normal_login();">RT login</a><br/>
+				</center>
+				</form>			
+			</div>
+			
+			
+			
 			<script>
+			function normal_login()
+			{
+				$("#mummy_login").hide("slow");
+				$("#normal_login").show("slow");
+			}
+			function mummy_login()
+			{
+				$("#normal_login").hide("slow");
+				$("#mummy_login").show("slow");
+			}
 			function verify_login()
 			{
 				if ($("#login_username").val()=="" || $("#login_password").val()=="")
@@ -3825,28 +3937,34 @@ http://www.rtd.dk/?mid=%%mid%%
 		'login_content_test' => '
 												<h3>MEDLEM</h3>
 												<div class=profile>
-                        %%profile_firstname%% %%profile_lastname%%
-                        <hr>                    
+                        <a href=?uid=%%uid>%%profile_firstname%% %%profile_lastname%%</a>
+                        <a href=?logout>Log af</a> | <a href=?uid=%%uid%%&edit>Rediger</a>
+						<br>
+                      <hr>                    
 						<span id=notify_link></span><br>
-                        <a href=?uid=%%uid%%>Vis profil</a><br>
-												<a href=?uid=%%uid%%&edit>Rediger profil</a><br>
-                        <a href=?cid=%%cid%%>Min klub</a><br>
-                        <a href=?logout>Log af</a><br>
 												
+                        <a href=?cid=%%cid%%>Min klub</a><br>
+  												
 												</div>
 <script src=/scripts/rtd/notification.js.php></script>',
 
 		'login_content' => '
 												<h3>MEDLEM</h3>
 												<div class=profile id=profilebox>
-                        %%profile_firstname%% %%profile_lastname%%
-                        <hr>                      
-                        
-                        <a href=?uid=%%uid%%>Vis profil</a><br>
-												<a href=?uid=%%uid%%&edit>Rediger profil</a><br>
-                        <a href=?cid=%%cid%%>Min klub</a><br>
-                        <a href=?logout>Log af</a><br>
-												
+                        <a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a><br>
+                        <a href=?logout>Log af</a> | <a href=?uid=%%uid%%&edit>Rediger</a> | <a href=?cid=%%cid%%>Min klub</a>
+						<br>
+                        <hr>Kommende pligter:<div id=duty_field class=stats></div>
+                        <script>
+							var dutydata = jQuery.parseJSON(notification_update_json);
+							var cnt = 0;
+							$.each(dutydata, function(key,value) {
+								cnt++;
+								var d = new Date(value.start_time);
+								$("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
+							});
+							if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");
+						</script>
 												</div>
 ',
 'nomination_reject_subj' => 'Indstilling til %%rejected_role%% afvist',
@@ -3889,6 +4007,7 @@ http://www.rtd.dk/?mid=%%mid%%
 				<a href=#>HB</a>
 				<ul>
 					<li><a href=?admin_download=newboards>Kommende bestyrelser</a></li>
+					<li><a href=?admin_download=future>Download: Kommende bestyrelser</a></li>
 					<li><a href=?admin_download=active&xml>Download: Medlemmer</a></li>
 					<li><a href=?admin_download=clubs>Download: Klubber</a></li>
 					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>	
@@ -3919,14 +4038,16 @@ http://www.rtd.dk/?mid=%%mid%%
 				<ul>
 					<li><a href=?reports>Udtræk til Blå Bog m.m.</a>
  					<li><a href=?admin_download=all>XML: Medlemsarkiv</a>
+ 					<li><a href=?admin_download=xtable>XML: X-table udtræk</a>
 					<li><a href=?admin_download=clubmail>Opdater klubmails</a>
 					<li><a href=?takeover>Overtag profil</a></li>
-					<li><a href=?banner>Webbanners</a></li>
+					<li><a href=http://ads.rtd.dk target=_blank>Webbanners</a></li>
 					<li><a href=?nominations=26>Æresmedlemsskaber</a></li>
 					<li><a href=?admin=article&edit=-1>Opret artikel</a></li>
 					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>
 					<li><a href=/cronjob.php?pwd=k4rk1ud>Kør cronjob</a></li>
 					<li><a href=?admin_download=sysstat>System status</a></li>
+					<li><a href=?admin_download=stalker>Overvåg brugere</a></li>
 					<li><a href=?admin_download=backup_db>Backup DB</a></li>
 					<li><a href=/scripts/sqlbuddy target=_blank>DB Admin</a></li>
 				</ul></li>

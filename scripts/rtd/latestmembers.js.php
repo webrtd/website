@@ -13,7 +13,7 @@ header('Content-Type: application/javascript');
 	if (logic_is_member())
 	{
     $m = cache_get("latest_members");
-    if (!$m)
+//    if (!$m)
     {
       $m = logic_get_latest_members();
       cache_put("latest_members", $m);

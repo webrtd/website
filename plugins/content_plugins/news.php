@@ -24,6 +24,7 @@
     	
     	if (isset($_REQUEST['comment']))
     	{
+			$nid = $_REQUEST['news'];
     		logic_save_comment($nid,$_REQUEST['comment'],0);
     	}
 
@@ -40,7 +41,7 @@
       }    	
       else $did=0;
 
-      $html.= term_unwrap("news_archive", logic_get_news($did,10),true);
+      $html.= term_unwrap("news_archive", logic_get_news($did,100),true);
     	return $html;
     }
 	}

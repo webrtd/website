@@ -97,8 +97,7 @@
 			$data .= get_html_table("select C.name as Klub, C.meeting_place as Moedested, C.meeting_time as Moedetid, C.charter_date as Charterdato, CC.name as Charterklub, C.webpage as WWW from club C inner join club CC on CC.cid=C.charter_club_cid where C.district_did={$d['did']}");
 		}
 		die($data);
-	}
-	
+	}	
 	function do_member_stats()
 	{
 				$data = "";
@@ -106,29 +105,69 @@
 				foreach($c['districts'] as $k=>$d)
 				{
 					
-					$data .= "<h1>{$d['name']}</h1>";
+					echo "<h1>{$d['name']}</h1>";
+					echo "<table border=1 width=100%>";
 				
-					$ddata = logic_get_clubs($d['did']);
+					$ddata = logic_get_clubs($d['did']);					
+					
+					$first = true;
 					foreach($ddata as $k=>$club)
 					{
-						$data .= "<h2>{$club['name']}</h2>";
+						//$data .= "<h2>{$club['name']}</h2>";
 						$stats = logic_get_club_stats($club['cid']);
-						$data .= "<table width=100% border=1><tr><th>Klubår</th><th>Start</th><th>Slut</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>";
-						foreach($stats as $range => $range_data)
+
+						$keys = array_keys($stats);
+						if ($first)
 						{
-							$diff = $range_data['new'] - $range_data['exit'];
-							$data .= "<tr>";
-							$data .= "<td>{$range}</td><td>{$range_data['start']}</td><td>{$range_data['end']}</td><td>{$range_data['new']}</td><td>{$range_data['exit']}</td><td>$diff</td>";
-							$data .= "</tr>";
+							$first = false;
+							echo "<tr>
+								<th width=50%>Klub</th>
+								<th>{$keys[0]}</th>
+								<th>{$keys[1]}</th>
+								<th>{$keys[2]}</th>
+							</tr>";
 						}
 						
-						$data .= "</table>";
+						
+						
+						
+						$a = current($stats);
+						$b = next($stats);
+						$c = next($stats);
+						
+						
+						$bb = $b['new']-$b['exit'];
+						$cc = $c['new']-$c['exit'];
+						
+						
+						
+						echo "<tr>
+							<td>{$club['name']}</td>
+							<td>{$a['end']}</td>
+							<td>{$bb}</td>
+							<td>{$cc}</td>
+						</tr>";
+						
+						// $data .= "<table width=100% border=1><tr><th>Klubår</th><th>Start</th><th>Slut</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>";
+						//foreach($stats as $range => $range_data)
+						//{
+							
+							//$diff = $range_data['new'] - $range_data['exit'];
+							//$data .= "<tr>";
+							//$data .= "<td>{$range}</td><td>{$range_data['start']}</td><td>{$range_data['end']}</td><td>{$range_data['new']}</td><td>{$range_data['exit']}</td><td>$diff</td>";
+							//$data .= "</tr>";
+						//}
+						
 //						$data .= "<pre>".print_r($stats, true)."</pre>";
 					}
+					
+					echo "</table>";
+					
+//					die($data);
 				}
 				
 				
-				die($data);
+				die();
 	}
 	
 	function do_rti_report()
@@ -179,6 +218,8 @@
 			<th>Country</th>
 			<th>Phone</th>
 			<th>Mail</th>
+			<th>Birthdate</th>
+			<th>Business</th>
 		</tr>";
 		
 		foreach($chairmen as $m)
@@ -194,6 +235,8 @@
 				<td>{$u['private_country']}</td>
 				<td>{$u['private_mobile']}</td>
 				<td>{$u['private_email']}</td>
+				<td>{$u['profile_birthdate']}</td>
+				<td>{$u['company_business']}</td>
 			</tr>";
 		}
 		

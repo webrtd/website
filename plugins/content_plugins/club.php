@@ -38,7 +38,7 @@
 
 			$ics = 
 "BEGIN:VCALENDAR
-X-WR-CALNAME:Round Table Denmark Calendar
+X-WR-CALNAME:Round Table {$club[name]} Calendar
 PRODID:-//Round Table Denmark//RTD.DK Calendar//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -194,7 +194,7 @@ $ics .=
 		$html = club_header($club);
 
 		if (!logic_is_mummy())		
-		if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_secretary()))
+		if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_secretary()) || logic_is_admin())
 		{
 			$html .= term_unwrap('club_secretary_tools',$club);
 		}

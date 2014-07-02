@@ -29,6 +29,7 @@
  *	28-06-2013  rasmus@3kings.dk  added delete_role_period
  *	29-06-2013  rasmus@3kings.dk  added put_other_meeting, get_other_meetings  
  *	20-09-2013	rasmus@3kings.dk	store_log
+ * 21-05-2014 rasmus@3kings.dk get_district_for_club
  */
 
 if (PHP_SAPI == 'cli')
@@ -43,6 +44,29 @@ else
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/stacktrace.php';
 }
 
+	function put_user_path_tracker($uid,$uri)
+	{
+			fire_sql("insert into user_path_tracker (uid,uri,ts) values ('{$uid}', '{$uri}', now())");
+	}
+
+	function fetch_future_duties($uid,$limit)
+	{
+	$sql = "
+	select * from meeting where
+	end_time>now() and
+	(duty_3min_uid={$uid} or
+	duty_letters1_uid={$uid} or
+	duty_letters2_uid={$uid} or
+	duty_meeting_responsible_uid={$uid} or
+	duty_ext1_uid={$uid} or
+	duty_ext2_uid={$uid} or
+	duty_ext3_uid={$uid} or
+	duty_ext4_uid={$uid} or
+	duty_ext5_uid={$uid})
+	order by start_time asc limit {$limit}";
+	return get_data($sql);
+	}
+
   
 	function fetch_club_names()
 	{
@@ -54,7 +78,7 @@ else
 	 *	@param string $sql sql query
 	 *	@return string html table
 	 */
-	function get_html_table($sql)
+	function get_html_table($sql,$tags_allowed=false)
 	{
 		$data = get_data($sql);
 		if (empty($data)) return "Empty data";
@@ -80,7 +104,7 @@ else
 			$html .= "<tr>";
 			foreach($row as $key => $value)
 			{
-				$value = strip_tags($value);
+				if (!$tags_allowed)	$value = strip_tags($value);
 				$html .= "<td>{$value}</td>";
 			}
 			$html .= "</tr>";
@@ -299,7 +323,8 @@ else
   	}
   	else
   	{
-    	$sql = "select nid,title,content,posted from news where did=$did order by posted desc limit $limit";
+    	//$sql = "select nid,title,content,posted from news where did=$did order by posted desc limit $limit";
+		$sql = "select nid,title,content,posted,(SELECT COUNT(*) FROM news_comment NC where NC.nid=N.nid) as count from news N where did={$did} order by posted desc limit {$limit}";
     }
     if ($limit==1) return get_one_data_row($sql);
     else return get_data($sql);
@@ -472,6 +497,17 @@ else
 		return $db->fetchassoc($rs);
 	}
 
+	/** 
+	* retrieve district id for a given club
+	* @param int $cid club id
+	* @return int district id
+	*/
+	function get_district_for_club($cid)
+	{
+		$data = get_one_data_row("select did from club where cid={$cid}");
+		return $data['did'];
+	}
+	
 	/**
 	 *	retrieve the district id for a user
 	 *	@param	int $uid	user id
@@ -635,6 +671,7 @@ else
 			$sql ="
 					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club from user U 
 					inner join club C on U.cid=C.cid
+					inner join role R on R.uid=U.uid
 					where
 					profile_ended<now()
 					and
@@ -659,39 +696,12 @@ else
 		}
 		else
 		{
-/*			$sql ="
-					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club from user U 
-					inner join club C on U.cid=C.cid
-					inner join role R on R.rid=R.rid
-					where
-					(R.rid=".MEMBER_ROLE_RID." or R.rid=".HONORARY_ROLE_RID.")
-					and R.end_date>date(now()) 
-					and R.start_date<date(now())
-					and
-					(profile_firstname like '%$q%' or
-					profile_lastname like '%$q%' or
-					private_address like '%$q%' or
-					private_city like '%$q%' or
-					company_position like '%$q%' or
-					company_profile like '%$q%' or
-					company_name like '%$q%' or
-					private_email like '%$q%' or
-					company_email like '%$q%' or
-					company_business like '%$q%' or
-					company_city like '%$q%' or
-			  private_phone like '%$q%' or
-			  company_phone like '%$q%' or
-					private_profile like '%$q%' or
-					name like '%$q%' or
-					concat(profile_firstname, ' ', profile_lastname) like '%$q%')
-					order by profile_firstname asc
-				";
-				*/
 			$sql ="
 					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club from user U 
 					inner join club C on U.cid=C.cid
+					inner join role R on R.uid=U.uid
 					where
-					profile_ended>now()
+					R.start_date<now() and R.end_date>now() and (R.rid=".MEMBER_ROLE_RID." or R.rid=".HONORARY_ROLE_RID.") 
 					and
 					(profile_firstname like '%$q%' or
 					profile_lastname like '%$q%' or
@@ -1098,10 +1108,10 @@ else
 	 *	@return int number of members matching the criteria
 	 *	@param string $criteria sql where statement for filtering members
 	 */
-	function fetch_member_count($criteria="")
+	function fetch_member_count($criteria="",$extras="")
 	{
 		$db = get_db();
-		$rs = $db->execute("select count(*) from user where uid>0 $criteria");
+		$rs = $db->execute("select count(*),cid from user U {$extras} where uid>0 $criteria");
 		return $db->fetchsinglevalue($rs);
 	}
 	
@@ -1493,10 +1503,25 @@ else
 	 *	@return mixed[] role information
 	 *	@param int $uid user id
 	 */
-	function fetch_active_roles($uid)
+	function fetch_active_roles($uid,$future=false)
 	{
 		$db = get_db();
-		$rs = $db->execute("select * from role R inner join role_definition RD on RD.rid=R.rid where R.uid=$uid and R.start_date<=date(now()) and R.end_date>=date(now()) order by R.end_date");
+		
+		if (!$future)
+		{
+			$rs = $db->execute("select * from role R inner join role_definition RD on RD.rid=R.rid where R.uid=$uid and R.start_date<=date(now()) and R.end_date>=date(now()) order by R.end_date");
+		}
+		else
+		{
+			$rs = $db->execute("
+select * from role R inner join role_definition RD on RD.rid=R.rid where 
+R.uid=$uid and 
+DATE_SUB(R.start_date,interval 1 month) <= date(now()) and 
+R.end_date>=date(now()) 
+order by R.end_date
+");
+		}
+		
 		$roles = array();
 		while ($row = $db->fetchassoc($rs))
 		{
@@ -1766,10 +1791,10 @@ else
    *	update last page view for user
    *	@param int $uid user id
    */
-  function update_last_page_view($uid)
+  function update_last_page_view($uid, $page_title="", $page_url="")
   {
   	$db = get_db();
-  	$db->execute("update user set last_page_view=now() where uid=$uid");
+  	$db->execute("update user set last_page_view=now(), last_page_title='{$page_title}', last_page_url='{$page_url}' where uid=$uid");
   }
   
   /**

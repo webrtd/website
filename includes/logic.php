@@ -41,6 +41,7 @@
   06-08-2013	rasmus@3kings.dk	logic_club_board_submission_period
 	10-10-2013	rasmus@3kings.dk	fixed issue in logic_save_mail
 	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
+	13-04-2014	rasmus@3kings.dk	logic_get_duties added
   */ 
 
   if (UNITTEST !== true)
@@ -459,7 +460,12 @@
 	 */
 	function logic_update_last_page_view()
 	{
-		update_last_page_view($_SESSION['user']['uid']);
+		update_last_page_view($_SESSION['user']['uid'], addslashes(get_title()), $_SERVER['REQUEST_URI']);
+		
+		if (strpos($_SERVER['REQUEST_URI'], 'stalker')===false)
+		{
+			put_user_path_tracker($_SESSION['user']['uid'],$_SERVER['REQUEST_URI']);
+		}
 	}
 	
 	/**
@@ -835,10 +841,10 @@
 	 *	finish meeting minutes (i.e. when a secretary marks meeting minuts as completed)
 	 *	@param int $mid meeting id
 	 */
-	function logic_finish_meeting_minutes($mid)
+	function logic_finish_meeting_minutes($mid,$mail_to_members)
 	{
 		update_timestamp('meeting', "mid=$mid", 'minutes_date');
-		event_minutes_finished($mid);
+		event_minutes_finished($mid,$mail_to_members);
 	}
 	
 	/**
@@ -1155,7 +1161,7 @@ END:VCALENDAR"
 				$content = term_unwrap("mail_invitation", $meeting);
 			}
 			save_mail($members[$i]['private_email'], term_unwrap('mail_invitation_subject',$meeting), $content, true, $attachment_id);
-		}
+		} 
 		
 	}
 	
@@ -1267,11 +1273,12 @@ END:VCALENDAR"
 
 	function logic_show_attendance_form($meeting)
 	{
-		return (!logic_is_mummy() && (strtotime($meeting['start_time'])>time()));
+		return (!logic_is_mummy() && (strtotime($meeting['end_time'])>time()));
 	}
 
 	function logic_upload_meeting_image($filestruct, $mid)
 	{		
+		
 		
 		$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
 		if (!is_array($filestruct['name']))
@@ -1534,8 +1541,11 @@ END:VCALENDAR"
   
   function logic_save_comment($nid,$comment,$did) 
   {
-  	save_comment($nid,addslashes(strip_tags($comment)),$_SESSION['user']['uid']);
-  	event_news_comment($nid,$did);
+	if (is_numeric($nid) && $comment != "")
+	{
+		save_comment($nid,addslashes(strip_tags($comment)),$_SESSION['user']['uid']);
+		event_news_comment($nid,$did);
+	}
   }
   
   function logic_save_news($did,$title,$content)
@@ -1647,17 +1657,18 @@ END:VCALENDAR"
 	{
 		$uid = $_SESSION['user']['uid'];
 		
-		$articles = get_data("select title, aid as id, last_update as ts from article where last_update>'$ts' order by last_update desc limit 5");
-		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time as ts from meeting M inner join club C on M.cid=C.cid where end_time>now() and start_time<now() order by start_time desc limit 5");
-		$news = get_data("select title, nid as id, posted as ts from news where posted>'$ts' order by posted desc limit 5");
-		$news_comment = get_data("select NC.nid as id ,NC.posted as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where NC.posted>'$ts' order by NC.posted desc limit 5");
-		$tabler_service = get_data("select tsid as id, headline as title, posted as ts from tabler_service_item where posted>'$ts' order by posted desc limit 5");
-		$users = get_data("select concat_ws(' ',profile_firstname, profile_lastname) as title, uid as id, profile_started as ts from user where profile_started>'$ts' order by ts desc limit 5");
+		$articles = array();/*get_data("select title, aid as id, last_update as ts from article where last_update>'$ts' order by last_update desc limit 5");*/
+		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time, date_format(M.start_time, '%e. %b (%H:%i)') as ts from meeting M inner join club C on M.cid=C.cid where end_time>now() and start_time<now() order by start_time desc limit 5");
+		$news = get_data("select title, nid as id, posted, date_format(posted, '%e. %b (%H:%i)') as ts from news where posted>'$ts' order by posted desc limit 5");
+		$news_comment = get_data("select NC.nid as id ,NC.posted, date_format(NC.posted, '%e. %b (%H:%i)') as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where NC.posted>'$ts' order by NC.posted desc limit 5");
+		$tabler_service = get_data("select tsid as id, headline as title, posted, date_format(posted, '%e. %b (%H:%i)') as ts from tabler_service_item where posted>'$ts' order by posted desc limit 5");
+		
+		$users = get_data("select concat_ws(' ',profile_firstname, profile_lastname) as title, uid as id, last_page_view, date_format(last_page_view, '%e. %b (%H:%i)') as ts, last_page_title as url_title, last_page_url as url_link from user where last_page_view>DATE_SUB(now(),interval 15 minute) order by ts desc limit 15");
 		
 		return array(
 			"aid" => $articles,
 			"mid" => $meetings,
-			"nid" => array_merge($news,$news_comment),
+			"news" => array_merge($news,$news_comment),
 			"ts" => $tabler_service,
 			"uid" => $users
 		);
@@ -1688,7 +1699,7 @@ END:VCALENDAR"
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		$member = MEMBER_ROLE_RID;
-		for ($i=3;$i>-4;$i--)
+		for ($i=0;$i<3;$i++)
 		{
 		
 			$ys = logic_get_club_year_start($i);
@@ -1983,6 +1994,16 @@ END:VCALENDAR"
 		return fetch_members_by_roles("('".CHAIRMAN_SHORT_NAME."')");
 	}
 	
+	function get_district_chairman_mail_from_club($cid)
+	{
+		$did = get_district_for_club($cid);
+		$dname = logic_get_district_name($did);
+		$ddata = explode(" ", $dname);
+		$dnum = $ddata[1];
+		$sender_mail = $n['role_short'].$dnum.NB_MAIL_POSTFIX;
+		return $sender_mail;
+	}
+	
 	function logic_get_national_board()
 	{
 		$data = fetch_members_by_roles(NATIONAL_BOARD_ROLES);
@@ -2167,7 +2188,7 @@ END:VCALENDAR"
 
 		if ($user && ($user['password']==md5($password) || $user['password']==$password))
 		{
-			$roles = fetch_active_roles($user['uid']);
+			$roles = fetch_active_roles($user['uid'],true);
 			$user['active_roles'] = $roles;
 			
 			
@@ -2337,4 +2358,81 @@ END:VCALENDAR"
 	if ($m=="") $m = date("n");
 	return $m>=NEWBOARD_SUBMISSION_PERIOD_START && $m<=NEWBOARD_SUBMISSION_PERIOD_END;
   }
+  
+  function logic_get_duties($uid)
+  {
+	$duty_data = fetch_future_duties($uid,3);
+	$duties = array();
+	
+	foreach($duty_data as $d)
+	{
+		$text="";
+		if ($d['duty_3min_uid']==$uid)
+		{
+			$text = term('duty_3min_uid');
+		}
+		else if ($d['duty_letters1_uid']==$uid)
+		{
+			$text = term('duty_letters1_uid');
+		}
+		else if ($d['duty_letters2_uid']==$uid)
+		{
+			$text = term('duty_letters2_uid');
+		}
+		else if ($d['duty_meeting_responsible_uid']==$uid)
+		{
+			$text = term('duty_meeting_responsible_uid');
+		}
+		else if ($d['duty_ext1_uid']==$uid)
+		{
+			$text=$d['duty_ext1_text'];
+		}
+		else if ($d['duty_ext2_uid']==$uid)
+		{
+			$text=$d['duty_ext2_text'];
+		}
+		else if ($d['duty_ext3_uid']==$uid)
+		{
+			$text=$d['duty_ext3_text'];
+		}
+		else if ($d['duty_ext4_uid']==$uid)
+		{
+			$text=$d['duty_ext4_text'];
+		}
+		else if ($d['duty_ext5_uid']==$uid)
+		{
+			$text=$d['duty_ext5_text'];
+		}
+		
+		$duties[] = array(
+			"duty" => date("j/n - ",strtotime($d['start_time'])).$text,
+			"mid" => $d['mid'],
+			"start_time" => $d['start_time'],
+			"end_time" => $d['end_time'],
+			"title" => $d['title']
+		);
+	}
+	
+	return $duties;
+
+  }
+  
+  function logic_get_vcard($uid)
+  {
+	$p = logic_get_user_by_id($uid);
+	$d = date("Ymd")."T".date("Hm")."00Z";
+return utf8_decode("BEGIN:VCARD
+VERSION:2.1
+N:{$p['profile_lastname']};{$p['profile_firstname']}
+FN:{$p['profile_firstname']} {$p['profile_lastname']}
+ORG:Round Table
+PHOTO;JPG:http://rtd.dk/uploads/user_image/?uid={$p['uid']}&landscape&w=50&h=84
+TEL;WORK;VOICE:{$p['private_phone']}
+TEL;HOME;VOICE:{$p['private_mobile']}
+EMAIL;PREF;INTERNET:{$p['private_email']}
+REV:{$d}
+END:VCARD
+ ");
+ }
+  
 	?>

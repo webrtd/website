@@ -7,8 +7,14 @@
 	{
 		if (!logic_is_member()) return term('article_must_be_logged_in');
 		$old = isset($_REQUEST['old']);
+		$search = logic_search(addslashes($_REQUEST['search']),$old);
+		if (sizeof($search['users'])==1)
+		{
+			header("location: /?uid={$search['users'][0]['uid']}");
+			die();
+		}
 		$result = array(
-			"result" =>	addslashes(json_encode(logic_search(addslashes($_REQUEST['search']),$old))),
+			"result" =>	addslashes(json_encode($search)),
 			"search" => $_REQUEST['search']
 			);
 			set_title('S&oslash;g '.$_REQUEST['search']);

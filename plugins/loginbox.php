@@ -141,12 +141,13 @@ function check_club_mail($club)
 	
 	function loginbox()
 	{
-		/* disabled 10-06-2013
+		/* disabled 10-06-2013 */
+		/// echo "<!--- ".print_r($_COOKIE,true)." --->";
 		if (!logic_is_member() && isset($_COOKIE['RTD_LOGIN_COOKIE']))
 		{
 			auto_login();
 		}
-		*/
+		
 		$error_str = "";
 		if (isset($_REQUEST['sendpassword']))
 		{
@@ -163,47 +164,17 @@ function check_club_mail($club)
 		}
 		
 		if (isset($_SESSION['user']))
-		{
+		{/*
 			$data_array = logic_new_updates($_SESSION['user']['last_page_view']);
 			$data_array['timestamp'] = $_SESSION['user']['last_page_view'];  
 			$data = addslashes(json_encode($data_array));
-			if ($_SESSION['user']['username']=='kaae')
-			{
-        //echo "<script>notify_build();</script>";
-			  //echo "<script src=/scripts/rtd/notification.js.php></script>";
-			}
-			
-			/*
-			echo ;
-				logic_update_last_page_view();
-			}
-			else echo "<script>var notification_update_json = '';</script>";		
-		*//* 20-06-2013
-			if (logic_get_current_username()=="kaae")
-			{
-				return "<script>var notification_update_json = '$data';</script>".term_unwrap('login_content_test', $_SESSION['user']);
-			}
-			else*/
-			{
-				return "<script>var notification_update_json = '$data';</script>".term_unwrap('login_content', $_SESSION['user']);
-			}
+			*/
+			$data = addslashes(json_encode(logic_get_duties($_SESSION['user']['uid'])));
+			return "<script>var notification_update_json = '$data';</script>".term_unwrap('login_content', $_SESSION['user']);
 		}
 		else
 		{
-			return term_unwrap('login_prompt',$_SERVER);/*
-		return "
-			".term('login_pretext')."
-			<form action=/ method=post>
-			<script>if ('{$error_str}'!='') alert('{$error_str}');</script>
-			<input type=hidden name=login value=now>
-			<input type=hidden name=redirect value=\"{$_SERVER['REQUEST_URI']}\">
-			<input class=bar type=\"text\" name=\"username\" value=\"".term('login_username')."\" onfocus=\"this.value='';\"><br/>
-			<input class=bar type=\"password\" name=\"password\" value=\"".term('login_password')."\" onfocus=\"this.value='';\"><br/>
-			<input type=\"submit\" value=\"".term('login_login')."\">
-			<a href=# onclick=\"var m=prompt('Indtast dit brugernavn for at f&aring; tilsendt kodeord til rtd.dk:'); if (m) document.location.href='?sendpassword='+m;\">Glemt kodeord</a><br/>
-			<input type=checkbox name=remember> Husk mig
-			</form>
-		";*/
+			return term_unwrap('login_prompt',$_SERVER);
 		}
 	}
 	

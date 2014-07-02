@@ -140,7 +140,7 @@ class PHPMailer {
    * Method to send mail: ("mail", "sendmail", or "smtp").
    * @var string
    */
-  public $Mailer            = 'mail';
+  public $Mailer            = 'smtp'; // 'mail'
 
   /**
    * Sets the path of the sendmail program.
@@ -701,6 +701,8 @@ class PHPMailer {
       $toArr[] = $this->AddrFormat($t);
     }
     $to = implode(', ', $toArr);
+	
+	echo "<pre>{$header}</pre>";
 
     if (empty($this->Sender)) {
       $params = "-oi -f %s";
@@ -1209,7 +1211,10 @@ class PHPMailer {
       $result .= $this->HeaderLine('MIME-Version', '1.0');
       $result .= $this->GetMailMIME();
     }
-
+	
+	echo "<li>$result";
+	
+//	die($result);
     return $result;
   }
 
