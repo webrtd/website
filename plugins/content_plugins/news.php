@@ -41,7 +41,7 @@
       }    	
       else $did=0;
 
-      $html.= term_unwrap("news_archive", logic_get_news($did,100),true);
+      $html.= term_unwrap("news_archive", logic_get_news($did,10),true);
     	return $html;
     }
 	}

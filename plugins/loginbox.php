@@ -33,12 +33,20 @@
 			$user = logic_get_user_by_username($_REQUEST['sendpassword']);
 			if ($user)
 			{
+				if (define('GENERATE_NEW_USER_PASSWORD') && GENERATE_NEW_USER_PASSWORD)
+				{
+					$password = logic_generate_password($user);
+				}
+				else
+				{
+					$password = DEFAULT_NEW_USER_PASSWORD;	
+				}
 				$data = array(
 					'username' => $user['username'],
-					'password' => DEFAULT_NEW_USER_PASSWORD,
+					'password' => $password,
 					'last_page_view' => '0000-00-00'
 				);
-				logic_save_user($user['uid'], array('password'=>md5(DEFAULT_NEW_USER_PASSWORD)));
+				logic_save_user($user['uid'], array('password'=>md5($password)));
 				
 				logic_save_mail($user['private_email'], term('mail_new_password_subject'), term_unwrap('mail_new_password_content', $data));
 				return term('new_password_sent');
@@ -61,6 +69,7 @@ function pop3_stat($connection)
 */
 function check_club_mail($club)
 {
+	if (NB_MAIL_POSTFIX != '@rtd.dk')	return;
 	$i = logic_check_clubmail($club);
 	if ($i>0)
 	{
@@ -141,13 +150,10 @@ function check_club_mail($club)
 	
 	function loginbox()
 	{
-		/* disabled 10-06-2013 */
-		/// echo "<!--- ".print_r($_COOKIE,true)." --->";
 		if (!logic_is_member() && isset($_COOKIE['RTD_LOGIN_COOKIE']))
 		{
 			auto_login();
 		}
-		
 		$error_str = "";
 		if (isset($_REQUEST['sendpassword']))
 		{
@@ -164,11 +170,7 @@ function check_club_mail($club)
 		}
 		
 		if (isset($_SESSION['user']))
-		{/*
-			$data_array = logic_new_updates($_SESSION['user']['last_page_view']);
-			$data_array['timestamp'] = $_SESSION['user']['last_page_view'];  
-			$data = addslashes(json_encode($data_array));
-			*/
+		{
 			$data = addslashes(json_encode(logic_get_duties($_SESSION['user']['uid'])));
 			return "<script>var notification_update_json = '$data';</script>".term_unwrap('login_content', $_SESSION['user']);
 		}

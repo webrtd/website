@@ -17,7 +17,17 @@
 		{
 			$mails[] = $v['private_email'];
 		}
-		$club['membermails'] = implode(",",$mails);
+		$club['membermails'] = implode(";",$mails);
+		
+		$board = logic_get_club_board($club['cid']);
+		$mails = array();
+		foreach($board as $k=>$v)
+		{
+			$u = logic_get_user_by_id($v['uid']);
+			$mails[] = $u['private_email'];
+		}
+		$club['boardmails'] = implode(";",$mails);
+		
 		$html = term_unwrap('club_header', $club);
 		return $html;
 	}
@@ -39,7 +49,7 @@
 			$ics = 
 "BEGIN:VCALENDAR
 X-WR-CALNAME:Round Table {$club[name]} Calendar
-PRODID:-//Round Table Denmark//RTD.DK Calendar//EN
+PRODID:-//Round Table//ROUNDTABLE Calendar//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
@@ -194,9 +204,15 @@ $ics .=
 		$html = club_header($club);
 
 		if (!logic_is_mummy())		
-		if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_secretary()) || logic_is_admin())
 		{
-			$html .= term_unwrap('club_secretary_tools',$club);
+			if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_secretary()) || logic_is_admin())
+			{
+				$html .= term_unwrap('club_secretary_tools',$club);
+			}
+			else if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_ceremony_master()) || logic_is_admin())
+			{
+				$html .= term_unwrap('club_cerm_tools',$club);
+			}
 		}
 	
 	

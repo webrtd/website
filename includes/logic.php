@@ -199,15 +199,16 @@
 			$uids[] = $u[$i]['uid'];
 			logic_save_mail($u[$i]['private_email'], $title, $content,$attachment_id,$uid);
 		}
-		
-		$clubs = get_clubs_from_uids($uids);
-		foreach($clubs as $c)
+		if (NB_MAIL_POSTFIX=='@roundtable.dk')
 		{
-			$data = explode(" ",$c['name']);
-			$mail = strtolower($data[0])."@roundtable.dk";
-			logic_save_mail($mail, $title, $content, $attachment_id, $uid);
+			$clubs = get_clubs_from_uids($uids);
+			foreach($clubs as $c)
+			{
+				$data = explode(" ",$c['name']);
+				$mail = strtolower($data[0])."@roundtable.dk";
+				logic_save_mail($mail, $title, $content, $attachment_id, $uid);
+			}
 		}
-		
 		return sizeof($u);
 	}
 	
@@ -233,15 +234,22 @@
 	}
 
 
-  function logic_resign_user($uid,$why)
+  function logic_resign_user($uid,$why,$end_date=false)
   {
+	// normal resignation - send reason
+	// if $end_date is a real date (i.e. not false) then the reason is not transmitted since this is a MANUAL resignation by admin
+	if ($end_date === false) 
+	{
+		event_user_resign($uid,$why);    
+		$end_date = date("Y-m-d");
+	}
+
     $user = logic_get_user_by_id($uid);
     $r = fetch_active_roles($uid);
     for($i=0;$i<sizeof($r);$i++)
     {
       if ($r[$i]['rid']==MEMBER_ROLE_RID)
       {
-        $end_date = date("Y-m-d");
         save_user($uid,array('profile_ended' => $end_date));
         end_role_period($r[$i]['riid'],$end_date);
         break;        
@@ -255,7 +263,7 @@
     }
     
     
-    event_user_resign($uid,$why);    
+    
   }
 
 	/**
@@ -487,6 +495,17 @@
 	{
 		return get_article_files($aid, $gallery_only);
 	}
+	
+	/**
+	 * return shuffled password
+	 * @param mixed[] user record
+	 * @return string password
+	 */
+	function logic_generate_password($user)
+	{
+		return str_shuffle($user['username']);
+	}
+	
 	
 	/**
 	 *	translate role id to role name
@@ -864,6 +883,10 @@
 	 */
 	function logic_save_user($uid,$data)
 	{
+		if (isset($data['profile_ended']))
+		{
+			logic_resign_user($uid,'Profile termination',$data['profile_ended']);
+		}
 		save_user($uid,$data);
 		return logic_get_user_by_id($uid);
 	}
@@ -1161,7 +1184,7 @@ END:VCALENDAR"
 				$content = term_unwrap("mail_invitation", $meeting);
 			}
 			save_mail($members[$i]['private_email'], term_unwrap('mail_invitation_subject',$meeting), $content, true, $attachment_id);
-		} 
+		}
 		
 	}
 	
@@ -1473,7 +1496,8 @@ END:VCALENDAR"
   }
 	function logic_save_meeting($meeting, $mid, $cid)
 	{
-		if (logic_is_admin() || (logic_is_secretary() && $cid==$_SESSION['user']['cid']))
+		if(logic_may_edit_meeting($cid))
+//		if (logic_is_admin() || (logic_is_secretary() && $cid==$_SESSION['user']['cid']))
 		{
 			$meeting['cid'] = $cid;
 			$new_mid = save_meeting($meeting,$mid);
@@ -1513,8 +1537,13 @@ END:VCALENDAR"
 	{
 		if (!logic_is_member()) return false;
 		
-		if (logic_is_admin()) return true;
+		if (logic_is_group_manager($cid)) return true;
+		else if (logic_is_admin()) return true;
 		else if (logic_is_secretary())
+		{
+			return ($cid == $_SESSION['user']['cid']);
+		}
+		else if (logic_is_ceremony_master())
 		{
 			return ($cid == $_SESSION['user']['cid']);
 		}
@@ -1546,7 +1575,7 @@ END:VCALENDAR"
 		save_comment($nid,addslashes(strip_tags($comment)),$_SESSION['user']['uid']);
 		event_news_comment($nid,$did);
 	}
-  }
+}
   
   function logic_save_news($did,$title,$content)
   {
@@ -2064,6 +2093,40 @@ END:VCALENDAR"
 		return (logic_is_chairman() && $_SESSION['user']['cid']==$cid);
 	}
 
+	function logic_is_group_manager($cid)
+	{
+		if (!define('CLUB_GROUP_MANAGER_RID')) return false;
+		if (isset($_SESSION['user']))
+		{
+			if ($_SESSION['user']['cid']!=$cid) return false;
+			
+			foreach ($_SESSION['user']['active_roles'] as $key => $data)
+			{
+				if ($data['rid'] == CLUB_GROUP_MANAGER_RID) return true;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+
+		
+	}
+
+	function logic_is_ceremony_master()
+	{
+		if (!define('CEREMONY_ROLE_RID')) return false;
+		if (logic_is_admin()) return true;
+		if (isset($_SESSION['user']))
+		{
+			foreach ($_SESSION['user']['active_roles'] as $key => $data)
+			{
+				if ($data['rid'] == CEREMONY_ROLE_RID) return true;
+			}
+		}
+		return false;
+	}
 	
 	function logic_is_secretary()
 	{
@@ -2257,7 +2320,140 @@ END:VCALENDAR"
   
   function logic_get_business_list()
   {
-  	return get_business_list();
+	if (!define('LOAD_BUSINESS_LIST_FROM_DB') || LOAD_BUSINESS_LIST_FROM_DB)
+	{
+		return get_business_list();
+	}
+	else
+	{// RTN business codes
+		return array(
+			"1000 INDUSTRI",
+			"1001 NÆRINGSMIDDEL",
+			"1002 KJEMIK./PORSEL/GLASS",
+			"1003 KJEMISKE PRODUKTER",
+			"1004 TEKSTIL/KONFEKSJON",
+			"1005 PETROKJEMI",
+			"1006 ELEKTRONIKK",
+			"1007 FISK/FISKEPRODUKTER",
+			"1008 TREVARE",
+			"1010 MASKINER/MEK. UTSTYR",
+			"1011 METALLURGISK INDUSTRI",
+			"1013 TREFOREDLING",
+			"1014 SKIPSBYGGING",
+			"1015 OLJEINDUSTRI",
+			"1016 ENTREPENØRVIRKSOMHET",
+			"1017 GLASSFIBERINDUSTRI",
+			"1018 GRAFISK INDUSTRI",
+			"1019 ELEKTRO/AUTOMASJON",
+			"1716 TURISME",
+			"2000 HANDEL",
+			"2001 MASKINER/UTSTYR",
+			"2002 HAGEBRUK/GARTNERI",
+			"2003 MOTORKJØRETØYER",
+			"2004 DAGLIGVARE DETALJ",
+			"2005 DAGLIGVARE ENGROS",
+			"2006 BYGNINGSARTIKLER",
+			"2007 FETEVARER",
+			"2008 MANUFAKTUR",
+			"2009 FARGEHANDEL",
+			"2010 FOTO",
+			"2011 GLASSVARER",
+			"2012 KUNST/BRUKSKUNST",
+			"2013 ELEKTRO/RADIO/TV",
+			"2015 MØBLER",
+			"2016 SPORTSARTIKLER",
+			"2017 UR/OPTIKK",
+			"2018 KONTORUTSTYR",
+			"2019 MEDISINER OG MED.UTS",
+			"2020 EDB/DATA",
+			"2021 TEKSTIL ENGROS",
+			"3000 HÅNDVERK",
+			"3001 RØRLEGGER",
+			"3002 BLIKKENSLAGER",
+			"3003 ELEKTRISK INST./REP.",
+			"3004 GULLSMED",
+			"3005 OPTIKER",
+			"3006 FOTOGRAF",
+			"3007 GRAFISK VIRKSOMHET",
+			"3008 TREARB. VIRKSOMHET",
+			"3009 MEKANISK",
+			"3010 MALER",
+			"3011 MURER",
+			"3012 GLASS",
+			"3013 SNEKKER",
+			"3014 BAKER",
+			"3015 BYGG OG ANLEGG",
+			"3019 VVS INGENIØR",
+			"4000 DIV. ØKONOMISK VIRK.",
+			"4001 BANK",
+			"4002 FORSIKRING",
+			"4003 SHIPPING",
+			"4004 ØKONOMI/REGNS/REVISJ",
+			"5000 OFFENTLIGE INST.",
+			"5001 UTDANNELSE",
+			"5002 FORSKNING",
+			"5003 BRANNVESEN",
+			"5004 STATSADMINISTRASJON",
+			"5005 FYLKESADMINISTRASJON",
+			"5006 KOMMUNAL ADMIN.",
+			"5007 SYKEINSTITUSJONER",
+			"5008 KRAFT/ELEKTRISITET",
+			"5009 OFFENTLIG TRANSPORT",
+			"5010 KIRKE",
+			"5011 POLITIETAT",
+			"5012 TELEKOMMUNIKASJON",
+			"5013 POSTVESEN",
+			"5014 MILITÆRVESEN",
+			"5016 LIGNINGSVESEN",
+			"5017 VEIVESEN",
+			"6000 PRIMÆRNÆRING",
+			"6001 JORDBRUK",
+			"6002 SKOGBRUK",
+			"6003 FISKE",
+			"6007 GARTNERI",
+			"6009 DYREOPPDRETT",
+			"6010 FISKEOPPDRETT",
+			"7000 SERVICEYRKER",
+			"7001 KONSULENTVIRKSOMHET",
+			"7002 TRANSPORT/SAMFERDSEL",
+			"7003 HOTELL/RESTAURANT",
+			"7004 JURIDISK VIRKSOMHET",
+			"7005 LEGEVIRKSOMHET",
+			"7006 TANNLEGEVIRKSOMHET",
+			"7007 FYSIKALSK BEHANDLING",
+			"7008 REKLAME- OG ANNONSER",
+			"7009 EIENDOMSFORV./OMSETN",
+			"7010 REKREASJON/UNDERHOLD",
+			"7011 FRISØR/SKJØNNHETSPL",
+			"7012 REISEBYRÅ",
+			"7013 VASK/RENHOLD",
+			"7014 VETERINÆRVIRKSOMHET",
+			"7015 SKIPSHANDEL",
+			"7016 REDNINGSMANN/AMBULANSE",
+			"7017 HOMEOPAT/AKUPUNKTUR",
+			"7018 KIROPRAKTOR",
+			"7050 SYSTEMUTVIKLING/PROGRAM",
+			"7051 NETTVERK/ TELEKOMMUNIKASJON",
+			"7052 DATA-SOFTWARE",
+			"7053 DATA-HARDWARE",
+			"7054 DATA-KONSULENT",
+			"7070 WEBDESIGNER",
+			"7071 WEBMASTER",
+			"7072 WEBMEDARBEIDER",
+			"7073 INTERNETT/KONSULENT",
+			"7074 MULTIMEDIA",
+			"8000 FRIE YRKER",
+			"8001 JOURNALIST",
+			"8002 MEDIA",
+			"8005 ARKITEKT",
+			"8006 FOTOGRAF",
+			"8007 IDRETTSUTØVER",
+			"9000 DIVERSE",
+			"9001 ORGANISASJONER",
+			"9002 FORENINGER",
+			"9003 HOBBYARTIKLER");
+
+	}
   }
   
   function logic_update_club($cid, $data)
@@ -2358,8 +2554,7 @@ END:VCALENDAR"
 	if ($m=="") $m = date("n");
 	return $m>=NEWBOARD_SUBMISSION_PERIOD_START && $m<=NEWBOARD_SUBMISSION_PERIOD_END;
   }
-  
-  function logic_get_duties($uid)
+function logic_get_duties($uid)
   {
 	$duty_data = fetch_future_duties($uid,3);
 	$duties = array();
@@ -2434,5 +2629,4 @@ REV:{$d}
 END:VCARD
  ");
  }
-  
 	?>

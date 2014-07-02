@@ -33,7 +33,7 @@
 			else 
 			{
 				$_SESSION['user'] = $user;
-				$_SESSION['user']['active_roles'] = fetch_active_roles($user['uid'],true);
+				$_SESSION['user']['active_roles'] = fetch_active_roles($user['uid']);
 				header("location: /");
 			}
 			

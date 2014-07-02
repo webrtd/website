@@ -20,9 +20,9 @@
 		if (!$i) $i=@imagecreatefromgif($fn);
 	  if (!$i) $i=@imagecreatefrompng($fn);
 		if (!$i) 
-    {
-      return load_image(IMAGE_MISSING_PROFILE);
-    }
+		{
+		  return load_image(IMAGE_MISSING_PROFILE);
+		}
 		$s = getimagesize($fn);
 		return array("image" => $i, "size" => $s);
 	}
@@ -107,7 +107,11 @@
 		else {$fn = "rtd.jpg"; $mime = "image/jpeg";}
 		
 
-		$hashfile = sys_get_temp_dir().'/rtd-uid-'.$user['uid'].'-'.md5($_SERVER['REQUEST_URI'].filemtime($filepath));
+//		die($filepath);
+		
+		$sn = $_SERVER['SERVER_NAME'];
+		$hashfile = sys_get_temp_dir().'/{$sn}-uid-'.$user['uid'].'-'.md5($_SERVER['REQUEST_URI'].filemtime($filepath));
+
 		
 		if (isset($_REQUEST['landscape']))
 		{

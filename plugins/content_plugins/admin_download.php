@@ -3,27 +3,6 @@
 		
 	content_plugin_register('admin_download', 'content_admin_download', 'Download');
 
-	function stalker()
-	{
-		$sql ="
-SELECT 
-U.last_page_view as TIME,
-CONCAT('<a href=/?uid=',U.uid,'>',U.profile_firstname, ' ', U.profile_lastname,'</a>') as NAME,
-CONCAT('<a href=', U.last_page_url,'>',U.last_page_title,'</a>') as PAGE, 
-CONCAT('<a href=?cid=',U.cid,'>',(SELECT C.name FROM club C where C.cid=U.cid LIMIT 1),'</a>') as KLUB
-FROM user U WHERE U.last_page_view>DATE_SUB(NOW(), INTERVAL 1 DAY) ORDER BY U.last_page_view DESC
-					";		
-		
-		if (isset($_REQUEST['frame']))
-		{
-			die('<meta http-equiv="refresh" content="5">'.get_html_table($sql,true));
-		}
-		else
-		{
-			return "<iframe frameborder=0 src=?admin_download=stalker&frame=true width=100% height=1000px></iframe>";
-		}
-	}
-	
 	function newsletter()
 	{
 		set_title('Newsletter');
@@ -150,10 +129,10 @@ FROM user U WHERE U.last_page_view>DATE_SUB(NOW(), INTERVAL 1 DAY) ORDER BY U.la
 			}
 			if (!$headers_written)
 			{
-				fputcsv($fh, array_keys($row),';');
+				fputcsv($fh, array_keys($row));
 				$headers_written = true;
 			}
-			fputcsv($fh, $row,';');
+			fputcsv($fh, $row);
 		}
 		fclose($fh);
 		return $fn;
@@ -221,26 +200,17 @@ FROM user U WHERE U.last_page_view>DATE_SUB(NOW(), INTERVAL 1 DAY) ORDER BY U.la
 	{
 		if (isset($_REQUEST['clear_mail_queue']))
 		{
-			fire_sql("update mass_mail set processed=1");
+			fire_sql("update mass_mail set processed=1 where processed=0 and mail_receiver NOT REGEXP '^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'");
 		}
 		$data = array(
 			"time" => strftime("%c"), 
-			"mailqueue" => get_html_table("select mail_subject as SUBJECT, concat('<a href=\'/?search=',mail_receiver,'\'>',mail_receiver,'</a>') as RECEIVER, submit_time TIME, filename FILE from mass_mail MAIL left join mass_mail_attachment ATT on ATT.aid=MAIL.aid where processed=0 order by id asc limit 100",true),
-			"mailsent" => get_html_table("select mail_subject as SUBJECT, concat('<a href=\'/?search=',mail_receiver,'\'>',mail_receiver,'</a>') as RECEIVER, submit_time TIME, filename FILE from mass_mail MAIL left join mass_mail_attachment ATT on ATT.aid=MAIL.aid where processed=1 order by id desc limit 100",true),
+			"mailqueue" => get_html_table("select mail_subject as SUBJECT, mail_receiver as RECEIVER, submit_time TIME, filename FILE from mass_mail MAIL left join mass_mail_attachment ATT on ATT.aid=MAIL.aid where processed=0 order by id asc limit 100"),
+			"mailsent" => get_html_table("select mail_subject as SUBJECT, mail_receiver as RECEIVER, submit_time TIME, filename FILE from mass_mail MAIL left join mass_mail_attachment ATT on ATT.aid=MAIL.aid where processed=1 order by id asc limit 100"),
 			"mailqueuesize" => get_html_table("select count(*) as QUEUE from mass_mail where processed=0"),
 			"popularpages" => get_html_table("select previous as URL,counter as CLICK from tracker order by counter desc limit 20"),
 			"popularsearch" => get_html_table("select q as QUERY,count as CLICK from search order by count desc limit 25"),
-			"syslog" => get_html_table("select remote_addr as IP, logtext as ERROR, ts as TIME from log order by ts desc limit 25"),
-			"log" => get_html_table("select * from cronjob order by ts desc limit 5")/*,
-			"popularpeople" => get_html_table(
-			"select 
-distinct uvt.uid as UID,
-(select count(*) from user_view_tracker temp where temp.uid=uvt.uid and temp.ts>date_sub(now(),interval 1 month)) as CLICK 
-from user_view_tracker uvt 
-order by CLICK 
-limit 10")*/
-
-			
+			"log" => get_html_table("select * from cronjob order by ts desc limit 5"),
+			"bannerclick" => get_html_table("SELECT B.TITLE,B.LINK,B.STARTDATE,B.ENDDATE,(SELECT COUNT(*) FROM banner_click BC WHERE BC.bid = B.bid) AS CLICK FROM banner B ORDER BY CLICK DESC")			
 		);
 		return term_unwrap("admin_sysstat", $data);
 	}
@@ -264,11 +234,6 @@ limit 10")*/
 		$f = $_REQUEST['admin_download'];
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
-		if ($f == 'stalker')
-		{
-			return stalker();
-		}
-		
 		if ($f == 'yearstats')
 		{
 			return yearstats();
@@ -323,32 +288,7 @@ limit 10")*/
 				die();
 		}
 		
-		if ($f == 'xtable')
-		{
-			$y = date("Y");
-			$sql = 
-				"select 
-				U.uid as UID,U.profile_firstname as Fornavn,U.profile_lastname as Efternavn,U.profile_birthdate as Foedselsdato, U.profile_started as CharterDato,U.profile_ended as Udmeldelsesdato, U.last_page_view as SidsteLogin, U.private_address as Vej, U.private_houseno as HusNr, U.private_houseletter as Bogstav, U.private_housefloor Etage, U.private_houseplacement Side, U.private_zipno as PostNr, U.private_city as Bynavn, U.private_mobile as MobilTlf, U.private_email as Email,  U.xtable_transfer as XTable_Transfer,
-				C.name as Klub, 
-				D.name as Distrikt
-				from user U
-				inner join club C on U.cid=C.cid
-				inner join district D on C.district_did=D.did
-				where U.xtable_transfer=1 and U.profile_ended>='{$y}-06-30' and U.profile_ended<='{$y}-07-01' 
-				order by U.profile_firstname";
-				$xml = (get_xml($sql));
-
-				header('Content-Description: File Transfer');
-				header('Content-Type: application/octet-stream');
-				header('Content-Disposition: attachment; filename='.$f.date('-Ymd').'.xml');
-				header('Content-Transfer-Encoding: binary');
-				header('Expires: 0');
-				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-				header('Pragma: public');
-//				header('Content-Length: ' . size($xml));		
-				die($xml);				
-		}
-		else if ($f == 'all')
+		if ($f == 'all')
 		{
 			$sql = 
 				"select 
@@ -373,36 +313,7 @@ limit 10")*/
 //				header('Content-Length: ' . size($xml));		
 				die($xml);				
 		}
-
-		if ($f == 'future')
-		{
-			$sql = "
-				select 
-				U.uid as UID,U.profile_firstname as Fornavn,U.profile_lastname as Efternavn,U.profile_birthdate as Foedselsdato, U.profile_started as CharterDato,U.profile_ended as Udmeldelsesdato, U.last_page_view as SidsteLogin,  U.private_mobile as MobilTlf, U.private_email as Email, 
-				C.name as Klub, 
-				D.name as Distrikt,
-				RD.shortname as Rolle
-				from user U
-				inner join club C on U.cid=C.cid
-				inner join district D on C.district_did=D.did
-				inner join role R on R.uid=U.uid
-				inner join role_definition RD on RD.rid=R.rid
-				where R.end_date>now() and R.start_date>now()
-				order by U.profile_firstname
-							";
-				$fn = sqlcsv($sql);
-				header('Content-Description: File Transfer');
-				header('Content-Type: application/octet-stream');
-				header('Content-Disposition: attachment; filename='.$f.date('-Ymd').'.csv');
-				header('Content-Transfer-Encoding: binary');
-				header('Expires: 0');
-				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-				header('Pragma: public');
-				header('Content-Length: ' . filesize($fn));		
-				output_file($fn);
-				unlink($fn);
-				die();
-		}
+		
 		if ($f == 'active')
 		{
 			$sql = "

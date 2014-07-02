@@ -1,4 +1,8 @@
 <?
+	/*
+		02-11-2012	rasmus@3kings.dk	draft
+		24-03-2014	rasmus@3kings.dk	s+f can change roles
+	*/
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
 	content_plugin_register('uid', 'content_handle_user', 'Medlem');
@@ -60,6 +64,7 @@
 			if (isset($_FILES['profile_image'])) logic_upload_profile_image($user['uid'], $_FILES['profile_image']);
 			if (isset($_REQUEST['data'])) 
 			{
+				logic_update_member_expiration($user['uid'], $data['profile_birthdate'], $data['profile_started']);
 				$user = logic_save_user($user['uid'], $data);
 				show_user($user['uid']);
 			}
@@ -272,6 +277,7 @@
 	
 	function content_handle_user()
 	{
+		$uid = $_REQUEST['uid'];
 		if (!logic_is_member()) return term('article_must_be_logged_in');
 		    
 		if (isset($_REQUEST['vcard']))
@@ -281,18 +287,21 @@
 			header('Content-Disposition: attachment; filename="info.vcard"');
 			die(logic_get_vcard($_REQUEST['uid']));
 		}
-	 
 		if (isset($_REQUEST['delete_role']) && logic_is_admin())
 		{
 			logic_delete_role($_REQUEST['uid'], $_REQUEST['delete_role']);
 		}
-		if (isset($_REQUEST['end_role']) && logic_is_admin())
+		if ($uid!=-1) 
 		{
-			logic_end_role($_REQUEST['uid'], $_REQUEST['end_role']);
-		}
-		if (isset($_REQUEST['newrole']) && logic_is_admin())
-		{
-			update_role($_REQUEST['uid'], $_REQUEST['newrole']['rid'], $_REQUEST['newrole']['start_date'], $_REQUEST['newrole']['end_date']);
+			 $user = logic_get_user_by_id($uid);
+			if (isset($_REQUEST['end_role']) && (logic_is_admin() ))
+			{
+				logic_end_role($_REQUEST['uid'], $_REQUEST['end_role']);
+			}
+			if (isset($_REQUEST['newrole']) && (logic_is_admin()))
+			{
+				update_role($_REQUEST['uid'], $_REQUEST['newrole']['rid'], $_REQUEST['newrole']['start_date'], $_REQUEST['newrole']['end_date']);
+			}
 		}
 		
 		

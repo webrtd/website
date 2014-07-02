@@ -42,11 +42,11 @@
 		
 		$html = "";
 		
-	if (logic_is_admin())
-	{
-		if ($aid<0) $aid = LANDING_PAGE_PRIVATE;
-		$html .= "<p><a href=?admin=article&edit=$aid>".term('article_edit')."</a></p>";
-	}
+		if (logic_is_admin())
+		{
+			if ($aid<0) $aid = LANDING_PAGE_PRIVATE;
+			$html .= "<p><a href=?admin=article&edit=$aid>".term('article_edit')."</a></p>";
+		}
 		
 		if ($article['public'] || logic_is_member()) $html .= "<h1>{$article['title']}</h1>".$article['content'];
 		else $html .= "<div id=error title=\"".term('dialog_error')."\">".term('article_must_be_logged_in')."</div>";

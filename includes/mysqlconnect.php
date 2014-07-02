@@ -86,10 +86,6 @@ class MySQLConnect3Kings
 							$sender = MASS_MAILER_REPLY_WHO;
 							$sender_mail = MASS_MAILER_REPLY_MAIL;  
 							$mail = new PHPMailer();
-							$mail->IsSMTP();
-							$mail->IsHTML(false);
-							$mail->Host     = SMTP_SERVER;
-							$mail->SMTPAuth = false;
 									
 							
 							$error = "QUERY FAILED: \n\n".$p_Query."\n\nSQL ERROR:\n\n".mysql_error()."\n\nTRACE:\n\n".$trace."\n\nSESSION:\n\n".print_r($_SESSION,true)."\n\nSERVER:\n\n".print_r($_SERVER,true);

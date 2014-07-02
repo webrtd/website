@@ -88,7 +88,8 @@
 		else if (stripos($filepath, ".gif")) {$fn = "rtd.gif"; $mime = "image/gif";}
 		else {$fn="whatever.txt"; $mime = "application/octet-stream";}
 		
-		$hashfile = sys_get_temp_dir().'/rtd-'.md5($_SERVER['REQUEST_URI']);
+		$sn = $_SERVER['SERVER_NAME'];
+		$hashfile = sys_get_temp_dir().'/{$sn}-'.md5($_SERVER['REQUEST_URI']);
 		
 		if (isset($_REQUEST['landscape']))
 		{

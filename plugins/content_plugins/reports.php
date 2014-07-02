@@ -98,6 +98,7 @@
 		}
 		die($data);
 	}	
+
 	function do_member_stats()
 	{
 				$data = "";
@@ -118,6 +119,8 @@
 
 						$keys = array_keys($stats);
 						if ($first)
+
+
 						{
 							$first = false;
 							echo "<tr>
@@ -125,6 +128,9 @@
 								<th>{$keys[0]}</th>
 								<th>{$keys[1]}</th>
 								<th>{$keys[2]}</th>
+
+
+
 							</tr>";
 						}
 						
@@ -158,6 +164,7 @@
 							//$data .= "</tr>";
 						//}
 						
+
 //						$data .= "<pre>".print_r($stats, true)."</pre>";
 					}
 					
@@ -168,6 +175,7 @@
 				
 				
 				die();
+
 	}
 	
 	function do_rti_report()

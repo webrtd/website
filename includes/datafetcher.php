@@ -29,7 +29,7 @@
  *	28-06-2013  rasmus@3kings.dk  added delete_role_period
  *	29-06-2013  rasmus@3kings.dk  added put_other_meeting, get_other_meetings  
  *	20-09-2013	rasmus@3kings.dk	store_log
- * 21-05-2014 rasmus@3kings.dk get_district_for_club
+* 21-05-2014 rasmus@3kings.dk get_district_for_club
  */
 
 if (PHP_SAPI == 'cli')
@@ -66,7 +66,6 @@ else
 	order by start_time asc limit {$limit}";
 	return get_data($sql);
 	}
-
   
 	function fetch_club_names()
 	{
@@ -323,7 +322,7 @@ else
   	}
   	else
   	{
-    	//$sql = "select nid,title,content,posted from news where did=$did order by posted desc limit $limit";
+//    	$sql = "select nid,title,content,posted from news where did=$did order by posted desc limit $limit";
 		$sql = "select nid,title,content,posted,(SELECT COUNT(*) FROM news_comment NC where NC.nid=N.nid) as count from news N where did={$did} order by posted desc limit {$limit}";
     }
     if ($limit==1) return get_one_data_row($sql);
@@ -507,7 +506,7 @@ else
 		$data = get_one_data_row("select did from club where cid={$cid}");
 		return $data['did'];
 	}
-	
+
 	/**
 	 *	retrieve the district id for a user
 	 *	@param	int $uid	user id
@@ -1506,6 +1505,7 @@ else
 	function fetch_active_roles($uid,$future=false)
 	{
 		$db = get_db();
+
 		
 		if (!$future)
 		{
@@ -1736,6 +1736,7 @@ order by R.end_date
 		}			
 		$values_sql = implode(",",$values);
 		$sql = "update user set $values_sql where uid=$uid";
+		//die($sql);
 		$db->execute($sql);
 	}
 

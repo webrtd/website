@@ -20,10 +20,10 @@
 		
 		if (!empty($item['children']))
 		{
-				$admin_article_html .= "<li class=parent><a href=?admin=article&edit={$item['aid']}>{$item['title']}</a>";
-				$admin_article_html .= "<ul>";
-				array_walk($item['children'], 'admin_walk_articles');
-				$admin_article_html .= "</ul>";
+			$admin_article_html .= "<li class=parent><a href=?admin=article&edit={$item['aid']}>{$item['title']}</a>";
+			$admin_article_html .= "<ul>";
+			array_walk($item['children'], 'admin_walk_articles');
+			$admin_article_html .= "</ul>";
 		}
 		else
 		{

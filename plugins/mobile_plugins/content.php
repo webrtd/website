@@ -3,6 +3,7 @@
 		content plugin (c) 3kings.dk
 		
 		23-02-2013	rasmus@3kings.dk	draft
+		02-07-2014	ramsus@3kings.dk	added vcard
 	*/
 	
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
@@ -73,8 +74,8 @@
 			header('Content-Disposition: attachment; filename="info.vcard"');
 			die(logic_get_vcard($_REQUEST['uid']));
 		}
-	
-      $user = logic_get_user_by_id($_REQUEST['uid']);
+
+		$user = logic_get_user_by_id($_REQUEST['uid']);
       $user['club'] = logic_get_club($user['cid']);
       set_mobile_title($user['profile_firstname']." ".$user['profile_lastname']);
       return term_unwrap('mobile_user_page', $user, true);

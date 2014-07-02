@@ -1,4 +1,4 @@
-<? 
+<?
 	/*
 		article box plugin (c) 3kings.dk
 		
