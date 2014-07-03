@@ -99,6 +99,10 @@ class MySQLConnect3Kings
 							$mail->Send();
 
 
+							if (stristr($_SERVER['SERVER_NAME'],'dev')!==false)
+							{
+								die($error);
+							}
 							//mail(ADMIN_MAIL, "Automatic error message ".date("D, d M Y H:i:s"), $error);
               die("An error occurred. System administrator has been notified. Please go back and try again - if the error persists please contact system administrator in person.");
 
