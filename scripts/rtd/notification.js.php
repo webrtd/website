@@ -51,7 +51,7 @@ function notify_build()
         case 'uid': title='Hvem er online lige nu?';break;
         case 'news': title='Seneste nyheder og kommentarer';break;
 
-        case 'mid': title='Aktuelle møder i Round Table Danmark';break;
+        case 'mid': title='Aktuelle m&oslash;der i Round Table Danmark';break;
         case 'ts':title='Tabler Service'; break;
         default: alert(key);
         };
@@ -62,7 +62,7 @@ function notify_build()
 		{
 			html = html + "<h1>"+title+"</h1><ul>";
 			$.each(values, function(i, row){
-				html = html + "<li>Indlægget <a href=?"+key+"="+row.id+" title='"+row.ts+"'>'"+row.title+"'</a> er opdateret "+row.ts;
+				html = html + "<li>Indl&aelig;gget <a href=?"+key+"="+row.id+" title='"+row.ts+"'>'"+row.title+"'</a> er opdateret "+row.ts;
 				global_count++;
 			});
 			html = html + "</ul>";
