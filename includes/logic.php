@@ -2095,7 +2095,7 @@ END:VCALENDAR"
 
 	function logic_is_group_manager($cid)
 	{
-		if (!define('CLUB_GROUP_MANAGER_RID')) return false;
+		if (!defined('CLUB_GROUP_MANAGER_RID')) return false;
 		if (isset($_SESSION['user']))
 		{
 			if ($_SESSION['user']['cid']!=$cid) return false;
