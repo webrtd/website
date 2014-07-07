@@ -41,7 +41,7 @@
   }(document, 'script', 'facebook-jssdk'));
 
   function FacebookRTDLogin(incoming) {
-	alert(incoming.authResponse.accessToken);
+	if (incoming) alert(incoming.authResponse.accessToken);
     console.log('Facebook: Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
 	alert('Logged in!' + response.email);
