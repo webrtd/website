@@ -2,7 +2,7 @@
     console.log('FacebookStatusChangeCallback');
     console.log(response);
     if (response.status === 'connected') {
-      FacebookRTDLogin(response);
+      FacebookRTDLogin();
     } else if (response.status === 'not_authorized') {	
 		console.log('Facebook: Not logged into app');
     } else {
@@ -40,8 +40,8 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
-  function FacebookRTDLogin(incoming) {
-	if (incoming) alert(incoming.authResponse.accessToken);
+  function FacebookRTDLogin() {
+//	if (incoming) alert(incoming.authResponse.accessToken);
     console.log('Facebook: Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
 	alert('Logged in!' + response.email);
