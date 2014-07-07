@@ -41,11 +41,17 @@
   }(document, 'script', 'facebook-jssdk'));
 
   function FacebookRTDLogin() {
-//	if (incoming) alert(incoming.authResponse.accessToken);
     console.log('Facebook: Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-	alert('Logged in!' + response.email);
-      console.log('Facebook: Successful login for: ' + response.name);
-	  console.log('Facebook: '+response);
+		$.ajax({
+			dataType: "json",
+			url: '/scripts/rtd/facebook.php',
+			data: response,
+			success: function(data) { alert(data); console.log(data); }
+			});
+	
+//	alert('Logged in!' + response.email);
+ //     console.log('Facebook: Successful login for: ' + response.name);
+//	  console.log('Facebook: '+response);
     });
   }
