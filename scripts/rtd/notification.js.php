@@ -19,7 +19,7 @@ function notify_build_lastusers(values)
 	{
 		if (row.url_link.indexOf('stalker')==-1)
 		{
-			html = html + "<td valign=top width=100><a href=/?uid="+row.id+"><img src='/uploads/user_image?uid="+row.id+"&landscape&w=100&h=150'><br>"+row.title+"</a> ser på <a href="+row.url_link+">"+row.url_title+"</a></td>";
+			html = html + "<td valign=top width=100><a href=/?uid="+row.id+"><img src='/uploads/user_image?uid="+row.id+"&landscape&w=100&h=150'><br>"+row.title+"</a> / <a href="+row.url_link+">"+row.url_title+"</a></td>";
 			count++;
 			if (count == 5) 
 			{
