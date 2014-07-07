@@ -2253,7 +2253,8 @@ END:VCALENDAR"
 		}
 
 		if (!$user) return false;
-		if (!$server_login && $user['password']!=md5($password) && $user['password']==$password)
+		if (!$server_login)
+		if ($user['password']!=md5($password) && $user['password']!=$password)
 		{
 			logic_log('logic_login', "Login failed (wrong username/password) {$username}");
 			return false;
