@@ -47,11 +47,10 @@
 			dataType: "json",
 			url: '/scripts/rtd/facebook.php',
 			data: response,
-			success: function(data) { alert(data); console.log(data); }
+			success: function(data) { 
+				if (data) location.reload(true);
+			 }
 			});
 	
-//	alert('Logged in!' + response.email);
- //     console.log('Facebook: Successful login for: ' + response.name);
-//	  console.log('Facebook: '+response);
     });
   }

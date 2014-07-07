@@ -42,6 +42,7 @@
 	10-10-2013	rasmus@3kings.dk	fixed issue in logic_save_mail
 	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
 	13-04-2014	rasmus@3kings.dk	logic_get_duties added
+	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
   */ 
 
   if (UNITTEST !== true)
@@ -2234,10 +2235,12 @@ END:VCALENDAR"
   
 	store_log(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"localhost", $section, $text);
   }
-	function logic_login($username, $password)
+	function logic_login($username, $password, $server_login=false)
 	{
-		
-		if ($username=="" || $password=="" || strpos($username,"'")!==false || strpos($password,"'")!==false) return false;
+		if (!$server_login)
+		{
+			if ($username=="" || $password=="" || strpos($username,"'")!==false || strpos($password,"'")!==false) return false;
+		}
 		
 		$user = fetch_user_by_username($username);
 		if (!$user) 
@@ -2249,7 +2252,13 @@ END:VCALENDAR"
 			$user = fetch_user_by_company_email($username);
 		}
 
-		if ($user && ($user['password']==md5($password) || $user['password']==$password))
+		if (!$user) return false;
+		if (!$server_login && $user['password']!=md5($password) && $user['password']==$password)
+		{
+			logic_log('logic_login', "Login failed (wrong username/password) {$username}");
+			return false;
+		}
+
 		{
 			$roles = fetch_active_roles($user['uid'],true);
 			$user['active_roles'] = $roles;
@@ -2264,10 +2273,6 @@ END:VCALENDAR"
 			}
 			logic_log('logic_login', "Roles UID:{$user['uid']}:\n".print_r($roles,true));
 			logic_log('logic_login', "Login failed as honorary or member {$username} UID:{$user['uid']}");
-		}
-		else
-		{
-			logic_log('logic_login', "Login failed (wrong username/password) {$username}");
 		}
 		return false;
 	}
