@@ -227,20 +227,23 @@
 		// every Monday
 		if (date("w")==1)
 		{
-			$sql = "select cid from club";
-			$rs = $g_db->execute($sql);
-			while ($d = $g_db->fetchassoc($rs))
+			if (defined('NB_MAIL_POSTFIX') && NB_MAIL_POSTFIX == '@rtd.dk')
 			{
-				if (!logic_is_special_club($d['cid']))
+				$sql = "select cid from club";
+				$rs = $g_db->execute($sql);
+				while ($d = $g_db->fetchassoc($rs))
 				{
-					$c = logic_get_club($d['cid']);
-					$i = logic_check_clubmail($c);
-					if ($i>0)
+					if (!logic_is_special_club($d['cid']))
 					{
-						$s = logic_get_club_secretary($c['cid']);
-						$p = logic_get_club_chairman($c['cid']);
-						logic_send_mail($s['uid'], term('clubmail_notify_subj'), term('clubmail_notify_body'));
-						$log .= "<li>Sending unread notify mail to {$c['name']}";
+						$c = logic_get_club($d['cid']);
+						$i = logic_check_clubmail($c);
+						if ($i>0)
+						{
+							$s = logic_get_club_secretary($c['cid']);
+							$p = logic_get_club_chairman($c['cid']);
+							logic_send_mail($s['uid'], term('clubmail_notify_subj'), term('clubmail_notify_body'));
+							$log .= "<li>Sending unread notify mail to {$c['name']}";
+						}
 					}
 				}
 			}
