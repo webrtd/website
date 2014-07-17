@@ -2117,7 +2117,7 @@ END:VCALENDAR"
 
 	function logic_is_ceremony_master()
 	{
-		if (!define('CEREMONY_ROLE_RID')) return false;
+		if (!defined('CEREMONY_ROLE_RID')) return false;
 		if (logic_is_admin()) return true;
 		if (isset($_SESSION['user']))
 		{
