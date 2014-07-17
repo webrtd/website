@@ -2326,7 +2326,7 @@ END:VCALENDAR"
   
   function logic_get_business_list()
   {
-	if (!define('LOAD_BUSINESS_LIST_FROM_DB') || LOAD_BUSINESS_LIST_FROM_DB)
+	if (!defined('LOAD_BUSINESS_LIST_FROM_DB') || LOAD_BUSINESS_LIST_FROM_DB)
 	{
 		return get_business_list();
 	}
