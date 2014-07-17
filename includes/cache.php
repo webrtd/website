@@ -5,7 +5,7 @@
 	function cache_get_key_file($key)
 	{
 		$sn = $_SERVER['SERVER_NAME'];
-		$fn = sys_get_temp_dir()."/{$sn}-".md5($key);
+		$fn = sys_get_temp_dir()."/{$sn}-".md5($key).date("YmdH");
 		return $fn;
 	}
 
