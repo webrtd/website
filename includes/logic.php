@@ -746,9 +746,18 @@
 		$bd = strtotime($birthdate);
 		$bm = date("n", $bd);
 		$by = date("Y", $bd);
+
+		if (defined('EXPIRE_AGE'))
+		{
+			if ($bm>6) $expire_year = $by+EXPIRE_AGE+1;
+			else $expire_year = $by+EXPIRE_AGE;
+		}
+		else
+		{
+			if ($bm>6) $expire_year = $by+41;
+			else $expire_year = $by+40;
+		}
 		
-		if ($bm>6) $expire_year = $by+41;
-		else $expire_year = $by+40;
 		
 		$expire_date = "{$expire_year}-06-30";
 		
