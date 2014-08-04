@@ -8,7 +8,7 @@
 	01-05-2013	rasmus@3kings.dk only failing crons are mailed to admin
 	04-10-2013	rasmus@3kings.dk filtered out special clubs (e.g. RTI)
 */
-  $path = "/var/www/vhosts/rtd.dk/test2012/";
+  $path = realpath('.').'/';
   
 	require_once $path.'/config.php';
 	require_once $path.'/config_terms.php';
