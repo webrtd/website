@@ -89,7 +89,8 @@
 		else {$fn="whatever.txt"; $mime = "application/octet-stream";}
 		
 		$sn = $_SERVER['SERVER_NAME'];
-		$hashfile = sys_get_temp_dir().'/{$sn}-'.md5($_SERVER['REQUEST_URI']);
+		$hashfile = sys_get_temp_dir()."/{$sn}-".md5($_SERVER['REQUEST_URI']);
+		
 		
 		if (isset($_REQUEST['landscape']))
 		{
