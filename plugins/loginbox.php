@@ -20,7 +20,8 @@
 
 	function auto_login()
 	{
-		$cookie = unserialize($_COOKIE['RTD_LOGIN_COOKIE']);
+		$sn = $_SERVER['SERVER_NAME'];
+		$cookie = unserialize($_COOKIE[$sn.'_LOGIN_COOKIE']);
 		$verify = build_hash($cookie['username'],$cookie['hash1']);
 		if ($verify == $cookie['hash2'])
 		{
