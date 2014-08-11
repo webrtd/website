@@ -34,7 +34,7 @@
 			$user = logic_get_user_by_username($_REQUEST['sendpassword']);
 			if ($user)
 			{
-				if (define('GENERATE_NEW_USER_PASSWORD') && GENERATE_NEW_USER_PASSWORD)
+				if (defined('GENERATE_NEW_USER_PASSWORD') && GENERATE_NEW_USER_PASSWORD)
 				{
 					$password = logic_generate_password($user);
 				}
