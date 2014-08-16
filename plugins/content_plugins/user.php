@@ -64,7 +64,10 @@
 			if (isset($_FILES['profile_image'])) logic_upload_profile_image($user['uid'], $_FILES['profile_image']);
 			if (isset($_REQUEST['data'])) 
 			{
-				logic_update_member_expiration($user['uid'], $data['profile_birthdate'], $data['profile_started']);
+				if (isset($data['profile_birthdate']))
+				{
+					logic_update_member_expiration($user['uid'], $data['profile_birthdate'], $data['profile_started']);
+				}
 				$user = logic_save_user($user['uid'], $data);
 				show_user($user['uid']);
 			}
