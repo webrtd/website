@@ -2241,8 +2241,11 @@ END:VCALENDAR"
 
   function logic_log($section, $text)
   {
-  
-	store_log(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"localhost", $section, $text);
+	if (isset($_SESSION['user']))
+	{
+		$text = "{$text} CurrentUID: {$_SESSION['user']['uid']}";
+	}
+	store_log(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"localhost", $section, addslashes($text));
   }
 	function logic_login($username, $password, $server_login=false)
 	{

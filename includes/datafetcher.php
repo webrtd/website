@@ -1325,8 +1325,8 @@ else
 						where 
 						U.cid=$cid
 						and RD.shortname in $boardroles
-						and R.start_date>={$s}
-						and R.end_date<={$e}
+						and R.start_date<={$s}
+						and R.end_date>={$e}
 						order by RD.rid asc
 					";
 		return get_data($sql);
