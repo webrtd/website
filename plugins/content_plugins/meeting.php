@@ -267,10 +267,12 @@
 	
 	function content_handle_meeting()
 	{
+		$meeting = logic_get_meeting($_REQUEST['mid']);
+		if (!$meeting) return term('meeting_deleted');
 
 		if (!logic_is_member() && !logic_is_mummy()) return term('article_must_be_logged_in');
 		
-		if (isset($_REQUEST['unlock']) && logic_is_admin())
+		if (isset($_REQUEST['unlock']) && logic_may_edit_meeting($meeting['cid']))
 		{
 			logic_unlock_meeting_minutes($_REQUEST['mid']);
 		}
@@ -287,8 +289,6 @@
 			header("location: /?cid=".$_SESSION['user']['cid']);
 		}
 	
-		$meeting = logic_get_meeting($_REQUEST['mid']);
-		if (!$meeting) return term('meeting_deleted');
 		// update with fresh statistics
 		
 
@@ -342,7 +342,7 @@
 				$html .= term_unwrap('meeting_edit_header', $meeting);
 			}
 			
-			if (logic_is_admin() && logic_meeting_minutes_finished($meeting))
+			if (logic_may_edit_meeting($meeting['cid']) && logic_meeting_minutes_finished($meeting))
 			{
 				$html .= term_unwrap('meeting_admin_unlock_minutes', $meeting);
 			}
