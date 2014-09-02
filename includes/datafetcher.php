@@ -1281,16 +1281,19 @@
 		$sql = "
 						select 
 						U.profile_ended, U.profile_started, U.uid,U.username,U.profile_firstname, U.profile_lastname, U.company_name, U.company_position, U.private_mobile, U.private_email,
-						(select max(weight) from role RR inner join role_definition RRD on RR.rid=RRD.rid where RR.uid=U.uid) as Weight 
+						(select max(weight) from role RR inner join role_definition RRD on RR.rid=RRD.rid where RR.uid=U.uid and RR.start_date<now() and RR.end_date>now()) as Weight  
 						from user U
 						inner join role R on R.uid=U.uid
 						where 
 						U.cid=$cid 
 						and R.rid IN (".MEMBER_ROLE_RID.",".HONORARY_ROLE_RID.")
-						and start_date<now()
-						and end_date>now()
+						and R.start_date<now()
+						and R.end_date>now()
 						order by weight desc
 		";
+    
+    echo "<!-- {$sql} --->";
+    
 		return get_data($sql);
 	}
 	
