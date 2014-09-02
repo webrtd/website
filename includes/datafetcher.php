@@ -32,17 +32,10 @@
 * 21-05-2014 rasmus@3kings.dk get_district_for_club
  */
 
-if (PHP_SAPI == 'cli')
-{
-    $path = "/var/www/vhosts/rtd.dk/test2012/";
+    $path = realpath('.');
 	require_once $path.'/includes/mysqlconnect.php';
 	require_once $path.'/includes/stacktrace.php';
-}
-else
-{
-	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/mysqlconnect.php';
-	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/stacktrace.php';
-}
+
 
 	function put_user_path_tracker($uid,$uri)
 	{
