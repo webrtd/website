@@ -43,7 +43,6 @@
 	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
 	13-04-2014	rasmus@3kings.dk	logic_get_duties added
 	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
-  02-09-2014  rasmus@3kings.dk  fixed beef with mail sending
   */ 
 
   if (UNITTEST !== true)
@@ -1327,7 +1326,7 @@ END:VCALENDAR"
 
 	function logic_show_attendance_form($meeting)
 	{
-		return (!logic_is_mummy() && (strtotime($meeting['end_time'])>time()));
+		return (!logic_is_mummy() && (!logic_meeting_minutes_finished($meeting)));
 	}
 
 	function logic_upload_meeting_image($filestruct, $mid)
