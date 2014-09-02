@@ -1148,8 +1148,8 @@
 			return( 
 
 "BEGIN:VCALENDAR
-X-WR-CALNAME:Round Table Denmark Calendar
-PRODID:-//Round Table Denmark//RTD.DK Calendar//EN
+X-WR-CALNAME:".term('organisation_fullname')." Calendar
+PRODID:-//".term('organisation_fullname')."//".term('organisation_shortname')." Calendar//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH

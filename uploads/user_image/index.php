@@ -5,7 +5,7 @@
 	27-11-2012	rasmus@3kings.dk 	draft
 */
 			
-
+  chdir($_SERVER['DOCUMENT_ROOT']);
 
 	require_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/config_terms.php';
@@ -82,25 +82,27 @@
 		{
 			$filepath = IMAGE_MISSING_PROFILE;
 		}
-		else if (strpos($filepath,'sites/')!==false)
-		{
-      $ext = ".".strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
-      $conn = ftp_connect(OLD_FTP_SERVER);
-      ftp_login($conn, OLD_FTP_USER, OLD_FTP_PASSWORD);       
-      $new_filepath = USER_IMAGES_UPLOAD_PATH.$_REQUEST['uid'].$ext;
-      if (ftp_get($conn, $new_filepath, $filepath, FTP_BINARY))
-      {
-        chmod($new_filepath,0777);
-        logic_update_profile_image($_REQUEST['uid'], $new_filepath);
-        $filepath=$new_filepath;
-      }
-      ftp_close($conn);
-		}
-		else
-		{
-			$filepath = $filepath;
-		}
-
+		else 
+    {
+      if (strpos($filepath,'sites/')!==false)
+  		{
+        $ext = ".".strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
+        $conn = ftp_connect(OLD_FTP_SERVER);
+        ftp_login($conn, OLD_FTP_USER, OLD_FTP_PASSWORD);       
+        $new_filepath = USER_IMAGES_UPLOAD_PATH.$_REQUEST['uid'].$ext;
+        if (ftp_get($conn, $new_filepath, $filepath, FTP_BINARY))
+        {
+          chmod($new_filepath,0777);
+          logic_update_profile_image($_REQUEST['uid'], $new_filepath);
+          $filepath=$new_filepath;
+        }
+        ftp_close($conn);
+  		}
+  		else
+  		{
+  			$filepath = './uploads/user_image/'.$filepath;
+  		}
+    }
 		if (stripos($filepath,".jpg") || stripos($filepath, ".jpeg")) {$fn = "rtd.jpg"; $mime = "image/jpeg";}
 		else if (stripos($filepath, ".png")) {$fn = "rtd.png"; $mime = "image/png";}
 		else if (stripos($filepath, ".gif")) {$fn = "rtd.gif"; $mime = "image/gif";}
@@ -109,7 +111,7 @@
 
 //		die($filepath);
 		
-		$sn = $_SERVER['SERVER_NAME'];
+		$sn = $_SERVER['SERVER_NAME'];                                                           
 		$hashfile = sys_get_temp_dir().'/{$sn}-uid-'.$user['uid'].'-'.md5($_SERVER['REQUEST_URI'].filemtime($filepath));
 
 		
@@ -147,7 +149,7 @@
 				$cropped = image_crop($scaled, $s, $s);
 				imagejpeg($cropped,$hashfile);
 			}
-			header("Content-type: image/jpeg");
+			//header("Content-type: image/jpeg");
 			die(file_get_contents($hashfile));
 		}
 		else if (isset($_REQUEST['w']))
