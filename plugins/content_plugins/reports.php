@@ -63,7 +63,7 @@
 						if ($v['rid']==HONORARY_ROLE_RID) $hide=false;
 						if ($v['rid']!=MEMBER_ROLE_RID && $v['rid']!=ADMIN_ROLE_RID)
 						{
-							$roles[] = $v['shortname'];
+							$roles[] = $v['description'];
 						}
 					}
 					$data_row .= "<td>".implode(",",$roles)."</td>";
