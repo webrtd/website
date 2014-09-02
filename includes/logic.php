@@ -45,25 +45,11 @@
 	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
   */ 
 
-  if (UNITTEST !== true)
-  {
-  
-	  if (PHP_SAPI == 'cli')
-	  {
-		$path = "/var/www/vhosts/rtd.dk/test2012/";
-		require_once $path.'/includes/datafetcher.php';
-		require_once $path.'/plugins/events.php';
-		require_once $path.'/includes/pop.php';
-		require_once $path.'/includes/stacktrace.php';
-	  }
-	  else
-	  {
-		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/datafetcher.php';
-		require_once $_SERVER['DOCUMENT_ROOT'].'/plugins/events.php';
-		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/pop.php';
-		require_once $_SERVER['DOCUMENT_ROOT'].'/includes/stacktrace.php';
-	  }
-	}
+	$path = realpath('.');
+	require_once $path.'/includes/datafetcher.php';
+	require_once $path.'/plugins/events.php';
+	require_once $path.'/includes/pop.php';
+	require_once $path.'/includes/stacktrace.php';
 	
 	$error_messages = "";
    
