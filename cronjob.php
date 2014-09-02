@@ -8,7 +8,7 @@
 	01-05-2013	rasmus@3kings.dk only failing crons are mailed to admin
 	04-10-2013	rasmus@3kings.dk filtered out special clubs (e.g. RTI)
 */
-  $path = realpath('.').'/';
+  $path = "/var/www/vhosts/rtd.dk/test2012/";
   
 	require_once $path.'/config.php';
 	require_once $path.'/config_terms.php';
@@ -203,26 +203,7 @@
 	function handle_daily_tasks($g_db)
 	{
 		$log = "<h2>Daily task execution</h2>\n";
-		
-		// delete old users from coming meetings (except if they are honorary members)
-		//logic_is_honorary
-		$sql = "select MA.maid,U.uid,M.mid,M.title,M.start_time,U.profile_ended from meeting M 
-				inner join meeting_attendance MA on MA.mid=M.mid
-				inner join user U on MA.uid=U.uid
-				where 
-				M.start_time>now()
-				and
-				U.profile_ended<now()";
-		$rs = $g_db->execute($sql);
-		while ($d=$g_db->fetchassoc($rs))
-		{
-			if (!logic_is_honorary($d['uid']))
-			{
-				$u = logic_get_user_by_id($d['uid']);
-				$log .= "<li>Removing {$d['uid']} {$u['profile_firstname']} {$u['profile_lastname']} from {$d['mid']}";
-				delete_meeting_attendance_for_uid($d['mid'],$d['uid']);
-			}
-		}
+
 
 		// every Monday
 		if (date("w")==1)

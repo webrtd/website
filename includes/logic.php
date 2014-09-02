@@ -43,6 +43,7 @@
 	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
 	13-04-2014	rasmus@3kings.dk	logic_get_duties added
 	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
+  02-09-2014  rasmus@3kings.dk  fixed beef with mail sending
   */ 
 
   if (UNITTEST !== true)
@@ -245,6 +246,8 @@
 		$end_date = date("Y-m-d");
 	}
 
+	logic_log('logic_resign_user', "Logic resign user UID:{$uid}, {$why}, {$end_date}");
+	
     $user = logic_get_user_by_id($uid);
     $r = fetch_active_roles($uid);
     for($i=0;$i<sizeof($r);$i++)
@@ -343,17 +346,22 @@
 	 */
   function logic_save_mail($to, $subj, $body,$attachment_id=0,$uid=0)
   {
-	if (!is_array($to)) $to = trim($to);
-  	$subj = html_entity_decode($subj);
-  	$body = html_entity_decode($body);
+    $subj = html_entity_decode($subj);
+    $body = html_entity_decode($body);
     if (is_array($to))
     {
-      for ($i=0;$i<sizeof($to);$i++) save_mail($to[$i],$subj,$body,true,$attachment_id,$uid);
+      for ($i=0;$i<sizeof($to);$i++) 
+      {
+        echo "<li>{$to[$i]}"; 
+        save_mail($to[$i],$subj,$body,true,$attachment_id,$uid);
+      }
     }
     else if ($to!="")
-	{
-		save_mail($to,$subj, $body, true, $attachment_id,$uid);
-	}
+    {
+      if (!is_array($to)) $to = trim($to);
+      save_mail($to,$subj, $body, true, $attachment_id,$uid);
+      echo "<li>{$to}"; 
+    }
   }
 
 	/**
@@ -734,6 +742,11 @@
 		delete_role_period($riid);
 	}
 
+	
+	function log_to_console($what)
+	{
+		// echo "<script>console.log('{$what}');</script>\n";
+	}
 
 	/**
 	 * 	update membership expiration to the year where the member turns 40
@@ -743,6 +756,7 @@
 	 */
 	function logic_update_member_expiration($uid,$birthdate,$charterdate)
 	{
+		log_to_console('logic_member_expiration');
 		$bd = strtotime($birthdate);
 		$bm = date("n", $bd);
 		$by = date("Y", $bd);
@@ -751,26 +765,32 @@
 		{
 			if ($bm>6) $expire_year = $by+EXPIRE_AGE+1;
 			else $expire_year = $by+EXPIRE_AGE;
+			log_to_console("expire: {$expire_year}");
 		}
 		else
 		{
 			if ($bm>6) $expire_year = $by+41;
 			else $expire_year = $by+40;
+			log_to_console("expire: {$expire_year}");
 		}
 		
 		
 		$expire_date = "{$expire_year}-06-30";
 		
+		logic_log('logic_update_member_expiration', "UID: {$uid}, Birth: {$birthdate}, Expire:{$expire_date}");
+		
 		// sign up for future meetings
 		$ts = strtotime($expire_date);
 		if ($ts>time())
 		{
+			log_to_console("expire is future - signing up for future meetings");
 			$u = logic_get_user_by_id($uid);
 			$meetings = logic_fetch_future_meetings_for_club($u['cid'],"asc",100,false);
 			foreach ($meetings as $m)
 			{
 				if (get_meeting_attendance_uid($uid,$m['mid'])==0)
 				{
+					log_to_console("signing up for mid: m:{$m['mid']} c:{$u['cid']} u:{$uid}");
 					logic_save_meeting_attendance($u['cid'],$m['mid'],$uid,1,"");
 				}
 			}
@@ -893,6 +913,7 @@
 	 */
 	function logic_save_user($uid,$data)
 	{
+		logic_log('logic_save_user', "UID: {$uid}, ".print_r($data,true));
 		if (isset($data['profile_ended']))
 		{
 			logic_resign_user($uid,'Profile termination',$data['profile_ended']);
@@ -1409,14 +1430,17 @@ END:VCALENDAR"
 	}
 
 
-	function logic_save_meeting_attendance($cid, $mid,$uid,$accept,$comment)
+	function logic_save_meeting_attendance($cid, $mid,$uid,$accept,$comment="")
 	{
 		//if (logic_is_admin() || (logic_is_secretary() && $cid==$_SESSION['user']['cid']))
 		if ($_SESSION['user']['uid']==$uid || logic_may_edit_meeting($cid))
 		{
 			save_meeting_attendance($mid,$uid,$accept,$comment);
+			event_meeting_attendance($mid,$cid,$uid,$comment,$accept);
 		}
-		event_meeting_attendance($mid,$cid,$uid,$comment,$accept);
+		else
+		{
+		}
 	}
 
 	function logic_user_on_leave($user)

@@ -101,7 +101,7 @@
 
 				if (isset($_REQUEST['finish_minutes']))
 				{
-					logic_finish_meeting_minutes($meeting['mid']);				
+					logic_finish_meeting_minutes($meeting['mid'], isset($_REQUEST['mail_minutes']));				
 					header("location: ?cid={$meeting['cid']}");
 					die();
 				}

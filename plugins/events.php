@@ -207,8 +207,7 @@ function event_minutes_finished($mid,$mail_to_members=true)
 	
 	$subj = term_unwrap('minutes_completed_subject', $club);
 	$text = term_unwrap('minutes_completed_content', $meeting);
-	
-	logic_save_mail($receivers, $subj, $text);
+ 	logic_save_mail($receivers, $subj, $text);
 }
 
 /**
