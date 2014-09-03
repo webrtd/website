@@ -1,4 +1,5 @@
 <?
+  chdir($_SERVER['DOCUMENT_ROOT']);
 	require_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/logic.php';
 	if (isset($_REQUEST['who']) && isset($_REQUEST['body']) && isset($_REQUEST['subject']) && isset($_REQUEST['name']) && isset($_REQUEST['email']))

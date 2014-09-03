@@ -1292,7 +1292,7 @@
 						order by weight desc
 		";
     
-    echo "<!-- {$sql} --->";
+    
     
 		return get_data($sql);
 	}
