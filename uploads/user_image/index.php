@@ -100,7 +100,10 @@
   		}
   		else
   		{
-  			$filepath = './uploads/user_image/'.$filepath;
+        if (!file_exists($filepath))
+        {
+          $filepath = $_SERVER['DOCUMENT_ROOT'].'/uploads/user_image/'.$filepath;
+        }
   		}
     }
 		if (stripos($filepath,".jpg") || stripos($filepath, ".jpeg")) {$fn = "rtd.jpg"; $mime = "image/jpeg";}
