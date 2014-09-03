@@ -1,8 +1,11 @@
 <?
-	require_once '../config.php';
-	require_once '../config_terms.php';
-	require_once '../includes/logic.php';
-	require_once '../includes/sessionhandler.php';
+  $path = $_SERVER['DOCUMENT_ROOT'];
+  chdir($path);
+
+	require_once $path.'/config.php';
+	require_once $path.'/config_terms.php';
+	require_once $path.'/includes/logic.php';
+	require_once $path.'/includes/sessionhandler.php';
 
 	if (!session_start())
 	{
@@ -17,7 +20,7 @@
 		global $mobile_plugins;
 		$mobile_plugins[$keyword] = $callback;
 	}
-  require_once '../config_mobile_plugins.php';
+  require_once $path.'/config_mobile_plugins.php';
     
   $template_html = file_get_contents(RT_TEMPLATE_MOBILE);
 	
