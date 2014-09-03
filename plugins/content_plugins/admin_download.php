@@ -3,6 +3,19 @@
 		
 	content_plugin_register('admin_download', 'content_admin_download', 'Download');
 
+  function role_print()
+  {
+  $sql ="
+select RD.description, U.uid, U.profile_firstname, U.profile_lastname, R.start_date, R.end_date from user U
+left join role R on R.uid=U.uid
+left join role_definition RD on RD.rid=R.rid
+where 
+R.start_date<now() and R.end_date>now()
+order by RD.shortname asc
+  ";
+  die(utf8_decode(get_html_table($sql)));
+  }
+
 	function newsletter()
 	{
 		set_title('Newsletter');
@@ -202,6 +215,33 @@
 		{
 			fire_sql("update mass_mail set processed=1 where processed=0 and mail_receiver NOT REGEXP '^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'");
 		}
+		
+		if (isset($_REQUEST['sqlcsv']))
+		{
+			//SELECT * FROM `log` where remote_addr='193.163.78.251' order by ts asc
+			$f = 'data';
+			$fn = str_replace("\n", "\r\n", sqlcsv($_REQUEST['sqlcsv']));
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename='.$f.date('-Ymd').'.csv');
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($fn));		
+			output_file($fn);
+			unlink($fn);
+			die();
+		}
+		
+		if (isset($_REQUEST['section']))
+		{
+			$syslogwhere = "where section='{$_REQUEST['section']}'";
+		}
+		else
+		{
+			$syslogwhere = '';
+		}
 		$data = array(
 			"time" => strftime("%c"), 
 			"mailqueue" => get_html_table("select mail_subject as SUBJECT, mail_receiver as RECEIVER, submit_time TIME, filename FILE from mass_mail MAIL left join mass_mail_attachment ATT on ATT.aid=MAIL.aid where processed=0 order by id asc limit 100"),
@@ -210,6 +250,7 @@
 			"popularpages" => get_html_table("select previous as URL,counter as CLICK from tracker order by counter desc limit 20"),
 			"popularsearch" => get_html_table("select q as QUERY,count as CLICK from search order by count desc limit 25"),
 			"log" => get_html_table("select * from cronjob order by ts desc limit 5"),
+			"syslog" => "<form action='/?admin_download=sysstat'><input type=text name=section placeholder=Section><input type=submit></form>".get_html_table("select * from log {$syslogwhere} order by ts desc limit 10"),
 			"bannerclick" => get_html_table("SELECT B.TITLE,B.LINK,B.STARTDATE,B.ENDDATE,(SELECT COUNT(*) FROM banner_click BC WHERE BC.bid = B.bid) AS CLICK FROM banner B ORDER BY CLICK DESC")			
 		);
 		return term_unwrap("admin_sysstat", $data);
@@ -287,6 +328,11 @@
 				*/
 				die();
 		}
+    
+    if ($f == 'roleprint')
+    {
+      role_print();
+    }
 		
 		if ($f == 'all')
 		{
