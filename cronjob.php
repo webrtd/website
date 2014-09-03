@@ -8,7 +8,8 @@
 	01-05-2013	rasmus@3kings.dk only failing crons are mailed to admin
 	04-10-2013	rasmus@3kings.dk filtered out special clubs (e.g. RTI)
 */
-  $path = realpath('.');
+  $path = realpath(dirname(__FILE__));
+  chdir($path);
   
 	require_once $path.'/config.php';
 	require_once $path.'/config_terms.php';
