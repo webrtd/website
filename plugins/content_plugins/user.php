@@ -286,7 +286,9 @@
 		    
     if (logic_is_admin() && isset($_REQUEST['permanent_delete']))
     {
-      logic_delete_user($uid);    
+      logic_delete_user($uid);
+      header("location:/");
+      die();    
     }
         
         
