@@ -1055,6 +1055,24 @@
 		$db = get_db();
     $db->execute("delete from meeting_attendance where mid=$mid");
 	}
+  
+  function delete_meeting_attendance_for_user($uid)
+  {
+    $db = get_db();
+    $db->execute("delete from meeting_attendance where uid=$uid");
+  }
+  
+  function delete_user_role_data($uid)
+  {
+    $db = get_db();
+    $db->execute("delete from role where uid=$uid");
+  }
+  
+  function delete_user_data($uid)
+  {
+    $db = get_db();
+    $db->execute("delete from user where uid=$uid");
+  }
 	
 	/**
 	 *	delete meeting from database

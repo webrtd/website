@@ -139,6 +139,17 @@
 	{
 		return get_meeting_links($mid);
 	}
+  
+  function logic_delete_user($uid)
+  {
+    if (logic_is_admin())
+    {
+      delete_meeting_attendance_for_user($uid);
+      delete_user_role_data($uid);
+      delete_user_data($uid);
+      logic_log('logic_delete_user', "Logic delete user UID:{$uid}");
+    }
+  }
 	
 	function logic_delete_meeting_link($mlid,$cid)
 	{

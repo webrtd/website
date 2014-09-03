@@ -80,6 +80,7 @@
 	
 	function content_handle_show_user($user,$user_roles,$may_edit_profile)
 	{
+  
 		if (isset($_REQUEST['message']))
 		{
 			logic_save_mail($user['private_email'], "From Round Table", $_REQUEST['message'],0,$_SESSION['user']['uid']);
@@ -283,6 +284,12 @@
 		$uid = $_REQUEST['uid'];
 		if (!logic_is_member()) return term('article_must_be_logged_in');
 		    
+    if (logic_is_admin() && isset($_REQUEST['permanent_delete']))
+    {
+      logic_delete_user($uid);    
+    }
+        
+        
 		if (isset($_REQUEST['vcard']))
 		{
 			
