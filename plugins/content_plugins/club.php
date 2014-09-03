@@ -161,7 +161,24 @@ $ics .=
 		  die();
 		}
     
+    
 		$cid = isset($_REQUEST['cid'])?$_REQUEST['cid']:$_SESSION['user']['cid'];
+
+    if (logic_is_admin() && $cid==-1)
+    {
+      $cid = logic_create_club();
+      header("location:/?cid={$cid}&edit");
+      die();
+    }
+    
+    if (logic_is_admin() && isset($_REQUEST['permanent_delete_club']))
+    {
+      logic_delete_club($cid);
+      header("location:/");
+      die();
+    }
+
+
 		$club = logic_get_club($cid);
 		
 		if ((logic_is_admin() || logic_is_club_secretary($club['cid'])) && isset($_REQUEST['edit'])) 

@@ -73,8 +73,27 @@
 		return $html;
 	}
 	
-	
 
+  function logic_create_club()
+  {
+    if (logic_is_admin())
+    {
+      return create_club();
+    }
+    else
+    {
+      return $_SESSION['user']['cid'];
+    }
+  }	
+  function logic_delete_club($cid)
+  {
+    if (logic_is_admin())
+    {
+      delete_club($cid);
+      logic_log('logic_delete_club', "Logic delete club CID:{$cid}");
+    }
+  }
+  
 	// validate array
 	function valarr(&$v,$size=0)
 	{
@@ -139,17 +158,6 @@
 	{
 		return get_meeting_links($mid);
 	}
-  
-  function logic_delete_user($uid)
-  {
-    if (logic_is_admin())
-    {
-      delete_meeting_attendance_for_user($uid);
-      delete_user_role_data($uid);
-      delete_user_data($uid);
-      logic_log('logic_delete_user', "Logic delete user UID:{$uid}");
-    }
-  }
 	
 	function logic_delete_meeting_link($mlid,$cid)
 	{
