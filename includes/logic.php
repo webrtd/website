@@ -90,7 +90,7 @@
     if (logic_is_admin())
     {
       delete_club($cid);
-      logic_log('logic_delete_club', "Logic delete club CID:{$cid}");
+      logic_log(__FUNCTION__, "Logic delete club CID:{$cid}");
     }
   }
   
@@ -250,7 +250,7 @@
 		$end_date = date("Y-m-d");
 	}
 
-	logic_log('logic_resign_user', "Logic resign user UID:{$uid}, {$why}, {$end_date}");
+	   logic_log(__FUNCTION__, "Logic resign user UID:{$uid}, {$why}, {$end_date}");
 	
     $user = logic_get_user_by_id($uid);
     $r = fetch_active_roles($uid);
@@ -267,6 +267,7 @@
     $meetings = logic_fetch_future_meetings_for_club($user['cid'],"asc",100,false);
     foreach ($meetings as $m)
     {
+      logic_log(__FUNCTION__, "Deleting meeting attendance for UID:{$uid}, MID:{$m['mid']}");
       delete_meeting_attendance_for_uid($m['mid'],$uid);
     }
     
@@ -380,6 +381,8 @@
 
 	function logic_decline_future_meetings($uid,$cid)
 	{
+    logic_log(__FUNCTION__, "Removing meeting attendance for UID:{$uid}");
+
 		// remove from future meetings in old club
 		$meetings = logic_fetch_future_meetings_for_club($cid,"asc",100,false);
 		foreach ($meetings as $m)
@@ -396,12 +399,14 @@
 	 */
 	function logic_move_user_to_new_club($uid, $new_cid)
 	{
+    logic_log(__FUNCTION__, "Moving user to new club UID:{$uid}");
 		$user = logic_get_user_by_id($uid);
 		
 		// remove from future meetings in old club
 		$meetings = logic_fetch_future_meetings_for_club($user['cid'],"asc",100,false);
 		foreach ($meetings as $m)
 		{
+      logic_log(__FUNCTION__, "Removing meeting attendance UID:{$uid}, MID:{$m['mid']}");
 		  delete_meeting_attendance_for_uid($m['mid'],$uid);
 		}
 
@@ -781,7 +786,7 @@
 		
 		$expire_date = "{$expire_year}-06-30";
 		
-		logic_log('logic_update_member_expiration', "UID: {$uid}, Birth: {$birthdate}, Expire:{$expire_date}");
+		logic_log(__FUNCTION__, "UID: {$uid}, Birth: {$birthdate}, Expire:{$expire_date}");
 		
 		// sign up for future meetings
 		$ts = strtotime($expire_date);
@@ -917,7 +922,7 @@
 	 */
 	function logic_save_user($uid,$data)
 	{
-		logic_log('logic_save_user', "UID: {$uid}, ".print_r($data,true));
+		logic_log(__FUNCTION__, "UID: {$uid}, ".print_r($data,true));
 		if (isset($data['profile_ended']))
 		{
 			logic_resign_user($uid,'Profile termination',$data['profile_ended']);
@@ -2296,7 +2301,7 @@ END:VCALENDAR"
 		if (!$server_login)
 		if ($user['password']!=md5($password) && $user['password']!=$password)
 		{
-			logic_log('logic_login', "Login failed (wrong username/password) {$username}");
+			logic_log(__FUNCTION__, "Login failed (wrong username/password) {$username}");
 			return false;
 		}
 
@@ -2312,8 +2317,8 @@ END:VCALENDAR"
 					return $user;
 				}
 			}
-			logic_log('logic_login', "Roles UID:{$user['uid']}:\n".print_r($roles,true));
-			logic_log('logic_login', "Login failed as honorary or member {$username} UID:{$user['uid']}");
+			logic_log(__FUNCTION__, "Roles UID:{$user['uid']}:\n".print_r($roles,true));
+			logic_log(__FUNCTION__, "Login failed as honorary or member {$username} UID:{$user['uid']}");
 		}
 		return false;
 	}
