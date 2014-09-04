@@ -217,11 +217,14 @@
 		echo "<table width=100% border=1>";
 		
 		$chairmen = logic_get_all_club_chairmen();
-		echo "<tr>
+		$html = "<tr>
+      <th>Club No</th>
 			<th>Club</th>
+      <th>Club City</th>
+			<th>LASTNAME</th>
 			<th>Firstname</th>
-			<th>Surname</th>
 			<th>Address</th>
+			<th>Postal</th>
 			<th>City</th>
 			<th>Country</th>
 			<th>Phone</th>
@@ -234,14 +237,21 @@
 		{
 			$u = logic_get_user_by_id($m['uid']);
 			$c = logic_get_club($u['cid']);
-			echo "<tr>
+      $clubno = substr($c['name'], 2);
+      $clubno = substr($clubno, 0, strpos($clubno, ' '));
+      $clubcity = substr($c['name'], strpos($c['name'], ' ')+3);
+      $phone = strpos($u['private_mobile'],'+')===false?"+45 {$u['private_mobile']}":$u['private_mobile'];
+			$html .= "<tr>
+        <td>{$clubno}</td>
 				<td>{$c['name']}</td>
-				<td>{$u['profile_firstname']}</td>
+        <td>{$clubcity}</td>
 				<td>{$u['profile_lastname']}</td>
+				<td>{$u['profile_firstname']}</td>
 				<td>{$u['private_address']} {$u['private_houseno']} {$u['private_houseletter']} {$u['private_housefloor']} {$u['private_houseplacement']}</td>
-				<td>{$u['private_zipno']} {$u['private_city']}</td>
+        <td>{$u['private_zipno']}</td>
+				<td>{$u['private_city']}</td>
 				<td>{$u['private_country']}</td>
-				<td>{$u['private_mobile']}</td>
+				<td>{$phone}</td>
 				<td>{$u['private_email']}</td>
 				<td>{$u['profile_birthdate']}</td>
 				<td>{$u['company_business']}</td>
@@ -249,10 +259,13 @@
 		}
 		
 		
-		echo "</table>";
+		$html .= "</table>";
 		
 		
-		die();
+    $html = str_replace('æ', 'Æ', $html);
+    $html = str_replace('ø', 'Ø', $html);
+    $html = str_replace('å', 'Å', $html);
+		die(mb_strtoupper($html));
 		
 		
 	}
