@@ -357,7 +357,6 @@
     {
       for ($i=0;$i<sizeof($to);$i++) 
       {
-        echo "<li>{$to[$i]}"; 
         save_mail($to[$i],$subj,$body,true,$attachment_id,$uid);
       }
     }
@@ -365,7 +364,6 @@
     {
       if (!is_array($to)) $to = trim($to);
       save_mail($to,$subj, $body, true, $attachment_id,$uid);
-      echo "<li>{$to}"; 
     }
   }
 
