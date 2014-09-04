@@ -233,6 +233,8 @@
 			<th>Business</th>
 		</tr>";
 		
+    $clubs = array();
+    
 		foreach($chairmen as $m)
 		{
 			$u = logic_get_user_by_id($m['uid']);
@@ -241,7 +243,7 @@
       $clubno = substr($clubno, 0, strpos($clubno, ' '));
       $clubcity = substr($c['name'], strpos($c['name'], ' ')+3);
       $phone = strpos($u['private_mobile'],'+')===false?"+45 {$u['private_mobile']}":$u['private_mobile'];
-			$html .= "<tr>
+			$clubs[$clubno] = "<tr>
         <td>{$clubno}</td>
 				<td>{$c['name']}</td>
         <td>{$clubcity}</td>
@@ -257,6 +259,10 @@
 				<td>{$u['company_business']}</td>
 			</tr>";
 		}
+    
+    ksort($clubs);
+    
+    foreach($clubs as $k=>$v) $html .= $v; 
 		
 		
 		$html .= "</table>";
