@@ -546,6 +546,21 @@
 		}
 		return '';
 	}
+
+	/**
+	 *	translate role id to description
+	 *	@param int $rid	role id
+	 *	@return textual representation of role
+	 */
+	function logic_get_role_description($rid)
+	{
+		$roles = fetch_system_roles();
+		foreach($roles as $r)
+		{
+			if ($r['rid']==$rid) return $r['description'];
+		}
+		return '';
+	}
 	
 	/**
 	 *	nominate a user for a given role

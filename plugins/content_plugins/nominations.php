@@ -22,7 +22,7 @@
 		}
 		
 		$result = array(
-			"role" => logic_get_role_name($rid),
+			"role" => logic_get_role_description($rid),
 			"result" =>	addslashes(json_encode(logic_get_nominations($rid)))
 			);
 		return term_unwrap('nominations', $result);
