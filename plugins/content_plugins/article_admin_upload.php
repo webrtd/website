@@ -1,8 +1,10 @@
 <?
-	require_once '../../config.php';
-	require_once '../../config_terms.php';
-	require_once '../../includes/logic.php';
-	require_once '../../includes/sessionhandler.php';
+	chdir($_SERVER['DOCUMENT_ROOT']);
+	
+	require_once 'config.php';
+	require_once 'config_terms.php';
+	require_once 'includes/logic.php';
+	require_once 'includes/sessionhandler.php';
 	
 	session_start();
 	
