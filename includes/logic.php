@@ -276,8 +276,13 @@
     $meetings = logic_fetch_future_meetings_for_club($user['cid'],"asc",100,false);
     foreach ($meetings as $m)
     {
-      logic_log(__FUNCTION__, "Deleting meeting attendance for UID:{$uid}, MID:{$m['mid']}");
-      delete_meeting_attendance_for_uid($m['mid'],$uid);
+		$meeting_end = strtotime($m['end_time']);
+		$termination = strtotime($end_date);
+		if ($meeting_end > $termination)
+		{
+		  logic_log(__FUNCTION__, "Deleting meeting attendance for UID:{$uid}, MID:{$m['mid']}");
+		  delete_meeting_attendance_for_uid($m['mid'],$uid);
+		 }
     }
     
     
