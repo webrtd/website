@@ -43,6 +43,7 @@
 	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
 	13-04-2014	rasmus@3kings.dk	logic_get_duties added
 	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
+	-- history moved to github ---
   */ 
 
 	$path = realpath('.');
@@ -2145,7 +2146,7 @@ END:VCALENDAR"
 		return false;
 	}	
 
-
+	
 	function logic_is_chairman()
 	{
 		if (isset($_SESSION['user']))
@@ -2153,6 +2154,10 @@ END:VCALENDAR"
 			foreach ($_SESSION['user']['active_roles'] as $key => $data)
 			{
 				if ($data['rid'] == CHAIRMAN_ROLE_RID) return true;
+				if (defined('VICE_CHAIRMAN_AND_CHAIRMAN_SHARE_RESPONSIBILITY'))
+				{
+					if ($data['rid'] == VICE_CHAIRMAN_RID) return true;
+				}
 			}
 		}
 		return false;
