@@ -48,7 +48,7 @@
 
 			$ics = 
 "BEGIN:VCALENDAR
-X-WR-CALNAME:Round Table {$club[name]} Calendar
+X-WR-CALNAME:Round Table {$club['name']} Calendar
 PRODID:-//Round Table//ROUNDTABLE Calendar//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -61,17 +61,22 @@ METHOD:PUBLISH
 			$start = strtotime($meeting['start_time']);
 			$end = strtotime($meeting['end_time']);
 			$title = utf8_decode($club['name']).": ".utf8_decode($meeting['title']);
-			$description = utf8_decode(html_entity_decode(strip_tags(str_replace("<br>","\n",$meeting['description'])),ENT_QUOTES,'UTF-8'));
+
+
+			$description = utf8_decode(html_entity_decode(strip_tags(str_replace("<br>","\r\n",$meeting['description'])),ENT_QUOTES,'UTF-8'));
+			$description = str_replace("\r\n", " ", $description);
+
+
 			$ics .=
-"BEGIN:VEVENT
-DTSTART:".date('Ymd',$start)."T".date('Hi',$start)."00
-DTEND:".date('Ymd',$end)."T".date('Hi',$end)."00
-SUMMARY:{$title}
-LOCATION:{$meeting['location']}
-DESCRIPTION:{$description}
-UID:RTD-{$meeting['mid']}
-CLASS:PUBLIC
-END:VEVENT
+"BEGIN:VEVENT\r
+DTSTART:".date('Ymd',$start)."T".date('Hi',$start)."00\r
+DTEND:".date('Ymd',$end)."T".date('Hi',$end)."00\r
+SUMMARY:{$title}\r
+LOCATION:{$meeting['location']}\r
+DESCRIPTION:{$description}\r
+UID:RTD-{$meeting['mid']}\r
+CLASS:PUBLIC\r
+END:VEVENT\r
 ";			
 		}
 
