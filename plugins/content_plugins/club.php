@@ -48,8 +48,8 @@
 
 			$ics = 
 "BEGIN:VCALENDAR
-X-WR-CALNAME:Round Table {$club['name']} Calendar
-PRODID:-//Round Table//ROUNDTABLE Calendar//EN
+X-WR-CALNAME: {$club['name']} Calendar
+PRODID:-//{$club['name']}//{$club['name']} Calendar//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
