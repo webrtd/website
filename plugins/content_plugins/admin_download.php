@@ -333,7 +333,30 @@ order by RD.shortname asc
     {
       role_print();
     }
-		
+		if ($f == 'xtable')
+	{
+			$sql = 
+				"select 
+				U.uid as UID,U.profile_firstname as Fornavn,U.profile_lastname as Efternavn,U.profile_birthdate as Foedselsdato, U.profile_started as CharterDato,U.profile_ended as Udmeldelsesdato, U.last_page_view as SidsteLogin, U.private_address as Vej, U.private_houseno as HusNr, U.private_houseletter as Bogstav, U.private_housefloor Etage, U.private_houseplacement Side, U.private_zipno as PostNr, U.private_city as Bynavn, U.private_mobile as MobilTlf, U.private_email as Email, U.xtable_transfer as Transfer,
+				C.name as Klub, 
+				D.name as Distrikt
+				from user U
+				inner join club C on U.cid=C.cid
+				inner join district D on C.district_did=D.did
+				where U.profile_ended='".date("Y")."-06-30' and U.xtable_transfer>0
+				order by U.profile_firstname";
+				$xml = (get_xml($sql));
+				header('Content-Description: File Transfer');
+				header('Content-Type: application/octet-stream');
+				header('Content-Disposition: attachment; filename='.$f.date('-Ymd').'.xml');
+				header('Content-Transfer-Encoding: binary');
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+				header('Pragma: public');
+				die($xml);				
+	
+	}
+	
 		if ($f == 'all')
 		{
 			$sql = 
