@@ -13,6 +13,12 @@
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/sessionhandler.php';
 	
 	session_start();
+	
+	if (!logic_is_member())
+	{
+		header("location: /");
+		die();
+	}
 
 	if (!isset($_REQUEST['afid']) || !is_numeric($_REQUEST['afid']))
 	{
