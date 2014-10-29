@@ -11,14 +11,8 @@
 	require_once $_SERVER['DOCUMENT_ROOT'].'/config_terms.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/logic.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/sessionhandler.php';
-	
+	 
 	session_start();
-	
-	if (!logic_is_member())
-	{
-		header("location: /");
-		die();
-	}
 
 	if (!isset($_REQUEST['afid']) || !is_numeric($_REQUEST['afid']))
 	{
@@ -31,15 +25,15 @@
 	$mime = $f['mimetype'];
 	
 	$article = logic_get_article($f['aid']);
-//	if ($article['public'] || logic_is_member())
+	if ($article['public'] || logic_is_member())
 	{
 		header("Content-type: $mime"); 
     header("Content-Disposition: attachment; filename=\"{$f['filename']}\"");		
 		header('Content-Transfer-Encoding: binary'); 	
 		readfile($fn);
 	}
-//	else
+	else
 	{
-	//	die(term('article_must_be_logged_in'));
+		die(term('article_must_be_logged_in'));
 	}
 ?>
