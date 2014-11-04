@@ -689,7 +689,7 @@
 		else
 		{
 			$sql ="
-					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club from user U 
+					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club, U.private_phone as private_phone from user U 
 					inner join club C on U.cid=C.cid
 					inner join role R on R.uid=U.uid
 					where
