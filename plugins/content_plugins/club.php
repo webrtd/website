@@ -38,6 +38,11 @@
 		$members = logic_get_active_club_members($club['cid']);
 		die(print_r($members,true));
 	}
+	function content_handle_gallery($club)
+	{
+		$data = logic_get_meeting_gallery($club['cid']);
+		return club_header($club).term_unwrap('club_gallery', $data, true);	
+	}
 	
 	function content_handle_club_ics($meetings,$club)
 	{
@@ -211,6 +216,10 @@ $ics .=
 		if (isset($_REQUEST['archive']))
 		{
 			return content_handle_archive($club);
+		}
+		if (isset($_REQUEST['gallery']))
+		{
+			return content_handle_gallery($club);	
 		}
     
 		$board = logic_get_club_board($cid);		

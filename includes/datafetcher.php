@@ -2188,7 +2188,17 @@ limit 1");
 	}
 	return get_data($sql);
   }
-  
+  	function fetch_meeting_gallery($cid)
+	{
+		$sql ="
+select M.title,MI.miid,M.start_time from meeting M
+inner join meeting_image MI on MI.mid=M.mid
+where M.cid={$cid}
+order by M.start_time desc	
+	";
+		return get_data($sql);	
+	}
+
   function add_minutes_collection_cache($cid,$seed,$mid)
   {
 	fire_sql("insert into meeting_letters (cid,letter_mid,collid) values ('$cid','$mid','$seed')");

@@ -74,6 +74,10 @@
 		return $html;
 	}
 	
+	function logic_get_meeting_gallery($cid)
+	{
+		return fetch_meeting_gallery($cid);
+	}
 
   function logic_create_club()
   {
