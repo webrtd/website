@@ -2027,6 +2027,56 @@ END:VCALENDAR"
 		}
 		return $data;
 	}
+	function logic_get_calendar_meetings_ics()
+	{
+			$meeting_data = logic_get_calendar_meetings();
+			
+
+			$ics = 
+"BEGIN:VCALENDAR
+X-WR-CALNAME: ".MASS_MAILER_REPLY_WHO." Calendar
+PRODID:-//".MASS_MAILER_REPLY_WHO."//".MASS_MAILER_REPLY_WHO." Calendar//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+";
+// die("<pre>".print_r($meeting_data,true));
+	
+		foreach ($meeting_data as $d => $meetings)
+		{
+
+			for ($i=0;$i<sizeof($meetings);$i++)
+			{
+				$meeting = $meetings[$i];
+				$start = strtotime($meeting['start_time']);
+				$end = strtotime($meeting['end_time']);
+				$club = $meeting['name'];
+				$title = ($club).": ".($meeting['title']);
+
+
+				$description = ($d);
+				$meeting['location'] = ($meeting['location']);
+
+				$ics .=
+"BEGIN:VEVENT\r
+DTSTART:".date('Ymd',$start)."T".date('Hi',$start)."00\r
+DTEND:".date('Ymd',$end)."T".date('Hi',$end)."00\r
+SUMMARY:{$title}\r
+LOCATION:{$meeting['location']}\r
+DESCRIPTION:{$description}\r
+UID:RTD-{$meeting['mid']}\r
+CLASS:PUBLIC\r
+END:VEVENT\r
+";			
+			}
+		}
+
+$ics .= 
+"END:VCALENDAR
+";
+
+	return $ics;
+	}
   
 	function logic_get_country($did,$meeting_count=10)
 	{		
