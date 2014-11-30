@@ -44,6 +44,20 @@
 		return club_header($club).term_unwrap('club_gallery', $data, true);	
 	}
 	
+	function content_handle_message($club)
+	{
+		$msg = $_REQUEST['message'];
+		if (empty($msg))
+		{
+			return club_header($club).term_unwrap('club_message_prepare_send', $club);
+		}
+		else
+		{
+			logic_send_message_to_active_club_members($club, $msg);
+			return club_header($club).term_unwrap('club_message_sent', array('message'=>$msg));
+		}
+	}
+	
 	function content_handle_club_ics($meetings,$club)
 	{
 			
@@ -220,6 +234,10 @@ $ics .=
 		if (isset($_REQUEST['gallery']))
 		{
 			return content_handle_gallery($club);	
+		}
+		if (isset($_REQUEST['message']))
+		{
+			return content_handle_message($club);
 		}
     
 		$board = logic_get_club_board($cid);		

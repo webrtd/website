@@ -1680,6 +1680,21 @@ END:VCALENDAR"
 		return $members;
 	}
 	
+	function logic_send_message_to_active_club_members($club, $message)
+	{
+		if (logic_is_member())
+		{
+			$title = term_unwrap('club_message_title', $club);
+			$body = term_unwrap('club_message_body', array('uid'=>$_SESSION['user']['uid'],'sender'=>$_SESSION['user']['profile_firstname'].' '.$_SESSION['user']['profile_lastname'], 'message'=>$message));
+			
+			$members = logic_get_active_club_members($club['cid']);
+			for($i=0;$i<sizeof($members);$i++)
+			{
+				logic_save_mail($members[$i]['private_email'], $title, $body, 0, $_SESSION['user']['uid']);
+			}
+		}
+	}
+	
 	function logic_get_active_club_members($cid)
 	{
 		if (!is_numeric($cid)) return false;
