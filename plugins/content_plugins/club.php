@@ -17,7 +17,7 @@
 		{
 			$mails[] = $v['private_email'];
 		}
-		$club['membermails'] = implode(";",$mails);
+		$club['membermails'] = implode("; ",$mails);
 		
 		$board = logic_get_club_board($club['cid']);
 		$mails = array();
