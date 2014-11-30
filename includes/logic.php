@@ -1690,7 +1690,7 @@ END:VCALENDAR"
 			$members = logic_get_active_club_members($club['cid']);
 			for($i=0;$i<sizeof($members);$i++)
 			{
-				logic_save_mail($members[$i]['private_email'], $title, $body, 0, 0);
+				logic_save_mail($members[$i]['private_email'], $title, $body, 0, $_SESSION['user']['uid']);
 			}
 		}
 	}
