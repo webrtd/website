@@ -294,16 +294,12 @@ $ics .=
 		}
 */		
 		
-		if (!logic_is_mummy())
-		if (($_SESSION['user']['cid'] == $club['cid'] && logic_is_secretary()))
-    {
-      $html .= term('club_missing_minutes');
-  		$missing_minutes = logic_meeting_with_no_minutes($club['cid']);
-  		for($i=0;$i<sizeof($missing_minutes);$i++)
-  		{
-  			$html .= term_unwrap('club_future_meetings_item', $missing_minutes[$i]);
-  		}
-    }
+		$html .= term('club_missing_minutes');
+		$missing_minutes = logic_meeting_with_no_minutes($club['cid']);
+		for($i=0;$i<sizeof($missing_minutes);$i++)
+		{
+			$html .= term_unwrap('club_future_meetings_item', $missing_minutes[$i]);
+		}
 
 		$html .= term('club_board');		
 		$html .= term_unwrap('club_board_member', array('data'=>addslashes(json_encode($board))));

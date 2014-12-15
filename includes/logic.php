@@ -1226,6 +1226,9 @@ END:VCALENDAR"
 		$meeting = logic_get_meeting($mid);
 		$duties = logic_get_meeting_duties($mid);
 		$members = fetch_meeting_attendance($mid);
+				
+		clear_minutes_collection_cache($meeting['cid'], $mid);
+		clear_minutes_collection_cache($meeting['cid'], $mid."992");
 		
 		//$meeting['meeting_description'] = ($meeting['meeting_description']);
 
@@ -1690,7 +1693,7 @@ END:VCALENDAR"
 			$members = logic_get_active_club_members($club['cid']);
 			for($i=0;$i<sizeof($members);$i++)
 			{
-				logic_save_mail($members[$i]['private_email'], $title, $body, 0, $_SESSION['user']['uid']);
+				logic_save_mail($members[$i]['private_email'], $title, $body, 0, 0);
 			}
 		}
 	}

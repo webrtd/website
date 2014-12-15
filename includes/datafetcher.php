@@ -2155,6 +2155,13 @@ limit 1");
 	}
   }
   
+  function clear_minutes_collection_cache($cid, $seed)
+  {
+	$sql = "delete from meeting_letters where cid={$cid} and collid={$seed}";
+	fire_sql($sql);
+  }
+  
+  
   function get_minutes_collection_cache($cid,$seed,$club_year=false)
   {
 	if ($seed == '')
@@ -2243,7 +2250,7 @@ order by M.start_time desc
               order by rand($seed)
               limit $limit";
     }
-//echo "$sql \n";
+//	echo "$sql \n";
   return get_data($sql);
    }           
    

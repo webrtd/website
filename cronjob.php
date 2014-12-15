@@ -49,8 +49,25 @@
 			
 			$mail->IsHTML(true);
 			
+			
+			
+			
 			$mail->SetFrom($from);
-			$mail->AddAddress($to, $to);  
+			
+			
+			$recv = explode(";", $to);
+			for ($i=0; $i<sizeof($recv); $i++)
+			{
+				$r = str_replace(";", "", $recv[$i]);
+				$r = trim($r);
+				if (!empty($r))
+				{
+					$mail->AddAddress($r, $r); 
+				}
+			}
+			
+			
+			
 			$mail->Subject  =  $subj;
 			$mail->Body = nl2br($body);
 			
