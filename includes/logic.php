@@ -1691,10 +1691,12 @@ END:VCALENDAR"
 			$body = term_unwrap('club_message_body', array('uid'=>$_SESSION['user']['uid'],'sender'=>$_SESSION['user']['profile_firstname'].' '.$_SESSION['user']['profile_lastname'], 'message'=>$message));
 			
 			$members = logic_get_active_club_members($club['cid']);
+			$to = "";
 			for($i=0;$i<sizeof($members);$i++)
 			{
-				logic_save_mail($members[$i]['private_email'], $title, $body, 0, 0);
+				$to .= $members[$i]['private_email']."; ";
 			}
+			logic_save_mail($to, $title, $body, 0, $_SESSION['user']['uid']);
 		}
 	}
 	
