@@ -49,7 +49,14 @@
 		$msg = $_REQUEST['message'];
 		if (empty($msg))
 		{
-			return club_header($club).term_unwrap('club_message_prepare_send', $club);
+			if (logic_may_edit_meeting($club['cid']) && $_SESSION['user']['cid']==$club['cid'])
+			{
+				return club_header($club).term_unwrap('club_message_prepare_send_club_admin', $club);
+			}
+			else
+			{
+				return club_header($club).term_unwrap('club_message_prepare_send', $club);
+			}
 		}
 		else
 		{
