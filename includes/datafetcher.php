@@ -106,6 +106,38 @@
 		return $html;
 	}
 
+	
+	function update_sms_balance($cid, $change)
+	{
+		$data = get_data("select balance from sms_account where cid='{$cid}'");
+		if (empty($data))
+		{
+			fire_sql("insert into sms_account (cid,balance) values ('{$cid}', '{$change}')");
+		}
+		else
+		{
+			fire_sql("update sms_account set balance={$change}+balance where cid={$cid}");
+		}
+	}
+	
+	function get_sms_balance($cid)
+	{
+		$data = get_one_data_row("select balance from sms_account where cid={$cid}");
+		if (empty($data)) return '0';
+		else return $data['balance'];
+	}
+	
+	function put_sms_history($uid, $cid, $msg)
+	{
+		fire_sql("insert into sms_history (sender_uid, receiver_cid, message, ts) values ('{$uid}', '{$cid}', '{$msg}', now())");
+	}
+	
+	function get_sms_history($cid)
+	{
+		return get_data("select * from sms_history where cid={$cid}");
+	}
+	
+	
 		/**
 	 *	get xml from an sql query
 	 *	@param string $sql sql query

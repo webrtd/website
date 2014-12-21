@@ -79,6 +79,92 @@
 		return fetch_meeting_gallery($cid);
 	}
 
+	function logic_get_sms_balance_country()
+	{
+		$clubs = fetch_clubs("");
+		$data = array();
+		
+		foreach ($clubs as $c)
+		{
+			$data[] = array(
+				"cid" => $c['cid'],
+				"club" => $c['name'],
+				"balance" => get_sms_balance($c['cid'])
+			);
+		}
+		
+		return $data;
+		
+	}
+	
+	
+	function logic_update_sms_balance($cid, $change)
+	{
+		if (logic_is_admin())
+		{
+			update_sms_balance($cid, $change);
+		}
+	}
+	
+	function logic_fix_mobile_phone_number($n)
+	{
+		if (preg_match("/^\\+\d*$/",$n))
+		{
+			return $n;
+		}
+		else
+		{	
+			$n = preg_replace("/[^\\+0-9]/", "", $n);
+			if (strpos($n, "+")===false)
+			{
+				$n = SMS_DEFAULT_COUNTRY_CODE.$n;
+			}
+			return $n;
+		}
+	}
+	
+	function logic_send_sms($message)
+	{
+		if (logic_may_edit_meeting())
+		{
+			$active_members = fetch_active_club_members($_SESSION['user']['cid']); 
+			
+			$r = array();
+			
+			foreach ($active_members as $m)
+			{
+				$r[] = logic_fix_mobile_phone_number($m['private_mobile']);
+			}
+			
+			$data = array(
+				'apikey' => SMS_API_KEY,
+				'username' => SMS_API_USER,
+				'password' => md5(SMS_API_PASSWORD),
+				'shortcode' => '1919',
+				'price' => '0',
+				'text' => $message,
+				'from' => logic_fix_mobile_phone_number($_SESSION['user']['private_mobile']),
+				'recipient' => implode(",",$r)
+			);
+			
+			$url = 'https://api.sms1919.dk/rpc/push/?'.http_build_query($data);
+			
+			if (SMS_DISABLE_SENDING)
+			{
+				echo "SMS send disabled - $url";
+			}
+			else
+			{
+				$opts = array('http'=>array('header' => "User-Agent:Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1\r\n"));
+				$context = stream_context_create($opts);
+				$result = file_get_contents($url,false,$context);
+			}
+				
+			put_sms_history($_SESSION['user']['uid'], $_SESSION['user']['cid'], $message);
+			update_sms_balance($_SESSION['user']['cid'], -sizeof($active_members));
+		}
+	}
+
   function logic_create_club()
   {
     if (logic_is_admin())

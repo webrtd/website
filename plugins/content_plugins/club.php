@@ -53,7 +53,14 @@
 		}
 		else
 		{
-			logic_send_message_to_active_club_members($club, $msg);
+			if (isset($_REQUEST['sms']))
+			{
+				logic_send_sms($msg);
+			}
+			else
+			{
+				logic_send_message_to_active_club_members($club, $msg);
+			}
 			return club_header($club).term_unwrap('club_message_sent', array('message'=>$msg));
 		}
 	}
