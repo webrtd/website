@@ -269,12 +269,60 @@ order by RD.shortname asc
 		}
 		die($html);
 	}
+	
+	function a2h($a)
+	{
+		$table = "<table>";
+		
+		$keys = array_keys($a[0]);
+		$table .= "<tr>";
+		foreach($keys as $k) $table .= "<th>{$k}</th>";
+		$table .= "</tr>";
+		
+		foreach ($a as $e)
+		{
+			$table .= "<tr>";
+			foreach($e as $k=>$v) $table .= "<td>{$v}</td>";
+			$table .= "</tr>";
+		}
+		
+		$table .= "</table>";
+		return $table;
+	}
+	
+	function sms()
+	{
+		if (isset($_REQUEST['update']))
+		{
+			logic_update_sms_balance($_REQUEST['update'], $_REQUEST['newbalance']);
+		}
+	
+		$balance = logic_get_sms_balance_country();
+		
+		$html = "<h1>SMS</h1>";
+		
+		$html .= "<form action=? method=get><input type=hidden name=admin_download value=sms><select name=update>";
+		foreach($balance as $c)
+		{
+			$html .= "<option value={$c['cid']}>{$c['club']} (SMS: {$c['balance']})</option>";
+		}
+		$html .= "<input type=number name=newbalance><input type=submit></form><hr>";
+		
+		$html .= a2h($balance);
+		
+		return $html;
+	}
 
 	function content_admin_download()
 	{
 		$f = $_REQUEST['admin_download'];
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
+		if ($f == 'sms')
+		{
+			return sms();
+		}
+		
 		if ($f == 'yearstats')
 		{
 			return yearstats();
