@@ -142,8 +142,8 @@
 				'password' => md5(SMS_API_PASSWORD),
 				'shortcode' => '1919',
 				'price' => '0',
-				'text' => $message,
-				'from' => logic_fix_mobile_phone_number($_SESSION['user']['private_mobile']),
+				'text' => utf8_decode($message),
+				'from' => '+'.logic_fix_mobile_phone_number($_SESSION['user']['private_mobile']),
 				'recipient' => implode(",",$r)
 			);
 			
