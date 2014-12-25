@@ -1306,7 +1306,49 @@ END:VEVENT
 END:VCALENDAR"
 );
   }
-	
+
+	function logic_get_duty_text($meeting,$duty)
+	{
+		$d = $meeting;
+		if ($duty=='duty_3min_uid')
+		{
+			$text = term('duty_3min_uid');
+		}
+		else if ($duty=='duty_letters1_uid')
+		{
+			$text = term('duty_letters1_uid');
+		}
+		else if ($duty=='duty_letters2_uid')
+		{
+			$text = term('duty_letters2_uid');
+		}
+		else if ($duty=='duty_meeting_responsible_uid')
+		{
+			$text = term('duty_meeting_responsible_uid');
+		}
+		else if ($duty=='duty_ext1_uid')
+		{
+			$text=$d['duty_ext1_text'];
+		}
+		else if ($duty=='duty_ext2_uid')
+		{
+			$text=$d['duty_ext2_text'];
+		}
+		else if ($duty=='duty_ext3_uid')
+		{
+			$text=$d['duty_ext3_text'];
+		}
+		else if ($duty=='duty_ext4_uid')
+		{
+			$text=$d['duty_ext4_text'];
+		}
+		else if ($duty=='duty_ext5_uid')
+		{
+			$text=$d['duty_ext5_text'];
+		}
+		return $text;
+	}
+  
 	function logic_send_invitations($mid)
 	{
 		$meeting = logic_get_meeting($mid);
@@ -1316,36 +1358,34 @@ END:VCALENDAR"
 		clear_minutes_collection_cache($meeting['cid'], $mid);
 		clear_minutes_collection_cache($meeting['cid'], $mid."992");
 		
-		//$meeting['meeting_description'] = ($meeting['meeting_description']);
 
 		$ics_fn = "{$mid}.ics";
 		$ics_data = logic_build_ics($meeting);
 		$attachment_id = put_mail_attachment($ics_fn);
 		file_put_contents(MAIL_ATTACHMENT_UPLOAD_PATH.$attachment_id, $ics_data);
 
+		$to = "";
+	
+		$duty_text = "";
+		foreach($duties as $d => $v)
+		{
+			$duty_text .= "- ".logic_get_duty_text($meeting, $d).': '.$v['profile_firstname'].' '.$v['profile_lastname']."\n";		
+		}
+		$meeting['duty_text'] = $duty_text;
+	
+	
+		
 		for($i=0;$i<sizeof($members);$i++)
 		{
-			$assigned_duty = false;
-			foreach($duties as $duty => $member)
-			{
-				if ($member['uid'] == $members[$i]['uid'])
-				{
-					$assigned_duty = $duty;
-					
-					break;
-				}
-			}		
-			
-			if ($assigned_duty)
-			{
-				$content = term_unwrap("mail_invitation_{$assigned_duty}", $meeting);
-			}
-			else
-			{
-				$content = term_unwrap("mail_invitation", $meeting);
-			}
-			save_mail($members[$i]['private_email'], term_unwrap('mail_invitation_subject',$meeting), $content, true, $attachment_id);
+			$to .= $members[$i]['private_email']."; ";
 		}
+
+		$content = term_unwrap('mail_invitation',$meeting);
+		$title = term_unwrap('mail_invitation_subject',$meeting);
+		
+		
+		logic_save_mail($to, $title, $content, $attachment_id, $_SESSION['user']['uid']);
+
 		
 	}
 	
