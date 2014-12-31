@@ -1312,7 +1312,7 @@
 						(select max(weight) from role RR inner join role_definition RRD on RR.rid=RRD.rid where RR.uid=U.uid) as Weight 
 						from user U
 						where 
-						U.cid=$cid 
+						U.cid=$cid and day(U.profile_ended)=30 and month(U.profile_ended)=6
 						order by U.profile_firstname ASC
 		";
 		return get_data($sql);
