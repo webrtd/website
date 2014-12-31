@@ -2251,7 +2251,7 @@ order by M.start_time desc
    *  @param int $limit number of elements to fetch   
    *  @return mixed[] minutes
    */
-   function get_minutes_collection($cid,$seed,$did=-1,$limit=10,$omit_mids="0",$omit_cids="0")
+    function get_minutes_collection($cid,$seed,$did=-1,$limit=10,$omit_mids="0",$omit_cids="0")
    {
 	$sql = "";
     if ($did<0)
@@ -2262,8 +2262,8 @@ order by M.start_time desc
 			  C.cid != $cid and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 3 month) and
-              minutes_date>date_sub(now(), interval 3 month) 
+              start_time>date_sub(now(), interval 6 month) and
+              minutes_date>date_sub(now(), interval 6 month) 
               group by C.cid 
 			  order by rand($seed)
               limit $limit";
@@ -2276,8 +2276,8 @@ order by M.start_time desc
               C.district_did=$did and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 3 month) and
-              minutes_date>date_sub(now(), interval 3 month) 
+              start_time>date_sub(now(), interval 6 month) and
+              minutes_date>date_sub(now(), interval 6 month) 
 			  group by C.cid 
               order by rand($seed)
               limit $limit";
@@ -2285,7 +2285,7 @@ order by M.start_time desc
 //	echo "$sql \n";
   return get_data($sql);
    }           
-   
+  
 	
 	if (isset($_REQUEST['test']))
 	{
