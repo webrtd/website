@@ -72,7 +72,7 @@ function event_user_resign($uid,$why)
   $r = array($u['private_email'], $cc['private_email']);
   logic_save_mail($r,$subj,$body);
 
-  if (define('RESIGN_SEND_ONLY_TO_WEB') && RESIGN_SEND_ONLY_TO_WEB)
+  if (defined('RESIGN_SEND_ONLY_TO_WEB') && RESIGN_SEND_ONLY_TO_WEB)
   {
 	$r = array(ADMIN_MAIL);
   }
@@ -177,15 +177,17 @@ function event_minutes_finished($mid,$mail_to_members=true)
 	$members = fetch_active_club_members($meeting['cid']);
 	$dc = logic_get_district_chairman($club['district_did']);
 	
-	$receivers = array();
-	$receivers[] = $dc['private_email'];
+//	$receivers = array();
+//	$receivers[] = $dc['private_email'];
+	$receivers = $dc['private_email']."; ";
 	$error_users = array();
 	
 	for ($i=0;$i<sizeof($members);$i++) 
 	{
 		//if (filter_var($members[$i]['private_email'], FILTER_VALIDATE_EMAIL)) 
 		{
-			$receivers[] = $members[$i]['private_email'];
+			$receivers .=  $members[$i]['private_email']."; ";
+//			$receivers[] = $members[$i]['private_email'];
 		}
 /*		else
 		{
