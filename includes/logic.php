@@ -1949,7 +1949,7 @@ END:VCALENDAR"
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		$member = MEMBER_ROLE_RID;
-		for ($i=0;$i<3;$i++)
+		for ($i=-1;$i<3;$i++)
 		{
 		
 			$ys = logic_get_club_year_start($i);
