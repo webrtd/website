@@ -110,7 +110,6 @@
 	{
 		if (preg_match("/^\\+\d*$/",$n))
 		{
-			return $n;
 		}
 		else
 		{	
@@ -119,8 +118,9 @@
 			{
 				$n = SMS_DEFAULT_COUNTRY_CODE.$n;
 			}
-			return $n;
 		}
+		$n = str_replace('+', '', $n);
+		return $n;
 	}
 	
 	function logic_send_sms($message)
