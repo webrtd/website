@@ -25,6 +25,7 @@
 	$mime = $f['mimetype'];
 	
 	$article = logic_get_article($f['aid']);
+	
 	if ($article['public'] || logic_is_member())
 	{
 		header("Content-type: $mime"); 

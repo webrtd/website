@@ -458,6 +458,7 @@
   {
     $subj = html_entity_decode($subj);
     $body = html_entity_decode($body);
+		
     if (is_array($to))
     {
       for ($i=0;$i<sizeof($to);$i++) 
@@ -1379,13 +1380,15 @@ END:VCALENDAR"
 		{
 			$to .= $members[$i]['private_email']."; ";
 		}
+		
+		$meeting['meeting_description'] = htmlentities(strip_tags($meeting['meeting_description']));
 
 		$content = term_unwrap('mail_invitation',$meeting);
 		$title = term_unwrap('mail_invitation_subject',$meeting);
-		
+
+
 		
 		logic_save_mail($to, $title, $content, $attachment_id, $_SESSION['user']['uid']);
-
 		
 	}
 	
@@ -1908,7 +1911,7 @@ END:VCALENDAR"
 		$uid = $_SESSION['user']['uid'];
 		
 		$articles = array();/*get_data("select title, aid as id, last_update as ts from article where last_update>'$ts' order by last_update desc limit 5");*/
-		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time, date_format(M.start_time, '%e. %b (%H:%i)') as ts from meeting M inner join club C on M.cid=C.cid where end_time>now() and start_time<now() order by start_time desc limit 5");
+		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time, date_format(M.start_time, '%e. %b (%H:%i)') as ts from meeting M inner join club C on M.cid=C.cid where start_time<DATE_ADD(NOW(),INTERVAL 6 HOUR) order by start_time desc limit 15");
 		$news = get_data("select title, nid as id, posted, date_format(posted, '%e. %b (%H:%i)') as ts from news where posted>'$ts' order by posted desc limit 5");
 		$news_comment = get_data("select NC.nid as id ,NC.posted, date_format(NC.posted, '%e. %b (%H:%i)') as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where NC.posted>'$ts' order by NC.posted desc limit 5");
 		$tabler_service = get_data("select tsid as id, headline as title, posted, date_format(posted, '%e. %b (%H:%i)') as ts from tabler_service_item where posted>'$ts' order by posted desc limit 5");
