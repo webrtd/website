@@ -44,6 +44,11 @@
 
 	function fetch_future_duties($uid,$limit)
 	{
+	if (!is_numeric($uid))
+	{
+		logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($uid));
+		die();
+	}
 	$sql = "
 	select * from meeting where
 	end_time>now() and
@@ -109,6 +114,12 @@
 	
 	function update_sms_balance($cid, $change)
 	{
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
+
 		$data = get_data("select balance from sms_account where cid='{$cid}'");
 		if (empty($data))
 		{
@@ -122,6 +133,11 @@
 	
 	function get_sms_balance($cid)
 	{
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 		$data = get_one_data_row("select balance from sms_account where cid={$cid}");
 		if (empty($data)) return '0';
 		else return $data['balance'];
@@ -129,11 +145,21 @@
 	
 	function put_sms_history($uid, $cid, $msg)
 	{
+		if (!is_numeric($uid) || !is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($uid)+' CID'+addslashes($cid));
+			die();
+		}
 		fire_sql("insert into sms_history (sender_uid, receiver_cid, message, ts) values ('{$uid}', '{$cid}', '{$msg}', now())");
 	}
 	
 	function get_sms_history($cid)
 	{
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 		return get_data("select * from sms_history where cid={$cid}");
 	}
 	
@@ -196,6 +222,11 @@
 	 */
 	function get_meeting_links($mid)
 	{
+		if (!is_numeric($mid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MID'+addslashes($mid));
+			die();
+		}
 		$sql = "select * from meeting_link where mid='$mid'";
 		return get_data($sql);
 	}
@@ -208,8 +239,17 @@
 	 */
 	function save_meeting_link($mid, $source, $link)
 	{
-			$sql = "insert into meeting_link (mid, media_source, media_link) values ('{$mid}', '{$source}', '{$link}')";
-			fire_sql($sql);
+		if (!is_numeric($mid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MID'+addslashes($mid));
+			die();
+		}
+		
+		$source = addslashes($source);
+		$link = addslashes($link);
+		
+		$sql = "insert into meeting_link (mid, media_source, media_link) values ('{$mid}', '{$source}', '{$link}')";
+		fire_sql($sql);
 	}
 	
 	/**
@@ -218,6 +258,12 @@
 	 */
 	function delete_meeting_link($mlid)
 	{
+		if (!is_numeric($mlid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MLID'+addslashes($mlid));
+			die();
+		}
+		
 		$sql = "delete from meeting_link where mlid='{$mlid}'";
 		fire_sql($sql);
 	}
@@ -298,7 +344,13 @@
 	 */
 	function update_user_club($uid, $new_cid)
 	{
-			$db = get_db();
+		if (!is_numeric($uid) || !is_numeric($new_cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($uid));
+			die();
+		}
+
+		$db = get_db();
 			$db->execute("update user set cid=$new_cid where uid=$uid");
 	}
 	
@@ -310,6 +362,11 @@
 	 */
 	function get_banners($position=-1, $limit=9999)
 	{
+		if (!is_numeric($position))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection position'+addslashes($position));
+			die();
+		}
 		if ($position<0) return get_data("select * from banner order by bid desc limit $limit");
 		else return get_data("select * from banner where position=$position order by rand() limit $limit");
 	}
@@ -320,6 +377,11 @@
 	 */
 	function get_banner($bid)
 	{
+		if (!is_numeric($bid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection BID'+addslashes($bid));
+			die();
+		}
 		return get_one_data_row("select * from banner where bid=$bid");
 	}
 	
@@ -330,6 +392,14 @@
 	 */
 	function put_banner_click($bid, $ip)
 	{
+		if (!is_numeric($bid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection BID'+addslashes($bid));
+			die();
+		}
+		
+		$ip = addslashes($ip);
+		
 		$db = get_db();
 		$db->execute("insert into banner_click (bid, clicktime, ipn) values ('$bid', now(), INET_ATON('$ip'))");
 	}
@@ -340,6 +410,12 @@
 	 */
   function fetch_news($did,$pv=false,$limit=1)
   {
+	if (!is_numeric($did))
+	{
+		logic_log(__FUNCTION__, 'SQL Injection DID'+addslashes($did));
+		die();
+	}
+	
     $sql = "";
   	if ($pv!==false)
   	{
@@ -360,6 +436,11 @@
 	 */
   function fetch_specific_news($nid)
   {
+		if (!is_numeric($nid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection NID'+addslashes($nid));
+			die();
+		}
   	return get_one_data_row("select * from news where nid=$nid");
   }
   
@@ -372,6 +453,13 @@
    */
   function save_comment($nid,$comment,$uid)
   {
+		if (!is_numeric($nid) || !is_numeric($uid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection NID'+addslashes($nid)+' UID'+addslashes($uid));
+			die();
+		}
+		
+		$comment = addslashes($comment);
   	$db = get_db();
   	$db->execute("insert into news_comment (nid,content,uid,posted) values ('$nid', '$comment', '$uid', now())");
   }
@@ -384,6 +472,14 @@
 	 */
   function save_news($did,$title,$content)
   {
+		if (!is_numeric($did))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection DID'+addslashes($did));
+			die();
+		}
+		
+		$title = addslashes($title);
+		$content = addslashes($content);
     $db = get_db();
     $db->execute("insert into news (did,title,content,posted) values ('$did','$title','$content',now())");
   }
@@ -395,6 +491,11 @@
    */
   function get_district_chairman_from_district($did)
   {
+		if (!is_numeric($did))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection DID'+addslashes($did));
+			die();
+		}
     return get_one_data_row("
       select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email, U.private_mobile from user U
       inner join role R on R.uid=U.uid
@@ -419,6 +520,7 @@
    */	
    function mummy_login($club, $password)
    {
+	$club = addslashes($club);
 	$password = addslashes($password);
    	return get_one_data_row("select * from club where name like '%$club%' and mummy_password='$password'");
    }
@@ -451,6 +553,11 @@
    */
   function get_club_secretary($cid)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
     return get_one_data_row("
       select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email from user U
       inner join role R on R.uid=U.uid
@@ -466,6 +573,11 @@
    */
   function get_club_chairman($cid)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
     return get_one_data_row("
       select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email from user U
       inner join role R on R.uid=U.uid
@@ -481,6 +593,11 @@
 	 */
 	 function get_article_files($aid, $gallery_only=false)
 	 {
+		if (!is_numeric($aid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection AID'+addslashes($aid));
+			die();
+		}
 		if ($gallery_only) return get_data("select * from article_file where aid=$aid and show_in_gallery=1");
 		else return get_data("select * from article_file where aid=$aid");
 	 }
@@ -492,17 +609,32 @@
 	 */
 	 function get_article_file($afid)
 	 {
+		if (!is_numeric($afid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection AFID'+addslashes($afid));
+			die();
+		}
 		return get_one_data_row("select * from article_file where afid=$afid");
 	 }
 	 
 	 function delete_article_file($afid)
 	 {
+		if (!is_numeric($afid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection AFID'+addslashes($afid));
+			die();
+		}
 		$db = get_db();
 		$db->execute("delete from article_file where afid='$afid'");
 	 }
 
 	 function put_article_file($aid, $mime, $filename, $show_in_gallery)
 	 {
+		if (!is_numeric($aid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection AID'+addslashes($aid));
+			die();
+		}
 		$db = get_db();
 		if ($show_in_gallery) $show_in_gallery='1';
 		else $show_in_gallery ='0';
@@ -529,6 +661,11 @@
 	*/
 	function get_district_for_club($cid)
 	{
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 		$data = get_one_data_row("select did from club where cid={$cid}");
 		return $data['did'];
 	}
@@ -1826,6 +1963,11 @@ order by R.end_date
    */        
   function get_meeting_file($mfid)
   {
+		if (!is_numeric($mfid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MFID'+addslashes($mfid));
+			die();
+		}
     return get_one_data_row("select filename,filepath from meeting_file where mfid=$mfid");  
   }
   
