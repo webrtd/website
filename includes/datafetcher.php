@@ -419,6 +419,7 @@
    */	
    function mummy_login($club, $password)
    {
+	$password = addslashes($password);
    	return get_one_data_row("select * from club where name like '%$club%' and mummy_password='$password'");
    }
    

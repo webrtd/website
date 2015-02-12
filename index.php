@@ -68,15 +68,7 @@
   }
   else
   {
-	if (isset($_SESSION['theme']) || isset($_REQUEST['theme']))
-	{
-		if (isset($_REQUEST['theme'])) $_SESSION['theme'] = $_REQUEST['theme'];
-		$template_html = file_get_contents($_SESSION['theme']);
-	}
-	else
-	{
-		$template_html = file_get_contents(RT_TEMPLATE);
-	}
+	$template_html = file_get_contents(RT_TEMPLATE);
   }
 	
 	foreach ($plugins as $keyword => $callback)
