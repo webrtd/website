@@ -1979,6 +1979,11 @@ order by R.end_date
    */              
   function get_meeting_rating($mid, $uid=-1)
   {
+		if (!is_numeric($mid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MID'+addslashes($mid));
+			die();
+		}
     if ($uid>0)
     {
       return get_data("select rating from meeting_rating where mid=$mid and uid=$uid");
@@ -1995,6 +2000,13 @@ order by R.end_date
    */
   function update_last_page_view($uid, $page_title="", $page_url="")
   {
+		if (!is_numeric($uid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection MFID'+addslashes($mfid));
+			die();
+		}
+		$page_title = addslashes($page_title);
+		$last_page_url = addslashes($page_url);
   	$db = get_db();
   	$db->execute("update user set last_page_view=now(), last_page_title='{$page_title}', last_page_url='{$page_url}' where uid=$uid");
   }
@@ -2006,7 +2018,8 @@ order by R.end_date
    */
   function get_users_per_business($q)
   {
-  	return get_data("select * from user where profile_ended>now() and company_business='$q' and company_name!='' order by company_name asc");
+	$q = addslashes($q);
+  return get_data("select * from user where profile_ended>now() and company_business='$q' and company_name!='' order by company_name asc");
   }
   
   /**
@@ -2024,6 +2037,11 @@ order by R.end_date
    */
   function get_last_page_view_within_range($uid,$range="3 month")
   {
+		if (!is_numeric($uid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($uid));
+			die();
+		}
 		$sql = "SELECT count(*) FROM `user` where uid=$uid and (last_page_view is null or last_page_view<date_sub(now(), interval $range))";
 		$data = get_one_data_row($sql);
 		if (current($data)==0) return false;
@@ -2036,6 +2054,11 @@ order by R.end_date
 	 */
 	function get_tabler_service_items($tsid)
 	{
+		if (!is_numeric($tsid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection TSID'+addslashes($tsid));
+			die();
+		}
 		return get_data("select * from tabler_service_item where tsid=$tsid order by posted desc");
 	}
 
@@ -2052,6 +2075,11 @@ order by R.end_date
 	 */	
 	function put_tabler_service_item($tsid, $headline, $description, $location, $price, $duration, $contact, $uid)
 	{
+		if (!is_numeric($tsid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection TSID'+addslashes($tsid));
+			die();
+		}
 		$db = get_db();
 		$db->execute("insert into tabler_service_item (tsid,headline,description,location,price,duration,contact,uid,posted) values ('$tsid', '$headline', '$description', '$location', '$price', '$duration', '$contact', '$uid', now())");
 	}
@@ -2145,6 +2173,8 @@ order by R.end_date
 	 */
 	function get_club_jubilees($start, $end)
 	{
+		$start = addslashes($start);
+		$end = addslashes($end);
 		$sql = "
 				select 
 				c.cid, c.name as club,cc.name as charter_club,
@@ -2168,6 +2198,8 @@ order by R.end_date
 	 */
 	function get_best_meetings($period_start, $period_end)
 	{
+		$period_start =addslashes($period_start);
+		$period_end = addslashes($period_end);
 		$data = array();
 		$sql = "
 				select 
@@ -2200,6 +2232,8 @@ order by R.end_date
 	 */
 	function get_jubilees($start, $end)
 	{
+		$start = addslashes($start);
+		$end = addslashes($end);
 		$sql = "
 				select u.profile_started, u.uid,u.profile_firstname,u.profile_lastname,c.name as club, d.name as district from user u 
 				inner join role r on r.uid=u.uid
@@ -2222,6 +2256,7 @@ order by R.end_date
    */           
   function put_mail_attachment($fn)
   {
+	$fn = addslashes($fn);
     $db = get_db();
     $db->execute("insert into mass_mail_attachment (filename) values ('$fn')");
     return $db->insertid();
@@ -2234,12 +2269,18 @@ order by R.end_date
    */
   function get_attachment($aid)
   {
+		if (!is_numeric($aid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection AID'+addslashes($aid));
+			die();
+		}
     return get_one_data_row("select filename from mass_mail_attachment where aid=$aid");
   }
   
   function put_search_query($q)
   {
-	$sql = "
+	$q = addslashes($q);
+  $sql = "
 			insert into search (q) values ('$q')
 			on duplicate key update count=count+1;
 		";
@@ -2269,6 +2310,18 @@ limit 1");
    */                    
   function put_other_meeting($cid, $title, $description, $location, $start, $end)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
+		
+		$title = addslashes($title);
+		$description = addslashes($description);
+		$location = addslashes($location);
+		$start = addslashes($start);
+		$end = addslashes($end);
+		
     $sql =
     "
       insert into other_meeting (cid,title,description,location,start_time,end_time) values
@@ -2283,6 +2336,11 @@ limit 1");
    */
   function delete_other_meeting($omid)
   {
+		if (!is_numeric($omid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection OMID'+addslashes($omid));
+			die();
+		}
 	fire_sql("delete from other_meeting where omid=$omid");
   }
   
@@ -2295,6 +2353,11 @@ limit 1");
   {
     if ($cid)
     {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
       $sql = "select * from other_meeting where cid='$cid' and start_time>now() order by start_time asc";
     }
     else
@@ -2314,6 +2377,11 @@ limit 1");
 		}
 		else
 		{
+			if (!is_numeric($cid))
+			{
+				logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+				die();
+			}
 			return get_data("select uid,profile_firstname,profile_lastname,profile_birthdate,profile_image from user where          DATE_FORMAT(profile_birthdate,'%m-%d') = DATE_FORMAT(NOW(),'%m-%d') and profile_ended>now() and cid='$cid'");
 		}
 	}
@@ -2325,6 +2393,11 @@ limit 1");
 		}
 		else
 		{
+			if (!is_numeric($cid))
+			{
+				logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+				die();
+			}
 			return get_data("select uid,profile_firstname,profile_lastname,profile_birthdate,profile_image from user where cid='$cid' and month(profile_birthdate)=month(now()) and profile_ended>now()");
 		}
 	}
@@ -2332,6 +2405,12 @@ limit 1");
   
   function clear_minutes_collection_cache($cid, $seed)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
+		$seed = addslashes($seed);
 	$sql = "delete from meeting_letters where cid={$cid} and collid={$seed}";
 	fire_sql($sql);
   }
@@ -2339,6 +2418,11 @@ limit 1");
   
   function get_minutes_collection_cache($cid,$seed,$club_year=false)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 	if ($seed == '')
 	{
 		$sql = "select M.cid as cid,C.name as club,M.mid,M.title,M.start_time from meeting_letters ML 
@@ -2372,6 +2456,11 @@ limit 1");
   }
   	function fetch_meeting_gallery($cid)
 	{
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 		$sql ="
 select M.title,MI.miid,M.start_time from meeting M
 inner join meeting_image MI on MI.mid=M.mid
@@ -2383,6 +2472,11 @@ order by M.start_time desc
 
   function add_minutes_collection_cache($cid,$seed,$mid)
   {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 	fire_sql("insert into meeting_letters (cid,letter_mid,collid) values ('$cid','$mid','$seed')");
   }
   
@@ -2396,6 +2490,11 @@ order by M.start_time desc
    */
     function get_minutes_collection($cid,$seed,$did=-1,$limit=10,$omit_mids="0",$omit_cids="0")
    {
+		if (!is_numeric($cid))
+		{
+			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
+			die();
+		}
 	$sql = "";
     if ($did<0)
     {
@@ -2428,33 +2527,4 @@ order by M.start_time desc
 //	echo "$sql \n";
   return get_data($sql);
    }           
-  
-	
-	if (isset($_REQUEST['test']))
-	{
-		$user = fetch_user(9353);
-		$username = fetch_user_by_username('kaae');
-		$roles = fetch_user_roles(9353);
-		$club = fetch_club($user['cid']);
-		$meetings = fetch_meetings_for_club($user['cid']);
-		$charter_club = fetch_club($club['charter_club_cid']);
-		$district = fetch_district($club['district_did']);
-		echo 
-		" <meta charset=utf8>
-			<h1>Datafetcher - User</h1>
-			<pre>".print_r($user,true)."</pre>
-			<h1>Datafetcher - Roles</h1>
-			<pre>".print_r($roles,true)."</pre>
-			<h1>Datafetcher - Club</h1>
-			<pre>".print_r($club,true)."</pre>
-			<h1>Datafetcher - District</h1>
-			<pre>".print_r($district,true)."</pre>
-			<h1>Datafetcher - Charter Club</h1>
-			<pre>".print_r($charter_club,true)."</pre>
-			<h1>Datafetcher - By username</h1>
-			<pre>".print_r($username,true)."</pre>
-			<h1>Datafetcher - Meetings </h1>
-			<pre>".print_r($meetings,true)."</pre>
-		";
-	}
-?>
+ ?>
