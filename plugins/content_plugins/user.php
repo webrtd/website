@@ -83,7 +83,7 @@
   
 		if (isset($_REQUEST['message']))
 		{
-			logic_save_mail($user['private_email'], "From Round Table", $_REQUEST['message'],0,$_SESSION['user']['uid']);
+			logic_save_mail($user['private_email'], MASS_MAILER_REPLY_WHO, $_REQUEST['message'],0,$_SESSION['user']['uid']);
 		}
 		logic_update_user_view_tracker($user['uid']);
 		$club = logic_get_club($user['cid']);		
