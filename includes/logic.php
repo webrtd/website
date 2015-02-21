@@ -1909,21 +1909,33 @@ END:VCALENDAR"
 	function logic_new_updates($ts)
 	{
 		$uid = $_SESSION['user']['uid'];
-		
+ 
+		$attendance = get_data("select 
+											MA.accepted,MA.mid,MA.comment,MA.uid,MA.response_date as ts,M.title, CONCAT(U.profile_firstname,' ',U.profile_lastname) as who from meeting_attendance MA 
+											inner join meeting M on M.mid=MA.mid
+											inner join user U on U.uid=MA.uid
+											order by response_date desc limit 10");
+
 		$articles = get_data("select title, aid as id, last_update as ts from article where last_update>'$ts' order by last_update desc limit 5");
 		$meetings = get_data("select concat_ws(', ',M.title,C.name) as title, M.mid as id, M.start_time, date_format(M.start_time, '%e. %b (%H:%i)') as ts from meeting M inner join club C on M.cid=C.cid where start_time<DATE_ADD(NOW(),INTERVAL 6 HOUR) order by start_time desc limit 15");
-		$news = get_data("select title, nid as id, posted, date_format(posted, '%e. %b (%H:%i)') as ts from news where posted>'$ts' order by posted desc limit 5");
-		$news_comment = get_data("select NC.nid as id ,NC.posted, date_format(NC.posted, '%e. %b (%H:%i)') as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where NC.posted>'$ts' order by NC.posted desc limit 5");
+		$news = get_data("select title, nid as id, posted, date_format(posted, '%e. %b (%H:%i)') as ts from news where did=0 order by posted desc limit 5");
+		$news_comment = get_data("select NC.nid as id ,NC.posted, date_format(NC.posted, '%e. %b (%H:%i)') as ts,N.title as title from news_comment NC inner join news N on N.nid=NC.nid where N.did=0 order by NC.posted desc limit 5");
 		$tabler_service = get_data("select tsid as id, headline as title, posted, date_format(posted, '%e. %b (%H:%i)') as ts from tabler_service_item where posted>'$ts' order by posted desc limit 5");
 		
 		$users = get_data("select concat_ws(' ',profile_firstname, profile_lastname) as title, uid as id, last_page_view, date_format(last_page_view, '%e. %b (%H:%i)') as ts, last_page_title as url_title, last_page_url as url_link from user where last_page_view>DATE_SUB(now(),interval 15 minute) order by ts desc limit 15");
 		
+		$birthday = get_user_birthday(false,true);
+
+
 		return array(
 			"aid" => $articles,
 			"mid" => $meetings,
-			"news" => array_merge($news,$news_comment),
+			"news" => $news,
+			"news_comment" => $news_comment,
 			"ts" => $tabler_service,
-			"uid" => $users
+			"uid" => $users,
+			"birthday" => $birthday,
+			"attendance" => $attendance
 		);
 	}
 	
@@ -2352,7 +2364,7 @@ $ics .=
 	
 	function logic_is_chairman()
 	{
-		if (isset($_SESSION['user']))
+		if (isset($_SESSION['user']) && isset($_SESSION['user']['active_roles']))
 		{
 			foreach ($_SESSION['user']['active_roles'] as $key => $data)
 			{
@@ -2410,7 +2422,7 @@ $ics .=
 	{
 		if (logic_is_admin()) return true;
 		if (logic_is_chairman()) return true;
-		if (isset($_SESSION['user']))
+		if (isset($_SESSION['user'])&& isset($_SESSION['user']['active_roles']))
 		{
 			foreach ($_SESSION['user']['active_roles'] as $key => $data)
 			{
@@ -2515,6 +2527,21 @@ $ics .=
 	}
 	store_log(isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"localhost", $section, addslashes($text));
   }
+  
+	function logic_has_valid_exit_date($date)
+	{
+		// date that expires June 30th  <any year>
+		$t = strtotime($date);
+		if (date("n",$t)==6 && date("j",$t)==30)
+		{
+			return true;
+		}		
+		else
+		{
+			return false;
+		}
+	}
+  
 	function logic_login($username, $password, $server_login=false)
 	{
 		if (!$server_login)
@@ -2540,6 +2567,7 @@ $ics .=
 			return false;
 		}
 
+		// check if you are a current user
 		{
 			$roles = fetch_active_roles($user['uid'],true);
 			$user['active_roles'] = $roles;
@@ -2555,6 +2583,13 @@ $ics .=
 			logic_log(__FUNCTION__, "Roles UID:{$user['uid']}:\n".print_r($roles,true));
 			logic_log(__FUNCTION__, "Login failed as honorary or member {$username} UID:{$user['uid']}");
 		}
+		
+		// check if you are an extabler
+		if (defined("ALLOW_EXTABLERS_TO_LOGIN") && ALLOW_EXTABLERS_TO_LOGIN && logic_has_valid_exit_date($user['profile_ended']))
+		{
+			return $user;
+		}
+		
 		return false;
 	}
 	
