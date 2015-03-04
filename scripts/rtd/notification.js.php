@@ -91,7 +91,7 @@ function get_time_stamp(k,v)
 	{
 			return date_to_time_stamp(v.last_page_view);
 	}
-	else if (k=='aid')
+	else if (k=='aid' || k=='attendance')
 	{
 		return date_to_time_stamp(v.ts);
 	}
@@ -143,13 +143,26 @@ function time_to_text(diff)
 	}
 }
 
+jQuery.fn.flash = function( color, duration )
+{
+    var current = this.css( 'color' );
+    this.animate( { color: 'rgb(' + color + ')' }, duration / 2 );
+    this.animate( { color: current }, duration / 2 );
+}
+
 
 function get_html(k,row)
 {
 	var now = new Date();	
 	var diff = Math.round((now.getTime() - get_time_stamp(k,row))/60000.0);
 
-	if (k=='aid')
+	 if (k == 'attendance')
+	{
+		var str = "";
+		if (row.accepted == 0) str = "meldte afbud til";
+		else str = "tilmeldte sig";
+		return "<tr><td><img src='/uploads/user_image?uid="+row.uid+"&landscape&w=24&h=36'></td><td><a href=/?uid="+row.uid+">"+row.who+"</a> "+str+" <a href=/?mid="+row.mid+">"+row.title+"</a> <br><i>"+time_to_text(diff)+" siden</i></td></tr>\n";
+	} else if (k=='aid')
 	{
 		return "<tr><td><img src='http://sproutit.scit.edu/images/ArticleIcon.gif' width=24></td><td>Artikel opdateret <a href=/?aid="+row.id+">"+row.title+"</a><br><i>"+time_to_text(diff)+" siden</i></td></tr>\n";
 	}
@@ -224,7 +237,7 @@ function notify_build()
   timestamp_index.sort();
   timestamp_index.reverse();
   
-  console.log(data_index);
+//  console.log(data_index);
 
 	html = '';
   $.each(timestamp_index, function(idx,v) {	
