@@ -1744,6 +1744,8 @@ END:VCALENDAR"
 	{
 		if (!logic_is_member()) return false;
 		
+		if (logic_is_club_chairman($cid)) return true;
+		
 		if (logic_is_group_manager($cid)) return true;
 		else if (logic_is_admin()) return true;
 		else if (logic_is_secretary())
