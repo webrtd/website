@@ -125,7 +125,7 @@
 	
 	function logic_send_sms($message)
 	{
-		if (logic_may_edit_meeting())
+		if (logic_may_edit_meeting($_REQUEST['cid']))
 		{
 			$active_members = fetch_active_club_members($_SESSION['user']['cid']); 
 			
@@ -1966,7 +1966,7 @@ END:VCALENDAR"
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		$member = MEMBER_ROLE_RID;
-		for ($i=-1;$i<3;$i++)
+		for ($i=-1;$i<6;$i++)
 		{
 		
 			$ys = logic_get_club_year_start($i);
