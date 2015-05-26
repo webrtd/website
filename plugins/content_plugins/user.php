@@ -312,7 +312,7 @@
 			}
 			if (isset($_REQUEST['newrole']) && (logic_is_admin()))
 			{
-				update_role($_REQUEST['uid'], $_REQUEST['newrole']['rid'], $_REQUEST['newrole']['start_date'], $_REQUEST['newrole']['end_date']);
+				add_role($_REQUEST['uid'], $_REQUEST['newrole']['rid'], $_REQUEST['newrole']['start_date'], $_REQUEST['newrole']['end_date']);
 			}
 		}
 		
