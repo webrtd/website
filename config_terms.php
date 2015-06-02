@@ -1,8 +1,116 @@
 <?
 	$terms = array(
-	'banner_1' => "<script src='http://ads.rtd.dk/?action=getpos&pid=1&sub_param=%%district%%'></script>",
-	'banner_2' => "<script src='http://ads.rtd.dk/?action=getpos&pid=7&sub_param=%%district%%'></script>",
-	'banner_3' => "<script src='http://ads.rtd.dk/?action=getpos&pid=8&sub_param=%%district%%'></script>",
+	'club_message_title' => 'Besked til %%name%%',
+	'club_message_body' =>
+'%%message%%
+---
+Fra %%sender%%
+http://rtd.dk/?uid=%%uid%%
+',
+	'club_message_prepare_send_club_admin' => '
+		<h1>Send besked til klubbens aktive medlemmer</h1>
+		<form action=?cid=%%cid%% method=post >
+		<center>
+		<textarea name=message style="width:99%;height:200px"></textarea>
+		</center>
+<!--		<input disabled type=checkbox value=sms name=sms>Send som SMS --->
+		<input type=submit value="Send besked"> 
+		</form>
+	',
+	'club_message_prepare_send' => '
+		<h1>Send besked til klubbens aktive medlemmer</h1>
+		<form action=?cid=%%cid%% method=post >
+		<center>
+		<textarea name=message style="width:99%;height:200px"></textarea>
+		</center>
+		<input type=submit value="Send besked">
+		</form>
+	',
+	'club_message_sent' => '
+		<h1>Besked afsendt til klubbens aktive medlemmer</h1>
+		<i>%%message%%</i>
+	',
+	'club_gallery' => '
+		<h1>Galleri</h1>
+		<a name=gallery><div style="height: 330px; overflow: scroll; overflow-x: hidden;" id=gallery></div><br></a>
+		<img width=100% src="/template/images/logo.png" id=gallery_pic>
+		<script>
+			var gallery_data = jQuery.parseJSON(\'%%data%%\');
+			var gallery_html = "";
+			$.each(gallery_data, function(i,v) {
+				gallery_html = gallery_html + "<a href=#gallery onclick=gallery_show("+v.miid+")><img width=25% src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200 title=\'"+v.title+" ("+v.start_time+")\'></a>";
+			});
+			$("#gallery").append(gallery_html);
+			
+			function gallery_show(miid)
+			{
+				$("#gallery_pic").attr("src", "/uploads/meeting_image/?miid="+miid);
+			}
+			
+		</script>
+	
+	',//http://rtd.dk/uploads/user_image?uid=9353&quad&s=200
+  'organisation_fullname' => 'Round Table Danmark',
+  'organisation_shortname' => 'RTD',
+	'banner_1' => "
+<!--/* OpenX Javascript Tag v2.8.10 */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write (\"<scr\"+\"ipt type='text/javascript' src='\"+m3_u);
+   document.write (\"?zoneid=3\");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write (\"&amp;exclude=\" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write (\"&amp;loc=\" + escape(window.location));
+   if (document.referrer) document.write (\"&amp;referer=\" + escape(document.referrer));
+   if (document.context) document.write (\"&context=\" + escape(document.context));
+   if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
+   document.write (\"'><\/scr\"+\"ipt>\");
+//]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=ab3a97c8&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=3&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ab3a97c8' border='0' alt='' /></a></noscript>
+	
+	",
+	'banner_2' => "
+<!--/* OpenX Javascript Tag v2.8.10 */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write (\"<scr\"+\"ipt type='text/javascript' src='\"+m3_u);
+   document.write (\"?zoneid=2\");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write (\"&amp;exclude=\" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write (\"&amp;loc=\" + escape(window.location));
+   if (document.referrer) document.write (\"&amp;referer=\" + escape(document.referrer));
+   if (document.context) document.write (\"&context=\" + escape(document.context));
+   if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
+   document.write (\"'><\/scr\"+\"ipt>\");
+//]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=a7db3e4b&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=2&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a7db3e4b' border='0' alt='' /></a></noscript>
+	
+	",
+	'banner_3' => "
+<!--/* OpenX Javascript Tag v2.8.10 */-->
+
+<script type='text/javascript'><!--//<![CDATA[
+   var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
+   var m3_r = Math.floor(Math.random()*99999999999);
+   if (!document.MAX_used) document.MAX_used = ',';
+   document.write (\"<scr\"+\"ipt type='text/javascript' src='\"+m3_u);
+   document.write (\"?zoneid=1\");
+   document.write ('&amp;cb=' + m3_r);
+   if (document.MAX_used != ',') document.write (\"&amp;exclude=\" + document.MAX_used);
+   document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+   document.write (\"&amp;loc=\" + escape(window.location));
+   if (document.referrer) document.write (\"&amp;referer=\" + escape(document.referrer));
+   if (document.context) document.write (\"&context=\" + escape(document.context));
+   if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
+   document.write (\"'><\/scr\"+\"ipt>\");
+//]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=a16fdb7c&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=1&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a16fdb7c' border='0' alt='' /></a></noscript>
+	",
 	'not_club_board_submission_period' => '<h1>Kan ikke indstille bestyrelse</h1><p>Det er kun muligt at indstille kommende bestyrelse i perioden 1. april - 30. juni</p>',
 	'birthday_js' => '
 	{
@@ -85,6 +193,7 @@
 		<li><a href=?reports&f=members>Medlemsudtræk</a>
 		<li><a href=?reports&f=jubilees>Klub- og medlemsjubilæer</a>
 		<li><a href=?reports&f=rti>Udtræk til Hvid Bog (RTI)</a>
+    <li><a href=?admin_download=roleprint>Udskrift af aktive roller</a>
 	</ul>
 	',
 	"user_viewed" => '
@@ -285,6 +394,17 @@ $('#prev').click(function() {
 	'edit_club_admin' =>
 	'
 	<h1>Rediger klub %%name%% - Administrator</h1>
+  <input type=button value="Permanent slet" onclick=confirm_delete_club(%%cid%%)>
+  <script>
+    function confirm_delete_club(cid)
+    {
+      if (confirm("Bekræft sletning af klubben. Alle historiske data vil blive fjernet!"))
+      {
+        document.location.href="/?cid=%%cid%%&permanent_delete_club";
+      }
+    }
+  </script>
+  <h1>Data</h1>
 	<form action=?cid=%%cid%% method=post enctype="multipart/form-data"> 
 		<table>
 		<tr><td colspan=2>
@@ -342,7 +462,7 @@ $('#prev').click(function() {
     var all_clubs = jQuery.parseJSON(\'%%all_clubs%%\');
     $.each(all_clubs, function(i,c) 
 	{
-		if (c.cid == %%charter_club_cid%%)
+		if (c.cid == "%%charter_club_cid%%")
 		{
 			$("#charter_club").append("<option value="+c.cid+" selected>"+c.name+"</option>");
 		}
@@ -1136,6 +1256,18 @@ $('#prev').click(function() {
 	if (r == "NIRO") 
 	{
 		enable("#IRO");
+		enable("#DF");
+		enable("#LF");
+		enable("#VLF");
+		enable("#NIRO");
+		enable("#ALF");
+		enable("#LS");
+		enable("#WEB");
+		enable("#LK");
+		enable("#RED");
+		enable("#SHOP");
+		enable("#LA");
+		enable("#F");
 		enable("#D1");
 		enable("#D2");
 		enable("#D3");
@@ -1475,7 +1607,7 @@ $('#prev').click(function() {
 	
 	$("#dashboard").append(data.club.name);
 		$("#dashboardintro").append(data.club.description);
-		$("#dashboardlogo").append("<img border=1 src=\"/uploads/club_logos/"+data.club.logo+"\">");
+		$("#dashboardlogo").append("<img border=1 width=100% src=\"/uploads/club_logos/"+data.club.logo+"\">");
 		$("#download").append("<a href=?dashboard="+data.club.cid+"&download>Vis i tabelform</a>");
 		var i = 0;
 		$.each(data.club_stats, function(y,d) {
@@ -1674,6 +1806,7 @@ $('#prev').click(function() {
 	});
 	</script>
 	',
+	'new_club_board_link' => 'http://rtd.dk/?uid=%%uid%%',
 	'new_club_board' => '
 	<h1>Bestyrelse %%period_start%% - %%period_end%%</h1>
 	<p>Indstil kommende bestyrelse for kommende klubår.</p>
@@ -2050,7 +2183,7 @@ Round Table Danmark',
 				var count = 0;
 				$.each(result.users, function(key,value) {
 					count++;
-					$("#usrres").append("<li><a href=?uid="+value.uid+">"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+"</a>");
+					$("#usrres").append("<li><a href=?uid="+value.uid+">"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+", Tlf: "+value.private_phone+"</a>");
 				});
 				if (count==0) $("#usrres").append("<i>Ingen match</i>");
 				$("#usrtitle").append(" ("+count+")");
@@ -2176,6 +2309,17 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</script>
 	',
 	'user_role_add' => '
+  <h1>Slet bruger permanent</h1>
+  <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent">
+  <script>
+    function confirm_delete(uid)
+    {
+      if (confirm("Bekræft - permanent sletning af brugerdata. Bør ikke anvendes ved udmelding/flytning."))
+      {
+        document.location.href="?uid=%%uid%%&permanent_delete";
+      }
+    }
+  </script>
 	<h1>Tildel rolle</h1>
 	<ul>
 	<i>Der kan ændres i periode for eksisterende roller ved at "overskrive" dem med nye data nedenfor.</i>
@@ -2738,7 +2882,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</td>
 		<td valign=top>
 		<!--<h1>Privat</h1>-->
-		<p>Født: %%profile_birthdate%%, Indmeldt: %%profile_started%%, Udmeldt: %%profile_ended%%.</p>
+		<p>Født: %%profile_birthdate%%, Indmeldt: %%profile_started%%, Udmeldt: %%profile_ended%%. <br>Sidst set online: %%last_page_view%%.</p>
 		<p>%%private_profile%%</p>
 		<p>Adresse: 
 			<ul>%%private_address%% %%private_houseno%% %%private_houseletter%% %%private_housefloor%% %%private_houseplacement%%<br>
@@ -3018,15 +3162,22 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-%%meeting_description%%
+Pligter:
+%%duty_text%%
 
-Du er ikke tildelt pligter.
+Breve:
+- Brev 1: http://www.rtd.dk/?mid=%%mid%%&collection=%%mid%%
+- Brev 1: http://www.rtd.dk/?mid=%%mid%%&collection=%%mid%%/2
+
 
 Arrangementet finder sted:
 %%location%%
 
 Husk at melde afbud via hjemmesiden:
 http://www.rtd.dk/?mid=%%mid%%
+
+%%meeting_description%%
+
 ',
 		'mail_invitation_subject' => 'RTD Mødeindkaldelse: %%title%%',
 		'admin_term_edit' => 'Rediger sprog',
@@ -3436,8 +3587,9 @@ http://www.rtd.dk/?mid=%%mid%%
 												Links
 												<ul>
 												<li><a href=?cid=%%cid%%&ics>Hent mødekalender som .ics</a>
-												<li><a href="mailto:%%membermails%%" target=_blank>Send mail til klubmedlemmer</a>
+												<li><a href="?cid=%%cid%%&message" target=_blank>Send mail til klubmedlemmer</a>
 												<li><a href="%%webpage%%" target=_blank>Klubbens hjemmeside</a>
+												<li><a href=?cid=%%cid%%&gallery>Mødegalleri</a>
 												</ul>
 											</p>
                       </td><td width=200px>
@@ -3551,7 +3703,7 @@ http://www.rtd.dk/?mid=%%mid%%
 															</p>
 															<p>
 															Kommentar til svar:<br>
-															<input type=text name=attendance[comment] value="">
+															<input type=text name=attendance[comment] value="" required>
 															</p>
 															<input type=submit value="Send svar">
 															</form>
@@ -3624,8 +3776,8 @@ http://www.rtd.dk/?mid=%%mid%%
     </script>
 		',
 		'meeting_header' => "<div align=right><a target=_blank href=?mid=%%mid%%&print title=Udskriv><img src=/template/images/icon_print.png></a> <a href=?mid=%%mid%%&ics title='Tilføj til kalender'><img src=/template/images/icon_calendar.png></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
-		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" rel="lightbox[roadtrip]"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
-		'meeting_bottom_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" rel="lightbox[roadtrip]"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300"></a>',
+		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" target=_blank><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
+		'meeting_bottom_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800"  target=_blank"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300"></a>',
 		'meeting_invite' => '
 												<h1>%%title%%</h1><a href="?cid=%%cid%%"><h2>%%name%%</h2></a>
 												<p>%%meeting_description%%</p>
@@ -4036,6 +4188,7 @@ http://www.rtd.dk/?mid=%%mid%%
 			<ul id=adminmenu>
 				<li class=parent><a href=#>Admin</a>
 				<ul>
+          <li><a href=?cid=-1>Opret klub</a>
 					<li><a href=?reports>Udtræk til Blå Bog m.m.</a>
  					<li><a href=?admin_download=all>XML: Medlemsarkiv</a>
  					<li><a href=?admin_download=xtable>XML: X-table udtræk</a>
