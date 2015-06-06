@@ -450,8 +450,8 @@
 	
 	function format_meetings()
 	{
-		$m = fetch_meetings("where end_time>now() and cid!=442 order by start_time asc", 100); 
-		
+		$m = fetch_meetings("where end_time>now() and M.cid!=442 order by start_time asc", 100); 
+		 
 		$result = array();
 		
 		foreach ($m as $k => $v)
