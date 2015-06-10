@@ -19,12 +19,14 @@ order by RD.shortname asc
     function future_role_print()
   {
   $sql ="
-select RD.description, U.uid, U.profile_firstname, U.profile_lastname, R.start_date, R.end_date from user U
+select C.name as Club, RD.description, U.uid, U.profile_firstname, U.profile_lastname, R.start_date, R.end_date from user U
 left join role R on R.uid=U.uid
 left join role_definition RD on RD.rid=R.rid
+left join club C on C.cid=U.cid
 where 
 R.start_date>now()
 order by RD.shortname asc
+
   ";
   die(utf8_decode(get_html_table($sql)));
   }
