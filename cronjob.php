@@ -432,6 +432,7 @@
 		return $result;	
 	}
 	
+	
 	function format_clubs()
 	{
 		$c = logic_get_clubs();
@@ -439,10 +440,12 @@
 		
 		foreach($c as $k=>$v)
 		{
-			if ($v['cid']!=442)
-			{
-				$result[] = array("name"=>$v['name'], "email"=>logic_club_mail($v['cid']), "address"=>$v['meeting_place']);
-			}
+				if ($v['name'] != "" && $v['name']!="RTI")
+				{
+					$chairman = logic_get_club_chairman($v['cid']);
+					$email = $chairman['private_email'];
+					$result[] = array("name"=>$v['name'], "email"=>$email, "address"=>$v['meeting_place']);
+				}
 		}
 		
 		return $result;
@@ -456,18 +459,19 @@
 		
 		foreach ($m as $k => $v)
 		{
-			
+			if ($v['name'] != "" && $v['name'] != "RTI")
+			{
 		
-			$result[] = array(
-				"internal_id" => $v['mid'],
-				"title" => $v['title'],
-				"description" => trim(strip_tags($v['description'])),
-				"start_time" => substr($v['start_time'], 0, 10),
-				"end_time" => substr($v['end_time'], 0, 10),
-				"table" => $v['name'],
-				"location" => $v['location']
-			);
-			
+				$result[] = array(
+					"internal_id" => $v['mid'],
+					"title" => $v['title'],
+					"description" => trim(strip_tags($v['description'])),
+					"start_time" => substr($v['start_time'], 0, 10),
+					"end_time" => substr($v['end_time'], 0, 10),
+					"table" => $v['name'],
+					"location" => $v['location']
+				);
+			}
 			
 		}
 		return $result;

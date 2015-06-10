@@ -16,6 +16,19 @@ order by RD.shortname asc
   die(utf8_decode(get_html_table($sql)));
   }
 
+    function future_role_print()
+  {
+  $sql ="
+select RD.description, U.uid, U.profile_firstname, U.profile_lastname, R.start_date, R.end_date from user U
+left join role R on R.uid=U.uid
+left join role_definition RD on RD.rid=R.rid
+where 
+R.start_date>now()
+order by RD.shortname asc
+  ";
+  die(utf8_decode(get_html_table($sql)));
+  }
+
 	function newsletter()
 	{
 		set_title('Newsletter');
@@ -381,6 +394,11 @@ order by RD.shortname asc
     {
       role_print();
     }
+	
+	if ($f == 'futureroleprint')
+	{
+		future_role_print();
+	}
 		if ($f == 'xtable')
 	{
 			$sql = 
