@@ -1131,7 +1131,7 @@
 	 */
 	function fetch_meeting_attendance($mid)
 	{
-		$sql = "select *,C.name as club_name from meeting_attendance MA
+		$sql = "select C.name as club_name,U.profile_firstname, U.profile_lastname, U.uid, MA.response_date, MA.comment, MA.accepted from meeting_attendance MA
 						inner join user U on U.uid=MA.uid
 						inner join club C on C.cid=U.cid
 						where mid=$mid
