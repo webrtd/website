@@ -221,19 +221,17 @@ order by RD.shortname asc
 			}
 		}
 		return term_unwrap('admin_new_boards', $data, true);
-		//return "<pre>".print_r($data,true)."</pre>";
 	}
 	
 	function sysstat()
 	{
 		if (isset($_REQUEST['clear_mail_queue']))
 		{
-			fire_sql("update mass_mail set processed=1 where processed=0 and mail_receiver NOT REGEXP '^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'");
+			fire_sql("update mass_mail set processed=1 where processed=0");
 		}
 		
 		if (isset($_REQUEST['sqlcsv']))
 		{
-			//SELECT * FROM `log` where remote_addr='193.163.78.251' order by ts asc
 			$f = 'data';
 			$fn = str_replace("\n", "\r\n", sqlcsv($_REQUEST['sqlcsv']));
 			header('Content-Description: File Transfer');
