@@ -9,6 +9,77 @@
 		
 	content_plugin_register('reports', 'content_handle_reports', 'Rapporter');
 
+	function do_members_pure_data()
+	{
+		$data = "";
+			$ddata = logic_get_clubs();
+			foreach($ddata as $k=>$club)
+			{
+				$data .= "<h2>{$club['name']}</h2>\n";
+				$sql = "select U.uid as UID, U.profile_firstname as Fornavn, U.profile_lastname as Efternavn, U.profile_started as Charterdato, U.profile_birthdate as Foedselsdato, U.private_address as Vej, U.private_houseno as HusNr, U.private_houseletter as Bogstav, U.private_housefloor Etage, U.private_houseplacement as Side, U.private_zipno PostNr, U.private_city as Bynavn, U.private_mobile as Mobil, U.private_email as Email, U.company_name as Firma, U.company_position as Titel from user U where cid={$club['cid']} order by U.profile_firstname ASC";
+
+			
+				
+				$db = get_db();
+				$rs = $db->execute($sql);
+				
+				
+				$data .= "<table width=100% border=1>";
+				
+				$first = true;
+				$count = 0;
+				while ($row = $db->fetchassoc($rs))
+				{
+					if ($first)
+					{
+						$data .= "<tr>";
+						foreach($row as $k=>$v)
+						{
+							$data .= "<th>$k</th>";
+						}
+						
+						$data .= "<th>Roller</th>";
+						$data .= "</tr>\n";
+					}
+					
+					$data_row = "<tr>";
+					foreach($row as $k=>$v)
+					{
+						$data_row .= "<td>$v</td>";
+					}
+					
+					$r = logic_get_roles($row['UID'],true);
+					$roles = array();
+					$hide = true;
+					foreach($r as $k=>$v)
+					{
+						if ($v['rid']==MEMBER_ROLE_RID) $hide=false;
+						if ($v['rid']==HONORARY_ROLE_RID) $hide=false;
+						if ($v['rid']!=MEMBER_ROLE_RID && $v['rid']!=ADMIN_ROLE_RID)
+						{
+							$roles[] = $v['description'];
+						}
+					}
+					$data_row .= "<td>".implode(",",$roles)."</td>";
+					$data_row .= "</tr>\n";
+					if (!$hide) {
+						$data .= $data_row;
+						$count++;
+					}
+					
+					$first=false;
+				}
+				$data .= "</table>";
+				$data .= "<p>Antal medlemmer $count</p>";
+
+			}
+			echo $data;
+			$data = "";
+		
+		die();
+	}
+	
+	
 	function do_members_data()
 	{
 		$data = "";
@@ -94,7 +165,7 @@
 			
 			$data .= "<h1>{$d['name']}</h1>";
 			
-			$data .= get_html_table("select C.name as Klub, C.meeting_place as Moedested, C.meeting_time as Moedetid, C.charter_date as Charterdato, CC.name as Charterklub, C.webpage as WWW from club C inner join club CC on CC.cid=C.charter_club_cid where C.district_did={$d['did']}");
+			$data .= get_html_table("select SUBSTRING_INDEX(SUBSTRING_INDEX(C.name, ' ',  3), ' ', -1) as ByNavn, C.name as Klub, C.meeting_place as Moedested, C.meeting_time as Moedetid, C.charter_date as Charterdato, CC.name as Charterklub, C.webpage as WWW from club C inner join club CC on CC.cid=C.charter_club_cid where C.district_did={$d['did']} order by ByNavn ASC");
 		}
 		die($data);
 	}	
@@ -216,7 +287,7 @@
 		echo "<h1>Clubs</h1>";
 		echo "<table width=100% border=1>";
 		
-		$chairmen = logic_get_all_club_chairmen();
+		$chairmen = logic_get_all_club_chairmen(true);
 		$html = "<tr>
       <th>Club No</th>
 			<th>Club</th>
@@ -254,7 +325,7 @@
 				<td>{$u['private_city']}</td>
 				<td>{$u['private_country']}</td>
 				<td>{$phone}</td>
-				<td>{$u['private_email']}</td>
+				<td>rt{$clubno}@rtd.dk</td>
 				<td>{$u['profile_birthdate']}</td>
 				<td>{$u['company_business']}</td>
 			</tr>";
@@ -360,6 +431,10 @@
 				do_club_data();
 			}
 			if ($f == 'members')
+			{
+				do_members_pure_data();
+			}
+			if ($f == 'members_district')
 			{
 				do_members_data();
 			}
