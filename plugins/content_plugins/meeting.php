@@ -415,6 +415,7 @@
 				
 				foreach($attendance as $k => $v)
 				{
+					$v['mid'] = $meeting['mid'];
 					if ($v['accepted']=='0')
 					{
 						$v['status'] = term('meeting_attendance_no');
@@ -447,9 +448,9 @@
 				
 				$attendance = fetch_meeting_attendance($meeting['mid']);
 				
-				
 				foreach($attendance as $k => $v)
 				{
+					$v['mid'] = $meeting['mid'];
 					if ($v['accepted']=='0')
 					{
 						$v['status'] = term('meeting_attendance_no');
