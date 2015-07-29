@@ -1161,7 +1161,9 @@
     $clubs = false;
 		if (!is_numeric($did) || $did=="")
 		{
-			$clubs = fetch_clubs();
+			$clubs =get_data("select *,TRIM(REPLACE(SUBSTRING(name,7),'-',' ')) as clubname from club order by clubname asc");;
+			
+			// $clubs = fetch_clubs();
 		}
 		else
 		{
@@ -1385,7 +1387,6 @@ END:VCALENDAR"
 
 		$content = term_unwrap('mail_invitation',$meeting);
 		$title = term_unwrap('mail_invitation_subject',$meeting);
-
 
 		
 		logic_save_mail($to, $title, $content, $attachment_id, $_SESSION['user']['uid']);
@@ -1966,7 +1967,7 @@ END:VCALENDAR"
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		$member = MEMBER_ROLE_RID;
-		for ($i=-1;$i<6;$i++)
+		for ($i=0;$i<6;$i++)
 		{
 		
 			$ys = logic_get_club_year_start($i);
@@ -2306,9 +2307,9 @@ $ics .=
 		return $articles;
 	}
 	
-	function logic_get_all_club_chairmen()
+	function logic_get_all_club_chairmen($future=false)
 	{
-		return fetch_members_by_roles("('".CHAIRMAN_SHORT_NAME."')");
+		return fetch_members_by_roles("('".CHAIRMAN_SHORT_NAME."')",$future);
 	}
 	
 	function get_district_chairman_mail_from_club($cid)

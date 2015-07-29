@@ -224,6 +224,8 @@ function event_new_user($uid)
   $maildata = array(
     "name" => $data['profile_firstname'].' '.$data['profile_lastname'],
     "username" => $data['username'],
+	"profile_birthdate" => $data['profile_birthdate'],
+	"profile_started" => $data['profile_started'],
     "password" => DEFAULT_NEW_USER_PASSWORD,
     "club" => $club['name']
   );
