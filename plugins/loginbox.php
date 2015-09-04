@@ -4,6 +4,7 @@
 		
 		31-10-2012	rasmus@3kings.dk	draft
 		13-03-2013	rasmus@3kings.dk	fixed unread messages in imap check
+		04-09-2015	rasmus@3kings.dk	missing password fixed
 	*/
 	
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/class.phpmailer.php';
@@ -17,11 +18,17 @@
 	{
 		return md5($username.$password_hash.COOKIE_SALT);
 	}
+  
+  function get_cookie_name() 
+  {
+		$sn = $_SERVER['SERVER_NAME'];
+		$cookie = $sn.'_LOGIN_COOKIE';
+    return $cookie;
+  }
 
 	function auto_login()
 	{
-		$sn = $_SERVER['SERVER_NAME'];
-		$cookie = unserialize($_COOKIE[$sn.'_LOGIN_COOKIE']);
+		$cookie = unserialize($_COOKIE[get_cookie_name()]);
 		$verify = build_hash($cookie['username'],$cookie['hash1']);
 		if ($verify == $cookie['hash2'])
 		{
@@ -57,53 +64,23 @@
 				return term('error_user_not_found');
 			}
 	}
-/*
-function pop3_login($host,$port,$user,$pass,$folder="INBOX",$ssl=false)
-{
-	return imap_open("{{$host}:{$port}/novalidate-cert}INBOX", $user, $pass);
-}
-function pop3_stat($connection)       
-{
-    $check = imap_mailboxmsginfo($connection);
-    return ((array)$check);
-} 
-*/
-function check_club_mail($club)
-{
-	if (NB_MAIL_POSTFIX != '@rtd.dk')	return;
-	$i = logic_check_clubmail($club);
-	if ($i>0)
+	function check_club_mail($club)
 	{
-		$pwd = $club['webmail_password'];
-		$box = logic_club_mail($club['cid']);
-		echo term_unwrap("unread_mail_notify",array("Unread"=>$i,"mailbox"=>$box, "webmail_password"=>$pwd));
+		if (NB_MAIL_POSTFIX != '@rtd.dk')	return;
+		$i = logic_check_clubmail($club);
+		if ($i>0)
+		{
+			$pwd = $club['webmail_password'];
+			$box = logic_club_mail($club['cid']);
+			echo term_unwrap("unread_mail_notify",array("Unread"=>$i,"mailbox"=>$box, "webmail_password"=>$pwd));
+		}
+		else if ($i<0)
+		{
+			echo (term('unable_to_open_mailbox'));
+			
+		}
 	}
-	else if ($i<0)
-	{
-		echo (term('unable_to_open_mailbox'));
 		
-	}
-/*
-	$data = explode(" ", $club['name']);
-	$mailbox = strtolower($data[0])."@roundtable.dk";
-	$password = trim($club['webmail_password']); // "RT-".substr($data[0], 2)."password";
-	// $club['webmail_password']; //	
-	$conn = pop3_login("mail.roundtable.dk", "143", $mailbox, $password);
-	if ($conn)
-	{
-		$stat = pop3_stat($conn);
-		$stat['mailbox'] = $mailbox;
-		if ($stat['Unread']>0) echo term_unwrap("unread_mail_notify",$stat);
-	}
-	else
-	{
-		die();
-		die("<script>alert('Kodeordet til {$mailbox} matcher ikke vores database. Opdater venligst!');document.location.href='/?cid={$club['cid']}&edit';</script>");
-		logic_save_mail(ADMIN_MAIL, "Unable to open clubmail $mailbox", "Failed checking clubmail $mailbox on rtd.dk");
-	}
-*/
-	}
-	
 	function manual_login()
 	{
 		$user = logic_login($_REQUEST['username'], $_REQUEST['password']);
@@ -119,7 +96,7 @@ function check_club_mail($club)
 					"hash1" => $_SESSION['user']['password'],
 					"hash2" => build_hash($_SESSION['user']['username'], $_SESSION['user']['password'])
 				);
-				setcookie("RTD_LOGIN_COOKIE", serialize($cookie), time()+3600*24*30, "/");
+				setcookie(get_cookie_name(), serialize($cookie), time()+3600*24*30, "/", str_replace("www.", "", $_SERVER['HTTP_HOST']));
 			}
 			
 			$show_news = logic_should_show_news();
@@ -151,25 +128,24 @@ function check_club_mail($club)
 	
 	function loginbox()
 	{
-		if (!logic_is_member() && isset($_COOKIE['RTD_LOGIN_COOKIE']))
+		if (!logic_is_member() && isset($_COOKIE[get_cookie_name()]))
 		{
 			auto_login();
 		}
 		$error_str = "";
 		if (isset($_REQUEST['sendpassword']))
 		{
-			$error_str .= send_password();
+			die(send_password());
 		}
 		if (isset($_REQUEST['logout']))
 		{
 			unset($_SESSION['user']);
-			setcookie('RTD_LOGIN_COOKIE','');
+			setcookie(get_cookie_name(),'');
 		}
 		else if (isset($_REQUEST['login']))
 		{
 			manual_login();
 		}
-		
 		if (isset($_SESSION['user']))
 		{
 			$data = addslashes(json_encode(logic_get_duties($_SESSION['user']['uid'])));
