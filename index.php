@@ -1,15 +1,20 @@
 <?
-	/*
-	if (!isset($_REQUEST['down']))
-	{
-		die("<title>Jamen, jamen...</title><h1>Kom tilbage...</h1><p>Vi opdaterer pt. serveren - kom tilbage senere</p><p>MVH Rasmus, WEB</p>");
-	}*/
 	require_once 'config.php';
 	require_once 'config_terms.php';
 	require_once './includes/logic.php';
 	require_once './includes/cache.php';
 	require_once './includes/sessionhandler.php';
 
+	if (defined("FORCE_SECURE_CONNECTION") && FORCE_SECURE_CONNECTION)
+	{
+		if (empty($_SERVER['HTTPS']))
+		{
+			header("location: https://{$_SERVER['SERVER_NAME']}");
+			die();
+		}
+	}
+	
+	
 	$plugins = array();
 	$title = '--NOT SET--';
 	
