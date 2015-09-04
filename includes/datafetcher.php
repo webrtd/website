@@ -2115,7 +2115,22 @@ order by R.end_date
 	 */
 	function get_geolocation($id,$type)
 	{
-		return get_one_data_row("select * from geolocation where refid=$id and reftype='$type' and expiry<now()");
+		$sql = "select * from geolocation where refid=$id and reftype='$type' and expiry_date>now()";
+		return get_one_data_row($sql);
+	}
+	
+	
+	function get_geolocation_latest()
+	{
+		$sql = 
+		"SELECT G.lat, G.lng, U.profile_firstname, U.profile_lastname, U.uid, U.private_phone, U.private_mobile, U.company_phone, C.cid, C.name, U.last_page_view
+		FROM geolocation G 
+		INNER JOIN user U on U.uid=G.refid
+		INNER JOIN club C on C.cid=U.cid
+		WHERE G.reftype='private' and U.last_page_view>date_sub(now(), interval 1 hour)
+		ORDER BY G.expiry_date DESC";
+		logic_log("get_geolocation_latest", $sql);
+		return get_data($sql);
 	}
 	
 	/**
@@ -2126,18 +2141,32 @@ order by R.end_date
 	 * @param string $type values (private,company,club,meeting,etc.)
 	 * @param date $expiry expiry date
 	 */
-	function put_geolocation($id, $lat, $lng, $type, $expiry)
+	function put_geolocation($id, $lat, $lng, $type, $expiry=false)
 	{
 		$data = get_geolocation($id,$type);
 		if ($data)
 		{
-			$sql = "update geolocation set lat='$lat', lng='$lng', expiry='$expiry' where gid='{$data['gid']}'";
+			if ($expiry == false)
+			{
+				$sql = "update geolocation set lat='$lat', lng='$lng', expiry_date=date_add(now(), interval 1 day) where gid='{$data['gid']}'";
+			}
+			else
+			{
+				$sql = "update geolocation set lat='$lat', lng='$lng', expiry_date='$expiry' where gid='{$data['gid']}'";
+			}
 		}
 		else
 		{
-			$sql = "insert into geolocation (refid,reftype,lat,lng,expiry) values ('$id', '$type', '$lat', '$lng', '$expiry')";
+			if ($expiry == false)
+			{
+				$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', date_add(now(), interval 1 day))";
+			}
+			else
+			{
+				$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', '$expiry')";
+			}
 		}
-		echo $sql;
+		logic_log("put_geolocation", $sql);
 		fire_sql($sql);
 	}
 

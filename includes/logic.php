@@ -1047,7 +1047,34 @@
 			logic_resign_user($uid,'Profile termination',$data['profile_ended']);
 		}
 		save_user($uid,$data);
-		return logic_get_user_by_id($uid);
+
+		$u = logic_get_user_by_id($uid);
+		$privat = "{$u['private_address']} {$u['private_houseno']}, {$u['private_city']}, {$u['private_country']}";
+		$loc = logic_get_latlng($privat);
+		if ($loc !== false) put_geolocation($uid, $loc->lat, $loc->lng, 'home');
+
+		$work  = "{$u['company_address']}, {$u['company_city']}, {$u['company_country']}";
+		$loc = logic_get_latlng($work);
+		if ($loc !== false) put_geolocation($uid, $loc->lat, $loc->lng, 'work');
+
+
+		return $u;
+	}
+
+	function logic_get_latlng($what)
+	{
+		$what = urlencode($what);
+		$url = "http://rtd.dk/scripts/rtd/geocodeproxy.php?address={$what}&sensor=false";
+		$data_js = file_get_contents($url);
+		$data = json_decode($data_js);
+		if (empty($data->results))
+		{
+			return false;
+		}
+		else
+		{
+			return $data->results[0]->geometry->location;
+		}
 	}
 
 	/**
@@ -2561,13 +2588,28 @@ $ics .=
 		{
 			$user = fetch_user_by_company_email($username);
 		}
+		
+		
 
 		if (!$user) return false;
-		if (!$server_login)
-		if ($user['password']!=md5($password) && $user['password']!=$password)
+		else
 		{
-			logic_log(__FUNCTION__, "Login failed (wrong username/password) {$username}");
-			return false;
+			if (!$server_login)
+			{
+				$pwdenc = $user['password'] == md5($password);
+				
+				if ($user['password'] == md5($password))
+				{
+				}
+				else if ($user['password'] == $password)
+				{
+				}
+				else
+				{
+					logic_log(__FUNCTION__, "Login failed (wrong username/password) {$username}");
+					return false;
+				}
+			}
 		}
 
 		// check if you are a current user
@@ -2952,5 +2994,52 @@ EMAIL;PREF;INTERNET:{$p['private_email']}
 REV:{$d}
 END:VCARD
  ");
+ } 
+ 
+ function logic_get_geolocation_latest()
+ {
+	$data = get_geolocation_latest(); 
+	return $data;
  }
+ 
+ function logic_update_geolocation($lat, $lng)
+ {
+	if (logic_is_member())
+	{
+		put_geolocation($_SESSION['user']['uid'], $lat, $lng, 'private');
+	}
+ }
+ 
+ function logic_get_geodata($lat, $lng)
+ {
+	$sql = "select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 limit 100";
+	return get_data($sql);
+ }
+ 
+ function logic_get_mail()
+ {
+	if (logic_is_member())
+	{
+		$sql = 
+		"
+			SELECT 
+			M.id, A.aid, A.filename, M.mail_subject, M.mail_content, M.submit_time, U.profile_firstname as SenderFirstname, U.profile_lastname as SenderLastname, U.uid as SenderUID, (A.aid*128) as token
+			FROM mass_mail M
+
+			LEFT JOIN user U ON U.uid=M.uid
+			LEFT JOIN mass_mail_attachment A on M.aid=A.aid
+
+
+			WHERE M.mail_receiver LIKE '%{$_SESSION['user']['private_email']}%'
+			OR M.mail_receiver LIKE '%{$_SESSION['user']['company_email']}%'
+
+			ORDER BY M.id DESC
+			LIMIT 100
+		";
+		
+		
+		return get_data($sql);
+	}
+ }
+ 
 	?>

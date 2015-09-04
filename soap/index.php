@@ -1,4 +1,6 @@
 <?php
+	session_start();
+	
 	require_once('include/nusoap.php');
 	chdir($_SERVER['DOCUMENT_ROOT']);
 
@@ -6,7 +8,6 @@
 	require_once $_SERVER['DOCUMENT_ROOT'].'/config_terms.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/logic.php';
 	require_once $_SERVER['DOCUMENT_ROOT'].'/includes/sessionhandler.php';
-	session_start();
 
 
 	
@@ -18,34 +19,103 @@
 
 	$server->configureWSDL(str_replace('.','',$_SERVER['SERVER_NAME']), $namespace);
 	
+	
 	function build_token($user)
 	{
-		$remote = $_SERVER['REMOTE_ADDR'];
-		$server = $_SERVER['SERVER_NAME'];
-		$sql = "select md5('{$remote}{$server}{$user['password']}') as token";
+		$token_salt = "1-2-3-I-LOVE-RTD";
+		$str = $token_salt.$user['password'];
+		$uid = $user['uid'];
+		$sql = "select md5(concat('{$token_salt}',password)) as token from user where uid={$uid}";
 		$data = get_one_data_row($sql);
 		return $data['token'];
 	}
 		
 	function verify_token($token)
 	{
-		$remote = $_SERVER['REMOTE_ADDR'];
-		$server = $_SERVER['SERVER_NAME'];
-		$sql = "select uid from user where md5(concat('{$remote}{$server}',password))='{$token}'";
+		$token_salt = "1-2-3-I-LOVE-RTD";
+		$sql = "select uid,username,password from user where STRCMP(md5(concat('{$token_salt}',password)),'{$token}')=0";
 		$data = get_one_data_row($sql);
-		if (isset($data['uid']))
+		if (isset($data['uid'])) 
 		{
+			$_SESSION['user'] = logic_login($data['username'], $data['password'], true);
 			return true;
 		}
 		else
 		{
+			session_destroy();
+			session_start();
 			return false;
 		}		
 	}
 	
-	function soap_search($token, $q)
+	function soap_update_geolocation($lat, $lng, $token)
+	{
+		if (!verify_token($token)) 
+		{
+			return false;
+		}
+		logic_log(__FUNCTION__, "({$lat}, {$lng})");
+		logic_update_geolocation($lat, $lng);
+		return true;
+	}
+	
+	$server->register('soap_update_geolocation', 
+		array(
+			'token' => 'xsd:string',
+			'lat' => 'xsd:string',
+			'lng' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'cid = club id of club to fetch.'
+
+	);
+
+	function soap_get_geolocation_latest($token)
+	{
+		if (!verify_token($token)) 
+		{
+			logic_log("soap_get_geolocation_latest", "bad token");
+			return false;
+		}
+		logic_log(__FUNCTION__, "");
+		$data = json_encode(logic_get_geolocation_latest());
+		return $data;
+	}
+	
+	$server->register('soap_get_geolocation_latest', 
+		array(
+			'token' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, ''
+
+	);
+	
+	
+	function soap_get_active_club_members($cid, $token)
 	{
 		if (!verify_token($token)) return false;
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - klub');
+		logic_log(__FUNCTION__, $cid);
+		return json_encode(logic_get_active_club_members($cid));
+	}
+	
+	$server->register('soap_get_active_club_members', 
+		array(
+			'token' => 'xsd:string',
+			'cid' => 'xsd:int'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'cid = club id of club to fetch.'
+
+	);
+	
+	function soap_search($q, $token)
+	{
+		if (!verify_token($token)) return false;
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - søg');
+		logic_log(__FUNCTION__, $q);
+
 		return json_encode(logic_search($q));
 	}
 
@@ -57,11 +127,44 @@
 		array('data' => 'xsd:string'),
 		false, false, false, false, 'q = search term to query the database for.'
 	);
+	
+	function soap_get_geodata($token, $lat,$lng)
+	{
+		if (!verify_token($token)) return false;
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - geodata');
+		logic_log(__FUNCTION__, "({$lat},{$lng})");
+		$data = logic_get_geodata($lat, $lng);
+		for ($i=0; $i<sizeof($data); $i++)
+		{
+			$d = $data[$i];
+			$u = logic_get_user_by_id($d['refid']);
+			
+			$data[$i]['profile_firstname'] = $u['profile_firstname'];
+			$data[$i]['profile_lastname'] = $u['profile_lastname'];
+		}
+		
+		return json_encode($data);
+	}
+	
+	$server->register('soap_get_geodata',
+		array(
+			'token' => 'xsd:string',
+			'lat' => 'xsd:string',
+			'lng' => 'xsd:string'
+		),
+		array('data' => 'xsd:string'),
+		false, false, false, false, 'lat/lng = current location.'
+	);
 
 	function soap_get_user_by_id($token, $uid)
 	{
 		if (!verify_token($token)) return false;
-		return json_encode(logic_get_user_by_id($uid));
+		logic_log(__FUNCTION__, $uid);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - vis medlem');
+		logic_update_user_view_tracker($uid);
+		$data = logic_get_user_by_id($uid);
+		if (isset($data['password'])) unset($data['password']);
+		return json_encode($data);
 	}
 	
 	$server->register('soap_get_user_by_id',
@@ -82,7 +185,14 @@
 		{
 			$data['token'] = build_token($data);
 			if (isset($data['password'])) unset($data['password']);	
+			logic_log(__FUNCTION__, "OK: ".$username.print_r($data,true));
 		}
+		else
+		{
+			logic_log(__FUNCTION__, "Fail: ".$username);
+		}
+		
+		logic_log(__FUNCTION__, json_encode($data));
 		
 		return json_encode($data);
 	}
@@ -96,14 +206,19 @@
 		,false, false, false, false, 'username = username or email of user to logon. password = password of user to logon.'
 	);
 	
-	function soap_get_club($token,$cid)
+	function soap_get_club($cid,$token)
 	{
-		if (!verify_token($token)) return false;
+		if (!verify_token($token)) 
+		{
+			return false;
+		}
+		logic_log(__FUNCTION__, $cid);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - klub');
 		return json_encode(logic_get_club($cid));
 	}
 	
 	$server->register('soap_get_club',
-		array('token'=>'xsd:string','cid' => 'xsd:int'),
+		array('cid' => 'xsd:int','token'=>'xsd:string'),
 		array('data' => 'xsd:string')
 		,false, false, false, false, 'cid = id of specific club to get from database.'
 	);
@@ -119,9 +234,11 @@
 		array('data' => 'xsd:string')
 	);
 	
-	function soap_fetch_future_meetings_for_club($token,$cid)
+	function soap_fetch_future_meetings_for_club($cid,$token)
 	{
 		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $cid);		
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - klub');
 		return json_encode(logic_fetch_future_meetings_for_club($cid));
 	}
 	
@@ -135,6 +252,8 @@
 	function soap_save_meeting_attendance($token, $cid, $mid, $uid, $accept, $comment)
 	{
 		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $mid);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
 		return json_encode(logic_save_meeting_attendance($cid, $mid,$uid,$accept,$comment));
 	}
 	
@@ -154,6 +273,8 @@
 	function soap_get_news($token)
 	{
 		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, "");
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - nyheder');
 		return json_encode(logic_get_news(0,5));
 	}
 
@@ -162,11 +283,43 @@
 			array('data' => 'xsd:string')
 	);
 	
+
+	function soap_get_last_mail_index($token)
+	{
+		if (!verify_token($token)) return false;
+		
+		$sql = "select id from mass_mail WHERE mail_receiver LIKE '%{$_SESSION['user']['private_email']}%' order by id desc limit 1";
+//		logic_log(__FUNCTION__, $sql);
+		$data = get_one_data_row($sql);
+		return json_encode($data['id']);
+	}
+	$server->register('soap_get_last_mail_index',
+			array('token'=>'xsd:string'),
+			array('data' => 'xsd:string')
+	);
+	
+	function soap_get_mail($token)
+	{
+		if (!verify_token($token)) return false;
+		
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - besked');
+		$data = json_encode(logic_get_mail(0,5));
+		logic_log(__FUNCTION__, $data);
+		return $data;
+	}
+
+	$server->register('soap_get_mail',
+			array('token'=>'xsd:string'),
+			array('data' => 'xsd:string')
+	);
+
 	
 
 	function soap_get_meeting_attendance($token, $mid)
 	{
 		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $mid);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
 		return json_encode(fetch_meeting_attendance($mid));
 	}
 
@@ -177,9 +330,45 @@
 
 	);
 	
+	function soap_send_mail($token, $uid, $title, $content)
+	{
+		if (!verify_token($token)) return false;
+		
+		$data = json_decode($uid);
+		if (is_array($data))
+		{
+			$uid = $data;
+			$email = "";
+			for ($i=0;$i<sizeof($uid);++$i)
+			{
+				$user = logic_get_user_by_id($uid[$i]);
+				$email .=  $user['private_email']."; ";
+			}
+		}
+		else
+		{
+			$user = logic_get_user_by_id($uid);		
+			$email = $user['private_email'];
+		}
+		logic_log(__FUNCTION__, $email);
+		
+		logic_save_mail($email, $title, $content, 0, $_SESSION['user']['uid']);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - besked');
+		return true;
+	}
+
+	$server->register('soap_send_mail',
+			array('token'=>'xsd:string','uid' => 'xsd:string', 'title'=>'xsd:string', 'content'=>'xsd:string'),
+			array('data' => 'xsd:string')
+			,false, false, false, false, 'uid= user, title=msg title, content=msg content.'
+
+	);
+	
 	function soap_get_meeting($token,$mid)
 	{
 		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $mid);
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
 		return json_encode(logic_get_meeting($mid));
 	}
 	
