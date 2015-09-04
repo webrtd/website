@@ -2,47 +2,6 @@
 /*
 	logic layer for round table system (c) 3kings.dk 2012-2013
 	
-		
-	28-10-2012	rasmus@3kings.dk	draft
-	29-10-2012	rasmus@3kings.dk	meetings logic
-	31-10-2012	rasmus@3kings.dk	chesire cat for db interaction
-	01-11-2012	rasmus@3kings.dk	added article logic
-	02-11-2012	rasmus@3kings.dk	added country logic
-	03-11-201i2	rasmus@3kings.dk	stats functionaliy
-	05-11-2012	rasmus@3kings.dk	meeting image functionality
-	06-11-2012	rasmus@3kings.dk	meeting image folder structure
-	07-11-2012	rasmus@3kings.dk	unified date format (logic_date_format)
-	13-11-2012	rasmus@3kings.dk	clubs loading for country/district pages
-	20-11-2012 	rasmus@3kings.dk 	minutes saving
-	25-11-2012 	rasmus@3kings.dk 	finish minutes
-	27-11-2012	rasmus@3kings.dk	logic_may_edit_profile added, logic_upload_profile_image
-	28-11-2012	rasmus@3kings.dk	logic_get_roles
-	29-11-2012	rasmus@3kings.dk	logic_search, logic_create_user, events added
-	21-12-2012	rasmus@3kings.dk	logic_end_role
-	02-01-2013	rasmus@3kings.dk	logic_get_banners
-  13-01-2013  rasmus@3kings.dk  resign membership
-  29-01-2013	rasmus@3kings.dk	tablerservice functionality
-  13-02-2013	ramsus@3kings.dk	tracker
-  21-02-2013	rasmus@3kings.dk	newsletter
-  23-02-2013  rasmus@3kings.dk  file migration
-  24-02-2013  rasmus@3kings.dk  error in logic_get_meeting_duties fixed (is_numeric)
-  25-02-2013	rasmus@3kings.dk	honorary members allowed to login
-  26-02-2013  rasmus@3kings.dk  attachment to newsletters
-  02-03-2012  rasmus@3kings.dk  new users are automatically signed up for club meetings. resigning users are removed from future meetings
-  03-03-2012	rasmus@3kings.dk	copy of newsletters sent to club mail
-	05-03-2013	rasmus@3kings.dk	update club, logo upload
-	11-03-2013	rasmus@3kings.dk	fixed logic_is_member function
-	24-03-2013	rasmus@3kings.dk	logic_fetch_minutes_this_year
-	26-03-2013	rasmus@3kings.dk	best club/meetings
-	05-04-2013	rasmus@3kings.dk	club chairmen now has same rights as club secretaries (logic_is_club_secretary)
-	01-05-2013	rasmus@3kings.dk	random user
-	21-05-2013	rasmus@3kings.dk	logic_get_old_roles, logic_update_user_view_tracker
-  28-06-2013  rasmus@3kings.dk  logic_delete_role
-  06-08-2013	rasmus@3kings.dk	logic_club_board_submission_period
-	10-10-2013	rasmus@3kings.dk	fixed issue in logic_save_mail
-	15-10-2013	rasmus@3kings.dk	when membership expiration is updated, sign up for future meetings (logic_update_member_expiration)
-	13-04-2014	rasmus@3kings.dk	logic_get_duties added
-	07-07-2014	rasmus@3kings.dk	logic_login updated with server login
 	-- history moved to github ---
   */ 
 
@@ -1497,7 +1456,7 @@ END:VCALENDAR"
 		$c = get_comments($nid);
 		for ($i=0;$i<sizeof($c);$i++)
 		{
-			$c[$i]['content'] = nl2br($c[$i]['content']);
+			$c[$i]['content'] = stripslashes(nl2br($c[$i]['content']));
 			$c[$i]['user'] = logic_get_user_by_id($c[$i]['uid']);
 		}
 		return $c;
@@ -2307,21 +2266,36 @@ $ics .=
 	
 	function logic_get_article($aid)
 	{
+		$article = false;
 		if ($aid==-1)
 		{
 			if (logic_is_member())
 			{
-				return fetch_article(LANDING_PAGE_PRIVATE);
+				$article = fetch_article(LANDING_PAGE_PRIVATE);
 			}
 			else
 			{
-				return fetch_article(LANDING_PAGE_PUBLIC);
+				$article = fetch_article(LANDING_PAGE_PUBLIC);
 			}
 		}
 		else
 		{
-			return fetch_article($aid);
+			$article = fetch_article($aid);
 		}
+		
+		if ($article !== false)
+		{
+			$s = $_SERVER['SERVER_NAME'];
+			$c = $article['content'];
+			$c = str_ireplace("http://{$s}/", "/", $c);
+			$c = str_ireplace("https://{$s}/", "/", $c);
+			$c = str_ireplace("https://www.{$s}/", "/", $c);
+			$c = str_ireplace("http://www.{$s}/", "/", $c);
+			$article['content'] = $c;
+		}
+		
+		
+		return $article;
 	}
 	
 	function logic_get_articles($parent_id=-1)
