@@ -15,8 +15,15 @@
 	$func = $_POST['cb'];
 	$params = isset($_POST['parameters'])?$_POST['parameters']:'';
 	
-	
-	$data =  rtd_soap_call($func, $params);
-	echo $data;
+
+	if ($func == "net_test_dummy")
+	{
+		echo json_encode("ping");
+	}
+	else
+	{
+		$data =  rtd_soap_call($func, $params);
+		echo $data;
+	}
 	
 ?>

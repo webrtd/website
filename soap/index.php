@@ -29,6 +29,11 @@
 		$data = get_one_data_row($sql);
 		return $data['token'];
 	}
+	
+	function get_title()
+	{
+		return "RTDapp";
+	}
 		
 	function verify_token($token)
 	{
@@ -38,6 +43,7 @@
 		if (isset($data['uid'])) 
 		{
 			$_SESSION['user'] = logic_login($data['username'], $data['password'], true);
+			logic_update_last_page_view();
 			return true;
 		}
 		else
@@ -78,8 +84,8 @@
 			return false;
 		}
 		logic_log(__FUNCTION__, "");
-		$data = json_encode(logic_get_geolocation_latest());
-		return $data;
+		$data = logic_get_geolocation_latest();
+		return json_encode($data);
 	}
 	
 	$server->register('soap_get_geolocation_latest', 
@@ -113,7 +119,7 @@
 	function soap_search($q, $token)
 	{
 		if (!verify_token($token)) return false;
-		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - søg');
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - sÃ¸g');
 		logic_log(__FUNCTION__, $q);
 
 		return json_encode(logic_search($q));
@@ -253,7 +259,7 @@
 	{
 		if (!verify_token($token)) return false;
 		logic_log(__FUNCTION__, $mid);
-		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - mÃ¸de');
 		return json_encode(logic_save_meeting_attendance($cid, $mid,$uid,$accept,$comment));
 	}
 	
@@ -319,7 +325,7 @@
 	{
 		if (!verify_token($token)) return false;
 		logic_log(__FUNCTION__, $mid);
-		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - mÃ¸de');
 		return json_encode(fetch_meeting_attendance($mid));
 	}
 
@@ -368,7 +374,7 @@
 	{
 		if (!verify_token($token)) return false;
 		logic_log(__FUNCTION__, $mid);
-		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - møde');
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - mÃ¸de');
 		return json_encode(logic_get_meeting($mid));
 	}
 	
@@ -381,5 +387,8 @@
 	
 
 	$server->service(file_get_contents('php://input'));
+
+	session_destroy();
+
 	exit();
 ?>

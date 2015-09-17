@@ -1,5 +1,21 @@
 <?
  
+function slack_msg($msg)
+{
+/*
+ $url = "https://hooks.slack.com/services/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?payload=";
+
+ $data = array(
+  "text" => $msg
+ );
+
+
+ file_get_contents($url.urlencode(json_encode($data)));
+*/
+}
+
+
+
 /**
  * notify LS and DF about new club board
  */
@@ -97,6 +113,9 @@ function event_news_comment($nid,$did)
 	
 	$subj = term_unwrap('news_comment_subj', array('did'=>$did, 'nid'=>$nid, 'title'=>$news_item['title']));
 	$body = term_unwrap('news_comment_body', array('did'=>$did, 'nid'=>$nid, 'title'=>$news_item['title']));
+
+	slack_msg($body);
+
 
 	$already_mailed = array();
 	
@@ -210,6 +229,8 @@ function event_minutes_finished($mid,$mail_to_members=true)
 	$subj = term_unwrap('minutes_completed_subject', $club);
 	$text = term_unwrap('minutes_completed_content', $meeting);
  	logic_save_mail($receivers, $subj, $text);
+
+	slack_msg($text);
 }
 
 /**
