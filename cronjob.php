@@ -440,14 +440,15 @@
 		
 		foreach($c as $k=>$v)
 		{
-				if ($v['name'] != "" && $v['name']!="RTI")
+				if (!empty($v['charter_club_cid']) && !empty($v['name']))
 				{
 					$chairman = logic_get_club_chairman($v['cid']);
 					$email = $chairman['private_email'];
+					if (empty($email)) $email = logic_club_mail($v['cid']);
 					$result[] = array("name"=>$v['name'], "email"=>$email, "address"=>$v['meeting_place']);
 				}
 		}
-		
+				
 		return $result;
 	}
 	

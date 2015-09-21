@@ -133,7 +133,14 @@
 			
 			foreach ($active_members as $m)
 			{
-				$r[] = logic_fix_mobile_phone_number($m['private_mobile']);
+				if (!empty($m['private_mobile']))
+				{
+					$r[] = logic_fix_mobile_phone_number($m['private_mobile']);
+				}
+				else if (!empty($m['private_phone']))
+				{
+					$r[] = logic_fix_mobile_phone_number($m['private_phone']);
+				}
 			}
 			
 			$data = array(

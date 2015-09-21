@@ -436,6 +436,7 @@ order by RD.shortname asc
 				inner join district D on C.district_did=D.did
 				inner join role R on R.uid=U.uid
 				inner join role_definition RD on RD.rid=R.rid
+				where R.end_date>now()
 				order by U.profile_firstname";
 				$xml = (get_xml($sql));
 				header('Content-Description: File Transfer');
