@@ -240,6 +240,21 @@
 		array('data' => 'xsd:string')
 	);
 	
+	
+	function soap_get_country($did, $token)
+	{
+		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $did);		
+		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - kalender');
+		return json_encode(logic_get_country($did));
+	}
+	$server->register('soap_get_country',
+			array('token'=>'xsd:string','did' => 'xsd:int'),
+			array('data' => 'xsd:string')
+		,false, false, false, false, 'did = district to fetch meetings (blank for whole country).'
+	);
+	
+	
 	function soap_fetch_future_meetings_for_club($cid,$token)
 	{
 		if (!verify_token($token)) return false;
