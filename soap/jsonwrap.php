@@ -8,10 +8,8 @@
 		$client = new soapclient($endpoint);
 		$response  = $client->call($func, $param, $mynamespace);
 		return ($response);
-	} 
-	
-	
-	
+	}
+
 	$func = $_POST['cb'];
 	$params = isset($_POST['parameters'])?$_POST['parameters']:'';
 	
