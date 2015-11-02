@@ -831,56 +831,72 @@
 		if ($old)
 		{
 			$sql ="
-					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club from user U 
-					inner join club C on U.cid=C.cid
-					inner join role R on R.uid=U.uid
-					where
-					profile_ended<now()
-					and
-					(profile_firstname like '%$q%' or
-					profile_lastname like '%$q%' or
-					private_address like '%$q%' or
-					private_city like '%$q%' or
-					company_position like '%$q%' or
-					company_profile like '%$q%' or
-					company_name like '%$q%' or
-					company_business like '%$q%' or
-					company_city like '%$q%' or
-					private_email like '%$q%' or
-					company_email like '%$q%' or
-			  private_phone like '%$q%' or
-			  company_phone like '%$q%' or
-					private_profile like '%$q%' or
-					name like '%$q%' or
-					concat(profile_firstname, ' ', profile_lastname) like '%$q%')
-					order by profile_firstname asc
+				select 
+				U.uid,
+				U.profile_firstname,
+				U.profile_lastname,
+				D.name as district, 
+				C.name as club, 
+				U.private_mobile as private_phone 
+				from user U 
+				inner join club C on U.cid=C.cid
+				inner join role R on R.uid=U.uid
+				inner join district D on D.did = C.district_did
+				where
+				R.start_date<now() and R.end_date>now() 
+				and
+				(profile_firstname like '%{$q}%' or
+				profile_lastname like '%{$q}%' or
+				private_address like '%{$q}%' or
+				private_city like '%{$q}%' or
+				company_position like '%{$q}%' or
+				company_profile like '%{$q}%' or
+				company_name like '%{$q}%' or
+				private_email like '%{$q}%' or
+				company_email like '%{$q}%' or
+				company_business like '%{$q}%' or
+				company_city like '%{$q}%' or
+				private_phone like '%{$q}%' or
+				company_phone like '%{$q}%' or
+				private_profile like '%{$q}%' or
+				C.name like '%{$q}%' or
+				concat(profile_firstname, ' ', profile_lastname) like '%{$q}%')
+				order by profile_firstname asc
 				";
 		}
 		else
 		{
 			$sql ="
-					select U.uid,U.profile_firstname,U.profile_lastname,C.name as club, U.private_phone as private_phone from user U 
+					select 
+					U.uid,
+					U.profile_firstname,
+					U.profile_lastname,
+					D.name as district, 
+					C.name as club, 
+					U.private_mobile as private_phone  
+					from user U 
 					inner join club C on U.cid=C.cid
 					inner join role R on R.uid=U.uid
+					inner join district D on D.did = C.district_did
 					where
 					R.start_date<now() and R.end_date>now() and (R.rid=".MEMBER_ROLE_RID." or R.rid=".HONORARY_ROLE_RID.") 
 					and
-					(profile_firstname like '%$q%' or
-					profile_lastname like '%$q%' or
-					private_address like '%$q%' or
-					private_city like '%$q%' or
-					company_position like '%$q%' or
-					company_profile like '%$q%' or
-					company_name like '%$q%' or
-					private_email like '%$q%' or
-					company_email like '%$q%' or
-					company_business like '%$q%' or
-					company_city like '%$q%' or
-			  private_phone like '%$q%' or
-			  company_phone like '%$q%' or
-					private_profile like '%$q%' or
-					name like '%$q%' or
-					concat(profile_firstname, ' ', profile_lastname) like '%$q%')
+					(profile_firstname like '%{$q}%' or
+					profile_lastname like '%{$q}%' or
+					private_address like '%{$q}%' or
+					private_city like '%{$q}%' or
+					company_position like '%{$q}%' or
+					company_profile like '%{$q}%' or
+					company_name like '%{$q}%' or
+					private_email like '%{$q}%' or
+					company_email like '%{$q}%' or
+					company_business like '%{$q}%' or
+					company_city like '%{$q}%' or
+					private_phone like '%{$q}%' or
+					company_phone like '%{$q}%' or
+					private_profile like '%{$q}%' or
+					C.name like '%{$q}%' or
+					concat(profile_firstname, ' ', profile_lastname) like '%{$q}%')
 					order by profile_firstname asc
 				";				
 		}
@@ -2115,20 +2131,21 @@ order by R.end_date
 	 */
 	function get_geolocation($id,$type)
 	{
-		$sql = "select * from geolocation where refid=$id and reftype='$type' and expiry_date>now()";
+		$sql = "select * from geolocation where refid=$id and reftype='$type'";
 		return get_one_data_row($sql);
 	}
 	
-	
+	    
 	function get_geolocation_latest()
 	{
 		$sql = 
-		"SELECT G.lat, G.lng, U.profile_firstname, U.profile_lastname, U.uid, U.private_phone, U.private_mobile, U.company_phone, C.cid, C.name, U.last_page_view
-		FROM geolocation G 
-		INNER JOIN user U on U.uid=G.refid
-		INNER JOIN club C on C.cid=U.cid
-		WHERE G.reftype='private' and U.last_page_view>date_sub(now(), interval 1 hour)
-		ORDER BY G.expiry_date DESC";
+		"select 
+U.uid, G.lat, G.lng, G.reftype, U.profile_firstname, U.profile_lastname, U.private_phone, U.private_mobile, U.company_phone, C.cid, C.name, U.last_page_view, U.last_page_title
+from user U
+JOIN geolocation G on U.uid=G.refid
+inner join club C on C.cid=U.cid
+where G.reftype='private'
+order by last_page_view desc limit 25";
 		logic_log("get_geolocation_latest", $sql);
 		return get_data($sql);
 	}
@@ -2141,31 +2158,20 @@ order by R.end_date
 	 * @param string $type values (private,company,club,meeting,etc.)
 	 * @param date $expiry expiry date
 	 */
-	function put_geolocation($id, $lat, $lng, $type, $expiry=false)
+	function put_geolocation($id, $lat, $lng, $type, $expiry=false) 
 	{
-		$data = get_geolocation($id,$type);
-		if ($data)
+		$loc = get_geolocation($id,$type);
+
+		if (empty($loc))
 		{
-			if ($expiry == false)
-			{
-				$sql = "update geolocation set lat='$lat', lng='$lng', expiry_date=date_add(now(), interval 1 day) where gid='{$data['gid']}'";
-			}
-			else
-			{
-				$sql = "update geolocation set lat='$lat', lng='$lng', expiry_date='$expiry' where gid='{$data['gid']}'";
-			}
+			$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', date_add(now(), interval 1 day))";
 		}
 		else
 		{
-			if ($expiry == false)
-			{
-				$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', date_add(now(), interval 1 day))";
-			}
-			else
-			{
-				$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', '$expiry')";
-			}
+			$gid = $loc['gid'];
+			$sql = "update geolocation set lat='{$lat}', lng='{$lng}', expiry_date=date_add(now(), interval 1 day) where gid={$gid}";
 		}
+
 		logic_log("put_geolocation", $sql);
 		fire_sql($sql);
 	}
