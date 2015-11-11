@@ -54,6 +54,45 @@
 		}		
 	}
 	
+	function soap_put_image($mid, $base64image, $token)
+	{
+		if (!verify_token($token))
+		{
+			return false;
+		}
+		else
+		{
+			$imgdata = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64image));
+			$ts = time();
+
+			$outputname = "{$_SESSION['user']['uid']}-{$ts}.jpg";
+
+			$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
+			if (!is_dir(MEETING_IMAGES_UPLOAD_PATH.$mid))
+			{
+				assert(mkdir($folder,0777));
+			}
+			$fn = $folder."/".$outputname;
+			
+			save_meeting_image($fn, $outputname, $mid);
+
+
+			
+			file_put_contents($fn, $imgdata);
+			
+			return true;
+		}
+	}
+	$server->register('soap_put_image', 
+		array(
+			'mid' => 'xsd:string',
+			'base64image' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, ''
+
+	);
+	
 	function soap_update_geolocation($lat, $lng, $token)
 	{
 		if (!verify_token($token)) 
