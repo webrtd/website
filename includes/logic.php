@@ -156,6 +156,8 @@
 			
 			$url = 'https://api.sms1919.dk/rpc/push/?'.http_build_query($data);
 			
+//			die(print_r($data));
+			
 			if (SMS_DISABLE_SENDING)
 			{
 				echo "SMS send disabled - $url";
@@ -3034,13 +3036,12 @@ END:VCARD
  
  function logic_get_geodata($lat, $lng)
  {
-	$online = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='private' order by expiry_date desc limit 100");
+ //sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and 
+	$online = get_data("select distinct(refid),lat,lng,reftype,expiry_date from geolocation where reftype='private' order by expiry_date desc limit 100");
 	$work  = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='work' limit 100");
 	$home = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='home' limit 100");
 	return array_merge($online, $work, $home);
-	
-//	$sql = "select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 limit 100";
-//	return get_data($sql);
+
  }
  
  function logic_get_mail()
