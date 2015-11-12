@@ -3037,10 +3037,10 @@ END:VCARD
  function logic_get_geodata($lat, $lng)
  {
  //sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and 
-	$online = get_data("select distinct(refid),lat,lng,reftype,expiry_date from geolocation where reftype='private' order by expiry_date desc limit 100");
+	$online = get_data("select distinct(refid),lat,lng,reftype,expiry_date from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5 and reftype='private' order by expiry_date desc limit 100");
 	$work  = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='work' limit 100");
 	$home = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='home' limit 100");
-	return array_merge($online, $work, $home);
+	return $online; //array_merge($online, $work, $home);
 
  }
  
