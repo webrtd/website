@@ -1,5 +1,43 @@
 <?
 	$terms = array(
+	'rtidatahub_js' => '
+			{ 
+				var nationalboard_json = "%%NATIONALBOARD%%";
+				var meeting_json = "%%MEETING%%";
+				var table_json = "%%TABLE%%";
+				
+				var nationalboard = $.parseJSON(nationalboard_json);
+				var meeting = $.parseJSON(meeting_json);
+				var tables = $.parseJSON(table_json);
+				
+				
+				document.write("<div id=tabs><ul><li><a href=#rti_nb>Hovedbestyrelser</a></li><li><a href=#rti_tab>Klubber</a></li><li><a href=#rti_meeting>Møder</a></li></ul>");
+
+				document.write("<div id=rti_nb>"+nationalboard+"</div>");
+				document.write("<div id=rti_tab>"+tables+"</div>");
+				document.write("<div id=rti_meeting>"+meeting+"</div>");
+				
+				
+				document.write("</div>");
+				
+				
+				$( "#tabs" ).tabs();
+				
+				
+				
+//				document.write(tables);
+				
+				/*
+				$.each( meeting, function( key, value ) {
+					document.write("<h1>"+value.TITLE+" ("+value.ST+")</h1>"+"<p>"+value.LOC+", "+value.TABLENAME+", "+value.ORG+"</p>");
+				});*/ 
+				 
+				
+				console.log(nationalboard);
+				console.log(meeting);
+				console.log(table_json);
+			}
+	',
 	'club_message_title' => 'Besked til %%name%%',
 	'club_message_body' =>
 '%%message%%
@@ -13,7 +51,7 @@ http://rtd.dk/?uid=%%uid%%
 		<center>
 		<textarea name=message style="width:99%;height:200px"></textarea>
 		</center>
-<!--		<input disabled type=checkbox value=sms name=sms>Send som SMS --->
+		<input type=checkbox value=sms name=sms>Send som SMS 
 		<input type=submit value="Send besked"> 
 		</form>
 	',
@@ -187,13 +225,15 @@ http://rtd.dk/?uid=%%uid%%
 	'reports' => '<h1>Rapporter</h1>
 	<p>Udtræk af medlemskartoteket</p>
 	<ul>
+		<li><a href=?reports&f=networker>RTD Networker data</a>
 		<li><a href=?reports&f=post>Adresseudtræk til bl.a. Excalibur (medlemmer+æm)</a>
 		<li><a href=?reports&f=memberstat>Medlemsstatistik</a>
 		<li><a href=?reports&f=clubs>Klubdata</a>
 		<li><a href=?reports&f=members>Medlemsudtræk</a>
 		<li><a href=?reports&f=jubilees>Klub- og medlemsjubilæer</a>
 		<li><a href=?reports&f=rti>Udtræk til Hvid Bog (RTI)</a>
-    <li><a href=?admin_download=roleprint>Udskrift af aktive roller</a>
+		<li><a href=?admin_download=roleprint>Udskrift af aktive roller</a>
+		<li><a href=?admin_download=futureroleprint>Udskrift af kommende roller</a>
 	</ul>
 	',
 	"user_viewed" => '
@@ -477,7 +517,8 @@ $('#prev').click(function() {
   <script>
 	if (confirm("Der er nye mails i klubmailen (antal: %%Unread%%). Check nu?"))
 	{
-		document.location.href="http://webmail.wannafind.dk/atmail.php?account=%%mailbox%%&password=%%webmail_password%%";
+		// atmail.php?account=%%mailbox%%&password=%%webmail_password%%
+		document.location.href="http://webmail.wannafind.dk/";
 	}
   </script>
   ',
@@ -2112,6 +2153,11 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
   Lukket LinkedIn gruppe: http://www.linkedin.com/groups?gid=48578
   
   Du må meget gerne allerede nu logge ind, og kontrollere dine medlemsdata samt uploade et billede af dig selv - så du kan få maksimalt ud af netværket.
+  
+  Vi beder dig også tjekke om følgende data er korrekte, da de bruges i medlemsarkivet:
+  
+  Fødselsdato: %%profile_birthdate%%
+  Indmeldelsesdato %%profile_started%%
 
   Som en del af medlemsskabet i Round Table Danmark, bliver der 4 gange årligt udsendt et medlemsblad, Excalibur. 
   Dette blad bliver sendt til den adresse, som er angivet som din privatadresse på din profil på rtd.dk
@@ -2127,8 +2173,8 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
 	'error_post' => '</ul></p>',
 	'error_username_exists' => '<li>Brugernavn findes i forvejen',
 	'error_not_all_fields_filled_in' => '<li>Alle felter skal udfyldes',
-	'new_password_sent' => 'Du skulle gerne modtage en e-mail med informationer inden for 5-10 minutter',
-	'error_user_not_found' => 'Brugernavnet kunne ikke findes',
+	'new_password_sent' => '<script>alert("Du skulle gerne modtage en e-mail med informationer inden for 5-10 minutter");document.location.href="/";</script>',
+	'error_user_not_found' => '<script>alert("Ukendt brugernavn eller e-mail");document.location.href="/";</script>',
 	'mail_new_password_subject' => 'Kodeord til RTD.DK',
 	'mail_new_password_content' => 
 'Du eller en anden har bestilt en nulstilning af kodeordet til rtd.dk
@@ -2180,6 +2226,7 @@ Round Table Danmark',
 				
 				var result = jQuery.parseJSON(\'%%result%%\');
 
+				console.log(result.users);
 				var count = 0;
 				$.each(result.users, function(key,value) {
 					count++;
@@ -2363,6 +2410,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	<p id=tools>
 	<a href=?sendpassword=%%private_email%%>Nulstil kodeord</a> |
 	<a href=?uid=%%uid%%&edit>Rediger profil</a> | 
+	<a href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a> |
 	<a href=# onclick=honorary(%%uid%%);>Indstil æresmedlemsskab</a> |
 	<a href=# onclick=onleave(%%uid%%);>Anmeld orlov</a> |
   <a href=# onclick=resign(%%uid%%);>Udmeld medlem</a> |
@@ -2418,6 +2466,16 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
       if (t=="") alert("Der er ikke indtastet motivation for indstillingen!");
       else document.location.href="?uid=%%uid%%&honorary="+t; 
     }
+	
+	function ctoty(uid)
+	{
+		if (confirm("Bekræft indstilling af medlem som tabler of the year i klubben for indeværende klubår"))
+		{
+			document.location.href="?uid=%%uid%%&ctoty=%%uid%%"; 
+		}
+	}
+	
+	
 	function onleave(uid)
 	{
 		$("#onleave_dialog").dialog({modal:true});
@@ -2649,15 +2707,15 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<tr>
 		<td>
 		<p>Telefon<br>
-		<input type=text name=data[private_phone] value="%%private_phone%%"></p>
+		<input type=text name=data[private_phone] value="%%private_phone%%" required></p>
 		</td>
 		<td>
 		<p>Mobil<br>
-		<input type=text name=data[private_mobile] value="%%private_mobile%%"></p>
+		<input type=text name=data[private_mobile] value="%%private_mobile%%" required></p>
 		</td>
 		<td>
 		<p>Mail<br>
-		<input type=text name=data[private_email] value="%%private_email%%"></p>
+		<input type=text name=data[private_email] value="%%private_email%%" required></p>
 		</td></tr></table>
 		
 		<h2>Firma</h2>
@@ -2693,11 +2751,11 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<tr>
 		<td valign=top>
 			<p>Telefon<br>
-			<input type=text name=data[company_phone] value="%%company_phone%%"></p>
+			<input type=text name=data[company_phone] value="%%company_phone%%" required></p>
 		</td>
 		<td valign=top>
 			<p>Mail<br>
-			<input type=text name=data[company_email] value="%%company_email%%"></p>
+			<input type=text name=data[company_email] value="%%company_email%%" required></p>
 		</td>
 		<td>
 			<p>Webside<br>
@@ -3517,6 +3575,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		'club_secretary_tools' => '
 															<h1 onclick="$(\'#stools\').toggle();">Sekretærværktøjer</h1>
 															<p id=stools>
+															<a href=/uploads/article_file/?afid=50>Vejledning</a> |
 															<a href=?uid=-1>Opret medlem</a> |
 															<a href=?mid=-1&club=%%cid%%>Opret møde</a> |
 															<a href=?kbp>Kommende bestyrelsesposter</a> |
@@ -3587,7 +3646,7 @@ http://www.rtd.dk/?mid=%%mid%%
 												Links
 												<ul>
 												<li><a href=?cid=%%cid%%&ics>Hent mødekalender som .ics</a>
-												<li><a href="?cid=%%cid%%&message" target=_blank>Send mail til klubmedlemmer</a>
+												<li><a href="?cid=%%cid%%&message" target=_blank>Send besked til klubmedlemmer</a>
 												<li><a href="%%webpage%%" target=_blank>Klubbens hjemmeside</a>
 												<li><a href=?cid=%%cid%%&gallery>Mødegalleri</a>
 												</ul>
@@ -3675,7 +3734,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		'meeting_attendance_item_edit' => '
 															<tr>
 																<td><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></td>
-																<td title="Svardato: %%response_date%%">%%status%% <br>
+																<td title="Svardato: %%response_date%%">%%status%% <br> 
 																<a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=0&attendance[comment]=Afmeldt+af+S">Afmeld</a>
 																<a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=1&attendance[comment]=Tilmeldt+af+S">Tilmeld</a>
 																</td>
@@ -4158,6 +4217,7 @@ http://www.rtd.dk/?mid=%%mid%%
 			<li class=parent>
 				<a href=#>HB</a>
 				<ul>
+					<li><a href=/uploads/article_file/?afid=49>Vejledning</a></li>
 					<li><a href=?admin_download=newboards>Kommende bestyrelser</a></li>
 					<li><a href=?admin_download=future>Download: Kommende bestyrelser</a></li>
 					<li><a href=?admin_download=active&xml>Download: Medlemmer</a></li>
@@ -4172,13 +4232,15 @@ http://www.rtd.dk/?mid=%%mid%%
 			<li class=parent>
 				<a href=#>Sekretær</a>
 				<ul>
+					<li><a href=/uploads/article_file/?afid=50>Vejledning</a></li>
 					<li><a href=?uid=-1>Opret medlem</a></li>
 					<li><a href=?mid=-1>Opret ordinært møde</a></li>
           <li><a href=?omid>Opret uofficielt møde</a></li>
 					<li><a href=?kbp>Kommende bestyrelse</a></li>
 					<li><a href=?cid=%%cid%%#nominutes>Opret referat</a></li>					
 					<li><a href=?dashboard>Klub dashboard</a></li>
-          <li><a href=http://webmail.wannafind.dk/atmail.php?account=%%mailbox%%&password=%%webmail_password%% target=_blank>Klubmail</a></li>
+          <li><a href=http://webmail.wannafind.dk/ target=_blank>Klubmail</a></li>
+		  <!--- atmail.php?account=%%mailbox%%&password=%%webmail_password%% --->
 					<li><a href=?cid=%%cid%%&edit>Rediger klub</a></li>
 				</ul>
 			</li>				
@@ -4196,6 +4258,7 @@ http://www.rtd.dk/?mid=%%mid%%
 					<li><a href=?takeover>Overtag profil</a></li>
 					<li><a href=http://ads.rtd.dk target=_blank>Webbanners</a></li>
 					<li><a href=?nominations=26>Æresmedlemsskaber</a></li>
+					<li><a href=?nominations=38>Klub TOTY</a></li>
 					<li><a href=?admin=article&edit=-1>Opret artikel</a></li>
 					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>
 					<li><a href=/cronjob.php?pwd=k4rk1ud>Kør cronjob</a></li>
@@ -4203,6 +4266,7 @@ http://www.rtd.dk/?mid=%%mid%%
 					<li><a href=?admin_download=stalker>Overvåg brugere</a></li>
 					<li><a href=?admin_download=backup_db>Backup DB</a></li>
 					<li><a href=/scripts/sqlbuddy target=_blank>DB Admin</a></li>
+					<li><a href=?admin_download=sms>SMS Admin</a></li>
 				</ul></li>
 			</ul>
 		<script>

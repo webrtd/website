@@ -97,6 +97,15 @@
 				logic_user_on_leave($user);
 			}
 			
+			if (isset($_REQUEST['ctoty']))
+			{
+				if (logic_is_club_secretary($user['cid']))
+				{
+					logic_nominate_role($user['uid'], logic_get_club_year_start(), logic_get_club_year_end(), CTOTY_RID, $_REQUEST['ctoty']);
+					$html .= term('user_nominated_ok');
+				}
+			}
+			
 			if (isset($_REQUEST['honorary']))
 			{
 				if (logic_is_club_secretary($user['cid']))
