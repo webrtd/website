@@ -218,6 +218,22 @@
 		false, false, false, false, 'lat/lng = current location.'
 	);
 	
+	function soap_new_updates($token)
+	{
+		if (!verify_token($token)) return false;
+		$data = logic_new_updates(date("Y-m-d", time() - 60 * 60 * 24));
+		return json_encode($data);
+	}
+	$server->register('soap_new_updates', 
+		array(
+			'token' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, ''
+
+	);
+	
+	
 	function soap_get_jubilees($token)
 	{
 		if (!verify_token($token)) return false;
@@ -281,7 +297,7 @@
 		if (!is_numeric($offset)) return false;
 		logic_log(__FUNCTION__, "");
 
-		$data = get_data("select cid, company_address, company_business, company_city, company_country, company_email, company_name, company_phone, company_position, company_profile, company_web, company_zipno, private_address, private_city, private_country, private_email, private_housefloor, private_houseletter, private_houseno, private_houseplacement, private_mobile, private_msn, private_phone, private_profile, private_skype, private_zipno, profile_birthdate, profile_ended, profile_firstname, profile_image, profile_lastname, profile_started, uid, username  from user order by uid asc limit 2000 offset {$offset}");
+		$data = get_data("select cid, company_address, company_business, company_city, company_country, company_email, company_name, company_phone, company_position, company_profile, company_web, company_zipno, company_business, private_address, private_city, private_country, private_email, private_housefloor, private_houseletter, private_houseno, private_houseplacement, private_mobile, private_msn, private_phone, private_profile, private_skype, private_zipno, profile_birthdate, profile_ended, profile_firstname, profile_image, profile_lastname, profile_started, uid, username  from user order by uid asc limit 2000 offset {$offset}");
 		
 		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - opdater data');
 
@@ -537,6 +553,25 @@
 			array('token'=>'xsd:string','mid' => 'xsd:int'),
 			array('data' => 'xsd:string')
 			,false, false, false, false, 'mid = meeting id of meeting to fetch.'
+
+	);
+
+	function soap_get_minutes($cid,$token) 
+	{
+		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $cid);
+		
+		$data = get_data("select mid, start_time, title from meeting where cid={$cid} order by start_time desc");
+
+		return json_encode($data);
+	}
+	$server->register('soap_get_minutes', 
+		array(
+			'token' => 'xsd:string',
+			'cid' => 'xsd:int' 
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'cid = club id of club to fetch.'
 
 	);
 	
