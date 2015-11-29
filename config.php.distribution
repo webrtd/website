@@ -1,59 +1,71 @@
 ﻿<?
-/*
-	configuration options
-	
-	26-10-2012	rasmus@3kings.dk 	draft
-	31-10-2012	rasmus@3kings.dk	added locale
-	06-11-2012	rasmus@3kings.dk	meeting images path
-	27-11-2012	rasmus@3kings.dk	uploaded user image path (profile images)
-	28-11-2012	rasmus@3kings.dk	changed ADMIN role to 18 instead of 22 (old WEB)
-	03-01-2013  rasmus@3kings.dk  	MEETING_FILES_UPLOAD_PATH
-	02-03-2013  rasmsu@3kings.dk  	mail pause flag added
-	13-05-2013	rasmus@3kings.dk	path differentiation for cronjob/non-cronjob
-*/
 
 	if (!defined("CONFIG_LOADED"))
 	{
-		define("UNITTEST", FALSE);
+		// force the use of https insted of http
+		// define("FORCE_SECURE_CONNECTION", true);
+	
+		// disable mail sending from the cronjob script. useful for debugging
+		define("DISABLE_MAIL_SENDING", false);		
+		
+		// disable or enable the use of shared club mail integration via imap
+		define("USE_CLUB_MAILS", false);
+
+		// disable or enable that resignations from the organizations are sent to WEB role instead of national secretary
+		define("RESIGN_SEND_ONLY_TO_WEB", true);
+		
+		// expiration age of members (RTD/RTN=40, LCN=45)
+		define("EXPIRE_AGE", 40);
+		
+		// rtidatahub integration
+		// define("RTIDATAHUB_APIKEY", "CHANGE THIS");
+                                                
+		// disable or enable sms api
+		define("SMS_DISABLE_SENDING",true);
+		define("SMS_API_KEY", "CHANGE THIS");
+		define("SMS_API_USER", "CHANGE THIS");
+		define("SMS_API_PASSWORD", 'CHANGE THIS');
+		define("SMS_DEFAULT_COUNTRY_CODE", "+45");
+
+		// define period for submitting new board
 		define("NEWBOARD_SUBMISSION_PERIOD_START", 4); // starting first of april
 		define("NEWBOARD_SUBMISSION_PERIOD_END", 6); // ending 30th of june
-		
-		define("DISABLE_MAIL_SENDING", false);		
 
+		// are formed members allowed to login?
+		define("ALLOW_EXTABLERS_TO_LOGIN", true);
+		
+		
+		// list of jubilees club and members
 		define("CLUB_JUBILEES_YEAR", "10,20,25,30,40,50,60,70,75,80,90,100");
 		define("MEMBER_JUBILEES_YEAR", "10,15,20");
 		
+		// article ID of landing pages. can have same landing page for public and private site
 		define("LANDING_PAGE_PUBLIC", 1);
 		define("LANDING_PAGE_PRIVATE", 1);
-		//define("LANDING_PAGE_PRIVATE", 26);
 
 		//// db connection
-		define("DATABASE_NAME","XXXXXXXXXXXX");
-		define("DATABASE_HOST", "XXXXXXXXXXXX");
-		define("DATABASE_USER", "XXXXXXXXXXXXX"); 
-		define("DATABASE_PASSWORD", "XXXXXXXXXXXXXXX"); 
-		/// import protection
-		define("IMPORT_PASSWORD", "XXXXXXXXXXXXXX");
-	
-		// cron job password
-		define("CRONJOB_PWD", "XXXXXXXXXXXXXXX");
-	
+		define("DATABASE_NAME","CHANGE THIS"); 
+		define("DATABASE_HOST", "CHANGE THIS");
+		define("DATABASE_USER", "CHANGE THIS"); 
+		define("DATABASE_PASSWORD", "CHANGE THIS"); 
+
 
 		/// debug info
 		error_reporting(E_ALL);
 		ini_set('display_errors', '1');
 		ini_set('post_max_size', '64M'); ini_set('upload_max_filesize', '64M');		
+
 		/// admin mail
-		define("ADMIN_MAIL", "web@rtd.dk");
-		define("SMTP_SERVER", "smtp.wannafind.dk");
-		//define("SMTP_SERVER", "localhost");
-		define("COOKIE_SALT", "salatKANYLEgu1tar");
+		define("ADMIN_MAIL", "CHANGE THIS");
+		define("SMTP_SERVER", "CHANGE THIS");
+		define("COOKIE_SALT", "CHANGE THIS");
 		
 		/// this role is the minimum required to be able to logon to site
 		define("MINIMUM_ROLE_ALLOWED_RID", 6);
 		define("USER_LEAVE_ROLE_RID", 33);
 
 		// default password for new users
+		define("GENERATE_NEW_USER_PASSWORD", true);
 		define("DEFAULT_NEW_USER_PASSWORD", "kode123");
 		
 		/// admin role
@@ -61,12 +73,21 @@
 		
 		//// loop protection
 		define("CONFIG_LOADED", "Yes");
-		
-		define("HONORARY_RID", 26);
 
+		// role definitions of honorary members and club toty
+		define("HONORARY_RID", 26);
+		define("CTOTY_RID", 38);
+
+		// vice chairman of club is allowed same privileges as chairman. delete the define to remove privileges
+		define('VICE_CHAIRMAN_RID', 13);
+		define('VICE_CHAIRMAN_AND_CHAIRMAN_SHARE_RESPONSIBILITY', false);
+
+		define("LOAD_BUSINESS_LIST_FROM_DB", true);
+		
 		 if (PHP_SAPI == 'cli')
 		  {
-			$path = "/var/www/vhosts/rtd.dk/test2012/";
+			// physical path on the server
+			$path = "CHANGE THIS";
 				/// used for meeting images uploads
 			define("MAIL_ATTACHMENT_UPLOAD_PATH", $path."/uploads/mail_attachment/");
 			define("BANNER_UPLOAD_PATH", $path."/uploads/banners/");
@@ -95,38 +116,48 @@
 		
 	
 		
-
-		define("NATIONAL_PRESIDENT_MAIL", "lf@rtd.dk");
-    define("NATIONAL_SECRETARY_MAIL", "ls@rtd.dk");	
-    define("NATIONAL_VICE_PRESIDENT_MAIL", "vlf@rtd.dk");
+		// mail configuration for president, national secretary and national vice president
+		define("NATIONAL_PRESIDENT_MAIL", "CHANGE THIS");
+		define("NATIONAL_SECRETARY_MAIL", "CHANGE THIS");	
+		define("NATIONAL_VICE_PRESIDENT_MAIL", "CHANGE THIS");
+		
+		// roles defining the club board. must be shortname from the role definition table
 		define("CLUB_BOARD_ROLES", "('F','S','I','N','IRO','K')");
+		
+		// roles defining the national board. must be shortname from role definition table
 		define("NATIONAL_BOARD_ROLES", "('NIRO','VLF','LF','LS','LK','WEB','SHOP','DF','ALF','LA','RED')");
+		
+		
+		// role defining area chairman. must be shortname from role definition table
 		define("DISTRICT_CHAIRMAN_SHORT", "DF");
-		define("HONORARY_ROLE_RID", 26); // ÆM
-		define("SECRETARY_ROLE_RID", 10); // S
-		define("CHAIRMAN_ROLE_RID", 9); // F
+		
+		// role ID's
+		define("HONORARY_ROLE_RID", 26);
+		define("SECRETARY_ROLE_RID", 10);
+		define("CHAIRMAN_ROLE_RID", 9);
 		define("CHAIRMAN_SHORT_NAME", "F");
-		define("MEMBER_ROLE_RID", 6); // M
+		define("MEMBER_ROLE_RID", 6);
 
-		define("NB_MAIL_POSTFIX", "@rtd.dk"); // National board mails are sent as <role>@rtd.dk, e.g. df2@rtd.dk or lf@rtd.dk
+		// National board mails are sent as <role>@rtd.dk, e.g. df2@rtd.dk or lf@rtd.dk
+		define("NB_MAIL_POSTFIX", "@rtd.dk"); 
 		
-		
+		/// import protection
+		define("IMPORT_PASSWORD", "CHANGE THIS");
 		
 		/// web definitions
 		define("RT_LOCALE", "da_DK");
 		define("RT_TEMPLATE", "./template/simple.html");
 		define("RT_TEMPLATE_PRINT", "./template/print.html");
-    define("RT_TEMPLATE_MOBILE", $_SERVER['DOCUMENT_ROOT']."/template/mobile.html");
+		define("RT_TEMPLATE_MOBILE", $_SERVER['DOCUMENT_ROOT']."/template/mobile.html");
 		
 		// sender of mass mails		
-		define("MASS_MAILER_REPLY_TO", "Round Table Danmark <noreply@rtd.dk>");
-    define("MASS_MAILER_REPLY_MAIL", "noreply@rtd.dk");
-    define("MASS_MAILER_REPLY_WHO", "Round Table Danmark");
+		define("MASS_MAILER_REPLY_TO", "CHANGE THIS <CHANGE@THIS>");
+		define("MASS_MAILER_REPLY_MAIL", "CHANGE@THIS.dk");
+		define("MASS_MAILER_REPLY_WHO", "CHANGE THIS");
+		
+		// cron job password
+		define("CRONJOB_PWD", "CHANGE THIS");
 		
 		define("IMAGE_MISSING_PROFILE", $_SERVER['DOCUMENT_ROOT'].'/template/images/missing_profile_photo.png');
-    
-    
-    define("OLD_FTP_SERVER", "localhost");
-    define("OLD_FTP_USER", "old_site_user");
-    define("OLD_FTP_PASSWORD","kaffeB4R1");
-	}?>
+	}
+?>
