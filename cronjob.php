@@ -19,6 +19,9 @@
 	
 	require_once $path.'/includes/PHPMailer-phpmailer-5.2.0/class.phpmailer.php';
 
+	
+	
+	
 	$errors = array();
 
 	function has_errors()
@@ -133,8 +136,19 @@
       {
         $u = logic_get_user_by_id($row['uid']);
 
-        $sender = "{$u['profile_firstname']} {$u['profile_lastname']}";
-        $sender_mail = $u['private_email'];
+		
+		if (USE_CLUB_MAILS)
+		{
+			$c = logic_get_club($u['cid']);
+			$sender = $c['name'];
+			$sender_mail = logic_club_mail($u['cid']);
+		}
+		else
+		{
+			$sender = "{$u['profile_firstname']} {$u['profile_lastname']}";
+			$sender_mail = $u['private_email'];
+		}
+		
 		
 		$nb = logic_get_national_board();
 		foreach($nb as $n)
@@ -440,7 +454,7 @@
 		
 		foreach($c as $k=>$v)
 		{
-				if (!empty($v['charter_club_cid']) && !empty($v['name']))
+				if (!empty($v['charter_club_cid']))
 				{
 					$chairman = logic_get_club_chairman($v['cid']);
 					$email = $chairman['private_email'];
@@ -480,6 +494,7 @@
 	
 	
 	
+	
 	function push_all_data_to_rtidatahub()
 	{
 		if (defined("RTIDATAHUB_APIKEY"))
@@ -488,8 +503,12 @@
 			$c = format_clubs();
 			$m = format_meetings();
 			
+			echo "<h1>rti - nationalboard</h1>";
+			
 			push_data_to_rtidatahub("NATIONALBOARD", $nb);
+			echo "<h1>rti - tables</h1>";
 			push_data_to_rtidatahub("TABLE", $c);
+			echo "<h1>rti - meetings</h1>";
 			push_data_to_rtidatahub("MEETING", $m);
 		}
 	}
