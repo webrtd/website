@@ -424,7 +424,7 @@
 		$html = "";
 		
 		
-		$archive = date("Y")-1940;
+		$archive = date("Y")-1942;
 		
 		for ($i=0; $i<$archive; $i++)
 		{
