@@ -2160,18 +2160,10 @@ order by last_page_view desc limit 25";
 	 */
 	function put_geolocation($id, $lat, $lng, $type, $expiry=false) 
 	{
-		$loc = get_geolocation($id,$type);
-
-		if (empty($loc))
-		{
-			$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', date_add(now(), interval 1 day))";
-		}
-		else
-		{
-			$gid = $loc['gid'];
-			$sql = "update geolocation set lat='{$lat}', lng='{$lng}', expiry_date=date_add(now(), interval 1 day) where gid={$gid}";
-		}
-
+		$lat = str_replace(",", ".", $lat);
+		$lng = str_replace(",", ".", $lng);
+		fire_sql("delete from geolocation where refid='{$id}' and reftype='{$type}'");
+		$sql = "insert into geolocation (refid,reftype,lat,lng,expiry_date) values ('$id', '$type', '$lat', '$lng', date_add(now(), interval 1 day))";
 		logic_log("put_geolocation", $sql);
 		fire_sql($sql);
 	}
