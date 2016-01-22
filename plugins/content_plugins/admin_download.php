@@ -312,7 +312,27 @@ order by RD.shortname asc
 	
 		$balance = logic_get_sms_balance_country();
 		
-		$html = "<h1>SMS</h1>";
+		if (isset($_REQUEST['download']))
+		{
+			header('Content-disposition: attachment; filename=sms.xml');
+			header('Content-Type: application/xml; charset=utf-8');
+			echo "<sms>\n";
+			for ($i=0; $i<sizeof($balance); $i++)
+			{
+				echo "<row>";
+				foreach($balance[$i] as $k=>$v)
+				{
+					echo "<{$k}>{$v}</{$k}>";
+				}
+				echo "</row>\n";
+			}
+			echo "</sms>";
+			
+			die();
+		}
+		
+		
+		$html = "<h1>SMS</h1><a href=?admin_download=sms&download>Download</a>";
 		
 		$html .= "<form action=? method=get><input type=hidden name=admin_download value=sms><select name=update>";
 		foreach($balance as $c)
