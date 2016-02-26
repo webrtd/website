@@ -23,9 +23,12 @@
 	function build_token($user)
 	{
 		$token_salt = "1-2-3-I-LOVE-RTD";
-		$str = $token_salt.$user['password'];
 		$uid = $user['uid'];
-		$sql = "select md5(concat('{$token_salt}',password)) as token from user where uid={$uid}";
+		$str = $token_salt.$user['password'];
+		$sql = "select md5(concat('{$token_salt}',password,uid)) as token from user where uid={$uid}";
+		
+		logic_log(__FUNCTION__, $sql);
+		
 		$data = get_one_data_row($sql);
 		return $data['token'];
 	}
@@ -38,7 +41,7 @@
 	function verify_token($token)
 	{
 		$token_salt = "1-2-3-I-LOVE-RTD";
-		$sql = "select uid,username,password from user where STRCMP(md5(concat('{$token_salt}',password)),'{$token}')=0";
+		$sql = "select uid,username,password from user where STRCMP(md5(concat('{$token_salt}',password,uid)),'{$token}')=0";
 		$data = get_one_data_row($sql);
 		if (isset($data['uid'])) 
 		{
@@ -48,6 +51,7 @@
 		}
 		else
 		{
+			logic_log(__FUNCTION__, 'Bad token');
 			session_destroy();
 			session_start();
 			return false;
@@ -56,12 +60,16 @@
 	
 	function soap_put_image($mid, $base64image, $token)
 	{
+		logic_log(__FUNCTION__, "mid: {$mid} img: {$base64image}");
 		if (!verify_token($token))
 		{
+			logic_log(__FUNCTION__, "bad token {$token}");
 			return false;
 		}
 		else
 		{
+			logic_log(__FUNCTION__, "mid: {$mid} img: {$base64image}");
+
 			$imgdata = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64image));
 			$ts = time();
 
@@ -86,10 +94,55 @@
 	$server->register('soap_put_image', 
 		array(
 			'mid' => 'xsd:string',
-			'base64image' => 'xsd:string'
+			'base64image' => 'xsd:string',
+			'token' => 'xsd:string',
 		),
 		array('data' => 'xsd:string')
 		,false, false, false, false, ''
+
+	);
+	
+	function soap_get_duties($uid, $token)
+	{
+		if (!verify_token($token))
+		{
+			return false;
+		}
+		else
+		{
+			$data = json_encode(logic_get_duties($uid));
+			logic_log(__FUNCTION__, $data);
+			return $data;
+		}
+	}
+	$server->register('soap_get_duties', 
+		array(
+			'token' => 'xsd:string',
+			'uid' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'uid = user id.'
+
+	);
+	
+	function soap_remote_debug($msg, $token)
+	{
+		if (!verify_token($token)) 
+		{
+			return false;
+		}
+		else
+		{
+			logic_log(__FUNCTION__, $msg);
+		}
+	}
+	$server->register('soap_remote_debug', 
+		array(
+			'token' => 'xsd:string',
+			'msg' => 'xsd:string'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'msg = log msg.'
 
 	);
 	
@@ -136,6 +189,22 @@
 
 	);
 	
+	
+	function soap_get_roles($uid,$token)
+	{
+		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $uid);
+		return json_encode(logic_get_roles($uid));
+	}
+	$server->register('soap_get_roles', 
+		array(
+			'token' => 'xsd:string',
+			'uid' => 'xsd:int'
+		),
+		array('data' => 'xsd:string')
+		,false, false, false, false, 'uid = user id of user to fetch.'
+
+	);
 	
 	function soap_get_active_club_members($cid, $token)
 	{
@@ -464,9 +533,14 @@
 	function soap_get_last_mail_index($token)
 	{
 		if (!verify_token($token)) return false;
+
+		$m1 = $_SESSION['user']['private_email'];
+		$m2 = $_SESSION['user']['company_email'];
 		
-		$sql = "select id from mass_mail WHERE mail_receiver LIKE '%{$_SESSION['user']['private_email']}%' order by id desc limit 1";
-//		logic_log(__FUNCTION__, $sql);
+		if (trim($m1) == "") $m1 = "foo@bar.bash";
+		if (trim($m2) == "") $m2 = "foo@bar.bash";
+		
+		$sql = "select id from mass_mail WHERE mail_receiver LIKE '%{$m1}%' OR mail_receiver LIKE '%{$m2}%' order by id desc limit 1";
 		$data = get_one_data_row($sql);
 		return json_encode($data['id']);
 	}
@@ -478,6 +552,8 @@
 	function soap_get_mail($token)
 	{
 		if (!verify_token($token)) return false;
+		
+		logic_log(__FUNCTION__, print_r($_SESSION,true));
 		
 		put_user_path_tracker($_SESSION['user']['uid'],'RTDApp - besked');
 		$data = json_encode(logic_get_mail(0,5));

@@ -56,6 +56,8 @@
 			
 			
 			$mail->SetFrom($from);
+			$mail->Sender=$from;
+
 			
 			
 			$recv = explode(";", $to);

@@ -147,12 +147,24 @@
 			{
 				$i = load_image($filepath);
 				$s = $_REQUEST['s'];
-				if ($i['size'][0] < $s)	$scaled = scale_width($i['image'], $s);
-				else $scaled = scale_height($i['image'], $s);
+				
+				$x = $i['size'][0];
+				$y = $i['size'][1];
+				
+				if ($x < $y)
+				{
+					$scaled = scale_width($i['image'], $s);
+				}
+				else
+				{
+					$scaled = scale_height($i['image'], $s);
+				}
+				
+				
 				$cropped = image_crop($scaled, $s, $s);
 				imagejpeg($cropped,$hashfile);
 			}
-			//header("Content-type: image/jpeg");
+			header("Content-type: image/jpeg");
 			die(file_get_contents($hashfile));
 		}
 		else if (isset($_REQUEST['w']))
