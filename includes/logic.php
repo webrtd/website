@@ -1082,6 +1082,7 @@
 		}
 		else
 		{
+//			die(print_r($data));
 			return $data->results[0]->geometry->location;
 		}
 	}
@@ -3034,9 +3035,19 @@ END:VCARD
 	}
  }
  
- function logic_get_geodata($lat, $lng)
+ function logic_get_geodata($lat, $lng, $type="all")
  {
-	return get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5");
+//	return get_data("select * from geolocation ");
+
+	if ($type == "all")
+	{
+		return get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5");
+	}
+	else
+	{
+		$sql = "select * from geolocation where reftype='{$type}' and sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5 and expiry_date>NOW() order by expiry_date DESC";
+		return get_data($sql);
+	}
  //sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and 
 	$online = get_data("select distinct(refid),lat,lng,reftype,expiry_date from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5 and reftype='private' order by expiry_date desc");
 	$work  = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='work' ");
@@ -3073,9 +3084,11 @@ END:VCARD
 			LIMIT 100
 		";
 		
+		logic_log(__FUNCTION__, $sql);
+		
 		
 		return get_data($sql);
 	}
  }
  
-	?>
+?>
