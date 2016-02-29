@@ -3037,23 +3037,17 @@ END:VCARD
  
  function logic_get_geodata($lat, $lng, $type="all")
  {
-//	return get_data("select * from geolocation ");
-
 	if ($type == "all")
 	{
-		return get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5");
+		$home_or_work = get_data("select * from geolocation where (reftype='home' or reftype='work') and sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5");
+		$private = get_data("select * from geolocation where expiry_date>NOW() and sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5");
+		return array_merge($home_or_work, $private);
 	}
 	else
 	{
 		$sql = "select * from geolocation where reftype='{$type}' and sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5 and expiry_date>NOW() order by expiry_date DESC";
 		return get_data($sql);
 	}
- //sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and 
-	$online = get_data("select distinct(refid),lat,lng,reftype,expiry_date from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.5 and reftype='private' order by expiry_date desc");
-	$work  = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='work' ");
-	$home = get_data("select * from geolocation where sqrt( power({$lat}-lat, 2) + power({$lng}-lng, 2) )<0.15 and reftype='home' ");
-	return array_merge($online, $work, $home);
-
  }
  
  function logic_get_mail()
@@ -3063,8 +3057,27 @@ END:VCARD
 		$m1 = $_SESSION['user']['private_email'];
 		$m2 = $_SESSION['user']['company_email'];
 		
-		if (trim($m1) == "") $m1 = "foo@bar.bash";
-		if (trim($m2) == "") $m2 = "foo@bar.bash";
+		
+		$emails = array();
+		
+		if (filter_var($m1, FILTER_VALIDATE_EMAIL)) 
+		{
+			$emails[] = $m1;
+		}
+		
+		if (filter_var($m2, FILTER_VALIDATE_EMAIL))
+		{
+			$emails[] = $m2;
+		}
+
+		if (sizeof($emails)==1)
+		{
+			$mail_sql = "M.mail_receiver LIKE '%{$emails[0]}%'";
+		}
+		else
+		{
+			$mail_sql = "M.mail_receiver LIKE '%{$emails[0]}%' OR M.mail_receiver LIKE '%{$emails[1]}%'";
+		}
 		
 	
 		$sql = 
@@ -3077,8 +3090,7 @@ END:VCARD
 			LEFT JOIN mass_mail_attachment A on M.aid=A.aid
 
 
-			WHERE M.mail_receiver LIKE '%{$m1}%'
-			OR M.mail_receiver LIKE '%{$m2}%'
+			WHERE {$mail_sql}
 
 			ORDER BY M.id DESC
 			LIMIT 100
@@ -3086,9 +3098,8 @@ END:VCARD
 		
 		logic_log(__FUNCTION__, $sql);
 		
-		
 		return get_data($sql);
 	}
  }
  
-?>
+	?>
