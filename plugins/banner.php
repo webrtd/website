@@ -35,7 +35,7 @@
     }
     else
     {
-  		$dn = logic_get_district_name(logic_get_district_for_user($_SESSION['user']['uid']));		
+  		$dn = logic_get_district_name(logic_get_district_for_user($_SESSION['user']['uid']));	
   		return term_unwrap('banner_2',array('district'=>$dn));
     }
 	}

@@ -198,7 +198,7 @@
 	 *	@param mixed[] $districts array of district id's
 	 *	@return mixed[] data for users
 	 */
-	function get_users($roles, $districts)
+	function get_users1($roles, $districts)
 	{
 		$r = implode(",", $roles);
 		$d = implode(",", $districts);
@@ -497,7 +497,7 @@
 			die();
 		}
     return get_one_data_row("
-      select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email, U.private_mobile from user U
+      select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email, U.private_mobile, U.company_facebook, U.company_linkdin, U.company_twitter from user U
       inner join role R on R.uid=U.uid
       inner join club C on U.cid=C.cid
       where R.rid=14 and C.district_did=$did and R.start_date<now() and R.end_date>now()
@@ -579,7 +579,7 @@
 			die();
 		}
     return get_one_data_row("
-      select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email from user U
+      select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email, U.private_phone, U.company_phone, U.company_facebook, U.company_linkdin, U.company_twitter from user U
       inner join role R on R.uid=U.uid
       where R.rid=".CHAIRMAN_ROLE_RID." and U.cid=$cid
 	  and R.start_date<=date(now()) and R.end_date>=date(now())
@@ -957,7 +957,7 @@
 	 *	@param date $startdate start date of assigment
 	 *	@param date $enddate end date of assignemnt
 	 */
-	function add_role($uid, $rid, $startdate, $enddate)
+	function add_role1($uid, $rid, $startdate, $enddate)
 	{
 		$db = get_db();
 		$db->execute("insert into role (uid,rid,start_date,end_date) values ('$uid', '$rid', '$startdate', '$enddate')");
@@ -983,7 +983,7 @@
 	 * @param int $nid news id
 	 * @return mixed[] news comments
 	 */
-	function get_comments($nid)
+	function get_comments1($nid)
 	{
 		return get_data("select * from news_comment where nid=$nid order by posted asc");
 	}
@@ -1551,7 +1551,7 @@
 	 *	@param mixed[] $data <key,value> array to insert in new user
 	 *	@param int $cid club id
 	 */
-	function create_user($data,$cid)
+	function create_user1($data,$cid)
 	{
 			$db = get_db();
 			$data['cid'] = $cid;

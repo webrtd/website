@@ -29,7 +29,7 @@
 <? if ($aid!=-1) { ?>
 <form action=article_admin_upload.php method=post enctype="multipart/form-data">
 <input type=hidden name=aid value=<?=$aid?>>
-<input type=file name=file><input type=submit value=Upload>
+<input type=file name=file><input type=submit value=Upload class="btn">
 </form>
 <? } ?>
 <?

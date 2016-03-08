@@ -18,14 +18,14 @@
 		);
 		
 		$country_events = array();
-		$d = "<p><table cellpadding=5><tr>";
+		$d = "<div class='cal_block'>";
 		$map_events = array();
 		foreach ($data as $district => $meetings)
 		{
 			$c = current($colors);
 			next($colors);
 			
-			$d .= "<td bgcolor=$c color=white align=center><a href='/?cal=$district'><font color=white>$district</a></a></td>";
+			$d .= "<div class='common_block' style='background-color:$c; color:white;text-align:center;'><a href='/?cal=$district'><font color=white>$district</font></a></div>";
 
 			if ($_REQUEST['cal']=="" || $_REQUEST['cal']==$district)
 			{
@@ -60,7 +60,7 @@
 				$country_events[] = "{events:[{$event_str}],color:'{$c}'}\n";
 			}
 		}
-		$d .= "</tr></table></p>";
+		$d .= "</div>";
 		
 		$event_str = implode(",", $country_events);
 		

@@ -10,7 +10,7 @@
 
 	
 	$country = logic_get_country(0);
-	echo "hello world";
+	
 		$count = 0;
 		FOR ($i=0;$i<sizeof($country['minutes']);$i++)
 		{
@@ -32,4 +32,5 @@
 				echo "<img src=?{$item['image']}>";
 				$count ++;
 			}
+        }
 ?>

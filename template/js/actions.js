@@ -1,11 +1,1 @@
-$(document).ready(function(){
-
-	// Drop down menu
-	$("#menu li.parent").hover(function(){
-		$(this).children("ul").show();
-	},function(){
-		$(this).children("ul").hide();
-	});
-	
-	
-});
+function utf8_decode(o){var r=[],e=0,t=0,n=0,d=0,h=0,c=0;for(o+="";e<o.length;)n=o.charCodeAt(e),191>=n?(r[t++]=String.fromCharCode(n),e++):223>=n?(d=o.charCodeAt(e+1),r[t++]=String.fromCharCode((31&n)<<6|63&d),e+=2):239>=n?(d=o.charCodeAt(e+1),h=o.charCodeAt(e+2),r[t++]=String.fromCharCode((15&n)<<12|(63&d)<<6|63&h),e+=3):(d=o.charCodeAt(e+1),h=o.charCodeAt(e+2),c=o.charCodeAt(e+3),n=(7&n)<<18|(63&d)<<12|(63&h)<<6|63&c,n-=65536,r[t++]=String.fromCharCode(55296|n>>10&1023),r[t++]=String.fromCharCode(56320|1023&n),e+=4);return r.join("")}$(document).ready(function(){$("#menu li.parent").hover(function(){$(this).children("ul").show()},function(){$(this).children("ul").hide()}),$("#content .title-section .col-sm-4.col-md-2").hasClass("home-right")||($(".right-side").wrap("<div class='col-xs-12 col-sm-4 col-md-2' id=banners></div>"),$("#page-content").addClass("not_home"))});

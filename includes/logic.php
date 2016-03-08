@@ -308,7 +308,7 @@
 	function logic_send_newsletter($roles,$districts,$title,$content,$attachment_id=0, $uid=0)
 	{
 		$uids = array();
-		$u = get_users($roles,$districts);
+		$u = get_users1($roles,$districts);
 		for($i=0;$i<sizeof($u);$i++)
 		{
 			$uids[] = $u[$i]['uid'];
@@ -710,7 +710,7 @@
 	 *	@param int $cid club id
 	 *	return new user id
 	 */
-	function logic_create_user($data,$cid)
+	function logic_create_user1($data,$cid)
 	{
 		$data['username'] = $data['private_email'];
 		$data['password'] = md5(DEFAULT_NEW_USER_PASSWORD);
@@ -731,7 +731,7 @@
 			return -1;
 		}
 		
-		$uid = create_user($data,$cid);
+		$uid = create_user1($data,$cid);
 		logic_update_member_expiration($uid,$data['profile_birthdate'],$data['profile_started']);
 		event_new_user($uid);
     
@@ -1504,7 +1504,7 @@ END:VCALENDAR"
 	
 	function logic_get_news_comments($nid)
 	{
-		$c = get_comments($nid);
+		$c = get_comments1($nid);
 		for ($i=0;$i<sizeof($c);$i++)
 		{
 			$c[$i]['content'] = stripslashes(nl2br($c[$i]['content']));
@@ -1658,20 +1658,20 @@ END:VCALENDAR"
 	{
 		$date = new DateTime(date("Y-m-d"));
 		$date->add(new DateInterval('P6M'));
-		add_role($user['uid'], USER_LEAVE_ROLE_RID, date("Y-m-d"), $date->format('Y-m-d'));
+		add_role1($user['uid'], USER_LEAVE_ROLE_RID, date("Y-m-d"), $date->format('Y-m-d'));
 		logic_decline_future_meetings($user['uid'],$user['cid']);
 		event_user_on_leave($user);
 	}
 	
-	function logic_add_role($uid, $rid, $start, $end)
+	function logic_add_role1($uid, $rid, $start, $end)
 	{
-		add_role($uid, $rid, $start, $end);
+		add_role1($uid, $rid, $start, $end);
 	}
 
 	function logic_approve_nomination($nid)
 	{
 		$nomination = fetch_nomination($nid);
-		add_role($nomination['uid'], $nomination['rid'], $nomination['date_start'], $nomination['date_end']);
+		add_role1($nomination['uid'], $nomination['rid'], $nomination['date_start'], $nomination['date_end']);
 		$nomination['approved']=1;
 		update_role_nomination($nid, $nomination);
 		event_nomination_accepted($nid);

@@ -11,6 +11,7 @@
 			"result" =>	addslashes(json_encode(logic_search(addslashes($_REQUEST['search']),$old))),
 			"search" => $_REQUEST['search']
 			);
+            
 			set_title('S&oslash;g '.$_REQUEST['search']);
 		return term_unwrap('search_results', $result);
 	}

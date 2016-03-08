@@ -1,0 +1,758 @@
+.center,
+.club .thumbnail {
+    text-align: center
+}
+.col-sm-4.col-md-2 .member-heading .userpic,
+.simplemember .userpic {
+    max-width: 100%
+}
+.page_content .club-page.club-page-header .container-out li,
+.page_content .col-sm-8.col-md-10 ul li {
+    list-style: none
+}
+#page-content.not_home+.title.title-section,
+.homepage #page-content+.title.title-section {
+    clear: both
+}
+#page-content .container .col-md-10,
+.country_pages .page_content>.col-md-10.col-xs-12,
+.page_content .col-md-10 .club-page-header.club-page .club_links {
+    float: left;
+}
+a {
+    color: #777
+}
+.margin-btm {
+    margin-bottom: 5px;
+    width: 100%
+}
+a.btn.btn-block {
+    width: 100%
+}
+.logo {
+    height: 60px!important;
+    margin-top: -15px!important
+}
+.meetstatistic th:nth-child(1) {
+    width: 100px
+}
+.meetstatistic th:nth-child(2) {
+    width: 130px
+}
+.meetstatistic td,
+.meetstatistic th {
+    border: none
+}
+.meetstatistic .skill {
+    margin-bottom: 0
+}
+.club {
+    border: 1px solid #ddd;
+    padding: 5px
+}
+.club .content {
+    padding: 0 5px
+}
+.club h5 {
+    margin: 10px 0 0
+}
+.club .meta {
+    margin: 5px
+}
+.club .thumbnail {
+    height: 200px
+}
+.page_content #content .title-section ul li,
+table td,
+table th {
+    text-align: left
+}
+.club .thumbnail img {
+    max-height: 100%;
+    width: auto
+}
+.linkedin:before {
+    content: "\E79F"
+}
+.mail:before {
+    content: "\E760"
+}
+.tab-content.trans {
+    background-color: transparent;
+    border: none
+}
+.not-loggin .title.title-section {
+    width: 100%
+}
+.container.CountryPg .title.title-section {
+    margin: 0
+}
+.not-loggin #page-content.not_home #content {
+    display: block
+}
+#main-menu ul.sub-menu,
+.not-loggin #page-content.not_home #content+.col-xs-12.col-md-10 {
+    display: none
+}
+#newsitems .carousel-outer .post img,
+.news-page .carousel-outer .post img {
+    max-height: 150px
+}
+.tp-leftarrow:before,
+.tp-rightarrow:before {
+    content: ''!important
+}
+#main-menu ul.sub-menu.dropdown {
+    display: block
+}
+#clubmembers .member-heading .social a.facebook:hover {
+    background: #2d343e
+}
+.page_content .container.clubpg_last_sec .col-xs-12 #stat.table-striped {
+    width: 80%
+}
+#header ul.user-nav li a.btn-lg {
+    margin: 0 0 0 10px
+}
+
+.not-loggin .tp-leftarrow,
+.not-loggin .tp-rightarrow {
+    top: 50%!important
+}
+.page_content .col-md-10.club-page {
+    margin-top: 50px
+}
+.page_content .col-md-10.club-page .member-heading>h1 {
+    margin-top: 0
+}
+.page_content .col-md-10 .btn-info.margin-btm,
+.page_content .col-md-10 a.btn-info.margin-btm {
+    width: auto;
+    max-width: 100%;
+    margin-top: 15px
+}
+.page_content .col-md-10.club-page .club_links a {
+    max-width: none;
+    width: 100%
+}
+.homepage .page_content .col-md-10 .col-md-2.home-right+.col-md-10 {
+    width: 100%
+}
+.homepage .page_content .col-md-10 .col-md-10 #content .title.title-section {
+    margin-top: 20px;
+    margin-left:0;
+    margin-right:0;
+}
+.homepage .page_content .col-md-10. .col-md-10 #notify_build {
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll
+}
+.page_content .col-md-10 form {
+    width: 95%
+}
+.page_content .col-md-10 form .btn {
+    margin: 10px 0 0
+}
+.page_content .col-md-10 form input[type=text],
+.page_content .col-md-10 form input[type=email],
+.page_content .col-md-10 form input[type=tel],
+.page_content .col-md-10 form input[type=password],
+.page_content .col-md-10 form textarea {
+    color: #888;
+    width: 100%;
+    line-height: 20px;
+    border-radius: 2px;
+    border: 1px solid #f1f1f1;
+    background-color: #f9f9f9;
+    padding: 14px 10px;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    display: inline-block;
+    -webkit-transition: all linear .1s;
+    transition: all linear .1s;
+    resize: none
+}
+.form-control:focus,
+.page_content .col-md-10 form input[type=text]:focus,
+.page_content .col-md-10 form input[type=email]:focus,
+.page_content .col-md-10 form input[type=tel]:focus,
+.page_content .col-md-10 form input[type=password]:focus,
+.page_content .col-md-10 form textarea:focus {
+    border-color: #007aff;
+    -webkit-box-shadow: 0 0 0 2px #007aff;
+    box-shadow: 0 0 0 2px #007aff
+}
+.page_content .col-md-10 input[type=submit] {
+    text-shadow: none;
+    color: #fff;
+    display: inline-block;
+    text-transform: uppercase;
+    position: relative;
+    padding: 10px 20px;
+    font-size: 13px;
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, .1);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, .1);
+    -webkit-transition: color linear .1s, background-color linear .1s;
+    transition: color linear .1s, background-color linear .1s
+}
+.page_content .col-md-10 input[type=submit]:hover {
+    color: #fff
+}
+.page_content .col-md-10 input[type=submit]:active {
+    color: #fff;
+    top: 1px;
+    right: -1px;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+.member .member-heading ul.social li a:hover {
+    background: #2d343e;
+    color: #fff
+}
+#boxed .firsadvert#banners {
+    margin-top: 50px
+}
+#boxed .page_content .col-md-10 .clubmail_cls,
+.article_pages #boxed .page_content .col-md-10 {
+    margin-top: 50px
+}
+.country_pages #boxed .firsadvert#banners,
+.country_pages #boxed .firsadvert#banners+.col-md-10 {
+    margin-top: 50px;
+}
+.user_pages #page-content #banners,
+.user_pages #page-content #banners+.col-md-10>h1 {
+    margin-top: 0!important
+}
+.page_content .col-md-10 #clubmembers .col-sm-4 {
+    min-height: 415px
+}
+.country_pages .col-md-10 .grid-wrap #projects .club {
+    min-height: 300px
+}
+.country_pages .col-md-10 .grid-wrap #projects .club .thumbnail {
+    height: auto
+}
+.page_content .col-md-10 p img {
+    vertical-align: top
+}
+#calendar .fc-border-separate td,
+#calendar .fc-border-separate th {
+    border: 1px solid #ccc
+}
+body {
+    background-color: #a9a9a9!important;
+    background-image: none!important
+}
+.page_content .container-out.Klubber .club span.icomoon-users {
+    display: block;
+    margin-top: 10px
+}
+.homepage .container {
+    padding-left: 0!important
+}
+.homepage #footer .container,
+.homepage #header .container,
+.homepage .container-light.statistik {
+    padding-left: 15px!important
+}
+.homepage #birthdaymemberss .row,
+.homepage #latestmemberss #members.row {
+    margin-left: 0;
+    margin-right: -15px
+}
+.homepage #notify_build #content .table-striped tr td,
+.homepage #notify_build #content .table-striped tr td a {
+    font-weight: 400!important;
+    font-size: 13px
+}
+#members .member-heading .title a,
+.homepage .carousel-inner .post-content .title a,
+.meetstatistic_data .container-image .simplemember .title a {
+    font-weight: 400
+}
+.homepage #birthdaymemberss .row .col-md-2 {
+    min-height: 360px
+}
+.simplemember .title a {
+    font-weight: 600
+}
+.page_content p {
+    margin: 10px 0
+}
+#footer .container ul li {
+    list-style: none!important;
+    line-height:22px;
+}
+#footer article.post-mini .title h2 {
+    display: block;
+    font-weight: 400
+}
+.user_pages #page-content .container table.table-striped a.btn-info.margin-btm {
+    width: 49%
+}
+.page_content .club-page .container-out .container-out.container-light {
+    padding-bottom: 0;
+    margin-bottom: -20px
+}
+.page_content .col-md-10 .club-page-header.club-page {
+    width: 100%;
+    margin-top: 50px
+}
+.page_content .club-page.club-page-header .container-image.future_meetings {
+    margin-top: 450px!important
+}
+.page_content .club-page.club-page-header .container-image.future_meetings.have_top_img {
+    margin-top: 80px!important
+}
+.page_content .club-page.club-page-header .with_img#next .page-slider-wrap {
+    display: block
+}
+.club-page.club-page-header .container-out.unwanted_div,
+.homepage .page_content #content .title-section.title .col-sm-8.col-md-10+#news,
+.homepage .page_content #content .title-section.title .col-sm-8.col-md-10+#news+#latestmembers,
+.homepage .page_content #content .title-section.title .col-sm-8.col-md-10+#news+#latestmembers+#birthdaymembers {
+    display: none
+}
+.page_content .club-page.club-page-header .with_img#next .page-slider-wrap #page-slider {
+    opacity: 1
+}
+.page_content .club-page.club-page-header .with_img#next ul li {
+    visibility: visible;
+    opacity: 1
+}
+.page_content .club-page.club-page-header .with_img#next ul li .tp-caption {
+    visibility: visible
+}
+.page_content .club-page.club-page-header .with_img#next {
+    margin-bottom: 30px
+}
+
+.user_pages #boxed #banners .random_mem {
+    padding-left: 0;
+    margin-left: 0;
+}
+#boxed .firsadvert .random_mem {margin-left: 0;}
+.page_content .club-page-header #clubmembers .all_members.col-xs-4 {
+    min-height: 450px
+}
+.user_pages #page-content.not_home {
+    padding: 0 15px 25px
+}
+.user_pages #page-content.not_home>.container {
+    padding: 0
+}
+.homepage .page_content #notify_build>#content {
+    max-height: 400px!important;
+    overflow-y: scroll!important
+}
+#page-content #latestmemberss #members .col-xs-6.col-xs-2 {
+    min-height: 400px
+}
+.country_pages .page_content .col-md-10>.right-part {
+    margin-top: 20px
+}
+.club-page.club-page-header .container-out .container-out .title.title-section {
+    margin-bottom: 60px
+}
+.user_pages .col-md-10 .container .right-part .table-striped tr td a.btn.btn_red {
+    background-color: #ff3b30;
+    border: 1px solid #ff3b30
+}
+.user_pages .col-md-10 .container .right-part .table-striped tr td a.btn.btn_red:hover {
+    border-color: #ff6259;
+    background-color: #ff6259
+}
+.article_pages .page_content .col-sm-8.col-md-10>.col-sm-8.col-md-10 {
+    padding: 0;
+    width: 95%
+}
+.article_pages .page_content .col-sm-8.col-md-10>.col-sm-8.col-md-10 #content>.title.title-section {
+    padding: 0;
+    margin: 0
+}
+.user_pages #page-content .container .right-part #content h1.title.title-section,
+.user_pages #page-content .container .right-part>#content {
+    margin-top: 0
+}
+.country_pages #country_future_minutes li .slotholder .tp-bgimg {
+    cursor: pointer
+}
+.meeting_technog .single-post div.print_cal {
+    margin-top: 15px
+}
+.meeting_technog .single-post div.print_cal a.btn-gray.meeting {
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    padding: 5px 10px
+}
+.meeting_technog .single-post div.print_cal a.btn-gray.meeting:hover {
+    background-color: #535861;
+    border: 1px solid #535861
+}
+.club-page-header .container-out.unwanted_div+.container-out .title.title-section {
+    width: auto
+}
+.meeting_technog table.meetstatistic {
+    margin-left: 0
+}
+.page_content.wp_page {
+    margin-top: 40px
+}
+.page_content.wp_page .col-md-10 {
+    text-align: left
+}
+.user_pages #page-content .dl-horizontal .user_frm input.btn {
+    margin: 10px 0 0
+}
+.page_content .col-md-10 .prev_nxt_tbl tr td {
+    padding: 10px 10px 10px 0
+}
+.user_pages #page-content .row .col-md-10 #tools a.btn-white {
+    padding: 10px;
+    font-size: 11px
+}
+.user_pages #page-content .row .col-md-10 .container.user_details,
+.user_pages #page-content .row .col-md-10 .container.user_details #content .col-xs-5 {
+    padding-left: 0;
+    padding-right: 0
+}
+.not-loggin #page-content .container .row .col-sm-8.col-md-10 {
+    width: 100%
+}
+#container_other_meetings table {
+    margin: 0 auto
+}
+.title.title-section.meeting_attandance_report {
+    width: auto
+}
+.desktop_left {
+    display: block
+}
+.mobile_left {
+    display: none
+}
+.homepage .news-page .post-content .text img {cursor:pointer;}
+.homepage .news-page > .title.title-section {margin-left:0;margin-right:0;}
+.club-page-header .container-out #next {clear:both;}
+.homepage #content .title-section {margin-bottom:0;}
+.homepage #content .title-section > .fa-plus, .homepage #content .title-section > .fa-minus {cursor:pointer;}
+.homepage #content .title-section > .fa-plus p, .homepage #content .title-section > .fa-minus p {cursor:pointer; display:inline-block; padding-left:5px;}
+.homepage #content .title-section > h1 {display:none;}
+.homepage #content .title-section > h1 + p, .homepage #content .title-section > h1 + p + ol, .homepage #content .title-section > h1 + p + ol + p, .homepage #content .title-section > h1 + p + ol + p + p, .homepage #content .title-section > h1 + p + ol + p + p +p {display:none;}
+
+.not-loggin .col-sm-8.col-md-10 #content .title-section > h1, .not-loggin .col-sm-8.col-md-10 #content .title-section > h1 + p, .not-loggin .col-sm-8.col-md-10 #content .title-section > h1 + p + ol, .not-loggin .col-sm-8.col-md-10 #content .title-section > h1 + p + ol + p, .not-loggin .col-sm-8.col-md-10 #content .title-section > h1 + p + ol + p + p, .not-loggin .col-sm-8.col-md-10 #content .title-section > h1 + p + ol + p + p +p {display:none;}
+
+.club-page-header #container_other_meetings > table {width:50%;}
+.comments .comment-heading .avatar img {width:100%; height:auto;}
+
+.user_pages #page-content.not_home {padding:25px;}
+.user_pages #page-content .container #content .title.title-section {margin-top:25px; margin-bottom:25px;}
+.user_pages #page-content .container #content .col-xs-5 {width:41.66666667%%;}
+/*#page-content .container #banners.col-md-2 {display:block;}*/
+.user_pages #page-content .container .container-light .row .col-xs-12 {width: 80%;}
+.user_pages #page-content .container .container.container-image {width: 100%;}
+#page-content .container #banners.col-md-2 + .col-md-10 {width: 83.33%;}
+#page-content .container #banners.col-md-2 + .col-md-10 .container {width:100%;}
+.user_pages #page-content .container .col-md-10 .right-part #content table.table.table-striped tr td {font-size:13px;}
+.user_pages #page-content + .container.container-light {clear:both;}
+
+.page_content .club-page-header + .clubpg_last_sec {display:none;}
+.user_details .right-part .col-xs-7 {width:55%;}
+
+.page_content .col-md-10 .meeting_technog > .col-md-10.right-part {width:100%;}
+
+.page_content .desktop_left + .col-md-10.col-xs-12 > .col-md-10 {width:100%;}
+
+.homepage #page-content .container-out.news-page:last-child {
+    margin-bottom: 30px;
+}
+
+.homepage #page-content .page_content .desktop_left {margin-top:50px;}
+
+#boxed .wp_page .firsadvert#banners {margin-top:0;}
+
+.index #latestmemberss, .index #birthdaymemberss {display:none;}
+.index.homepage #latestmemberss, .index.homepage #birthdaymemberss {display:block;}
+
+.user_pages .row.page_content {margin-top:30px;}
+#header-space {height:140px;}
+/*#boxed .row.page_content .col-md-10 {padding-right:0;}*/
+#boxed #page-content > .container {padding-right:0;}
+
+.cal_block {width:100%; display:block;}
+.cal_block .common_block {display:inline-block; width:auto; padding:15px; margin:0 10.5px; 0 0;}
+
+.biz_bank{width: 98%;}
+.biz_bank .biz_bank_p{float: left;
+    width: 49%;
+    margin: 0;}
+.biz_bank #company_section{
+	    float: right;
+    width: 49%;
+	}
+.biz_bank .my_class {
+    width: 47%;
+    float: left;
+    margin: 10px;
+}
+.biz_bank .my_class .my_class_left{
+	float: left;
+    margin-right: 10px;
+	}
+.biz_bank .my_class h5{margin-bottom:0;}
+.biz_bank_user h2{margin-top:5px;margin-bottom:5px;}
+
+@media (min-width: 768px) {
+    .dl-horizontal dt {
+        float: left;
+        width: 160px;
+        overflow: hidden;
+        clear: left;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 700
+    }
+}
+.dl-horizontal dd {
+    margin-left: 180px
+}
+@media (max-width: 768px) {
+    .col-sm-4.col-md-2 .random_mem .member-heading .userpic {
+        max-width: 60%
+    }
+    #mobile-menu li a {
+        line-height: 22px
+    }
+    #birthdaymemberss .col-xs-2,
+    #members .col-xs-2, .user_list .col-xs-2 {
+        width: 23.667%
+    }
+    .club-page-header #clubmembers .col-xs-4 {
+        width: 49.333%
+    }
+    .homepage #birthdaymemberss .row,
+    .homepage #latestmemberss #members.row {
+        margin-right: -50px
+    }
+    .page_content .club-page.club-page-header .container-image.future_meetings,
+    .page_content .club-page.club-page-header .container-image.future_meetings.have_top_img {
+        margin-top: 10px!important
+    }
+    .club-page-header #container_other_meetings > table {width:100%;} 
+    #page-content .meeting_technog .article-date {padding:0; margin:15px 0 0;}
+}
+@media (max-width: 985px) {
+    .desktop_left {
+        display: none;
+    }
+    .mobile_left {
+        display: block;
+        text-align:center;
+        width:100%;
+    }
+    .mobile_left .col-xs-12.col-sm-offset-2 {margin-left:0;}
+    #boxed .col-xs-12.col-sm-8 {width:100%;}
+    .homepage .page_content .col-xs-12 #content .title.title-section {margin:20px 0 0;}
+    .page_content .container.meeting_technog {padding:0; width:100%;}
+    .page_content .container.meeting_technog .col-md-10.right-part {padding-left:5px;padding-right:5px;}    
+    .user_pages #page-content .container table.table-striped a.btn-info.margin-btm {width: 100%;}
+    
+    .mobile_left .col-xs-12.col-sm-offset-2 {width:50%;}
+    .col-sm-4.col-md-2 .member-heading .userpic, .simplemember .userpic {max-width:60%;}
+    .user_list .simplemember .userpic {max-width:100%;}
+    #page-content .container #banners.col-md-2 + .col-md-10 {width:100%;}
+    .logo {margin-top: 0 !important;}
+    #boxed #page-content > .container {padding-right:15px;}
+    .homepage #boxed #page-content > .container {padding-right:0;}
+}
+@media (max-width: 1000px) {
+    .dl-horizontal dd {
+        margin: 0
+    }
+}
+@media (max-width: 1100px) {
+    #login-register .modal-body .tab-content>div {
+        padding: 30px 0 0
+    }
+    #login-register .modal-body .tab-content div.form-field label.col-sm-3 {
+        margin-right: 10px
+    }
+    #login-register .modal-body .tab-content div.form-field div.col-sm-9 {
+        width: 70%
+    }
+    .club-page.club-page-header .container-out .col-xs-8,
+    .club-page.club-page-header .container-out .col-xs-8 .col-xs-4,
+    .club-page.club-page-header .container-out>.col-xs-4 {
+        width: 100%
+    }
+    .club-page.club-page-header .container-out .col-xs-4.all_members {
+        min-height: 600px
+    }
+    .club-page.club-page-header .container-out .col-xs-4.all_members .member a.userpic {
+        max-width: 100%
+    }
+}
+@media (max-width: 640px) {
+	#login-register .modal-body .tab-content div.form-field div.col-sm-9 {
+        width: 100%
+    }
+    .col-sm-4.col-md-2 .random_mem .member-heading .userpic {
+        max-width: 60%
+    }
+    #clubmembers .member .member-heading a.userpic,
+    .col-xs-6.col-md-2 .member-heading .userpic {
+        max-width: 100%
+    }
+	#login-register.modal .close{
+		height: 27px;
+		line-height: 25px;
+		margin: 0;
+		padding: 0;
+		width: 25px;	
+	}
+    .col-md-2.firsadvert .mybanners {
+        text-align: center
+    }
+	.title.title-section ol {
+		list-style-position: inside;
+	}
+    #page-content .container {
+      
+    }
+	.iconbox.iconbox-style1 .iconbox-heading .title h4 {
+		font-size: 16px;
+	}
+	.modal-body > * {
+		padding: 10px 10px 0;
+	}
+    #birthdaymemberss .col-xs-2,
+    #members .col-xs-2, .user_list .col-xs-2  {
+        width: 48.667%
+    }
+    .club-page-header #clubmembers .col-xs-4 {
+        width: 44.333%
+    }
+    .homepage #birthdaymemberss .row,
+    .homepage #latestmemberss #members.row {
+        margin-right: -12px
+    }
+    .col-xs-12.col-sm-8.col-md-10 form i {
+        width: 100%;
+        display: block;
+        clear: both
+    }
+    #login-register .modal-body ul.tab-heading li a {
+        padding: 8px
+    }
+	.modal-dialog > .row > .col-sm-6{
+		width:100%;	
+	}
+    #login-register .modal-body .tab-content>div {
+        padding: 15px 15px 0
+    }
+    #login-register .modal-body .tab-content div.form-field {
+        margin-bottom: 15px
+    }
+    #login-register .modal-body .tab-content div.form-field input {
+        padding: 5px 10px
+    }
+    .member .member-heading ul.social {
+        display: none
+    }
+    .page_content .club-page-header #clubmembers .all_members.col-xs-4 {
+        min-height: 500px
+    }
+    .club-page.club-page-header .container-out .col-xs-4,
+    .club-page.club-page-header .container-out .col-xs-8 {
+        width: 100%
+    }
+    .mobile_left .col-xs-12.col-sm-offset-2 {width:100%;}
+    .col-sm-4.col-md-2 .member-heading .userpic, .simplemember .userpic, .user_list .simplemember .userpic {max-width:100%;}
+	
+	.biz_bank .my_class{width: 45%; margin: 5px;}
+}
+.nivo-html-caption,
+.slider-wrapper.theme-bar,
+.title.title-section .sticker .icon {
+    display: none
+}
+@media (max-width: 380px) {
+    .page_content .club-page-header #clubmembers .all_members.col-xs-4 {
+        min-height: 460px
+    }
+}
+#header-space {
+    margin: 0!important
+}
+h1:first-of-type {
+    margin-top: 50px
+}
+@media (min-width: 768px) {
+    .title.title-section .sticker:before {
+        top: 0!important
+    }
+    .title.title-section {
+        margin: 30px
+    }
+}
+table,
+table#memberstat,
+table#stat {
+    font-size: inherit
+}
+.banner2.mybanners,
+.banner3.mybanners {
+    text-align: center
+}
+.homepage .banner2.mybanners, .homepage .banner3.mybanners {padding-left:15px;}
+
+.article_pages .page_content #content .title-section video {
+    width: 100%;
+    height: auto
+}
+.user_pages #page-content #banners+.col-sm-8.col-md-10 {
+    float: left;
+    /*padding: 0;*/
+    margin: 0;
+    text-align: left
+}
+.feji {
+    height: 330px;
+    overflow: scroll;
+    overflow-x: hidden
+}
+@media (max-width: 950px) {
+    .feji {
+        height: 330px;
+        overflow: scroll
+    }    
+}
+@media (min-width: 768px) and (max-width: 1000px) {
+    .user_pages #page-content .container #banners.col-md-2+.col-md-10 {
+        width: 97%
+    }    
+}
+.page_content #newsitems .title.title-section {
+    margin: 30px 0;
+}
+
+@media (max-width: 480px) {
+    h1 {font-size:30px;}
+    h2 {font-size:28px;}
+     
+    #page-content .clubpg_last_sec > .row > .col-xs-12 {overflow-y:scroll;}
+    #boxed #page-content > .container .col-xs-12 .sub_rec, #boxed #page-content > .container .col-xs-12 .memberchart_stat {overflow-y:scroll;}
+	
+	.biz_bank .my_class{width:100%;}
+}
+
+

@@ -253,5 +253,5 @@ console.log( "error" );
 });
 }
 
-document.write("<h1>Aktuelt</h1><div id=notify_build style='height: 830px; overflow: scroll; overflow-x: hidden;'></div>");
+document.write("<i class='fa fa-plus'><p>Vis aktuelt</p></i><div id=notify_build style='display:none;'></div>");
 notify_build();
