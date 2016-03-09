@@ -19,7 +19,38 @@
 	
 	require_once $path.'/includes/PHPMailer-phpmailer-5.2.0/class.phpmailer.php';
 
+	function rt_error_handler($errno, $errstr, $errfile, $errline)
+	{
+	if (!(error_reporting() & $errno)) {
+	// This error code is not included in error_reporting
+	return;
+	}
+
+	switch ($errno) {
+	case E_USER_ERROR:
+		mail(ADMIN_MAIL, "{$errstr} {$errfile}", "Fatal error on line $errline in file $errfile");
+		exit(1);
+	break;
+
+	case E_USER_WARNING:
+	echo "<b>My WARNING</b> [$errno] $errstr<br />\n";
+	break;
+
+	case E_USER_NOTICE:
+	echo "<b>My NOTICE</b> [$errno] $errstr<br />\n";
+	break;
+
+	default:
+		mail(ADMIN_MAIL, "{$errstr} {$errfile}", "Fatal error on line $errline in file $errfile");
+		exit(1);
+	break;
+	}
+
+	/* Don't execute PHP internal error handler */
+	return true;
+	}
 	
+	set_error_handler('rt_error_handler');
 	
 	
 	$errors = array();
@@ -47,7 +78,7 @@
 			
 			 $mail->Host     = SMTP_SERVER;
 			
-			$mail->SMTPDebug =2;
+			$mail->SMTPDebug =true;
 			$subj = strip_tags(html_entity_decode($subj,ENT_COMPAT,'UTF-8'));
 			
 			$mail->IsHTML(true);
