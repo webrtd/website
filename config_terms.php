@@ -1,38 +1,38 @@
-<?
+<?php
 	$terms = array(
-	'rtidatahub_js' => '
-			{ 
+    'rtidatahub_js' => '
+			{
 				var nationalboard_json = "%%NATIONALBOARD%%";
 				var meeting_json = "%%MEETING%%";
 				var table_json = "%%TABLE%%";
-				
+
 				var nationalboard = $.parseJSON(nationalboard_json);
 				var meeting = $.parseJSON(meeting_json);
 				var tables = $.parseJSON(table_json);
-				
-				
+
+
 				document.write("<div id=tabs><ul><li><a href=#rti_nb>Hovedbestyrelser</a></li><li><a href=#rti_tab>Klubber</a></li><li><a href=#rti_meeting>Møder</a></li></ul>");
 
 				document.write("<div id=rti_nb>"+nationalboard+"</div>");
 				document.write("<div id=rti_tab>"+tables+"</div>");
 				document.write("<div id=rti_meeting>"+meeting+"</div>");
-				
-				
+
+
 				document.write("</div>");
-				
-				
+
+
 				$( "#tabs" ).tabs();
-				
-				
-				
+
+
+
 //				document.write(tables);
-				
+
 				/*
 				$.each( meeting, function( key, value ) {
 					document.write("<h1>"+value.TITLE+" ("+value.ST+")</h1>"+"<p>"+value.LOC+", "+value.TABLENAME+", "+value.ORG+"</p>");
-				});*/ 
-				 
-				
+				});*/
+
+
 				console.log(nationalboard);
 				console.log(meeting);
 				console.log(table_json);
@@ -46,22 +46,22 @@ Fra %%sender%%
 http://rtd.dk/?uid=%%uid%%
 ',
 	'club_message_prepare_send_club_admin' => '
-		<h1>Send besked til klubbens aktive medlemmer</h1>
-		<form action=?cid=%%cid%% method=post >
+		<h4>Send besked til klubbens aktive medlemmer</h4>
+		<form action=?cid=%%cid%% method=post > 
 		<center>
-		<textarea name=message style="width:99%;height:200px"></textarea>
+		<textarea name=message style="width:99%;height:200px" class="form-control"></textarea>
 		</center>
-		<input type=checkbox value=sms name=sms>Send som SMS 
-		<input type=submit value="Send besked"> 
+		<input type=checkbox value=sms name=sms class="form-control">Send som SMS
+		<input type=submit value="Send besked" class="btn">
 		</form>
 	',
 	'club_message_prepare_send' => '
-		<h1>Send besked til klubbens aktive medlemmer</h1>
+		<h4>Send besked til klubbens aktive medlemmer</h4>
 		<form action=?cid=%%cid%% method=post >
 		<center>
-		<textarea name=message style="width:99%;height:200px"></textarea>
+		<textarea name=message style="width:99%;height:200px" class="form-control"></textarea>
 		</center>
-		<input type=submit value="Send besked">
+		<input type=submit value="Send besked" class="btn">
 		</form>
 	',
 	'club_message_sent' => '
@@ -79,20 +79,20 @@ http://rtd.dk/?uid=%%uid%%
 				gallery_html = gallery_html + "<a href=#gallery onclick=gallery_show("+v.miid+")><img width=25% src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200 title=\'"+v.title+" ("+v.start_time+")\'></a>";
 			});
 			$("#gallery").append(gallery_html);
-			
+
 			function gallery_show(miid)
 			{
 				$("#gallery_pic").attr("src", "/uploads/meeting_image/?miid="+miid);
 			}
-			
+
 		</script>
-	
+
 	',//http://rtd.dk/uploads/user_image?uid=9353&quad&s=200
   'organisation_fullname' => 'Round Table Danmark',
   'organisation_shortname' => 'RTD',
 	'banner_1' => "
 <!--/* OpenX Javascript Tag v2.8.10 */-->
-
+<div class='banner1 mybanners'>
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
    var m3_r = Math.floor(Math.random()*99999999999);
@@ -108,12 +108,21 @@ http://rtd.dk/?uid=%%uid%%
    if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
    document.write (\"'><\/scr\"+\"ipt>\");
 //]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=ab3a97c8&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=3&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ab3a97c8' border='0' alt='' /></a></noscript>
-	
+</div>
+	<script>
+			/*$(document).ready(function(){
+				//$('.right-part').parent().prepend('<div class=\'col-xs-12 col-xs-4 col-md-2\' id=banners></div>');
+				//$('#banners').append($('.banner2'));
+			});*/
+
+		</script>
+
 	",
 	'banner_2' => "
 <!--/* OpenX Javascript Tag v2.8.10 */-->
-
-<script type='text/javascript'><!--//<![CDATA[
+	<div class='banner2 mybanners'>
+<script type='text/javascript'>
+<!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
    var m3_r = Math.floor(Math.random()*99999999999);
    if (!document.MAX_used) document.MAX_used = ',';
@@ -128,11 +137,18 @@ http://rtd.dk/?uid=%%uid%%
    if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
    document.write (\"'><\/scr\"+\"ipt>\");
 //]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=a7db3e4b&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=2&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a7db3e4b' border='0' alt='' /></a></noscript>
-	
+	</div>
+	<script>
+		/*$(document).ready(function(){
+			//$('.right-part').parent().prepend('<div class=\'col-xs-12 col-xs-4 col-md-2\' id=banners></div>');
+			//$('#banners').append($('.banner2'));
+		});*/
+
+	</script>
 	",
 	'banner_3' => "
 <!--/* OpenX Javascript Tag v2.8.10 */-->
-
+<div class='banner3 mybanners'>
 <script type='text/javascript'><!--//<![CDATA[
    var m3_u = (location.protocol=='https:'?'https://openx.rtd.dk/openx/www/delivery/ajs.php':'http://openx.rtd.dk/openx/www/delivery/ajs.php');
    var m3_r = Math.floor(Math.random()*99999999999);
@@ -147,35 +163,79 @@ http://rtd.dk/?uid=%%uid%%
    if (document.context) document.write (\"&context=\" + escape(document.context));
    if (document.mmm_fo) document.write (\"&amp;mmm_fo=1\");
    document.write (\"'><\/scr\"+\"ipt>\");
-//]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=a16fdb7c&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=1&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a16fdb7c' border='0' alt='' /></a></noscript>
+//]]>--></script><noscript><a href='http://openx.rtd.dk/openx/www/delivery/ck.php?n=a14fdb7c&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://openx.rtd.dk/openx/www/delivery/avw.php?zoneid=1&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a14fdb7c' border='0' alt='' /></a></noscript>
+	</div>
+	<script>
+		$(document).ready(function(){
+			//$('#banners').append($('.banner3'));
+		});
+
+	</script>
 	",
 	'not_club_board_submission_period' => '<h1>Kan ikke indstille bestyrelse</h1><p>Det er kun muligt at indstille kommende bestyrelse i perioden 1. april - 30. juni</p>',
 	'birthday_js' => '
 	{
-	var birthday_data = jQuery.parseJSON(\'%%data%%\');
-	$("#birthdaymembers").show();
-	$("<h1>Dagens fødselarer</h1>").insertBefore("#birthdaymembers");
-	var c = 0;
-	var html = "";
-	html += "<center><table width=100% class=clickable><tr>";
-	$.each(birthday_data, function(i,m) {
-		
-		if (m.profile_image!=null && m.profile_image!="")
+		$("#birthdaymemberss").css("display","block");
+		if($("#birthdaymembers").length > 0)
 		{
-			html += "<td valign=top width=100><a href=?uid="+m.uid+" title=\'"+m.profile_birthdate+"\'><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=100&h=150><br>"+m.profile_firstname+" "+m.profile_lastname+"</a></td>";		
-			c++;
+			var birthday_data = jQuery.parseJSON(\'%%data%%\');
+			$("#birthdaymemberss").show();
+            //var home_birth_content = "<div class=\"title title-section\"><h2>Dagens F&oslash;dselarer</h2><p>Tillykke med dagen til alle</p><span class=sticker><i class=\"icon fa fa-flag\"></i></span></div>";
+
+			var c = 0;
+			var html = "";
+			html += "<div class=row>";
+			$.each(birthday_data, function(i,m) {
+
+				if (m.profile_image!=null && m.profile_image!="")
+				{
+                    var profile_firstname = "";
+                    if(m.profile_firstname != "" && m.profile_firstname != null)
+                    {
+                        profile_firstname = m.profile_firstname;
+                    }
+                    else
+                    {
+                        profile_firstname = "";
+                    }
+
+                    var profile_lastname = "";
+                    if(m.profile_lastname != "" && m.profile_lastname != null)
+                    {
+                        profile_lastname = m.profile_lastname;
+                    }
+                    else
+                    {
+                        profile_lastname = "";
+                    }
+
+                    var company_position = "";
+                    if(m.company_position != "" && m.company_position != null)
+                    {
+                        company_position = m.company_position;
+                    }
+                    else
+                    {
+                        company_position = "";
+                    }
+
+					html += "<div class=\"col-xs-4 col-xs-2 col-md-2\"><div class=\"col-sm-offset-2 simplemember\"><div class=member-heading><a class=userpic href=?uid="+m.uid+" title=\'"+m.profile_birthdate+"\'><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=300&h=500></a><div class=title><h5><a href=?uid="+m.uid+">"+profile_firstname+" "+profile_lastname+"</a></h5><p>"+company_position+"</p></div></div></div></div>";
+					c++;
+				}
+				if (c==5)
+				{
+					c=0;
+					html += "";
+				}
+			});
+				html += "</div>";
+				$("#birthdaymemberss.container").append(html);
+
+                //$(home_birth_content).insertBefore("#birthdaymemberss .row");
 		}
-		if (c==5) 
-		{
-			c=0;
-			html += "</tr><tr>";
-		}
-	});
-		html += "</tr></table></center>";
-		$("#birthdaymembers").append(html);
 	}
 	',
-	
+
 	'report_club_jubilee_header' => '<h1>Klubjubilæer</h1>',
 	'report_club_jubilee_year' => '<h2>%%year%% år</h2>',
 	'report_club_jubilee_club' => '
@@ -192,28 +252,28 @@ http://rtd.dk/?uid=%%uid%%
 	',
   'create_other_meeting' => '
   <h1>Opret andre møder</h1>
-  <p>Bemærk: Møder af denne type vil ikke blive inkluderet i mødestatistikken. Invitationen udsendes umiddelbart efter mødet er oprettet.</p>
+  <p>Bem&aelig;rk: M&oslash;der af denne type vil ikke blive inkluderet i m&oslash;destatistikken. Invitationen udsendes umiddelbart efter m&oslash;det er oprettet.</p>
   <hr>
   <form action=?omid=-1 method=post>
   <table border=0 cellspacing=0 cellpadding=5>
   <tr>
     <td valign=top>
     Overskrift:<br>
-    <input class=field type=text name=data[title]><br>
+    <input class="field form-control" type=text name=data[title]><br>
     Lokation:<br>
-    <input class=field type=text name=data[location]><br>
+    <input class="field form-control" type=text name=data[location]><br>
     </td>
     <td valign=top>
     Starttidspunkt:<br>
-    <input class=field type=text name=data[start_time] value="" id=start_time><br>
+    <input class="field form-datepicker form-control" type=text name=data[start_time] value="" id=start_time><br>
     Sluttidspunkt:<br>
-    <input class=field type=text name=data[end_time] value="" id=end_time><br>
+    <input class="field form-datepicker form-control" type=text name=data[end_time] value="" id=end_time><br>
     </td>
   </tr>
   </table>
   Invitation:<br>
   <textarea class=ckeditor name=data[description]></textarea><br>
-  <input type=submit value=Opret>
+  <input type=submit value=Opret class=btn>
   </form>
   <script>
 												$(function() {
@@ -225,73 +285,114 @@ http://rtd.dk/?uid=%%uid%%
 	'reports' => '<h1>Rapporter</h1>
 	<p>Udtræk af medlemskartoteket</p>
 	<ul>
-		<li><a href=?reports&f=networker>RTD Networker data</a>
+        <li><a href=?reports&f=networker>RTD Networker data</a>
 		<li><a href=?reports&f=post>Adresseudtræk til bl.a. Excalibur (medlemmer+æm)</a>
 		<li><a href=?reports&f=memberstat>Medlemsstatistik</a>
 		<li><a href=?reports&f=clubs>Klubdata</a>
 		<li><a href=?reports&f=members>Medlemsudtræk</a>
 		<li><a href=?reports&f=jubilees>Klub- og medlemsjubilæer</a>
 		<li><a href=?reports&f=rti>Udtræk til Hvid Bog (RTI)</a>
-		<li><a href=?admin_download=roleprint>Udskrift af aktive roller</a>
+        <li><a href=?admin_download=roleprint>Udskrift af aktive roller</a>
 		<li><a href=?admin_download=futureroleprint>Udskrift af kommende roller</a>
 	</ul>
 	',
 	"user_viewed" => '
-	<h1>Andre der har set denne profil</h1>
-	<div id=peek></div>
-	<script>
-		var peekers = jQuery.parseJSON(\'%%data%%\');
-		var peekhtml = "<table><tr>";
-		$.each(peekers, function(i,m) {
-		 peekhtml += "<td valign=top><center><a href=?uid="+m.uid+"><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=100&h=166><br>"+m.profile_firstname+" "+m.profile_lastname+"<br></a></center></td>";
-		});
-		peekhtml += "</tr></table>";
-		$("#peek").append(peekhtml);
-	</script>
+	<div class="container container-image user_list" style="background-image:url(img/Light-Rays-Dark-Blue-Background.jpg)">
+		<div class="title title-section">
+			<h2>ANDRE DER HAR SET DENNE PROFIL</h2>
+			<span class="sticker">
+				<i class="icon icomoon-users"></i>
+			</span>
+		</div><!-- .title.title-section -->
+		<div id=peek class=row></div>
+		<script>
+			var peekers = jQuery.parseJSON(\'%%data%%\');
+			var peekhtml = "";
+			$.each(peekers, function(i,m) {
+                var profile_firstname = "";
+                if(m.profile_firstname != "" && m.profile_firstname != null)
+                {
+                    profile_firstname = m.profile_firstname;
+                }
+                else
+                {
+                    profile_firstname = "";
+                }
+
+                var profile_lastname = "";
+                if(m.profile_lastname != "" && m.profile_lastname != null)
+                {
+                    profile_lastname = m.profile_lastname;
+                }
+                else
+                {
+                    profile_lastname = "";
+                }
+
+                var company_position = "";
+                if(m.company_position != "" && m.company_position != null)
+                {
+                    company_position = m.company_position;
+                }
+                else
+                {
+                    company_position = "";
+                }
+
+
+			 peekhtml += "<div class=\"col-xs-4 col-xs-2 col-md-2\"><div class=\"22 simplemember\"><div class=member-heading><a href=?uid="+m.uid+" class=userpic><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=300&h=300 alt="+m.profile_firstname+"></a><div class=title><h5><a href=?uid="+m.uid+">"+profile_firstname+" "+profile_lastname+"</a></h5><p>"+company_position+"</p></div></div></div></div>";
+			 });
+
+			$("#peek").append(peekhtml);
+		</script>
+	</div>
 	',
 	"admin_sysstat" => '
 	<h1>Tid</h1>
 	Servertid: %%time%%
-	<h1>Fejl</h1>
-	<div style="height: 330px; overflow: scroll; overflow-x: hidden;">
+	<h1>Fejl </h1>
+	<div class="feji">
 	%%syslog%%
 	</div>
-	<h1>Mailkø</h1>
-	<button onclick="document.location.href=\'?admin_download=sysstat&clear_mail_queue=true\';">Slet mailkø</button>
+	<h1>Mailk&oslash;</h1>
+	<button class="btn btn-info margin-btm" onclick="document.location.href=\'?admin_download=sysstat&clear_mail_queue=true\';">Slet mailk&oslash;</button>
 	%%mailqueuesize%%
+    <div class="sub_rec">
 	%%mailqueue%%
+    </div>
 	<h1>Udsendt mail</h1>
-	<div style="height: 330px; overflow: scroll; overflow-x: hidden;">
+	<div style="height: 330px; overflow-y: scroll;">
 	%%mailsent%%
 	</div>
 	<h1>Cronjob</h1>
 	%%log%%
-	<h1>Populæresider</h1>
+	<h1>Popul&aelig;resider</h1>
 	%%popularpages%%
-	<h1>Populæresøgninger</h1>
+	<h1>Popul&aelig;res&oslash;gninger</h1>
 	%%popularsearch%%
 	',
 	'randomuser_js' => '
-	
-	document.write("<div class=box id=leftbox><h3>Tabler</h3><a href=?uid=%%uid%%><br><center><table width=180px ><tr><td width=50px>");
-	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=50&h=84></td><td>");
-	document.write("%%profile_firstname%% %%profile_lastname%%<br>");
+	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
+	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500></td><td>");
+	document.write("<div class=title><h3><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></h3>");
 	document.write("%%company_position%%, ");
-	document.write("%%company_name%%");
-	document.write("</td></tr></table></center></a></div>");
+	document.write("<p>%%company_name%%</p>");
+	document.write("</div></a></div></div></div>");
+	$(".statistik h2").text("Statistik");
+	$(".statistik_content").addClass("col-xs-8");
 	',
 	'user_on_leave_subj' => 'Orlov fra RTD - %%profile_firstname%% %%profile_lastname%%',
 	'user_on_leave_body' => 'Dags dato er %%profile_firstname%% %%profile_lastname%% på orlov fra RTD. Se mere på http://rtd.dk/?uid=%%uid%%',
 	'users_missing_email_subj' => '%%name%% - medlemmer med ugyldig email',
 	'update_clubmail' => '
-	<form action=?admin_download=clubmail method=post enctype="multipart/form-data"> 
+	<form action=?admin_download=clubmail method=post enctype="multipart/form-data" class="clubmail_cls">
 	<p>Gå til mailadmin.wannafind.dk og download XML fil og indlæs nedenfor:</p>
 	<input type=file name=clubmail>
-	<input type=submit>
+	<input type=submit class="btn">
 	</form>
 	',
 	'district_calendar_show' =>
-	'<p><a href="?cal=%%name%%">Vis møder i kalender</a></p>',
+	'<p><a class=btn href="?cal=%%name%%">Vis m&oslash;der i kalender</a></p>',
 	'calendar_map' => '
 	<h1>Kalender %%title%%</h1>
 	Dato:
@@ -305,7 +406,7 @@ http://rtd.dk/?uid=%%uid%%
 	  <script>
 		var mapOptions = {
 			zoom: 8,
-			center: new google.maps.LatLng(-34.397, 150.644),
+			center: new google.maps.LatLng(-34.397, 150.444),
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -315,7 +416,7 @@ http://rtd.dk/?uid=%%uid%%
 		var date_map = new Array();
 		var map_events = jQuery.parseJSON(\'%%data%%\');
 		$.each(map_events, function(i,m) {
-			if (!date_map[m.date]) 
+			if (!date_map[m.date])
 			{
 				$("#e").append("<option value=\'"+m.date+"\'>"+m.date+"</option>");
 				date_map[m.date]=new Array();
@@ -331,14 +432,14 @@ http://rtd.dk/?uid=%%uid%%
 				$("#locmap").append("<li>"+date_map[when][i].title);
 			}
 		}
-		
+
 		function locate(what)
 		{
 			if (what=="") return;
 			var url = "/scripts/rtd/geocodeproxy.php?address=="+what+"&sensor=false";
-			
-			$.ajax( url ).done(function(data) 
-			{ 
+
+			$.ajax( url ).done(function(data)
+			{
 				var result = jQuery.parseJSON(data);
 				var lat = -1;
 				var lng = -1;
@@ -348,16 +449,16 @@ http://rtd.dk/?uid=%%uid%%
 					lng = v.geometry.location.lng;
 					found=true;
 				});
-				if (!found) 
+				if (!found)
 				{
 					$("#locmap").html("<i>Kunne ikke finde adressen. Indtast f.eks. Christiansborg, 1240 København K</i>");
 				}
 				else {
-					var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=11&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+					var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=col-sm-offset-2&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
 					var url = "https://maps.google.dk/?q="+what;
 					$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 				}
-			});																										
+			});
 		}
 
 		</script>
@@ -366,17 +467,16 @@ http://rtd.dk/?uid=%%uid%%
 	"
 		<h1>Kalender %%title%%</h1>
 		<link rel='stylesheet' type='text/css' href='/scripts/fullcalendar/fullcalendar/fullcalendar.css' />
-		<script type='text/javascript' src='/scripts/fullcalendar/fullcalendar/fullcalendar.js'></script>		
+		<script type='text/javascript' src='/scripts/fullcalendar/fullcalendar/fullcalendar.js'></script>
 		%%colors%%
-		<table width=100%>
+		<table width=100% class=prev_nxt_tbl>
 		<tr>
-		<td align=left><input type=button id=prev value=Forrige></td>
-		<td align=right><input type=button id=next value=Næste></td>
+		<td align=left><input type=button id=prev value=Forrige class=\"btn btn-blue\"></td>
+		<td align=right style=text-align:right><input type=button id=next value='N&aelig;ste' class=\"btn btn-blue\"></td>
 		</tr>
 		</table>
-		<div id='calendar' style='width:580px'></div>
+		<div id='calendar' class='fc ui-widget' style='width:100%'></div>
 		<script>
-
     $('#calendar').fullCalendar({
 			theme: true,
 			header: {
@@ -385,10 +485,10 @@ http://rtd.dk/?uid=%%uid%%
 			eventSources : [
 			%%events%%
 			]
-		});			
+		});
 $('#next').click(function() {
     $('#calendar').fullCalendar('next');
-});     
+});
 $('#prev').click(function() {
     $('#calendar').fullCalendar('prev');
 });		</script>
@@ -396,21 +496,21 @@ $('#prev').click(function() {
 	'edit_club_secretary'=>
 	'
 	<h1>Rediger klub %%name%% - Sekretær</h1>
-	<form action=?cid=%%cid%% method=post enctype="multipart/form-data"> 
+	<form action=?cid=%%cid%% method=post enctype="multipart/form-data">
 		<table>
 		<tr><td>
 		<p>Mødested<br>
-		<input type=text name=edit[meeting_place] value="%%meeting_place%%"></p>
+		<input type=text name=edit[meeting_place] value="%%meeting_place%%" class="form-control"></p>
 		</td><td>
 		<p>Mødetid<br>
-		<input type=text name=edit[meeting_time] value="%%meeting_time%%"></p>
+		<input type=text name=edit[meeting_time] value="%%meeting_time%%" class="form-control"></p>
 		</td></tr>
 		<tr><td>
 		<p>Mumie kodeord<br>
-		<input type=text name=edit[mummy_password] value="%%mummy_password%%"></p>
+		<input type=text name=edit[mummy_password] value="%%mummy_password%%" class="form-control"></p>
 		</td><td>
 		<p>Webmail kodeord<br>
-		<input type=text name=edit[webmail_password] value="%%webmail_password%%"></p>
+		<input type=text name=edit[webmail_password] value="%%webmail_password%%" class="form-control"></p>
 		</td></tr>
 		<tr><td colspan=2>
 		<p>Beskrivelse<br>
@@ -418,23 +518,23 @@ $('#prev').click(function() {
 		</td></tr>
 		<tr>
 			<td><p>Web<br>
-			<input type=text name=edit[webpage] value="%%webpage%%">
+			<input type=text name=edit[webpage] value="%%webpage%%" class="form-control">
 			</td>
 		</tr>
 		<tr><td>
 		<p>Klublogo<br>
 		<input type=file name=logo></p>
 		</td><td>
-		<img src=/uploads/club_logos/%%logo%% width=100px><br>
+		<img src=\"/uploads/club_logos/%%logo%%\" width=100px><br>
 		</td></tr></table>
 		<hr>
-		<input type=submit value="Gem ændringer">
+		<input type=submit value="Gem &aelig;ndringer" class="btn">
 	</form>
 	',
 	'edit_club_admin' =>
 	'
 	<h1>Rediger klub %%name%% - Administrator</h1>
-  <input type=button value="Permanent slet" onclick=confirm_delete_club(%%cid%%)>
+  <input type=button class="btn btn-info margin-btm" value="Permanent slet" onclick=confirm_delete_club(%%cid%%)>
   <script>
     function confirm_delete_club(cid)
     {
@@ -445,62 +545,67 @@ $('#prev').click(function() {
     }
   </script>
   <h1>Data</h1>
-	<form action=?cid=%%cid%% method=post enctype="multipart/form-data"> 
-		<table>
-		<tr><td colspan=2>
+	<form action=?cid=%%cid%% method=post enctype="multipart/form-data" class="tbl1">
+		<div class="row" style="display:block;">
+		<div class="col-xs-12">
 		<p>Klubnavn<br>
-		<input type=text name=edit[name] value="%%name%%"></p>
-		</td></tr>
-		<tr><td>
-		<p>Mødested<br>
-		<input type=text name=edit[meeting_place] value="%%meeting_place%%"></p>
-		</td><td>
-		<p>Mødetid<br>
-		<input type=text name=edit[meeting_time] value="%%meeting_time%%"></p>
-		</td></tr>
-		<tr><td>
+		<input type=text name=edit[name] value="%%name%%" class="form-control"></p>
+		</div>
+        <div class="col-xs-12">
+		<p>Chairman name<br>
+		<input type=text name=edit[chairman_name] value="%%chairman_name%%" class="form-control"></p>
+		</div>
+		<div class="col-xs-12">
+		<p>M&oslash;dested<br>
+		<input type=text name=edit[meeting_place] value="%%meeting_place%%" class="form-control"></p>
+		</div>
+        <div class="col-xs-12">
+		<p>M&oslash;detid<br>
+		<input type=text name=edit[meeting_time] value="%%meeting_time%%" class="form-control"></p>
+		</div>
+		<div class="col-xs-12">
 		<p>Charter dato<br>
-		<input type=text name=edit[charter_date] value="%%charter_date%%"></p>
-		</td><td>
+		<input type=text name=edit[charter_date] value="%%charter_date%%" class="form-control form-datepicker"></p>
+		</div>
+        <div class="col-xs-12">
 		<p>Charter klub ID<br>
 			<select name=edit[charter_club_cid] id=charter_club></select>
 	<!--	<input type=text name=edit[charter_club_cid] value="%%charter_club_cid%%">
 	-->
 	</p>
-		</td></tr>
-		<tr><td>
+		</div>
+		<div class="col-xs-12">
 		<p>Distrikt ID<br>
-		<input type=text name=edit[district_did] value="%%district_did%%"></p>
-		</td>
-		</tr>
-		<tr><td>
+		<input type=text name=edit[district_did] value="%%district_did%%" class="form-control"></p>
+		</div>
+		<div class="col-xs-12">
 		<p>Mumie kodeord<br>
-		<input type=text name=edit[mummy_password] value="%%mummy_password%%"></p>
-		</td><td>
+		<input type=text name=edit[mummy_password] value="%%mummy_password%%" class="form-control"></p>
+		</div>
+        <div class="col-xs-12">
 		<p>Webmail kodeord<br>
-		<input type=text name=edit[webmail_password] value="%%webmail_password%%"></p>
-		</td></tr>
-		<tr><td colspan=2>
+		<input type=text name=edit[webmail_password] value="%%webmail_password%%" class="form-control"></p>
+		</div>
+		<div class="col-xs-12">
 		<p>Beskrivelse<br>
 		<textarea class=ckeditor name=edit[description]>%%description%%</textarea></p>
-		</td></tr>
-		<tr>
-			<td><p>Web<br>
-			<input type=text name=edit[webpage] value="%%webpage%%">
-			</td>
-		</tr>
-		<tr><td>
-		<p>Klublogo<br>
+		</div>
+		<div class="col-xs-12"><p>Web<br>
+			<input type=text name=edit[webpage] value="%%webpage%%" class="form-control">
+		</div>
+		<div class="col-xs-12">
+		<p style="float:left;">Klublogo<br>
 		<input type=file name=logo></p>
-		</td><td>
+		
 		<img src=/uploads/club_logos/%%logo%% width=100px><br>
-		</td></tr></table>
+		</div>
+        </div>
 		<hr>
-		<input type=submit value="Gem ændringer">
+		<input type=submit value="Gem &aelig;ndringer" class="btn">
 	</form>
   <script>
     var all_clubs = jQuery.parseJSON(\'%%all_clubs%%\');
-    $.each(all_clubs, function(i,c) 
+    $.each(all_clubs, function(i,c)
 	{
 		if (c.cid == "%%charter_club_cid%%")
 		{
@@ -529,14 +634,14 @@ $('#prev').click(function() {
   'role_nomination_body' => "
     %%profile_firstname%% %%profile_lastname%% er d.d. indstillet til %%role%% med følgende begrundelse:\n
     %%comment%%
-	
+
 	Profil: http://www.rtd.dk/?uid=%%uid%%
 	Klub: http://www.rtd.dk/?cid=%%cid%%
   ",
 	'resignation_nominated' => '<script>alert("Udmeldelsen er modtaget.\nLS skal nu godkende.\nSker dette ikke inden for rimelig tid kan der rettes henvendelse til ls@rtd.dk");document.location.href="/";</script>',
 	'resignation_approved' => '<script>alert("Udmeldelsen er effektureret - medlem, F, DF, VLF og LF er informeret");document.location.href="/";</script>',
 	'resign_nominate_subj' => 'Udmeldelse af %%profile_firstname%% %%profile_lastname%%',
-	'resign_nominate_body' => 
+	'resign_nominate_body' =>
 	"Udmeldelse af %%profile_firstname%% %%profile_lastname%% fra %%name%%\n\n
 	Motivation fra S:\n\n%%why%%\n\nGodkend via dette link: http://rtd.dk/?uid=%%uid%%&resign=%%why_url%%&approve\n\n
 	Hvis LS ikke kan godkende udmeldelsen skal der rettes henvendelse til S/F fra %%name%% - se http://rtd.dk/?cid=%%cid%%
@@ -557,75 +662,109 @@ $('#prev').click(function() {
 	%%content%%
 	',
   'news_archive' =>
-  '<h1>Nyhedsarkiv</h1>
-  <ul id=newsitems></ul>
+  '<div id=newsitems class=container-out news-page>
+    <div class="title title-section">
+        <h3>Nyhedsarkiv</h3>  
+        <span class="sticker">
+            <i class="icon fa fa-bullhorn"></i>
+        </span>      
+    </div>
+    
+  <div data-animate="flipInY">
+        <div class="carousel-wrap">
+            <ul class="carousel-nav">
+                <li><a href="#" class="btn btn-icon-prev prev"></a></li>
+                <li><a href="#" class="btn btn-icon-next next"></a></li>
+            </ul><!-- .carousel-nav -->
+    
+            <div class="carousel" data-visible="3">&nbsp;</div>
+        </div>
+    </div>
+  </div>
   <script>
     var newsitems = jQuery.parseJSON(\'%%data%%\');
+    var html  = "";
     $.each(newsitems, function(i,n) {
-      $("#newsitems").append("<li><a href=?news="+n.nid+">"+n.title+", "+n.posted+"</a>");
+        var title = "";
+        if(n.title != "" && n.title != null)
+        {
+            title = "<a href=?news="+n.nid+">"+n.title+"</a>";
+        }
+        else
+        {
+            title = "";
+        }
+
+        var cotn = n.content;
+
+        html = html + "<article class=\"post post-latest post-type-image\">";
+        html = html + "<div class=post-content>";
+        html = html + "<div class=title>";
+        html = html + "<h2 class=h4>"+title+"</h2>";
+        html = html + "<p class=meta>";
+        html = html + "<span class=meta-date>"+n.posted+"</span>";
+        html = html + "</p></div>";
+        html = html + "<div class=text>"+cotn.substring(0,300)+"<a href=?news="+n.nid+">...L&aelig;s mere...</a></div>";
+        html = html + "</div></article>";
+        
+      //$("#newsitems").append("<li><a href=?news="+n.nid+">"+n.title+", "+n.posted+"</a>");
     });
+    $("#newsitems .carousel").append(html);
   </script>
   ',
 	'news_item_comment' => '
 	<h1>Debat</h1>
   <form action=?news method=post>
   <input type=hidden name=news id=nid>
-  <textarea style="width:99%" name=comment placeholder="Din kommentar"></textarea>
-  <input type=submit value="Gem kommentar"> <i>Du modtager en mail når der kommer opdateringer i kommentarene</i>
+  <textarea style="width:99%" name=comment placeholder="Din kommentar" class="form-control"></textarea>
+  <input type=submit value="Gem kommentar" class="btn"> <i>Du modtager en mail når der kommer opdateringer i kommentarene</i>
   </form>
-	<table id=comment width=100%></table>
-	
+	<section class="comments devider-top devider-heavy devider-margin-medium">
+        <div class="title title-main">
+        <h4>Kommentarer</h4>
+        </div>
+        <ul class="comments-content">
+        </ul>
+    </section>
+
 	<script>
 		var nc = jQuery.parseJSON(\'%%data%%\');
 		var html = "";
 		$("#nid").val(nc.nid);
-		$.each(nc, function(i,c) {
-      if (i!="nid")
-      {
-		html = 
-		"<tr><td colspan=2><hr></td></tr>"+
-		"<tr>"+
-				"<td width=100px><img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=166></td>"+
-				"<td valign=top>"+
-				"<a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p>"+
-				c.content+
-				"</td>"+
-				"</tr>" + html;
-		/*
-		  	$("#comment").append("<tr>"+
-				"<td width=100px><img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=166></td>"+
-				"<td valign=top>"+
-				"<a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p>"+
-				c.content+
-				"</td>"+
-				"</tr>"
-				);
-				*/
-				/*
-		  		c.content+
-		  		"<p><a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a>, "+c.posted+"</p><hr>"
-		  	);
-			*/
-      }
-		});
-		$("#comment").append(html);
+        
+		$.each(nc, function(i,c) { 
+                   
+          if (i!="nid")
+          {         
+            html = html + "<li>";
+            html = html + "<div class=comment><div class=comment-heading><a class=avatar href=#><span class=\"btn btn-icon-user\"></span>";
+            html = html + "<img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=144 alt=Member></a></div>";
+            html = html + "<div class=comment-content><div class=title><a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a> <p class=meta><span class=meta-date>"+c.posted+"</span></p></div>";
+            html = html + "<div class=text>"+c.content+"</div></div></div></li>";                      				
+          }
+		});                
+        
+		$(".comments ul.comments-content").append(html);
+        
+        var len = $( "ul.comments-content li" ).length;
+        $(".comments > .title.title-main h4").append("<span>"+len+"</span>");
+        
 	</script>
 	',
 	'beta_latestnews_js' => '
 		var news_data = jQuery.parseJSON(\'%%data%%\');
-		$("#news").append("<h1>Nyhed - "+news_data.title+"</h1>");
-		$("#news").append("<p><i>Skrevet "+news_data.posted+"</i></p>");
-		$("#news").append(news_data.content);
-		$("#news").append("<a href=?news="+news_data.nid+">Læs mere</a>");
-		
+		$("#newss").append("<h1>Nyhed - "+news_data.title+"</h1>");
+		$("#newss").append("<p><i>Skrevet "+news_data.posted+"</i></p>");
+		$("#newss").append(news_data.content);
+		$("#newss").append("<a href=?news="+news_data.nid+">L&aelig;s mere</a>");
+
 		$.each(news_data.country.minutes, function(i,m) {
 			if (m.images != null)
 			{
-				$("#news").append("<h1>"+m.name+": "+m.title+"</h1>");
-				$("#news").append(m.images[0].miid);
+				$("#newss").append("<h1>"+m.name+": "+m.title+"</h1>");
+				$("#newss").append(m.images[0].miid);
 			}
 		});
-		
 	',
 	'latestnews_js' => '
 		function latestnewsjs()
@@ -633,30 +772,60 @@ $('#prev').click(function() {
 			var news_data_json = jQuery.parseJSON(\'%%data%%\');
 			var first = true;
 			var html  = "";
+
 //			$("#news").append();
-			
+
 			$.each(news_data_json, function(i,news_data) {
-				html = html + "<a href=?news="+news_data.nid+"><h1>"+news_data.title+" ("+news_data.count+" besvarelser)</h1></a>" + news_data.content;
+                var title = "";
+                if(news_data.title != "" && news_data.title != null)
+                {
+                    title = "<a href=?news="+news_data.nid+">"+news_data.title+"</a>";
+                }
+                else
+                {
+                    title = "";
+                }
+
+                var cotn = news_data.content;
+                
+                html = html + "<article class=\"post post-latest post-type-image\">";
+                html = html + "<div class=post-content>";
+                html = html + "<div class=title>";
+                html = html + "<h2 class=h4>"+title+"</h2>";
+                html = html + "<p class=meta>";
+                html = html + "<span class=meta-date>"+news_data.posted+"</span>";
+                html = html + "</p></div>";
+                html = html + "<div class=text>"+cotn.substring(0,300)+"<a href=?news="+news_data.nid+">...L&aelig;s mere...</a></div>";
+                html = html + "</div></article>";
 			});
-			html = html + "<h1>Nyhedsarkiv</h1><p><ul><li><a href=?news>Find gamle nyheder i arkivet</a><li><a href=\"mailto:web@rtd.dk\">Forslå en nyhed</a></ul></p>";
-			$("#news").append(html);
+			//html = html + "<h1>Nyhedsarkiv</h1><p><ul><li><a href=?news>Find gamle nyheder i arkivet</a><li><a href=\"mailto:web@rtd.dk\">Forslå en nyhed</a></ul></p>";
+			//$("#newss").append(html);
+
+            $(".news-page .carousel").append(html);
+            $(".news-page.container-out").show();
+            //$(".container-out.news-page").insertAfter("#page-content .container .col-md-10 #content");
 		}
-		latestnewsjs();
+                
+		$("#newss").css("display","block");
+		if($("#news").length > 0)
+		{
+			latestnewsjs();
+		}
 	',
-  'mobile_search_page' => 
+  'mobile_search_page' =>
   '
   <form action=/m data-ajax=false>
   <h2>Søgeord</h2>
-  		<div data-role="fieldcontain" class="ui-hide-label">
-      <label for="search">S&oslash;geord:</label>
-  		<input type="search" placeholder="Søgeord" name="search" id="search" value="" data-mini=true />
-  		</div>	
+        <div data-role="fieldcontain" class="ui-hide-label">
+        <label for="search">S&oslash;geord:</label>
+        <input type="search" placeholder="Søgeord" name="search" id="search" value="" data-mini=true />
+        </div>
   <div id=results>
   <h2>Resultater</h2>
   <div data-role="collapsible-set" data-theme="c" data-content-theme="d">
       <div data-role="collapsible">
           <h3>Medlemmer (<span id=member_count></span>)</h3>
-          
+
           <ul data-role="listview" data-inset="true" id="members">
           </ul>
       </div>
@@ -698,7 +867,7 @@ $('#prev').click(function() {
   </script>
   ',
   'mobile_user_page' =>
-  '    
+  '
     <ul id=data data-role="listview" data-theme="a" data-divider-theme="d">
       <li data-role="list-divider">
         <h2 id=name></h2>
@@ -711,7 +880,7 @@ $('#prev').click(function() {
 	  <li id=vcard></li>
       <li id=club></li>
     </ul>
-    <script>                
+    <script>
       var data = jQuery.parseJSON(\'%%data%%\');
 	  $("#vcard").append("<a href=?vcard&uid="+data.uid+" rel=external>Download kontakt</a>");
       $("#club").append("<a href=?cid="+data.club.cid+"><h3>"+data.club.name+"</h3></a>");
@@ -762,7 +931,7 @@ $('#prev').click(function() {
     $.each(data.meetings, function(a,m) {
      $("#meetings").append("<li><a data-rel=dialog href=?mid="+m.mid+"><h3>"+m.title+"</h3><p>"+m.start_time+"</p></a></li>");
     });
-    
+
   </script>
   ',
   'mobile_title_front' => 'RTD - Hele landet',
@@ -791,7 +960,7 @@ $('#prev').click(function() {
       <p>%%location%%</p>
       <p>%%meeting_description%%</p></a>
     </li>
-    
+
 	<li data-role="list-divider">Tilmelding</li>
 		<li>
 		<form action=/m method=get id=submit%%mid%%>
@@ -799,7 +968,7 @@ $('#prev').click(function() {
 		<div data-role="fieldcontain">
 			<fieldset data-role="controlgroup">
 				<legend>Kommentar:</legend>
-				<input type="text" name="attend[comment]" id="text-%%mid%%" class="custom" />
+				<input type="text" name="attend[comment]" id="text-%%mid%%" class="custom form-control" />
 			</fieldset>
 			<fieldset data-role="controlgroup">
 				<legend>Tilmeld:</legend>
@@ -814,8 +983,8 @@ $('#prev').click(function() {
     <li data-role="list-divider"><h3>Tilmeldte (<span id=count%%mid%%></span>)</h3></li>
 
     </ul>
-    
-    <script>    	
+
+    <script>
     		var count%%mid%%=0;
 
 			function attend_toggle(mid)
@@ -859,14 +1028,14 @@ $('#prev').click(function() {
 					});*/
 				}
 			}
-			
-			
+
+
 	    	$.each(jQuery.parseJSON(\'%%attendance%%\'), function(a,u) {
-	    	
+
 	    		if (u.accepted==1) {
 					if (%%uid%% == u.uid)
-					{					
-						 $("#checkbox-%%mid%%").attr("checked",true); 
+					{
+						 $("#checkbox-%%mid%%").attr("checked",true);
 					}
 	    			count%%mid%%++;
 	    			$("#members%%mid%%").append("<li data-icon=check><a data-rel=dialog href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.name+"</p></a></ul>");
@@ -877,7 +1046,7 @@ $('#prev').click(function() {
     </script>
   ',
   'mobile_district_page' => '
-  <h2>Kommende møder</h2>
+  <h2>Kommende m&oslash;der</h2>
 	<ul data-theme="a" data-role="listview" data-inset="true" data-filter="false" id="future_meetings">
   </ul>
   <h2>Klubber</h2>
@@ -891,27 +1060,27 @@ $('#prev').click(function() {
     $.each(data.meetings, function(a,m) {
      $("#future_meetings").append("<li><a data-rel=dialog href=?mid="+m.mid+"><h3>"+m.title+"</h3><p>"+m.start_time+"</p><p>"+m.name+"</p></a></li>");
     });
-  </script>  
+  </script>
   ',
   'mobile_front_page' => '
-  <h2>Kommende møder</h2>
+  <h2>Kommende m&oslash;der</h2>
 	<ul data-theme="a" data-role="listview" data-inset="true" data-filter="false" id="future_meetings">
   </ul>
   <h2>Distrikter</h2>
   <ul data-theme="a" data-role="listview" data-inset="true" data-filter="false" id="districts">
-  </ul>  
+  </ul>
   <script>
     var front_data = jQuery.parseJSON(\'%%data%%\');
     $.each(front_data.districts, function(a,d) {
       $("#districts").append("<li><a data-ajax=false href=?did="+d.did+"><h3>"+d.name+"</h3><p>"+d.description+"</p></a></li>");
     });
-    
+
     $.each(front_data.meetings, function(a,m) {
      $("#future_meetings").append("<li><a data-rel=dialog href=?mid="+m.mid+"><h3>"+m.title+"</h3><p>"+m.start_time+"</p><p>"+m.name+"</p></a></li>");
     });
   </script>
   ',
-  'mobile_latest_users' => 
+  'mobile_latest_users' =>
   '
     <h2>Hvem er online nu?</h2>
 		<ul data-theme="a" data-role="listview" data-inset="true" data-filter="false" id="club_page_contact">
@@ -922,19 +1091,19 @@ $('#prev').click(function() {
       $("#club_page_contact").append("<li><a data-rel=dialog href=?uid="+u.uid+"><img src=/uploads/user_image?uid="+u.uid+"&landscape&w=100&h=150><h3>"+u.profile_firstname+" "+u.profile_lastname+"</h3><p>"+u.club+"</p><p>Sidst set: "+u.last_page_view+"</p></a></ul>");
     });
   </script>
-  
+
       ',
 	  'mobile_download_page' =>
 	  '<h1>Downloads</h1>
 		  <ul data-theme="a" data-role="listview" data-inset="true" data-filter="false" id="dl">
-		  </ul>  
+		  </ul>
 	<script>
 		var d = jQuery.parseJSON(\'%%data%%\');
 		$.each(d, function(d,f) {
 		$("#dl").append("<li><a rel=external href=\""+f.url+"\">"+f.name+"</a></li>");
     });
   </script>
-	  
+
 	  ',
   'mobile_title_member' => '
   <h1>%%TITLE%%</h1>
@@ -952,7 +1121,7 @@ $('#prev').click(function() {
 			<label for="password">Kodeord:</label>
 			<input type="password" name="password" id="login_pass" value="" placeholder="Kodeord"/>
 		</div>
-		<button type="submit" data-theme="b" name="login_submit" value="" id="login_submit">Login</button>	
+		<button type="submit" data-theme="b" name="login_submit" value="" id="login_submit" class="btn">Login</button>
 	</form>
   ',
   'mobile_menu_not_member' => '',
@@ -984,7 +1153,7 @@ $('#prev').click(function() {
 						</tr>
 						<tr>
 							<td>
-								Herudover antal Æresmedlemmer pr. d.d.
+								Herudover antal Ærexsedlemmer pr. d.d.
 							<td id=honormembers></td>
 						</tr>
 						<tr>
@@ -1009,7 +1178,7 @@ $('#prev').click(function() {
 						</tr>
 						<tr>
 						<td>
-							Antal der falder for aldersgrænsen pr. 30/6
+							Antal der falder for aldersgrænsen pr. 30/4
 							<td id=exitduetoage></td>
 						</tr>
 						<tr>
@@ -1047,11 +1216,11 @@ $('#prev').click(function() {
 								<option value="Distrikt 3">Distrikt 3</option>
 								<option value="Distrikt 4">Distrikt 4</option>
 								<option value="Distrikt 5">Distrikt 5</option>
-								<option value="Distrikt 6">Distrikt 6</option>
+								<option value="Distrikt 4">Distrikt 4</option>
 								<option value="Distrikt 7">Distrikt 7</option>
 								<option value="Distrikt 8">Distrikt 8</option>
 							</select></p>
-							<a href=#cj>Vis klubjubilæer</a> | 
+							<a href=#cj>Vis klubjubilæer</a> |
 							<a href=#mj>Vis Medlemsjubilæer</a>
 							<hr>
 							<a name=cj><p><b>Klubjubilæer</b></p></a>
@@ -1072,9 +1241,9 @@ $('#prev').click(function() {
 				<div id=notmsg></div>
 			</div>
 		</div>
-		
+
 	<script>
-		var data = jQuery.parseJSON(\'%%data%%\');		
+		var data = jQuery.parseJSON(\'%%data%%\');
 		$.each(data.notifications, function(cat,catdata) {
 			if (catdata.length>0)
 			{
@@ -1093,8 +1262,8 @@ $('#prev').click(function() {
 				$("#notmsg").append("</ul><br><br>");
 			}
 		});
-		
-		if (data.modify>0) 
+
+		if (data.modify>0)
 		{
 			$("#nextyear").hide();
 			$("#jubilee_header").html("Næste klubår");
@@ -1103,18 +1272,18 @@ $('#prev').click(function() {
 		{
 			$("#curryear").hide();
 		}
-		
-		
-		
+
+
+
 		$.each(data.meetings.best_club, function(i, c) {
 			$("#clubrate").append("<li><a href=?cid="+c.cid+" target=_blank>"+c.data.name+"</a><br>Stemmer: "+c.count+"<br> Gennemsnit: "+c.average+"</li>");
 		});
-		
+
 		$.each(data.meetings.best_meeting, function(i, m) {
 			$("#meetrate").append("<li><a href=?mid="+m.mid+" target=_blank>"+m.club.name+"<br> "+m.data.title+"</a><br>Stemmer: "+m.count+"<br> Gennemsnit: "+m.average+"</li>");
 		});
-		
-		
+
+
 		function build_club(filter)
 		{
 			$("#clubjubilees").empty();
@@ -1143,13 +1312,13 @@ $('#prev').click(function() {
 				$("#jubilees").append("</ul></p>");
 			});
 		}
-		
+
 		function build(w)
 		{
 			build_club(w);
 			build_member(w);
 		}
-		
+
 		$("#memberstoday").append(data.details.member_count_today);
 		$("#honormembers").append(data.details.honour_count_today);
 		$("#membersyearstart").append(data.details.member_count_year_start);
@@ -1166,59 +1335,59 @@ $('#prev').click(function() {
 	</script>
 	',
 	'admin_newsletter_sent' => '<h1>Udsend nyhedsbrev</h1><p>Nyhedsbrevet er udsendt til %%count%% modtagere.</p>',
-	'newsletter_default_content' => 
+	'newsletter_default_content' =>
 	"\n\n---\n%%profile_firstname%% %%profile_lastname%%, %%national_board_member%%\n\nHUSK:\nRTD på Facebook: https://www.facebook.com/roundtabledk\nRTD på LinkedIn: http://www.linkedin.com/groups?gid=48578\n",
-	
+
 	'admin_newsletter_form' => '
 	<h1>Udsend nyhedsbrev <span id=who></span></h1>
-	<form action=?admin_download=newsletter method=post enctype="multipart/form-data" onsubmit="return verify();">
+	<form action=?admin_download=newsletter method=post enctype="multipart/form-data" class="news_form" onsubmit="return verify();">
 	<input type=hidden name=newsletter value=send>
-	<p><input type=checkbox name=testmail> Udsend prøvemail til dig selv</p>
+	<p><input type=checkbox name=testmail id=testmail><label for=testmail>Udsend pr&oslash;vemail til dig selv</label></p>
   <p id="sender">Afsender UID:<br>
   <input type=text name=sender_uid value="%%uid%%" id=uid disabled></p>
 	<p>Overskrift:<br>
 	<input type=text name=title value="%%title%%"></p>
 	<p>Indhold:<br>
 	<textarea name=content style="width:98%;height:300px;">%%content%%</textarea></p>
-	<h1>Vedhæft</h1>
-  <p>Vælg vedhæftet fil<br><input type="file" name="file" id="file"></p>
+	<h1>Vedh&aelig;ft</h1>
+  <p>V&aelig;lg vedh&aelig;ftet fil<br><input type="file" name="file" id="file"></p>
   <h1>Modtagere</h1>
-	<p>Marker først hvilke roller nyhedsbrevet skal ramme og efterfølgende hvilke distrikter. Det er således muligt at sende nyhedsbreve til f.eks. alle F i Distrikt 2, etc.</p>
+	<p>Marker f&oslash;rst hvilke roller nyhedsbrevet skal ramme og efterf&oslash;lgende hvilke distrikter. Det er s&acirc;ledes muligt at sende nyhedsbreve til f.eks. alle F i Distrikt 2, etc.</p>
 	<b>Roller</b>
 	<ul>
 		Klubroller<br>
-		<input type=checkbox onclick=c(this); name=roles[] value=6 id=M disabled>Medlem
-		<input type=checkbox onclick=c(this); name=roles[] value=9 id=F disabled>F
-		<input type=checkbox onclick=c(this); name=roles[] value=10 id=S disabled>S
-		<input type=checkbox onclick=c(this); name=roles[] value=11 id=I disabled>I
-		<input type=checkbox onclick=c(this); name=roles[] value=12 id=K disabled>K
-		<input type=checkbox onclick=c(this); name=roles[] value=17 id=IRO disabled>IRO
-		<input type=checkbox onclick=c(this); name=roles[] value=26 id=HM disabled>ÆM
-		<input type=checkbox onclick=c(this); name=roles[] value=13 id=N disabled>N<br>
-		<br>Rødkæde<br>
-		<input type=checkbox onclick=c(this); name=roles[] value=14 id=DF disabled>DF
-		<input type=checkbox onclick=c(this); name=roles[] value=15 id=LF disabled>LF
-		<input type=checkbox onclick=c(this); name=roles[] value=16 id=VLF disabled>VLF
-		<input type=checkbox onclick=c(this); name=roles[] value=19 id=NIRO disabled>NIRO
-		<input type=checkbox onclick=c(this); name=roles[] value=36 id=ALF disabled>ALF<br>
-		<br>Blåkæde<br>
-		<input type=checkbox onclick=c(this); name=roles[] value=21 id=LS disabled>LS
-		<input type=checkbox onclick=c(this); name=roles[] value=22 id=WEB disabled>WEB
-		<input type=checkbox onclick=c(this); name=roles[] value=23 id=LK disabled>LK
-		<input type=checkbox onclick=c(this); name=roles[] value=24 id=RED disabled>RED
-		<input type=checkbox onclick=c(this); name=roles[] value=25 id=SHOP disabled>SHOP
-		<input type=checkbox onclick=c(this); name=roles[] value=37 id=LA disabled>LA		
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_1" value=4 id=M disabled> <label for="roles_1">Medlem</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_2" value=9 id=F disabled> <label for="roles_2">F</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_3" value=10 id=S disabled> <label for="roles_3">S</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=col-sm-offset-2 id=I disabled> <label for="roles_4">I</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_5" value=12 id=K disabled> <label for="roles_5">K</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=17 id=IRO disabled> <label for="roles_4">IRO</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=24 id=HM disabled> <label for="roles_7">&AElig;M</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_8" value=13 id=N disabled> <label for="roles_8">N<br></label>
+		<br>R&oslash;dk&aelig;de<br>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_9" value=14 id=DF disabled><label for="roles_9">DF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_10" value=15 id=LF disabled><label for="roles_10">LF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_col-sm-offset-2" value=14 id=VLF disabled><label for="roles_col-sm-offset-2">VLF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_12" value=19 id=NIRO disabled><label for="roles_12">NIRO</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_13" value=34 id=ALF disabled><label for="roles_13">ALF<br></label>
+		<br>Bl&acirc;k&aelig;de<br>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=21 id=LS disabled><label for="roles_14">LS</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_15" value=22 id=WEB disabled><label for="roles_15">WEB</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=23 id=LK disabled><label for="roles_14">LK</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_17" value=24 id=RED disabled><label for="roles_17">RED</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_18" value=25 id=SHOP disabled><label for="roles_18">SHOP</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_19" value=37 id=LA disabled><label for="roles_19">LA</label>
 	</ul>
 	<b>Distrikter</b>
 	<ul>
-		<input type=checkbox onclick=cd(this); name=districts[] value=14 id=D1 disabled>Distrikt 1 - Nordjylland<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=15 id=D2 disabled>Distrikt 2 - Vestjylland<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=16 id=D3 disabled>Distrikt 3 - Østjylland<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=17 id=D4 disabled>Distrikt 4 - Syd- og Sønderjylland<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=18 id=D5 disabled>Distrikt 5 - Trekantsområdet og Fyn<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=19 id=D6 disabled>Distrikt 6 - Nordsjælland<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=20 id=D7 disabled>Distrikt 7 - Sydsjælland og Lolland-Falster<br>
-		<input type=checkbox onclick=cd(this); name=districts[] value=21 id=D8 disabled>Distrikt 8 - København, Bornholm og Grønland<br>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_1" value=14 id=D1 disabled><label for="districts_1">Distrikt 1 - Nordjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_2" value=15 id=D2 disabled><label for="districts_2">Distrikt 2 - Vestjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_3" value=14 id=D3 disabled><label for="districts_3">Distrikt 3 - &Oslash;stjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=17 id=D4 disabled><label for="districts_4">Distrikt 4 - Syd- og S&oslash;nderjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_5" value=18 id=D5 disabled><label for="districts_5">Distrikt 5 - Trekantsomr&acirc;det og Fyn<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=19 id=D4 disabled><label for="districts_4">Distrikt 4 - Nordsj&aelig;lland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_7" value=20 id=D7 disabled><label for="districts_7">Distrikt 7 - Sydsj&aelig;lland og Lolland-Falster<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_8" value=21 id=D8 disabled><label for="districts_8">Distrikt 8 - K&oslash;benhavn, Bornholm og Gr&oslash;nland<br></label>
 	</ul>
 	<script>
 	var role_count = 0;
@@ -1229,11 +1398,11 @@ $('#prev').click(function() {
 	function verify()
 	{
 	 return true;
-	}	
-  
-	
+	}
+
+
 	$("#who").append("%%role%% %%district%%");
-  
+
 	function c(w) { if (w.checked) role_count--; else role_count++; }
 	function cd(w) { if (w.checked) district_count--; else district_count++; }
 	function enable(v) { $(v).removeAttr("disabled"); }
@@ -1260,17 +1429,17 @@ $('#prev').click(function() {
 		enable("#RED");
 		enable("#SHOP");
 		enable("#LA");
-		
+
 		enable("#D1");
 		enable("#D2");
 		enable("#D3");
 		enable("#D4");
 		enable("#D5");
-		enable("#D6");
+		enable("#D4");
 		enable("#D7");
 		enable("#D8");
 	}
-	if (r == "ALF") 
+	if (r == "ALF")
 	{
 		enable("#F");
 		enable("#D1");
@@ -1278,11 +1447,11 @@ $('#prev').click(function() {
 		enable("#D3");
 		enable("#D4");
 		enable("#D5");
-		enable("#D6");
+		enable("#D4");
 		enable("#D7");
 		enable("#D8");
 	}
-	if (r == "LK") 
+	if (r == "LK")
 	{
 		enable("#K");
 		enable("#D1");
@@ -1290,11 +1459,11 @@ $('#prev').click(function() {
 		enable("#D3");
 		enable("#D4");
 		enable("#D5");
-		enable("#D6");
+		enable("#D4");
 		enable("#D7");
 		enable("#D8");
 	}
-	if (r == "NIRO") 
+	if (r == "NIRO")
 	{
 		enable("#IRO");
 		enable("#DF");
@@ -1314,11 +1483,11 @@ $('#prev').click(function() {
 		enable("#D3");
 		enable("#D4");
 		enable("#D5");
-		enable("#D6");
+		enable("#D4");
 		enable("#D7");
 		enable("#D8");
 	}
-	if (r == "SHOP") 
+	if (r == "SHOP")
 	{
 		enable("#S");
 		enable("#F");
@@ -1328,11 +1497,11 @@ $('#prev').click(function() {
 		enable("#D3");
 		enable("#D4");
 		enable("#D5");
-		enable("#D6");
+		enable("#D4");
 		enable("#D7");
 		enable("#D8");
 	}
-	if (r == "DF") 
+	if (r == "DF")
 	{
 		var dn =  String(d).substring(d.length, d.length - 1)
 		enable("#M");
@@ -1345,14 +1514,14 @@ $('#prev').click(function() {
 		enable("#N");
 
 		enable("#D"+dn);
-		
+
     $("#D"+dn).attr("checked", true);
 
 	}
-	
+
 	</script>
 	<h1>Udsend</h1>
-	<input type=submit value="Udsend nyhedsbrev">
+	<input type=submit value="Udsend nyhedsbrev" class="btn">
 	</form>
 	',
 	'mummy_login' =>'
@@ -1360,98 +1529,88 @@ $('#prev').click(function() {
 	<form action=?mummy method=post>
 	<p>Klub (f.eks. RT132)<br><input type=text name=club></p>
 	<p>Password<br><input type=password name=password></p>
-	<input type=submit value="Login">
+	<input type=submit value="Login" class="btn">
 	</form>
 	',
-	
+
 	'latestmembers_js' => '
-		$("#latestmembers").append("<h1>Seneste medlemmer</h1><div id=members></div>");
+	$("#latestmemberss").css("display","block");
+	if($("#latestmembers").length > 0)
+	{
+		$("#latestmemberss").append("<div class=\"title title-section\"><h2>Seneste Medlemmer</h2><p>Velkommen til de nye medlemmer.</p><span class=sticker><i class=\"icon icomoon-users\"></i></span></div><div id=members class=row></div>");
 		var data = jQuery.parseJSON(\'%%data%%\');
 		var c = 0;
 		var html = "";
-		html += "<center><table width=100%><tr>";
 		$.each(data, function(i,m) {
-			
-						
-			html += "<td valign=top width=100><a href=?uid="+m.uid+"><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=100&h=150><br>"+m.profile_firstname+" "+m.profile_lastname+"<br>"+m.company_position.substring(0,16)+"</a></td>";
-			
+
+			if (c==5)
+			{
+				html += "<div class=clearfix></div>";
+			}
+
+			html += "<div class=\"col-xs-6 col-xs-2 col-md-2 \"><div class=member-heading><a href=?uid="+m.uid+" class=userpic><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+m.uid+"&landscape&w=300&h=500><div class=title><h5><a href=?uid="+m.uid+">"+m.profile_firstname+" "+m.profile_lastname+"</a></h5><p>"+m.company_position.substring(0,14)+"</p></div></div></div>";
+
 			c++;
-			if (c==5) 
+			if (c==5)
 			{
 				c=0;
-				html += "</tr><tr>";
+				html += "";
 			}
 		});
-			html += "</tr></table></center>";
 		$("#members").append(html);
+	}
 	',
-	'meeting_deleted' => 
-	'<h1>Advarsel</h1><p>Mødet du prøver at tilgå er desværre slettet. Hvis du mener dette er en fejl bedes du kontakte din sekretær.</p>',
+	'meeting_deleted' =>
+	'<h1>Advarsel</h1><p>M&oslash;det du pr&oslash;ver at tilg&acirc; er desv&aelig;rre slettet. Hvis du mener dette er en fejl bedes du kontakte din sekret&aelig;r.</p>',
 	'addthis' =>
 	'
 	',
 	'national_board' =>
 	'
-	<a name=hb><h1>Hovedbestyrelse</h1></a>
-	<table align=center width=400>
-	<tr>
-		<td id=lf></td>
-		<td id=vlf></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=iro></td>
-		<td id=blank></td>
-	</table>
-	<a name=df><h1>Distriktsformænd</h1></a>
-	<table align=center width=400>
-	<tr>
-		<td id=df1 valign=top></td>
-		<td id=df2 valign=top></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=df3 valign=top></td>
-		<td id=df4 valign=top></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=df5 valign=top></td>
-		<td id=df6 valign=top></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=df7 valign=top></td>
-		<td id=df8 valign=top></td>
-	</tr>
-	</table>
-	<a name=ex><h1>Eksekutiv komité</h1></a>
-	<table align=center width=400>
-	<tr>
-		<td id=ls valign=top></td>
-		<td id=lk valign=top></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=shop valign=top></td>
-		<td id=web valign=top></td>
-	</tr>
-	<tr><td colspan=2><hr></td></tr>
-	<tr>
-		<td id=red valign=top></td>
-		
-	</tr>
-	</table>
-	<a name=others><h1>Øvrige</h1></a>
-	<table align=center width=300>
-	<tr>
-		<td id=alf></td>
-		<td id=la></td>
-	</tr>
-	</table>
+	<div class="container">
+		<div class="row">
+			<a name=hb><h1>Hovedbestyrelse</h1></a>
+			<div class="col-sm-12">
+				<div class="col-md-4 col-md-offset-2" id="lf"></div>
+				<div class="col-md-4" id="vlf"></div>
+				<div class="col-md-4 col-md-offset-2" id="iro"></div>
+				<div class="col-md-4" id="blank"></div>
+			</div>
+		</div>
+		<div class="row">
+			<a name=df><h1>Distriktsformænd</h1></a>
+			<div class="col-sm-12">
+				<div class="col-md-4 col-md-offset-2" id="df1"></div>
+				<div class="col-md-4" id="df2"></div>
+				<div class="col-md-4 col-md-offset-2" id="df3"></div>
+				<div class="col-md-4" id="df4"></div>
+				<div class="col-md-4 col-md-offset-2" id="df5"></div>
+				<div class="col-md-4" id="df6"></div>
+				<div class="col-md-4 col-md-offset-2" id="df7"></div>
+				<div class="col-md-4" id="df8"></div>
+			</div>
+		</div>
+		<div class="row">
+			<a name=ex><h1>Eksekutiv komité</h1></a>
+			<div class="col-sm-12">
+				<div class="col-md-4 col-md-offset-2" id="ls"></div>
+				<div class="col-md-4" id="lk"></div>
+				<div class="col-md-4 col-md-offset-2" id="shop"></div>
+				<div class="col-md-4" id="web"></div>
+				<div class="col-md-4 col-md-offset-2" id="red"></div>
+			</div>
+		</div>
+		<div class="row">
+			<a name=others><h1>Øvrige</h1></a>
+			<div class="col-sm-12">
+				<div class="col-md-4 col-md-offset-2" id="alf"><p id="la"></p></div>
+
+			</div>
+		</div>
+	</div>
 	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');
-		
+
 		function makehtml(v)
 		{
 			if (v)
@@ -1469,7 +1628,7 @@ $('#prev').click(function() {
 				return "<i>Ikke fundet</i>";
 			}
 		}
-		
+
 		$("#lf").append(makehtml(data.LF));
 		$("#vlf").append(makehtml(data.VLF));
 		$("#iro").append(makehtml(data.NIRO));
@@ -1497,20 +1656,20 @@ $('#prev').click(function() {
 	<form id=newentry method=post action=?ts><h1>Opret indlæg</h1>
 	<table width=100%>
 	<tr><td width=50% valign=top>
-	<b>Overskrift</b><br><input type=text name=item[headline]><br>
-	<b>Sted</b><br><input type=text name=item[location]><br>
+	<b>Overskrift</b><br><input type=text name=item[headline] class="form-control"><br>
+	<b>Sted</b><br><input type=text name=item[location] class="form-control"><br>
 	</td><td valign=top>
-	<b>Pris</b><br><input id=price type=text name=item[price] onkeyup=><br>
-	<b>Tid</b><br><input type=text name=item[duration]><br>
-	<b>Kontakt</b><br><input type=text name=item[contact]><br>
+	<b>Pris</b><br><input id=price type=text name=item[price] class="form-control" onkeyup=><br>
+	<b>Tid</b><br><input type=text name=item[duration] class="form-control"><br>
+	<b>Kontakt</b><br><input type=text name=item[contact] class="form-control"><br>
 	</td></tr></table>
 	<b>Tekst</b><br>
 	<textarea name=item[description] class=ckeditor></textarea>
-	<input type=submit value=Gem>
+	<input type=submit value=Gem class="btn">
 	</form>
-	<script>		
+	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');
-		
+
 		function delitem(i)
 		{
 			if (confirm("Bekræft sletning af indlæg"))
@@ -1518,13 +1677,13 @@ $('#prev').click(function() {
 				document.location.href="?ts="+data.category.tsid+"&delete="+i;
 			}
 		}
-		
+
 		if (data.category)
 		{
 			$("#newentry").get(0).setAttribute("action", "?ts="+data.category.tsid);
 			$("#data").append("<a href=?ts>Tilbage til oversigt</a><h1>"+data.category.headline+"</h1><div id=items></div>");
 			$.each(data.items, function(i,item) {
-				if(item.may_edit) { $("#items").append("<p><a href=# onclick=delitem("+item.tid+");>Slet indlæg</a></p>"); }
+				if(item.may_edit) { $("#items").append("<p><a href=# onclick=delitem("+item.tid+");>Slet indl&aelig;g</a></p>"); }
 				$("#items").append("<p><b>"+item.headline+"</b></p><p>Sted: "+item.location+"</p><p>Kontakt: "+item.contact+"</p><p>Pris: "+item.price+"</p><p>Tid: "+item.duration+"</p>");
 				$("#items").append("<ul>"+item.description+"</ul><hr>");
 			});
@@ -1554,18 +1713,17 @@ $('#prev').click(function() {
 	<table width=100%><tr><td id=dashboardintro valign=top></td><td valign=top id=dashboardlogo></td></tr></table>
 	<div id=download></div>
 	<h1>Medlemsstatistik</h1>
-	
 	<table id=memberstat width=100%>
-	<tr><th>Klubår</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
+	<tr><th>Klub&acirc;r</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
 	</table>
-	<h1>Mødestatistik</h1>
-	<p id=meetingcount>Hjemmemøder i år: </p>
+	<h1>M&oslash;destatistik</h1>
+	<p id=meetingcount>Hjemmem&oslash;der i &acirc;r:</p>
 	<table id=meetingstat width=100%>
-	<tr><th>Navn</th><th>Mødeprocent i år</th><th>Mødeprocent sidste år</th></tr>
+	<tr><th>Navn</th><th>M&oslash;deprocent i &acirc;r</th><th>M&oslash;deprocent sidste &acirc;r</th></tr>
 	</table>
-  <h1>Fremmøde per møde</h1>
+  <h1>Fremm&oslash;de per m&oslash;de</h1>
   <table id=meeting_details width=100%></table>
-  <h1>Fremmøde per medlem</h1>
+  <h1>Fremm&oslash;de per medlem</h1>
   <div id=details></div>
 	<script>
 	var data = jQuery.parseJSON(\'%%data%%\');
@@ -1576,7 +1734,7 @@ $('#prev').click(function() {
 		$.each(data.club_stats, function(y,d) {
 			$("#memberstat").append("<tr><td align=center>"+y+"</td><td align=center>"+d.start+"</td><td align=center>"+d.end+"</td><td  align=center>"+d.newmembers+"</td><td align=center>"+d.exit+"</td><td align=right>"+(d.end-d.start)+"</td></tr>");
 		});
-		
+
 		var meeting_count = 0;
 		$.each(data.members, function(m,d) {
 			var attendance = 0;
@@ -1587,7 +1745,7 @@ $('#prev').click(function() {
 				meeting_count = b.total;
 			});
 			$("#meetingstat").append("<tr><td><a href=#"+d.uid+">"+d.profile_firstname+" "+d.profile_lastname+"</a></td><td>"+attendance+" %</td><td>"+old_attendance+" %</td></tr>");
-      
+
       $("#details").append("<a name="+d.uid+"><p><a href=?uid="+d.uid+">"+d.profile_firstname+" "+d.profile_lastname+"</a></p></a><ul>")
       $.each(d.details, function(a,b) {
       	if ($("#"+b.mid).length==0)
@@ -1597,7 +1755,7 @@ $('#prev').click(function() {
       	$("#"+b.mid).append("<li><a href=#"+d.uid+">"+d.profile_firstname+" "+d.profile_lastname+"</a>");
         $("#details").append("<li><a target=_blank href=?mid="+b.mid+">"+b.start_time+": "+b.title+", "+b.club+"</a></li>")
       });
-      
+
       $("#details").append("</ul>");
 		});
 		$("#meetingcount").append(meeting_count);
@@ -1605,7 +1763,7 @@ $('#prev').click(function() {
 	',
 	'dashboard' => '
 	<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/scripts/jqplot/excanvas.js"></script><![endif]-->
-	<script type="text/javascript" src="/scripts/jqplot/jquery.jqplot.min.js"></script> 
+	<script type="text/javascript" src="/scripts/jqplot/jquery.jqplot.min.js"></script>
 	<script type="text/javascript" src="/scripts/jqplot/plugins/jqplot.barRenderer.min.js"></script>
 	<script type="text/javascript" src="/scripts/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
 	<script type="text/javascript" src="/scripts/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
@@ -1615,22 +1773,24 @@ $('#prev').click(function() {
 	<table width=100%><tr><td id=dashboardintro valign=top></td><td valign=top id=dashboardlogo></td></tr></table>
 	<div id=download></div>
 	<h1>Medlemsstatistik</h1>
-	
-	<div id="memberstatchart" style="height:300px; width:100%;"></div>
 
+	<div id="memberstatchart" style="height:300px; width:100%;"></div>
+    
+    <div class="memberchart_stat">
 	<table id=memberstat width=100%>
-	<tr><th>Klubår</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
+	<tr><th>Klub&acirc;r</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
 	</table>
-	
-	<h1>Mødestatistik</h1>
+    </div>
+
+	<h1>M&oslash;destatistik</h1>
 	<div id="meetstatchart" style="height:300px; width:100%;"></div>
-	<p id=meetingcount>Hjemmemøder i år: </p>
+	<p id=meetingcount>Hjemmem&oslash;der i &acirc;r:</p>
 	<table id=meetingstat width=100%>
-	<tr><th>Navn</th><th>Mødeprocent i år</th><th>Mødeprocent sidste år</th></tr>
+	<tr><th>Navn</th><th>M&oslash;deprocent i &acirc;r</th><th>M&oslash;deprocent sidste &acirc;r</th></tr>
 	</table>
-  <h1>Fremmøde per møde</h1>
+  <h1>Fremm&oslash;de per m&oslash;de</h1>
   <table id=meeting_details width=100%></table>
-  <h1>Fremmøde per medlem</h1>
+  <h1>Fremm&oslash;de per medlem</h1>
   <div id=details></div>
   <link rel="stylesheet" type="text/css" href="/scripts/jqplot/jquery.jqplot.min.css" />
 
@@ -1641,11 +1801,11 @@ $('#prev').click(function() {
 	var memberstat_data_exit = [];
 	var memberstat_data_new = [];
 	var memberstat_data_ticks = [];
-	
+
 	var meetstat_data_ticks = [];
 	var meetstat_data_current = [];
 
-	
+
 	$("#dashboard").append(data.club.name);
 		$("#dashboardintro").append(data.club.description);
 		$("#dashboardlogo").append("<img border=1 width=100% src=\"/uploads/club_logos/"+data.club.logo+"\">");
@@ -1659,7 +1819,7 @@ $('#prev').click(function() {
 			i++;
 			$("#memberstat").append("<tr><td align=center>"+y+"</td><td align=center>"+d.start+"</td><td align=center>"+d.end+"</td><td  align=center>"+d.newmembers+"</td><td align=center>"+d.exit+"</td><td align=right>"+(d.end-d.start)+"</td></tr>");
 		});
-		
+
 		var meeting_count = 0;
 		$.each(data.members, function(m,d) {
 			var attendance = 0;
@@ -1672,7 +1832,7 @@ $('#prev').click(function() {
 			meetstat_data_current.push([d.profile_firstname + " " + d.profile_lastname,attendance]);
 			//meetstat_data_current.push(attendance);
 			$("#meetingstat").append("<tr><td><a href=#"+d.uid+">"+d.profile_firstname+" "+d.profile_lastname+"</a></td><td>"+attendance+" %</td><td>"+old_attendance+" %</td></tr>");
-      
+
       $("#details").append("<a name="+d.uid+"><p><a href=?uid="+d.uid+">"+d.profile_firstname+" "+d.profile_lastname+"</a></p></a><ul>")
       $.each(d.details, function(a,b) {
       	if ($("#"+b.mid).length==0)
@@ -1682,21 +1842,21 @@ $('#prev').click(function() {
       	$("#"+b.mid).append("<li><a href=#"+d.uid+">"+d.profile_firstname+"\n"+d.profile_lastname+"</a>");
         $("#details").append("<li><a target=_blank href=?mid="+b.mid+">"+b.start_time+": "+b.title+", "+b.club+"</a></li>")
       });
-      
+
       $("#details").append("</ul>");
 		});
 		$("#meetingcount").append(meeting_count);
-		
+
 		// update graphs
-		$(document).ready(function(){  
+		jQuery(document).ready(function($){
 			$.jqplot("meetstatchart", [meetstat_data_current],
 					{
 						seriesDefaults : { renderer:$.jqplot.BarRenderer, pointLabels: { show: true } },
 						axes: { xaxis: { renderer: $.jqplot.CategoryAxisRenderer,tickRenderer: $.jqplot.CanvasAxisTickRenderer ,        tickOptions: {          angle: -90        } }}
 					}
 					);
-		
-		   $.jqplot("memberstatchart", 
+
+		   $.jqplot("memberstatchart",
 					[memberstat_data_start, memberstat_data_exit, memberstat_data_new],
 					{
 						axesDefaults: { pad: 2.0 },
@@ -1708,32 +1868,38 @@ $('#prev').click(function() {
 						axes: { xaxis: { renderer: $.jqplot.CategoryAxisRenderer, ticks: memberstat_data_ticks }}
 					}
 					);
-		}); 
-		
+		});
+
 	</script>
-	',	
+	',
 	'meeting_admin_unlock_minutes' =>
-	'<h2>Sekretærværktøjer</h2><a href=?mid=%%mid%%&unlock>Lås referat op</a>',
-	'business_search' => '<h1>Brancheoversigt</h1>
-	<p>
+	'<h2>Sekret&aelig;rv&aelig;rkt&oslash;jer</h2><a href=?mid=%%mid%%&unlock>Lås referat op</a>',
+	'business_search' => '<div class="biz_bank"><h1>Brancheoversigt</h1>
+	<p class="biz_bank_p">
 	Vælg branche:<br>
 	<select id=biz name=biz onchange="biz(this.value);"></select><br>
 	<div id=company_section>Vælg virksomhed:<br>
 	<select id=company name=company onchange="company(this.value)";></select></div>
 	<div id=res></div>
+	</div>
 	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');
 
 		function biz(v)
 		{
 			document.location.href="?biz="+v;
+			
 		}
-		
+
 		function company(v)
 		{
-			document.location.href="?biz="+data.search+"#"+v;
+			//document.location.href="?biz="+data.search+"#"+v;
+			
+			 $("html, body").animate({
+       			 scrollTop: $("#"+v).offset().top-70
+    		}, 1500);
 		}
-		
+
 		$.each(data.businesses, function(k,v) {
 			if (data.search == v.company_business)
 			{
@@ -1744,45 +1910,46 @@ $('#prev').click(function() {
 				$("#biz").append("<option value=\""+v.company_business+"\">"+v.company_business+"</option>");
 			}
 		});
-		
-		var res_html = "<table width=100%><tr>";
+
+		var res_html = "<div class=biz_bank_user>";
 		var past = "pandekage";
 		var cnt = 0;
 		var companies = 0;
 		$.each(data.results, function(k,v) {
 			if (v.company_name.indexOf(past)==-1)
 			{
-				res_html += "</tr></table><a name=\""+v.company_name+"\"><h1>"+v.company_name+"</h1></a><table width=100%><tr>";
+				
+				res_html += "<div class=clearfix></div><a id=\""+v.cid+"\" name=\""+v.company_name+"\"><h2>"+v.company_name+"</h2></a>";
 				past = v.company_name;
-				$("#company").append("<option value=\""+v.company_name+"\">"+v.company_name+"</option>");
+				$("#company").append("<option value=\""+v.cid+"\">"+v.company_name+"</option>");
 				cnt = -1;
 			}
-			
+
 			if (cnt == 1)
 			{
-				res_html += "</tr><tr>";
+				res_html += "<div class=clearfix></div>";
 				cnt = 0;
 			}
 			else cnt++;
-			
-			res_html += 
-							 "<td width=100px><a href=?uid="+v.uid+"><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=100&h=150></a></td>"
-							 +"<td valign=top><a href=?uid="+v.uid+">"
-							 +v.profile_firstname+" "+v.profile_lastname+"</a><br>"
+
+			res_html +=
+							 "<div class=my_class><div class=my_class_left><a href=?uid="+v.uid+"><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=100&h=150></a></div>"
+							 +"<div class=my_class_right><h5><a href=?uid="+v.uid+">"
+							 +v.profile_firstname+" "+v.profile_lastname+"</a></h5>"
 							 +v.company_position+"<br>"
 							 +v.company_address+", "+v.company_zipno+" "+v.company_city+"<br>"
 							 +"Tlf: "+v.company_phone+"<br>"
 							 +"Mail: <a href=mailto:"+v.company_email+">"+v.company_email+"</a>"
-							 
-							 +"</td>"
+
+							 +"</div></div>"
 							 ;
 			companies++;
 		});
-		res_html += "</table>";
+		res_html += "</div>";
 		$("#res").append(res_html);
 		if (companies==0) $("#company_section").hide();
 	</script>
-	
+
 	',
   'user_resign_subj' => 'Udmeldelse i %%name%%',
   'user_resign_body' => 'Det bekræftes herved at %%profile_firstname%% %%profile_lastname%% er udmeldt per dags dato af %%name%%',
@@ -1790,38 +1957,70 @@ $('#prev').click(function() {
 	'news_comment_subj' => 'Ny kommentar til: %%title%%',
 	'news_comment_body' => 'Klik på dette link for at se kommentaren: http://www.rtd.dk/?news=%%nid%%',
 	'club_member_stat' => '
-	<h1>Medlemsstatistik</h1>
-	<table id=stat width=100%>
-	<tr><th>Klubår</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
-	</table>
+	<div class="title title-section">
+		<h2>Medlemsstatistik</h2>
+		<span class="sticker">
+			<i class="icon icomoon-stats"></i>
+		</span>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped" id=stat>
+				<tr>
+					<th>Klub&acirc;r</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 	<script>
 		var stats = jQuery.parseJSON(\'%%data%%\');
 		$.each(stats, function(y,d) {
-			$("#stat").append("<tr><td align=center>"+y+"</td><td align=center>"+d.start+"</td><td align=center>"+d.end+"</td><td  align=center>"+d.newmembers+"</td><td align=center>"+d.exit+"</td><td align=right>"+(d.end-d.start)+"</td></tr>");
+			$("#stat").append("<tr><td>"+y+"</td><td>"+d.start+"</td><td>"+d.end+"</td><td>"+d.newmembers+"</td><td>"+d.exit+"</td><td>"+(d.end-d.start)+"</td></tr>");
 		});
 	</script>
 	',
 	'user_stats' =>
-	'<h1>Mødestatistik</h1>
-	<table id=stats width=100%>
-	<tr><th>År</th><th>Antal klubmøder i alt</th><th>Mødedeltagelse</th><th>Udemøder</th><th>Mødeprocent</th></tr>
-	</table>
-	<hr>
-	<p>Forklaring: "Hjemmemøder" angiver fremmøde ved klubbens egne møder. Tallet i parentes angiver antal afbud til hjemmemøder. "Udemøder" angiver antal udemøder hvor deltagelse er registreret. "Mødeprocent" beregnes som (deltagelse ved hjemmemøder+udemøder / antal hjemmemøder).</p>
-	<script>
-	var stats = jQuery.parseJSON(\'%%data%%\');
-	$.each(stats, function(year,data) {
-		$("#stats").append("<tr><td align=center>"+year+"</td><td align=center>"+data.total+"</td><td align=center>"+data.accepted+" ("+data.reject+")</td><td align=center>"+data.non_home_meeting+"</td><td align=center>"+data.attendance+" %</td></tr>");
-	});
-	</script>
+	'<div id="page-content" class="meetstatistic_data" role="main"><div class="container container-light">
+		<div class="title title-section">
+			<h2>M&oslash;destatistik</h2>
+
+			<span class="sticker">
+				<i class="icon icomoon-stats"></i>
+			</span>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<table id=stats class="table meetstatistic table-condensed 22" width="100%">
+				<tr>
+					<th width="1%">År</th>
+					<th width="1%">Antal klubm&oslash;der i alt</th>
+					<th width="1%">M&oslash;dedeltagelse</th>
+					<th width="1%">Udem&oslash;der</th>
+					<th>M&oslash;deprocent</th>
+				</tr>
+				</table>
+
+
+				<p>Forklaring: "Hjemmem&oslash;der" angiver fremm&oslash;de ved klubbens egne m&oslash;der. Tallet i parentes angiver antal afbud til hjemmem&oslash;der. "Udem&oslash;der" angiver antal udem&oslash;der hvor deltagelse er registreret. "M&oslash;deprocent" beregnes som (deltagelse ved hjemmem&oslash;der+udem&oslash;der / antal hjemmem&oslash;der).</p>
+				<script>
+				var stats = jQuery.parseJSON(\'%%data%%\');
+				$.each(stats, function(year,data) {
+					$("#stats").append("<tr><td style=\'word-wrap:no-wrap\'>"+year+"</td><td>"+data.total+"</td><td>"+data.accepted+" ("+data.reject+")</td><td>"+data.non_home_meeting+"</td><td><div class=\'skill\'><div class=\'bar \' data-value=\'"+data.attendance+"\' style=\"height:40px;\"></div></div></td></tr>");
+				});
+				</script>
+			</div>
+		</div>
+	</div></div>
 	',
 	'admin_new_boards' => '
 	<h1>Kommende bestyrelser - hele landet</h1>
-	<p>Nedenfor ses en liste over de indrapporterede bestyrelser på RTD.DK</p>
+	<p>Nedenfor ses en liste over de indrapporterede bestyrelser p&acirc; RTD.DK</p>
 	<div id=data></div>
 	<script>
 		var b=jQuery.parseJSON(\'%%data%%\');
 		$.each(b, function(i,d) {
+            console.log(d);
 			$("#data").append("<h1>"+d.name+" - "+d.description+"</h1>");
 			$.each(d.clubs, function(j,c) {
 				$("#data").append("<p><a href=?cid="+c.cid+">"+c.name+"</a><ul id=c"+c.cid+"></ul>");
@@ -1838,7 +2037,7 @@ $('#prev').click(function() {
 	<p>Indstillingen er modtaget og behandlet. Husk at kontakte LF skriftlig hvis den tiltrædende bestyrelse kræver dispensation ifht. Blå Bog.</p>',
 	'review_club_board' => '
 	<h1>Kommende bestyrelse i din klub</h1>
-	<p>Nedenstående oplysninger er registreret i forbindelse med den kommende bestyrelse i din klub. Er der ændringer til nedenstående kan der rettes henvendelse til landssekretæren.</p>
+	<p>Nedenstående oplysninger er registreret i forbindelse med den kommende bestyrelse i din klub. Er der &aelig;ndringer til nedenstående kan der rettes henvendelse til landssekretæren.</p>
 	<ul id=board></ul>
 	<script>
 	var b=jQuery.parseJSON(\'%%data%%\');
@@ -1855,18 +2054,18 @@ $('#prev').click(function() {
 <p>Valgbar er enhver, som har været medlem af RTD i et år under forudsætning af, at medlemskabet
 ikke er ophørt inden tiltrædelsestidspunktet. Medlemmer, der to gange i træk har været
 valgt til bestyrelsen, er ikke valgbare i de følgende to år. Et medlem kan kun en gang i samme
-klub beklæde formandsposten.	</p>
-<p>Ovenstående jvf. blåbog §6</p>
+klub beklæde formandsposten.</p>
+<p>Ovenstående jvf. blåbog §4</p>
 <p>Eventuelle dispensationer kan kun afgives ved skriftlig henvendelse LF.</p>
 <p>
 	<form action=?kbp method=post onsubmit="return validate_kbp(this);">
 	<table id=board></table>
-	<input type=submit value="Indstil bestyrelse">
+	<input type=submit value="Indstil bestyrelse" class="btn">
 	</form>
 	<script>
-		var club_board_roles = jQuery.parseJSON(\'%%board_roles%%\');	             
+		var club_board_roles = jQuery.parseJSON(\'%%board_roles%%\');
 		var new_board_selection = new Object();
-		
+
 		Object.size = function(obj) {
 			var size=0,key;
 			for(key in obj) {
@@ -1874,98 +2073,98 @@ klub beklæde formandsposten.	</p>
 			}
 			return size;
 		}
-		
+
 		function validate_kbp(frm)
 		{
 			var err = "";
-			
+
 			if (Object.size(new_board_selection) != club_board_roles.length)
 			{
 				alert("Fejl: Alle poster i bestyrelsen skal udfyldes for indstillingen kan foretages");
 				return false;
 			}
 
-			var old_board_count = 0;			
+			var old_board_count = 0;
 			$.each(club_board_roles, function(key,value) {
-				if (value) 
+				if (value)
 				{
 					// exclude iro
-					if (key != 17) old_board_count++;			
+					if (key != 17) old_board_count++;
 				}
 		  });
-		  
+
 		  if (old_board_count==0)
 		  {
 		  	err += "- Mindst 1 medlem fra den siddende bestyrelse skal genvælges til den nye bestyrelse.\n";
 		  }
-		  
+
 		  if (old_board_count>3)
 		  {
 		  	err += "- Højest 3 medlemmer fra den siddende bestyrelse kan genvælges.\n";
 		  }
-		  
-			// if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);			
-			
+
+			// if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);
+
 			return true;
 		}
-		
+
 		function eval_item(cur_role,r,d,s)
 		{
 			var role_start_date = $.datepicker.parseDate("yy-mm-dd", "%%period_start%%");
 			var d = $.datepicker.parseDate("yy-mm-dd", d);
 			var s = $.datepicker.parseDate("yy-mm-dd", s);
-			
+
 			var err = "";
-			
+
 			if (d<role_start_date)
 			{
 				err += "- Det valgte medlem er udtrådt af Round Table Danmark ved tiltrædelsestidspunktet.\n";
 			}
-			
+
 			/*
 			if (r.indexOf(cur_role)!=-1)
 			{
 				err += "- Det valgte medlem bestrider den valgte post i indeværende periode.\n";
 			}*/
-		
+
 			var already_member_of_board = false;
 			for (var i=0; i<club_board_roles.length; i++)
-			{				
-				if (r.indexOf(club_board_roles[i].description)!=-1) 
+			{
+				if (r.indexOf(club_board_roles[i].description)!=-1)
 				{
 					already_member_of_board = true;
 				}
-			}	
-			
+			}
+
 			new_board_selection[cur_role] = already_member_of_board;
-			
+
 			var diff_ms = Math.abs(role_start_date.getTime() - s.getTime());
 			var diff_s = diff_ms / 1000;
-			var diff_m = diff_s / 60;
-			var diff_h = diff_m / 60;
+			var diff_m = diff_s / 40;
+			var diff_h = diff_m / 40;
 			var diff_d = diff_h / 24;
-			
-			if (diff_d<365) err += "- Medlemmet skal have været medlem af Round Table Danmark i 1 år ved tiltrædelsestidspunkt.\n";
-			
 
-			if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);			
+			if (diff_d<345) err += "- Medlemmet skal have været medlem af Round Table Danmark i 1 år ved tiltrædelsestidspunkt.\n";
+
+
+			if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);
 		}
 		var members = jQuery.parseJSON(\'%%club_members%%\');
-		
-		
-		
+
+
+
 		var htmlstr = "";
 		$.each(club_board_roles, function(key,value) {
 			var membershtml = "";
-			$.each(members, function(key,m) {		  
+			$.each(members, function(key,m) {
 			membershtml = membershtml +"<input onclick=\'eval_item(\""+value.description+"\",\""+m.roles+"\",\""+m.profile_ended+"\",\""+m.profile_started+"\");\' type=radio value="+m.uid+" name=role["+value.rid+"]>"+m.profile_firstname+" "+m.profile_lastname+", Ud: "+m.profile_ended+"<br>";
 		  });
 
 
-			 $("#board").append("<tr><td valign=top><b>"+value.description+"</b></td><td>"+membershtml+"<hr></td></tr>");	    
+			 $("#board").append("<tr><td valign=top><b>"+value.description+"</b></td><td>"+membershtml+"<hr></td></tr>");
 	  });
 	</script>
-	
+
 	',
 	'move_user_nomination_done_subj' => 'Klubskifte udført for %%member_name%%',
 	'move_user_nomination_done_body' => '
@@ -1975,7 +2174,7 @@ klub beklæde formandsposten.	</p>
 	'move_user_nomination_body' => "
 	Det anmodes herved at %%member_name%% overflyttes fra %%source_club_name%% til %%target_club_name%%. For at overflytningen kan gennemføres bedes I godkende ved at klikke på dette link: http://www.rtd.dk/?approval&uid=%%member_uid%%&move=%%target_club_id%%\n
 	Se også kommentar fra S:\n\n
-	
+
 	%%comment%%
 
 	",
@@ -1984,11 +2183,11 @@ klub beklæde formandsposten.	</p>
 		<h1>Overflytning af %%profile_firstname%% %%profile_lastname%%</h1>
 		<p>Medlemmet er nu overflyttet.</p>
 	',
-	
+
 	'move_user_nominated' =>
 	'
 		<h1>Overflytning af %%profile_firstname%% %%profile_lastname%%</h1>
-		<p>Anmodning om overflytning er modtaget. Næste trin i processen er, at landssekretæren skal acceptere overflytningen. Sker dette ikke inden for rimelig tid bør der rettes henvendelse til ls@rtd.dk.</p>		
+		<p>Anmodning om overflytning er modtaget. Næste trin i processen er, at landssekretæren skal acceptere overflytningen. Sker dette ikke inden for rimelig tid bør der rettes henvendelse til ls@rtd.dk.</p>
 	',
 	'move_user_nominate' =>
 	'
@@ -1996,13 +2195,11 @@ klub beklæde formandsposten.	</p>
     <p>
 Ved overflytning skal følgende procedure overholdes:
 <ul>
-<li>Tableren kontakter distriktsformanden i det distrikt, som overflytning skal ske til. 
-<li>Tableren og
-distriktsformanden aftaler herefter, hvilken klub overflytning skal ske til. 
-<li>Formanden i den nye klub
-sender en indbydelse til Tableren. 
+<li>Tableren kontakter distriktsformanden i det distrikt, som overflytning skal ske til.
+<li>Tableren og distriktsformanden aftaler herefter, hvilken klub overflytning skal ske til.
+<li>Formanden i den nye klub sender en indbydelse til Tableren.
 </ul>Der henvises i øvrigt til love for
-klubberne under landsforeningen Round Table Danmark.    
+klubberne under landsforeningen Round Table Danmark.
     </p><hr>
 		<form action=?uid=%%uid%% method=post onsubmit="return evaluate_move_member();">
 		<p>
@@ -2010,22 +2207,22 @@ klubberne under landsforeningen Round Table Danmark.
 		<select id=clubs name=move></select>
 		</p>
 		<p>Begrundelse (til modtager klub):</p>
-		<textarea style="width:98%;height:300px" name=comment id=comment></textarea>
-		<p><input type=submit value="Overflyt medlem"></p>		
+		<textarea style="width:98%;height:300px" name=comment id=comment class=form-control></textarea>
+		<p><input type=submit value="Overflyt medlem" class="btn"></p>
 		</form>
 	  <script>
-		var result = jQuery.parseJSON(\'%%clubs%%\');	             
+		var result = jQuery.parseJSON(\'%%clubs%%\');
 		// alert(result);
 		var htmlstr = "";
 		$.each(result, function(key,value) {
 			htmlstr = htmlstr+"<option value="+value.cid+">"+value.name+"</option>";
-	    
+
 	  });
 	  $("#clubs").html(htmlstr);
-	  
+
 	  function evaluate_move_member()
 	  {
-	  	if (CKEDITOR.instances.comment.getData()=="") 
+	  	if (CKEDITOR.instances.comment.getData()=="")
 	  	{
 	  		alert("Du skal indtaste en kommentar");
 	  		return false;
@@ -2033,7 +2230,7 @@ klubberne under landsforeningen Round Table Danmark.
 	  	return true;
 	  }
 	  </script>
-		
+
 	',
 	'minutes_reminder_5days_subject' => 'Reminder: Husk at oprette referat for %%title%% (5 dage)',
 	'minutes_reminder_5days_text' => 'Husk at oprette referat for "%%title%%" som blev afholdt %%start_time%% via dette link: http://www.rtd.dk?mid=%%mid%%',
@@ -2046,59 +2243,73 @@ klubberne under landsforeningen Round Table Danmark.
   'district_chairman_post_news' =>
   '<h2>Opret nyhed</h2>
   <form action=?country=%%did%% method=post id=dnews>
-  Overskrift:<br><input type=text name=news[title]><br>
+  Overskrift:<br><input type=text name=news[title] class="form-control"><br>
   Indhold:<br>
   <textarea name=news[content] class=ckeditor></textarea><br>
-  <input type=submit value="Gem">
+  <input type=submit value="Gem" class="btn">
   </form>
   <hr>
-  '    ,
+  ',
   'district_clubs' => '<h2>Klubber</h2>',
-  'district_chairman' => '
-  <table cellspacing=5>
-  <tr>
-    <td valign=top><a href=?uid=%%uid%%><img src=/uploads/user_image?uid=%%uid%% width=100px></a></td>
-    <td valign=top><b>Distriktsformand</b><br>
-    %%profile_firstname%% %%profile_lastname%%<br>
-    Mobil: %%private_mobile%%<br>
-    Mail: <a href=mailto:%%private_email%%>%%private_email%%</a><br>
-    </td>
-    <td valign=top width=50% style="border-left: 1px solid black;padding-left:5px;">
-    <b>%%title%%</b><br>%%content%%<br>
-    <i>%%posted%%</i>
-    <div id=comments></div>
-    <hr>
-    <form action=?country=%%did%% method=post>
-    <input type=hidden name=nid value=%%nid%%>
-    <textarea style="width:100%" name=comment></textarea>
-    <input type=submit value="Gem kommentar">
-    </form>
-    </td>
-  </tr>
-  </table>
+  'district_chairman' =>
+  '<div class="container-out clearfix district_chairman" style="clear: both;">
+	  <div class="col-xs-12 col-xs-4">
+	 	<div class=member>
+			<div class=member-heading>
+				<a class=userpic href=?uid=%%uid%%>
+					<span class=\"btn btn-icon-user\"></span>
+					<img src=/uploads/user_image?uid=%%uid%% width=300px height=500px>
+				</a>
+                <ul class="social country_social" animation="" animation-from-right="">
+                <li><a href="%%company_facebook%%" class="facebook" target="_blank"></a></li>
+                <li><a href="%%company_linkdin%%" class="linkedin" target="_blank"></a></li>
+                <li><a href="%%company_twitter%%" class="twitter" target="_blank"></a></li>
+                </ul>
+				<div class="title">
+					<h3>Distriktsformand</h3>
+					<p><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></p>
+					<p>Mobil: %%private_mobile%%</p>
+					<p>Mail: <a href=mailto:%%private_email%%>%%private_email%%</a></p>
+				</div>
+			</div>
+		</div>
+	  </div>
+	  <div class="col-xs-12 col-xs-8">
+	  	<h2>%%title%%</h2>
+		<p>%%content%%</p>
+		<div id=comments></div>
+		<hr>
+		<form action=?country=%%did%% method=post>
+		<input type=hidden name=nid value=%%nid%%>
+		<textarea style="width:100%" name=comment class=form-control></textarea>
+		<input type=submit value="Gem kommentar" class="btn">
+		</form>
+	  </div>
+  </div>
   <script>
   var c = jQuery.parseJSON(\'%%comments%%\');
 	  $.each(c,function(k,v){
 	  	$("#comments").append("<hr>"+v.content+"<br><br><i><a href=?uid="+v.user.uid+">"+v.user.profile_firstname+" "+v.user.profile_lastname+"</a>, "+v.posted+"</i>");
 	  });
+
   </script>
   '     ,
   'minutes_collection' => '
   <h1>Brevgennemgang (%%seed%%)</h1>
   <p>Formålet med medlemsbrevgennemgangen er at orientere om aktiviteter i andre klubber – dels
 for at give inspiration og gode idéer, dels for at understrege samhørigheden i en landsforening.
-Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
+Medlemsbrevene er vores vigtigste kommunikationxsiddel.</p>
 <hr>
   <ul id=data></ul>
   <script>
-  
+
 	var result = jQuery.parseJSON(\'%%data%%\');
-             
+
 	$.each(result, function(key,value) {
-    $("#data").append("<li><a href=?mid="+value.mid+" target=_blank>"+value.title+" "+value.start_time+", "+value.club+"</a>");    
+    $("#data").append("<li class=col-sm-offset-2><a href=?mid="+value.mid+" target=_blank>"+value.title+" "+value.start_time+", "+value.club+"</a>");
   });
   </script>
-  ',                                                                                     
+  ',
 	'banner_admin' => '
 	<h1>Webbanners</h1>
 	<ul id=banners>
@@ -2110,62 +2321,62 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
 		});
 	</script>
 	<h1>Tilføj</h1>
-	<form method=post action=?banner enctype="multipart/form-data">	
+	<form method=post action=?banner enctype="multipart/form-data">
 	Beskrivelse: <input type=text name=upload[title]><br>
 	Position: <select name=upload[position]><option value=1>1: Venstre</option><option value=2>2: Højre top</option><option value=3>3: Højre bund</option></select><br>
-	Startdato: <input type=text name=upload[startdate] id=startdate><br>
-	Slutdato: <input type=text name=upload[enddate] id=enddate><br>
+	Startdato: <input class="form-datepicker" type=text name=upload[startdate] id=startdate><br>
+	Slutdato: <input class="form-datepicker" type=text name=upload[enddate] id=enddate><br>
 	Billede: <input type=file name=file><br>
-	<input type=submit value="Gem">	
+	<input type=submit value="Gem" class="btn">
 	</form>
 	<script>
 		$(function() {
-			$("#startdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-			$("#enddate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+			//$("#startdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+			//$("#enddate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
 		});
 	</script>
 	',
   'meeting_attendance_notify_accept_subj' => 'Mødetilmelding: %%profile_firstname%% %%profile_lastname%%',
   'meeting_attendance_notify_decline_subj' => 'Mødeafmelding: %%profile_firstname%% %%profile_lastname%%',
   'meeting_attendance_notify_accept_body' => '%%profile_firstname%% %%profile_lastname%% har tilmeldt sig mødet %%title%% (%%start_time%%). %%comment%%.',
-  'meeting_attendance_notify_decline_body' => '%%profile_firstname%% %%profile_lastname%% har afmeldt sig mødet %%title%% (%%start_time%%). %%comment%%.',  
+  'meeting_attendance_notify_decline_body' => '%%profile_firstname%% %%profile_lastname%% har afmeldt sig mødet %%title%% (%%start_time%%). %%comment%%.',
   'new_user_welcome_mail_subject' => 'Velkommen til Round Table Danmark',
   'new_user_welcome_mail_content' =>
   'Hej %%name%%
-  
+
   Velkommen til Round Table Danmark. For at tilgå vores website skal du bruge følgende detaljer:
-  
+
   Link: http://www.rtd.dk
   Brugernavn: %%username%%
   Kodeord: %%password%%
-  Klub: %%club%%          
-  
+  Klub: %%club%%
+
   Round Table Danmark har også en mobil webapp der kan tilgåes via følgende detaljer:
-  
+
   Link: http://m.rtd.dk
   Brugernavn: %%username%%
   Kodeord: %%password%%
   Klub: %%club%%
-  
+
   Yderligere er vi repræsenteret på følgende sociale netværk:
-  
+
   Offentlig Facebook side: https://www.facebook.com/roundtabledk
   Lukket LinkedIn gruppe: http://www.linkedin.com/groups?gid=48578
-  
+
   Du må meget gerne allerede nu logge ind, og kontrollere dine medlemsdata samt uploade et billede af dig selv - så du kan få maksimalt ud af netværket.
-  
+
   Vi beder dig også tjekke om følgende data er korrekte, da de bruges i medlemsarkivet:
-  
+
   Fødselsdato: %%profile_birthdate%%
   Indmeldelsesdato %%profile_started%%
 
-  Som en del af medlemsskabet i Round Table Danmark, bliver der 4 gange årligt udsendt et medlemsblad, Excalibur. 
+  Som en del af medlemsskabet i Round Table Danmark, bliver der 4 gange årligt udsendt et medlemsblad, Excalibur.
   Dette blad bliver sendt til den adresse, som er angivet som din privatadresse på din profil på rtd.dk
- 
-  En gang årligt bliver der udsendt en Blå Bog, hvori alle medlemmerne i Round Table Danmark er anført. Data til Blå Bog bliver ligeledes hentet fra din profil på rtd.dk.  
-  
+
+  En gang årligt bliver der udsendt en Blå Bog, hvori alle medlemmerne i Round Table Danmark er anført. Data til Blå Bog bliver ligeledes hentet fra din profil på rtd.dk.
+
   Har du problemer med at komme på websitet skal du rette henvendelse til din klubsekretær.
-  
+
   Med venlig hilsen
   Round Table Danmark
   ',
@@ -2176,12 +2387,12 @@ Medlemsbrevene er vores vigtigste kommunikationsmiddel.</p>
 	'new_password_sent' => '<script>alert("Du skulle gerne modtage en e-mail med informationer inden for 5-10 minutter");document.location.href="/";</script>',
 	'error_user_not_found' => '<script>alert("Ukendt brugernavn eller e-mail");document.location.href="/";</script>',
 	'mail_new_password_subject' => 'Kodeord til RTD.DK',
-	'mail_new_password_content' => 
+	'mail_new_password_content' =>
 'Du eller en anden har bestilt en nulstilning af kodeordet til rtd.dk
 
 For at logge på skal du bruge følgende oplysninger:
 
-Brugernavn: %%username%% 
+Brugernavn: %%username%%
 Kodeord: %%password%%
 
 Bemærk at det er HELE teksten efter Kodeord der skal indtastes og ikke kun den del du finder interessant (f.eks. er "123" ikke det rigtige kodeord).
@@ -2193,82 +2404,172 @@ Round Table Danmark',
 	'search_results' =>
 	'
 		<h1>Søgeresultat - %%search%%</h1>
-		<div id="tabs">
-		    <ul>
-		        <li><a href="#tabs-1" id=usrtitle>Medlemmer</a></li>
-		        <li><a href="#tabs-2" id=clubtitle>Klubber</a></li>
-		        <li><a href="#tabs-3" id=arttitle>Artikler</a></li>
-		        <li><a href="#tabs-4" id=mtgtitle>Møder</a></li>
+		<div class="tab">
+		    <ul class="tab-heading">
+		        <li><a href="#" id=usrtitle>Medlemmer</a></li>
+		        <li><a href="#" id=clubtitle>Klubber</a></li>
+		        <li><a href="#" id=arttitle>Artikler</a></li>
+		        <li><a href="#" id=mtgtitle>Møder</a></li>
 		    </ul>
-		    <div id="tabs-1">
+            <div class="tab-content">
+		    <div>
 					<b>Medlemmer</b>
 					<p>
-					<input type=button value="Søg gamle medlemmer" onclick="document.location.href=\'?search=%%search%%&old\';">
-					</p>
-					<div id=usrres></div>
+					<input class="btn" type=button value="Søg gamle medlemmer" onclick="document.location.href=\'?search=%%search%%&old\';">
+					</p><br>
+					<div class="row"><div class="zebra_li" id=usrres></div></div>
 		    </div>
-		    <div id="tabs-2">
+		    <div>
 					<b>Klubber</b>
-					<div id=clubres></div>
+					<div class="zebra_li" id=clubres></div>
 		    </div>
-		    <div id="tabs-3">
+		    <div>
 					<b>Artikler</b>
-					<div id=artres></div>
+					<div class="zebra_li" id=artres></div>
 		    </div>
-		    <div id="tabs-4">
+		    <div>
 					<b>Møder</b>
-					<div id=mtgres></div>
+					<div class="zebra_li" id=mtgres></div>
 		    </div>
+            </div>
 		</div>
 		
+
 		<script>
 			$(function() {
-				
-				var result = jQuery.parseJSON(\'%%result%%\');
 
-				console.log(result.users);
+				var result = jQuery.parseJSON(\'%%result%%\');
+              console.log(result.users);
 				var count = 0;
 				$.each(result.users, function(key,value) {
+					console.log(value);
 					count++;
-					$("#usrres").append("<li><a href=?uid="+value.uid+">"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+", Tlf: "+value.private_phone+"</a>");
+					// $("#usrres").append("<li><a href=?uid="+value.uid+">"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+", Tlf: "+value.private_phone+"</a></li>");
+					
+					var profile_firstname = "";
+                    if(value.profile_firstname != "" && value.profile_firstname != null)
+                    {
+                        profile_firstname = value.profile_firstname;
+                    }
+                    else
+                    {
+                        profile_firstname = "";
+                    }
+
+                    var profile_lastname = "";
+                    if(value.profile_lastname != "" && value.profile_lastname != null)
+                    {
+                        profile_lastname = value.profile_lastname;
+                    }
+                    else
+                    {
+                        profile_lastname = "";
+                    }
+
+                    var roles = "";
+                    if(value.roles != "" && value.roles != null)
+                    {
+                        roles = value.roles;
+                    }
+                    else
+                    {
+                        roles = "";
+                    }
+
+                    var company_position = "";
+                    if(value.company_position != "" && value.company_position != null)
+                    {
+                        company_position = value.company_position;
+                    }
+                    else
+                    {
+                        company_position = "";
+                    }
+
+                    var company_name = "";
+                    if(value.company_name != "" && value.company_name != null)
+                    {
+                        company_name = value.company_name;
+                    }
+                    else
+                    {
+                        company_name = "";
+                    }
+
+                    var private_mobile = "";
+                    if(value.private_phone != "" && value.private_phone != null)
+                    {
+                        private_mobile = value.private_phone;
+                    }
+                    else
+                    {
+                        private_mobile = "";
+                    }
+
+                    var fb_class = "";
+                   
+                    if(value.company_facebook != "" && typeof value.company_facebook !== "undefined")
+                    {
+                        fb_class = "<li><a href="+value.company_facebook+" class=facebook target=\"_blank\"></a></li>";
+                    }
+
+                    var link_class = "";
+                    if(value.company_linkdin != "" && typeof value.company_linkdin !== "undefined")
+                    {
+                        link_class = "<li><a href="+value.company_linkdin+" class=linkedin target=\"_blank\"></a></li>";
+                    }
+
+                    var mail_class = "";
+                    if(value.private_email != "")
+                    {
+                        mail_class = "<li><a href=mailto:"+value.private_email+" class=mail target=\"_blank\"></a></li>";
+                    }
+                    else if(value.company_email != "" && typeof value.company_email !== "undefined")
+                    {
+                        mail_class = "<li><a href=mailto:"+value.company_email+" class=mail target=\"_blank\"></a></li>";
+                    }
+
+
+
+                    var social = "";
+                    if(fb_class != "" || link_class != "" || mail_class != "")
+                    {
+                       // social = "<ul class=social animation animation-from-right>"+fb_class+""+link_class+""+mail_class+"</ul>";
+                    }
+					
+					
+					html2 = "<div class=\"col-xs-4 all_members\"><div class=member><div class=member-heading><a class=userpic href=?uid="+value.uid+"><span class=\"btn btn-icon-user\"></span><img border=1 src=/uploads/user_image?uid="+value.uid+"&landscape&w=300&h=500></a>"+social+"<div class=title><h4><a href=?uid="+value.uid+">"+profile_firstname+" "+profile_lastname+"</a></h4><p><strong>"+roles+"</strong></p><p>"+company_position+"</p><p>"+company_name+"</p><p>Mobil: "+private_mobile+"</p></div></div></div></div>";
+					$("#usrres").append(html2);
+					
 				});
-				if (count==0) $("#usrres").append("<i>Ingen match</i>");
+				if (count==0) { $("#usrres").append("<i>Ingen match</i>"); }
 				$("#usrtitle").append(" ("+count+")");
-				
+
 				var art_count = 0;
 				$.each(result.articles, function(key,value) {
 					art_count++;
-					$("#artres").append("<li><a href=?aid="+value.aid+">"+value.title+"</a>");
+					$("#artres").append("<li><a href=?aid="+value.aid+">"+value.title+"</a></li>");
 				});
-				if (art_count==0) $("#artres").append("<i>Ingen match</i>");
+				if (art_count==0) { $("#artres").append("<i>Ingen match</i>"); }
 				$("#arttitle").append(" ("+art_count+")");
 
 				var club_count = 0;
 				$.each(result.clubs, function(key,value) {
 					club_count++;
-					$("#clubres").append("<li><a href=?cid="+value.cid+">"+value.name+"</a>");
+					$("#clubres").append("<li><a href=?cid="+value.cid+">"+value.name+"</a></li>");
 				});
-				if (club_count==0) $("#clubres").append("<i>Ingen match</i>");
+				if (club_count==0) { $("#clubres").append("<i>Ingen match</i>"); }
 				$("#clubtitle").append(" ("+club_count+")");
 
 				var meeting_count = 0;
 				$.each(result.meetings, function(key,value) {
 					meeting_count++;
-					$("#mtgres").append("<li><a href=?mid="+value.mid+">"+value.title+", "+value.start_time+", "+value.club+"</a>");
+					$("#mtgres").append("<li><a href=?mid="+value.mid+">"+value.title+", "+value.start_time+", "+value.club+"</a></li>");
 				});
-				if (meeting_count==0) $("#mtgres").append("<i>Ingen match</i>");
+				if (meeting_count==0) { $("#mtgres").append("<i>Ingen match</i>"); }
 				$("#mtgtitle").append(" ("+meeting_count+")");
 
-				$( "#tabs" ).tabs();
-        
-        
-        if (count==0) $("#tabs").tabs("select", "#tabs-2");
-        if (club_count==0 && count==0) $("#tabs").tabs("select", "#tabs-3");
-        if (count==0 && art_count==0 && club_count==0) $("#tabs").tabs("select", "#tabs-4");
-
-
 			});
-		
 		</script>
 	',
 	'user_create_error' => '<p><font color=red>Der opstod en fejl under oprettelse af medlem. Udfyld alle felter korrekt og prøv igen</font></p>',
@@ -2279,59 +2580,78 @@ Round Table Danmark',
 Round Tables motto og formål. </p>
 <p>Medlemmerne klassificeres efter erhverv. Der kan i klubben
 kun være 2 medlemmer inden for hver klassifikation, med mindre medlemstallet i den
-pågældende klub er 40 eller derover, i hvilket tilfælde maksimum 4 inden for hver klassifikation. </p>
+pågældende klub er 40 eller derover, i hvilket tilfælde maksimum 4 inden for hver klassifikation.</p>
 <p>I bestående klubber kan ingen optages, der på optagelsesdagen er fyldt 35 år eller mere, med
 mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 <hr>
-		<form action=?uid=-1 method=post onsubmit="return newuser(this);">
-    <table width=100% border=0>
-    <tr><td colspan=2><h1>Stamdata</h1></td></tr>
-    <tr><td valign=top>
-  		<p>Fornavn<br>
-  		<input type=text name=data[profile_firstname] value="%%profile_firstname%%" id=firstname></p>
-  		<p>Efternavn<br>
-  		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" id=lastname></p>
-    </td><td valign=top>
+
+    <form action=?uid=-1 method=post onsubmit="return newuser(this);">
+    <div class="container">
+	<div class="row">
+		<h1>Stamdata</h1>
+		<div class="col-xs-12 col-md-4">
+		<p>Fornavn<br>
+  		<input type=text name=data[profile_firstname] value="%%profile_firstname%%" id=firstname class=form-control></p>
   		<p>Fødselsdato<br>
-  		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate></p>
+  		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate class="form-control form-datepicker"></p>
+		</div>
+
+		<div class="col-xs-12 col-md-4">
+  		<p>Efternavn<br>
+  		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" id=lastname class=form-control></p>
   		<p>Charterdato<br>
-  		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate></p>
-    </td></tr>
-    <tr><td colspan=2><h1>Kontaktoplysninger</h1></td></tr>
-    <tr><td valign=top>
+  		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate class="form-control form-datepicker"></p>
+		</div>
+	</div>
+	<div class="row">
+		<h1>Kontaktoplysninger</h1>
+		<div class="col-xs-12 col-md-4">
 		<p>Adresse<br>
-		<input id=vej type=text name=data[private_address] value="%%private_address%%"></p>
-		<p>Hus nr.<br>
-		<input id=nr type=text name=data[private_houseno] value="%%private_houseno%%"></p>
-		<p>Hus bogstav<br>
-		<input id=type=text name=data[private_houseletter] value="%%private_houseletter%% "></p>
-		<p>Etage<br>
-		<input type=text name=data[private_housefloor] value="%%private_housefloor%% "></p>
-		<p>Side<br>
-		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%% "></p>
-		<p>Post nr<br>
-		<input type=text name=data[private_zipno] value="%%private_zipno%%"></p>
-		<p>By<br>
-		<input type=text name=data[private_city] value="%%private_city%%"></p>
-    </td><td valign=top>
-		<p>Telefon<br>
-		<input type=text name=data[private_phone] value="%%private_phone%%"></p>
-		<p>Mobil<br>
-		<input type=text name=data[private_mobile] value="%%private_mobile%%"></p>
-		<p>Mail<br>
-		<input type=text name=data[private_email] value="%%private_email%%" id=mail></p>
-    </td></tr>
-    </table>
-    <hr>
-		<input type=submit value=Opret>
-		</form>
+		<input id=vej type=text name=data[private_address] value="%%private_address%%" class=form-control></p>
+  		<p>Telefon<br>
+		<input type=text name=data[private_phone] value="%%private_phone%%" class=form-control></p>
+		</div>
+
+		<div class="col-xs-12 col-md-4">
+  		<p>Hus nr.<br>
+		<input id=nr type=text name=data[private_houseno] value="%%private_houseno%%" class=form-control></p>
+  		<p>Mobil<br>
+		<input type=text name=data[private_mobile] value="%%private_mobile%%" class=form-control></p>
+		</div>
+
+		<div class="col-xs-12 col-md-4">
+  		<p>Hus bogstav<br>
+		<input id=type=text name=data[private_houseletter] value="%%private_houseletter%%" class=form-control></p>
+  		<p>Mail<br>
+		<input type=text name=data[private_email] value="%%private_email%%" id=mail class=form-control></p>
+		</div>
+
+		<div class="col-xs-12 col-md-4">
+  		<p>Etage<br>
+		<input type=text name=data[private_housefloor] value="%%private_housefloor%%" class=form-control></p>
+  		<p>Side<br>
+		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%" class=form-control></p>
+		</div>
+
+		<div class="col-xs-12 col-md-4">
+  		<p>Post nr<br>
+		<input type=text name=data[private_zipno] value="%%private_zipno%%" class=form-control></p>
+  		<p>By<br>
+		<input type=text name=data[private_city] value="%%private_city%%" class=form-control></p>
+		</div>
+	</div>
+</div>
+ <hr>
+        <input type=submit value=Opret class=btn>
+    </form>
+
 		<script>
-		
+
 			$(function() {
-				$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,minDate:"-35Y"});
+				//$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				//$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,minDate:"-35Y"});
 			});
-			
+
 			function newuser(frm)
 			{
 				for (var i=0; i<frm.elements.length; i++)
@@ -2356,8 +2676,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</script>
 	',
 	'user_role_add' => '
-  <h1>Slet bruger permanent</h1>
-  <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent">
+  <!--<h1>Slet bruger permanent</h1>
+  <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">-->
   <script>
     function confirm_delete(uid)
     {
@@ -2367,26 +2687,26 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
       }
     }
   </script>
-	<h1>Tildel rolle</h1>
+	<h3>Tildel rolle</h3>
 	<ul>
-	<i>Der kan ændres i periode for eksisterende roller ved at "overskrive" dem med nye data nedenfor.</i>
+	<i>Der kan &aelig;ndres i periode for eksisterende roller ved at "overskrive" dem med nye data nedenfor.</i>
 	<form action=?uid=%%uid%% method=post>
 	<p>Rolle<br>
-	
-	<select name=newrole[rid] id=roles>	
+
+	<select name=newrole[rid] id=roles>
 	</select></p>
 	<p>Start dato<br>
-	<input type=text name=newrole[start_date] id=new_role_start></p>
+	<input class="form-control form-datepicker" type="text" name="newrole[start_date]" id="new_role_start"></p>
 	<p>Slut dato<br>
-	<input type=text name=newrole[end_date] id=new_role_end></p>
-	<input type=submit value="Gem">
+	<input class="form-control form-datepicker" type="text" name="newrole[end_date]" id="new_role_end"></p>
+	<input type=submit value="Gem" class="btn">
 	</form>
 	</ul>
 		<script>
 			$(function() {
-				$("#new_role_start").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				$("#new_role_end").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				
+				//$("#new_role_start").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				//$("#new_role_end").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+
 				var roles = jQuery.parseJSON(\'%%roles_json%%\');
 				var html = "";
 				for (var i=0;i<roles.length;i++)
@@ -2397,54 +2717,65 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			});
 		</script>
 	',
-	'user_role_item_admin' => '<li>%%description%% (%%start_date_fixed%% - %%end_date_fixed%%)<br>
-	<a href="javascript:if(confirm(\'Dette vil afslutte perioden for: %%description%%. Ok?\')){document.location.href=\'?uid=%%uid%%&end_role=%%riid%%\';}">Afslut periode</a>
-	<a href="javascript:if(confirm(\'Dette vil slette historikken for: %%description%%. Ok?\')){document.location.href=\'?uid=%%uid%%&delete_role=%%riid%%\';}">Slet rolle</a>',
-	'user_role_item' => '<li>%%description%% (%%start_date_fixed%% - %%end_date_fixed%%)',
-	'user_role_pre' => '<h1>Roller</h1><p><ul>',
-	'user_role_post' => '</ul></p>',
+	'user_role_item_admin' => '<tr><td><b>%%description%%</b><br/>
+				(%%start_date_fixed%% - %%end_date_fixed%%)
+                <br/><a class="user_btn btn btn-info margin-btm" href="javascript:if(confirm(\'Dette vil afslutte perioden for: %%description%%. Ok?\')){document.location.href=\'?uid=%%uid%%&end_role=%%riid%%\';}">Afslut periode</a>
+	<a class="btn btn-info margin-btm btn_red" href="javascript:if(confirm(\'Dette vil slette historikken for: %%description%%. Ok?\')){document.location.href=\'?uid=%%uid%%&delete_role=%%riid%%\';}">Slet rolle</a>
+			</td></tr>',
+	'user_role_item' => '
+	<tr><td><b>%%description%%</b><br/>
+				(%%start_date_fixed%% - %%end_date_fixed%%)
+			</td></tr>
+ ',
+	'user_role_pre' => '<div class="title">
+						<h2 class="h3">Roller</h2>
+		</div>
+		<table class="table table-striped">
+		',
+	'user_role_post' => '</table>',
 	'user_nominated_fail' => '<p>Du har ikke adgang til at oprette indstillinger - kontakt din sekretær eller LS</p>',
 	'user_nominated_ok' => '<p>Indstillingen er foretaget og vil blive behandlet af LS</p>',
 	'user_profile_edit_link' =>
-	'<h1 onclick="$(\'#tools\').toggle();">Profilværktøjer</h1>
+	'<h3 onclick="$(\'#tools\').toggle();">Profilv&aelig;rkt&oslash;jer</h3>
+    <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">
 	<p id=tools>
-	<a href=?sendpassword=%%private_email%%>Nulstil kodeord</a> |
-	<a href=?uid=%%uid%%&edit>Rediger profil</a> | 
-	<a href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a> |
-	<a href=# onclick=honorary(%%uid%%);>Indstil æresmedlemsskab</a> |
-	<a href=# onclick=onleave(%%uid%%);>Anmeld orlov</a> |
-  <a href=# onclick=resign(%%uid%%);>Udmeld medlem</a> |
-	<a href=?uid=%%uid%%&move>Overfør medlem</a>
+	<a class="btn btn-white" href=?sendpassword=%%private_email%%>Nulstil kodeord</a> 
+	<a class="btn btn-white" href=?uid=%%uid%%&edit>Rediger profil</a> 
+    <a class="btn btn-white" href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a> 
+	<a class="btn btn-white" href=# onclick=honorary(%%uid%%);>Indstil æres x-medlemsskab</a> 
+	<a class="btn btn-white" href=# onclick=onleave(%%uid%%);>Anmeld orlov</a> 
+    <a class="btn btn-white" href=# onclick=resign(%%uid%%);>Udmeld medlem</a> 
+	<a class="btn btn-white" href=?uid=%%uid%%&move>Overf&oslash;r medlem</a>
 	<div id=onleave_dialog style="display:none">
 		<p>Orlov fra klubben</p>
-		<p>Et medlem kan for et begrænset tidsrum af max. ½ år få bevilget orlov, såfremt tvingende
+		<p>Et medlem kan for et begr&aelig;nset tidsrum af max. ½ år få bevilget orlov, såfremt tvingende
 		grunde foreligger, såsom sygdom eller rejse til områder uden RT-klubber eller lignende. Orlov
 		er kun fritagelse for mødepligten og medfører ikke kontingentfrihed, hverken til RTD eller klubben.
 		Klubben kan dog fastsætte nedsat klubkontingent for medlemmer under orlov.</p>
 		<p>Orlovens varighed
 		bør ikke overstige et halvt år, og klubformanden bør i orlovsperioden jævnligt holde kontakt med
 		medlemmet.</p>
-		<p>Ønsker et medlem orlov udover et halv år, kan dette kun ske med dispensation fra landsformanden.	</p>
+		<p>Ønsker et medlem orlov udover et halv år, kan dette kun ske med dispensation fra landsformanden.</p>
 		<input type=button value="Bekræft orlov" onclick="document.location.href=\'?uid=%%uid%%&leave=true\';">
 	</div>
   <div id=resign_dialog style="display:none;">
   <p>Ophør af medlemskab</p>
-  <p>1. Medlemskab ophører: </p>
+  <p>1. Medlemskab ophører:</p>
   <p>1.1. Når et medlem fylder 40 år. I klubåret der afsluttes den 30. juni, ophører medlemskabet. Indvalgte medlemmer i RTD´s hovedbestyrelsen eller RTI´s bestyrelse fortsætter dog som medlemmer af RTD indtil udgangen af det klubår, hvori valgperioden udløber. En afgående landsformands medlemskab af RTD, kan dog fortsætte indtil den 30. juni i klubåret efter valgperiodens udløb.</p>
   <p>1.2. Når et medlem deltager i mindre end 50% af sin klubs ordinære møder inden for klubåret, med mindre tilfredsstillende grund gives klubbens bestyrelse.</p>
   <p>1.3. Når et medlem ikke har betalt kontingent inden en måned fra forfaldstid og ikke berigtiger restancen inden 8 dage efter skriftligt påkrav.</p>
   <p>1.4. Når et medlem sender skriftlig udmeldelse.</p>
   <p>2. Medlemskab kan bringes til ophør ved eksklusion, når et medlem overtræder RTD’s vedtægter eller Love for klubberne under RTD.</p>
-  <p>3. Afgørelse om ophør af medlemskab eller eksklusion kræver enstemmig beslutning af bestyrelsen. Er medlemmet samtidig medlem af bestyrelsen, kræves der ved bestyrelsens afstemning dog kun enstemmighed bortset fra den pågældendes egen stemme. Medlemmet har herefter ret til appel i et lukket medlemsmøde, som med simpel majoritet træffer den endelige afgørelse.</p>
+  <p>3. Afgørelse om ophør af medlemskab eller eksklusion kræver enstemmig beslutning af bestyrelsen. Er medlemmet samtidig medlem af bestyrelsen, kræves der ved bestyrelsens afstemning dog kun enstemmighed bortset fra den pågældendes egen stemme. Medlemmet har herefter ret til appel i et lukket medlemxsøde, som med simpel majoritet træffer den endelige afgørelse.</p>
   <hr>
   <p>Motiver udmeldelsen og klik OK for at gennemføre udmeldelsen af %%profile_firstname%% %%profile_lastname%%</p>
   <input id=resign_text type=text name=resign_text><input type=button value="Udmeld" onclick=confirm_resignation();>
   </div>
   <div id=honorary_dialog style="display:none">
-  <p>Indstilling af æresmedlemmer</p>
-  <p>1. Der kan på den ordinære generalforsamling udnævnes æresmedlemmer for et år - dog kun et medlem for hver 10 klubmedlemmer. Landsformanden kan efter konkret vurdering dispensere herfra, såfremt klubben enstemmigt ønsker det.</p>
-  <p>2. Ingen kan udnævnes til æresmedlem fra et tidspunkt før ophør af ordinært medlemskab i overensstemmelse med § 4 stk. 1 pkt. 1.</p>
-  <p>3. Et æresmedlem har alle rettigheder i klubben, men ingen stemmeret. Klubben afgør selv kontingentforhold for æresmedlemmer i forhold til klubben.</p>
+  <p>Indstilling af ærexsedlemmer</p>
+  <p>1. Der kan på den ordinære generalforsamling udnævnes ærexsedlemmer for et år - dog kun et medlem for hver 10 klubmedlemmer. Landsformanden kan efter konkret vurdering dispensere herfra, såfremt klubben enstemmigt ønsker det.</p>
+  <p>2. Ingen kan udnævnes til ærexsedlem fra et tidspunkt før ophør af ordinært medlemskab i overensstemmelse med § 4 stk. 1 pkt. 1.</p>
+  <p>3. Et ærexsedlem har alle rettigheder i klubben, men ingen stemmeret. Klubben afgør selv kontingentforhold for ærexsedlemmer i forhold til klubben.</p>
   <hr>
   <p>Skriv kommentar til indstilling af %%profile_firstname%% %%profile_lastname%% som ÆM</p>
   <input id=honorary_text type=text name=honorary_text><input type=button value="Indstil ÆM" onclick=confirm_honorary();>
@@ -2454,35 +2785,32 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
     {
       var t = $("#resign_text").val();
       if (t=="") alert("Der er ikke indtastet motivation for udmeldelsen!");
-      else document.location.href="?uid=%%uid%%&resign="+t; 
+      else document.location.href="?uid=%%uid%%&resign="+t;
     }
     function resign(uid)
     {
-      $("#resign_dialog").dialog({modal:true});
+      $("#resign_dialog").dialog({modal:true, width: 500});
     }
     function confirm_honorary()
     {
       var t = $("#honorary_text").val();
       if (t=="") alert("Der er ikke indtastet motivation for indstillingen!");
-      else document.location.href="?uid=%%uid%%&honorary="+t; 
+      else document.location.href="?uid=%%uid%%&honorary="+t;
     }
-	
-	function ctoty(uid)
+    function ctoty(uid)
 	{
 		if (confirm("Bekræft indstilling af medlem som tabler of the year i klubben for indeværende klubår"))
 		{
-			document.location.href="?uid=%%uid%%&ctoty=%%uid%%"; 
+			document.location.href="?uid=%%uid%%&ctoty=%%uid%%";
 		}
 	}
-	
-	
 	function onleave(uid)
 	{
-		$("#onleave_dialog").dialog({modal:true});
+		$("#onleave_dialog").dialog({modal:true, width: 500});
 	}
 		function honorary(uid)
 		{
-      $("#honorary_dialog").dialog({modal:true});
+      $("#honorary_dialog").dialog({modal:true, width: 500});
 		}
 		// $("#tools").hide();
 	</script>
@@ -2492,97 +2820,103 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<form method=post action=?uid=%%uid%%&edit=save enctype="multipart/form-data">
 		<p>Kodeord<br>
 		<i>Udfyldes kun hvis kodeordet skal ændres</i><br>
-		<input type=text name=password value="">
+		<input type=text name=password value="" class=form-control>
 		</p>
 		<p>Brugernavn<br>
-		<input type=text name=data[username] value="%%username%%"></p>
+		<input type=text name=data[username] value="%%username%%" class=form-control></p>
 		<p>Foto<br>
 		<img src=/uploads/user_image?uid=%%uid%%&quad&s=200><br>
 		Skift foto: <input type=file name=profile_image>
 		</p>
 		</p>
 		<p>Fornavn<br>
-		<input type=text name=data[profile_firstname] value="%%profile_firstname%%"></p>
+		<input type=text name=data[profile_firstname] value="%%profile_firstname%%" class=form-control></p>
 		<p>Efternavn<br>
-		<input type=text name=data[profile_lastname] value="%%profile_lastname%%"></p>
+		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" class=form-control></p>
 		<p>Fødselsdato<br>
-		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate></p>
+		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate class="form-control form-datepicker"></p>
 		<p>Charterdato<br>
-		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate></p>
+		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate class="form-control form-datepicker"></p>
 		<p><b>Udmeldelsesdato</b><br>
-		<input type=text disabled value="%%profile_ended%%"></p>
+		<input type=text disabled value="%%profile_ended%%" class=form-control></p>
 		<p>Tekst<br>
 		<textarea name=data[private_profile] class=ckeditor>%%private_profile%%</textarea></p>
 		<p>Profilvisning<br>
 		<select name=data[view_tracker] id=xtable>
-			<option value=1>Ja ,vis hvem der har set min profil</option>			
+			<option value=1>Ja ,vis hvem der har set min profil</option>
 			<option value=0>Nej, vis ikke hvem der har set min profil</option>
 		</select><br>
 		</p>
-		
+
 		<h2>Privat</h2>
 		<p>Adresse<br>
-		<input type=text name=data[private_address] value="%%private_address%%"></p>
+		<input type=text name=data[private_address] value="%%private_address%%" class=form-control></p>
 		<p>Hus nr.<br>
-		<input type=text name=data[private_houseno] value="%%private_houseno%%"></p>
+		<input type=text name=data[private_houseno] value="%%private_houseno%%" class=form-control></p>
 		<p>Hus bogstav<br>
-		<input type=text name=data[private_houseletter] value="%%private_houseletter%%"></p>
+		<input type=text name=data[private_houseletter] value="%%private_houseletter%%" class=form-control></p>
 		<p>Etage<br>
-		<input type=text name=data[private_housefloor] value="%%private_housefloor%%"></p>
+		<input type=text name=data[private_housefloor] value="%%private_housefloor%%" class=form-control></p>
 		<p>Side<br>
-		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%"></p>
+		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%" class=form-control></p>
 		<p>Post nr<br>
-		<input type=text name=data[private_zipno] value="%%private_zipno%%"></p>
+		<input type=text name=data[private_zipno] value="%%private_zipno%%" class=form-control></p>
 		<p>By<br>
-		<input type=text name=data[private_city] value="%%private_city%%"></p>
+		<input type=text name=data[private_city] value="%%private_city%%" class=form-control></p>
 		<p>Land<br>
-		<input type=text name=data[private_country] value="%%private_country%%"></p>
+		<input type=text name=data[private_country] value="%%private_country%%" class=form-control></p>
 		<p>Telefon<br>
-		<input type=text name=data[private_phone] value="%%private_phone%%"></p>
+		<input type=text name=data[private_phone] value="%%private_phone%%" class=form-control></p>
 		<p>Mobil<br>
-		<input type=text name=data[private_mobile] value="%%private_mobile%%"></p>
+		<input type=text name=data[private_mobile] value="%%private_mobile%%" class=form-control></p>
 		<p>Mail<br>
-		<input type=text name=data[private_email] value="%%private_email%%"></p>
-		
+		<input type=text name=data[private_email] value="%%private_email%%" class=form-control></p>
+
 		<h2>Firma</h2>
 		<p>Firma<br>
-		<input type=text name=data[company_name] value="%%company_name%%"></p>
+		<input type=text name=data[company_name] value="%%company_name%%" class=form-control></p>
 		<p>Stilling<br>
-		<input type=text name=data[company_position] value="%%company_position%%"></p>
+		<input type=text name=data[company_position] value="%%company_position%%" class=form-control></p>
 		<p>Branche<br>
-		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); value="Tilføj branche"/>
+		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); class="btn" value="Tilføj branche"/>
 		</p>
 		<p>Firmaprofil<br>
 		<textarea name=data[company_profile] class=ckeditor>%%company_profile%%</textarea></p>
 		<p>Adresse<br>
-		<input type=text name=data[company_address] value="%%company_address%%"></p>
+		<input type=text name=data[company_address] value="%%company_address%%" class=form-control></p>
 		<p>Post nr<br>
-		<input type=text name=data[company_zipno] value="%%company_zipno%%"></p>
+		<input type=text name=data[company_zipno] value="%%company_zipno%%" class=form-control></p>
 		<p>By<br>
-		<input type=text name=data[company_city] value="%%company_city%%"></p>
+		<input type=text name=data[company_city] value="%%company_city%%" class=form-control></p>
 		<p>Land<br>
-		<input type=text name=data[company_country] value="%%company_country%%"></p>
+		<input type=text name=data[company_country] value="%%company_country%%" class=form-control></p>
 		<p>Telefon<br>
-		<input type=text name=data[company_phone] value="%%company_phone%%"></p>
+		<input type=text name=data[company_phone] value="%%company_phone%%" class=form-control></p>
 		<p>Mail<br>
-		<input type=text name=data[company_email] value="%%company_email%%"></p>
+		<input type=text name=data[company_email] value="%%company_email%%" class=form-control></p>
 		<p>Webside<br>
 		<i>Husk http:// foran linket</i><br>
-		<input type=text name=data[company_web] value="%%company_web%%"></p>
+		<input type=text name=data[company_web] value="%%company_web%%" class=form-control></p>
+        <p>Facebook<br>
+		<input type=text name=data[company_facebook] value="%%company_facebook%%" class=form-control></p>
+        <p>Linkdin<br>
+		<input type=text name=data[company_linkdin] value="%%company_linkdin%%" class=form-control></p>
+        <p>Twitter<br>
+		<input type=text name=data[company_twitter] value="%%company_twitter%%" class=form-control></p>
 		<hr>
 		<p>Overførsel til EX-Table<br>
 		<select name=data[xtable_transfer] id=xtable>
-			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>			
+			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>
 			<option value=2>Ja tak, Jeg vil gerne oprettes om Ex Tabler når jeg stopper som Tabler</option>
 			<option value=0>Nej tak, jeg ønsker ikke at forsætte som tabler når jeg stopper i Round Table</option>
 		</select><br>
 		</p>
 		<p>Læs evt. mere om <a href=http://ex-table.dk target=_blank>Ex-Table</a> - <a href=http://www.ex-table.dk/dk/contact/clubs target=_blank>find din nærmeste klubkontakt</a></p>
-		<script>$("#xtable").val(%%xtable_transfer%%);</script>		
+		<script>$("#xtable").val(%%xtable_transfer%%);</script>
 		<hr>
-		<input type=submit value="Gem ændringer">
+		<input type=submit value="Gem &aelig;ndringer" class="btn">
 		</form>
-		<button value="Fortryd ændringer" onclick="javascript:window.history.back();">Fortryd ændringer</button>
+		<button class="btn" value="Fortryd &aelig;ndringer" onclick="javascript:window.history.back();">Fortryd &aelig;ndringer</button>
 		<script>
 			function add_biz()
 			{
@@ -2600,7 +2934,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 					}
 				}
 			}
-			
+
 			var biz = jQuery.parseJSON(\'%%businesses_list%%\');
 			$.each(biz, function(c,v) {
 				if ("%%company_business%%" == v.company_business)
@@ -2612,10 +2946,10 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 					$("#biz").append("<option value=\""+v.company_business+"\">"+v.company_business+"</option>");
 				}
 			});
-		
+
 			$(function() {
-				$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,yearsRange:"-40:c",});
+				//$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				//$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,yearsRange:"-40:c",});
 			});
 		</script>
 		',
@@ -2627,22 +2961,22 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<tr>
 		<td valign=top>
 			<p>Kodeord<br>
-			<input type=text name=password value=""><br>
+			<input type=text name=password value="" class=form-control><br>
 			<i>Udfyldes kun hvis kodeordet skal ændres</i>
 			</p>
 		</td>
 		<td valign=top>
 			<p>Brugernavn<br>
-			<input type=text name=data[username] value="%%username%%"></p>
+			<input type=text name=data[username] value="%%username%%" class=form-control></p>
 		</td>
 		<tr>
 		<td valign=top>
 			<p>Fornavn<br>
-			<input type=text disabled value="%%profile_firstname%%"></p>
+			<input type=text disabled value="%%profile_firstname%%" class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Efternavn<br>
-			<input type=text disabled value="%%profile_lastname%%"></p>
+			<input type=text disabled value="%%profile_lastname%%" class=form-control></p>
 		</td>
 		</tr>
 		<tr><td colspan=2>
@@ -2656,49 +2990,49 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<textarea name=data[private_profile] class=ckeditor>%%private_profile%%</textarea></p>
 		<p>Profilvisning<br>
 		<select name=data[view_tracker] id=xtable>
-			<option value=1>Ja ,vis hvem der har set min profil</option>			
+			<option value=1>Ja ,vis hvem der har set min profil</option>
 			<option value=0>Nej, vis ikke hvem der har set min profil</option>
 		</select><br>
 		</p>
-		
+
 		<h2>Privat</h2>
 		<table>
 		<tr>
 		<td valign=top>
 			<p>Adresse<br>
-			<input type=text name=data[private_address] value="%%private_address%%"></p>
+			<input type=text name=data[private_address] value="%%private_address%%" class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Hus nr.<br>
-			<input type=text name=data[private_houseno] value="%%private_houseno%%" size=4></p>
+			<input type=text name=data[private_houseno] value="%%private_houseno%%" size=4 class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Bogstav<br>
-			<input type=text name=data[private_houseletter] value="%%private_houseletter%%" size=4></p>
+			<input type=text name=data[private_houseletter] value="%%private_houseletter%%" size=4 class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Etage<br>
-			<input type=text name=data[private_housefloor] value="%%private_housefloor%%" size=4></p>
+			<input type=text name=data[private_housefloor] value="%%private_housefloor%%" size=4 class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Side<br>
-			<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%" size=4></p>
+			<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%" size=4 class=form-control></p>
 		</td>
 		</tr></tabl><table>
 		<tr>
 		<td valign=top>
 			<p>Post nr<br>
-			<input type=text name=data[private_zipno] value="%%private_zipno%%" size=4></p>
+			<input type=text name=data[private_zipno] value="%%private_zipno%%" size=4 class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>By<br>
-			<input type=text name=data[private_city] value="%%private_city%%"></p>
+			<input type=text name=data[private_city] value="%%private_city%%" class=form-control></p>
 		</td>
 		</tr>
 		<tr>
 			<td valign=top>
 			<p>Land<br>
-			<input type=text name=data[private_country] value="%%private_country%%"></p>
+			<input type=text name=data[private_country] value="%%private_country%%" class=form-control></p>
 			</td>
 			<td></td>
 		</tr>
@@ -2707,76 +3041,76 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<tr>
 		<td>
 		<p>Telefon<br>
-		<input type=text name=data[private_phone] value="%%private_phone%%" required></p>
+		<input type=text name=data[private_phone] value="%%private_phone%%" required class=form-control></p>
 		</td>
 		<td>
 		<p>Mobil<br>
-		<input type=text name=data[private_mobile] value="%%private_mobile%%" required></p>
+		<input type=text name=data[private_mobile] value="%%private_mobile%%" required class=form-control></p>
 		</td>
 		<td>
 		<p>Mail<br>
-		<input type=text name=data[private_email] value="%%private_email%%" required></p>
+		<input type=text name=data[private_email] value="%%private_email%%" required class=form-control></p>
 		</td></tr></table>
-		
+
 		<h2>Firma</h2>
 		<table><tr><td valign=top>
 		<p>Firma<br>
-		<input type=text name=data[company_name] value="%%company_name%%"></p>
+		<input type=text name=data[company_name] value="%%company_name%%" class=form-control></p>
 		</td><td valign=top>
 		<p>Stilling<br>
-		<input type=text name=data[company_position] value="%%company_position%%"></p>
+		<input type=text name=data[company_position] value="%%company_position%%" class=form-control></p>
 		</td></tr></table>
 		<p>Branche<br>
-		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); value="Tilføj branche"/></p>
+		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); class="btn" value="Tilføj branche"/></p>
 		<p>Firmaprofil<br>
 		<textarea name=data[company_profile] class=ckeditor>%%company_profile%%</textarea></p>
 		<table><tr>
 		<td>
 			<p>Adresse<br>
-			<input type=text name=data[company_address] value="%%company_address%%"></p>
+			<input type=text name=data[company_address] value="%%company_address%%" class=form-control></p>
 		</td>
 		<td>
 			<p>Post nr<br>
-			<input size=4 type=text name=data[company_zipno] value="%%company_zipno%%"></p>
+			<input size=4 type=text name=data[company_zipno] value="%%company_zipno%%" class=form-control></p>
 		</td>
 		<td>
 			<p>By<br>
-			<input type=text name=data[company_city] value="%%company_city%%"></p>
+			<input type=text name=data[company_city] value="%%company_city%%" class=form-control></p>
 		</td>
 		<td>
 			<p>Land<br>
-			<input type=text name=data[company_country] value="%%company_country%%"></p>
+			<input type=text name=data[company_country] value="%%company_country%%" class=form-control></p>
 		</td></tr></table>
 		<table>
 		<tr>
 		<td valign=top>
 			<p>Telefon<br>
-			<input type=text name=data[company_phone] value="%%company_phone%%" required></p>
+			<input type=text name=data[company_phone] value="%%company_phone%%" required class=form-control></p>
 		</td>
 		<td valign=top>
 			<p>Mail<br>
-			<input type=text name=data[company_email] value="%%company_email%%" required></p>
+			<input type=text name=data[company_email] value="%%company_email%%" required class=form-control></p>
 		</td>
 		<td>
 			<p>Webside<br>
-			<input type=text name=data[company_web] value="%%company_web%%"></p>
+			<input type=text name=data[company_web] value="%%company_web%%" class=form-control></p>
 			<i>Husk http:// foran linket</i>
 		</td></tr></table>
 		<hr>
 		<p>Overførsel til EX-Table<br>
 		<select name=data[xtable_transfer] id=xtable>
-			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>			
+			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>
 			<option value=2>Ja tak, Jeg vil gerne oprettes om Ex Tabler når jeg stopper som Tabler</option>
 			<option value=0>Nej tak, jeg ønsker ikke at forsætte som tabler når jeg stopper i Round Table</option>
 		</select><br>
 		</p>
 		<p>Læs evt. mere om <a href=http://ex-table.dk target=_blank>Ex-Table</a> - <a href=http://www.ex-table.dk/dk/contact/clubs target=_blank>find din nærmeste klubkontakt</a></p>
-		<script>$("#xtable").val(%%xtable_transfer%%);</script>		
+		<script>$("#xtable").val(%%xtable_transfer%%);</script>
 		<hr>
 		<table width=100%>
 		<tr>
-		<td align=left><input type=submit value="Gem ændringer"></td>
-		<td align=right><button value="Fortryd ændringer" onclick="javascript:window.history.back();">Fortryd ændringer</button></td>
+		<td align=left><input type=submit value="Gem &aelig;ndringer" class="btn"></td>
+		<td align=right><button class="btn" value="Fortryd &aelig;ndringer" onclick="javascript:window.history.back();">Fortryd &aelig;ndringer</button></td>
 		</tr></table>
 		</form>
 		<script>
@@ -2796,7 +3130,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 					}
 				}
 			}
-			
+
 			var biz = jQuery.parseJSON(\'%%businesses_list%%\');
 			$.each(biz, function(c,v) {
 				if ("%%company_business%%" == v.company_business)
@@ -2816,87 +3150,87 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<form method=post action=?uid=%%uid%%&edit=save enctype="multipart/form-data">
 		<p>Kodeord<br>
 		<i>Udfyldes kun hvis kodeordet skal ændres</i><br>
-		<input type=text name=password value="">
+		<input type=text name=password value="" class=form-control>
 		</p>
 		<p>Brugernavn<br>
-		<input type=text name=data[username] value="%%username%%"></p>
+		<input type=text name=data[username] value="%%username%%" class=form-control></p>
 		<!--- <p>Foto<br>
 		<img src=/uploads/user_image?uid=%%uid%%&quad&s=200><br>
 		Skift foto: <input type=file name=profile_image>
 		</p>--->
 		<p>Fornavn<br>
-		<input type=text name=data[profile_firstname] value="%%profile_firstname%%"></p>
+		<input type=text name=data[profile_firstname] value="%%profile_firstname%%" class=form-control></p>
 		<p>Efternavn<br>
-		<input type=text name=data[profile_lastname] value="%%profile_lastname%%"></p>
+		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" class=form-control></p>
 		<p>Tekst<br>
 		<textarea name=data[private_profile] class=ckeditor>%%private_profile%%</textarea></p>
 		<p>Profilvisning<br>
 		<select name=data[view_tracker] id=xtable>
-			<option value=1>Ja ,vis hvem der har set min profil</option>			
+			<option value=1>Ja ,vis hvem der har set min profil</option>
 			<option value=0>Nej, vis ikke hvem der har set min profil</option>
 		</select><br>
 		</p>
-		
+
 		<h2>Privat</h2>
 		<p>Adresse<br>
-		<input type=text name=data[private_address] value="%%private_address%%"></p>
+		<input type=text name=data[private_address] value="%%private_address%%" class=form-control></p>
 		<p>Hus nr.<br>
-		<input type=text name=data[private_houseno] value="%%private_houseno%%"></p>
+		<input type=text name=data[private_houseno] value="%%private_houseno%%" class=form-control></p>
 		<p>Hus bogstav<br>
-		<input type=text name=data[private_houseletter] value="%%private_houseletter%%"></p>
+		<input type=text name=data[private_houseletter] value="%%private_houseletter%%" class=form-control></p>
 		<p>Etage<br>
-		<input type=text name=data[private_housefloor] value="%%private_housefloor%%"></p>
+		<input type=text name=data[private_housefloor] value="%%private_housefloor%%" class=form-control></p>
 		<p>Side<br>
-		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%"></p>
+		<input type=text name=data[private_houseplacement] value="%%private_houseplacement%%" class=form-control></p>
 		<p>Post nr<br>
-		<input type=text name=data[private_zipno] value="%%private_zipno%%"></p>
+		<input type=text name=data[private_zipno] value="%%private_zipno%%" class=form-control></p>
 		<p>By<br>
-		<input type=text name=data[private_city] value="%%private_city%%"></p>
+		<input type=text name=data[private_city] value="%%private_city%%" class=form-control></p>
 		<p>Telefon<br>
-		<input type=text name=data[private_phone] value="%%private_phone%%"></p>
+		<input type=text name=data[private_phone] value="%%private_phone%%" class=form-control></p>
 		<p>Mobil<br>
-		<input type=text name=data[private_mobile] value="%%private_mobile%%"></p>
+		<input type=text name=data[private_mobile] value="%%private_mobile%%" class=form-control></p>
 		<p>Mail<br>
-		<input type=text name=data[private_email] value="%%private_email%%"></p>
-		
+		<input type=text name=data[private_email] value="%%private_email%%" class=form-control></p>
+
 		<h2>Firma</h2>
 		<p>Firma<br>
-		<input type=text name=data[company_name] value="%%company_name%%"></p>
+		<input type=text name=data[company_name] value="%%company_name%%" class=form-control></p>
 		<p>Stilling<br>
-		<input type=text name=data[company_position] value="%%company_position%%"></p>
+		<input type=text name=data[company_position] value="%%company_position%%" class=form-control></p>
 		<p>Branche<br>
-		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); value="Tilføj branche"/></p>
+		<select name=data[company_business] id=biz></select><input type=button onclick=add_biz(); class="btn" value="Tilføj branche"/></p>
 		<p>Firmaprofil<br>
 		<textarea name=data[company_profile] class=ckeditor>%%company_profile%%</textarea></p>
 		<p>Adresse<br>
-		<input type=text name=data[company_address] value="%%company_address%%"></p>
+		<input type=text name=data[company_address] value="%%company_address%%" class=form-control></p>
 		<p>Post nr<br>
-		<input type=text name=data[company_zipno] value="%%company_zipno%%"></p>
+		<input type=text name=data[company_zipno] value="%%company_zipno%%" class=form-control></p>
 		<p>By<br>
-		<input type=text name=data[company_city] value="%%company_city%%"></p>
+		<input type=text name=data[company_city] value="%%company_city%%" class=form-control></p>
 		<p>Land<br>
-		<input type=text name=data[company_country] value="%%company_country%%"></p>
+		<input type=text name=data[company_country] value="%%company_country%%" class=form-control></p>
 		<p>Telefon<br>
-		<input type=text name=data[company_phone] value="%%company_phone%%"></p>
+		<input type=text name=data[company_phone] value="%%company_phone%%" class=form-control></p>
 		<p>Mail<br>
-		<input type=text name=data[company_email] value="%%company_email%%"></p>
+		<input type=text name=data[company_email] value="%%company_email%%" class=form-control></p>
 		<p>Webside<br>
 		<i>Husk http:// foran linket</i><br>
-		<input type=text name=data[company_web] value="%%company_web%%"></p>
+		<input type=text name=data[company_web] value="%%company_web%%" class=form-control></p>
 		<hr>
 		<p>Overførsel til EX-Table<br>
 		<select name=data[xtable_transfer] id=xtable>
-			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>			
+			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>
 			<option value=2>Ja tak, Jeg vil gerne oprettes om Ex Tabler når jeg stopper som Tabler</option>
 			<option value=0>Nej tak, jeg ønsker ikke at forsætte som tabler når jeg stopper i Round Table</option>
 		</select><br>
 		</p>
 		<p>Læs evt. mere om <a href=http://ex-table.dk target=_blank>Ex-Table</a> - <a href=http://www.ex-table.dk/dk/contact/clubs target=_blank>find din nærmeste klubkontakt</a></p>
-		<script>$("#xtable").val(%%xtable_transfer%%);</script>		
+		<script>$("#xtable").val(%%xtable_transfer%%);</script>
 		<hr>
-		<input type=submit value="Gem ændringer">
+		<input type=submit value="Gem &aelig;ndringer" class="btn">
 		</form>
-		<button value="Fortryd ændringer" onclick="javascript:window.history.back();">Fortryd ændringer</button>
+		<button class="btn" value="Fortryd &aelig;ndringer" onclick="javascript:window.history.back();">Fortryd &aelig;ndringer</button>
 		<script>
 			function add_biz()
 			{
@@ -2914,7 +3248,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 					}
 				}
 			}
-			
+
 			var biz = jQuery.parseJSON(\'%%businesses_list%%\');
 			$.each(biz, function(c,v) {
 				if ("%%company_business%%" == v.company_business)
@@ -2928,62 +3262,87 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			});
 		</script>
 	',
-  'user_profile_club' => 
-  '<h1><a href=?cid=%%cid%%>%%name%%</a></h1>',
-	'user_profile' =>
-	'
-		<h1>%%profile_firstname%% %%profile_lastname%%</h1>
-		<table width=578px cellspacing=5 border=0>
-		<tr>
-		<td valign=top>
+  'user_profile_club' =>
+  '
+  <div class="title col-sm-offset-2">
+	<h3><a href=?cid=%%cid%%>%%name%%</a></h3>
+  </div>
+  ',
+	'user_profile_1' =>
+	'<div class="container user_details">
+	<div class="right-part">
+	<div id="content">
+		<h1 class="title title-section">%%profile_firstname%% %%profile_lastname%%</h1>
+		<div class="col-xs-5">
 		<p><img src="/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500"></p>
-		</td>
-		<td valign=top>
-		<!--<h1>Privat</h1>-->
-		<p>Født: %%profile_birthdate%%, Indmeldt: %%profile_started%%, Udmeldt: %%profile_ended%%. <br>Sidst set online: %%last_page_view%%.</p>
-		<p>%%private_profile%%</p>
-		<p>Adresse: 
-			<ul>%%private_address%% %%private_houseno%% %%private_houseletter%% %%private_housefloor%% %%private_houseplacement%%<br>
-			%%private_zipno%% %%private_city%%, %%private_country%%<br>
-			Telefon: %%private_phone%%, Mobil: %%private_mobile%%<br>
-			Email: <a href=mailto:%%private_email%%>%%private_email%%</a><br>
-			</ul>
-		</p>
-		<!--<h1>Arbejde</h1>-->
-		<p>Virksomhed: <a href="?biz=%%company_business%%#%%company_name%%">%%company_name%%</a></p>
-		<p>Stilling: <a href="?search=%%company_position%%">%%company_position%%</a><br>Branche: <a href="?biz=%%company_business%%">%%company_business%%</a></p>
-		<p>%%company_profile%%</p>
-		<p>Adresse:
-		<ul>
-			%%company_address%%<br>
-			%%company_zipno%% %%company_city%%, %%company_country%%<br>
-			Telefon: %%company_phone%%<br>
-			Mail: <a href=mailto:%%company_email%%>%%company_email%%</a><br>
-			Web: <a href="%%company_web%%" target=_blank>%%company_web%%</a><br>
-		</ul>
-		</p>
-		<p>
-		Mødedeltagelse: <a href=?dashboard=%%cid%%#%%uid%%>Vis detaljer</a>
-		</p>
-		</td></tr></table>
-		<h1>Send besked</h1>
-		<form action=index.php?uid=%%uid%% method=post>
-		<input type=hidden name=uid value=%%uid%%>
-		<textarea name=message style="width:95%;height=200px;"></textarea><br>
-		<input type=submit value=Send>
-		</form>
+
 	',
-	'club_missing_minutes' => '<a name=nominutes><h1>Møder uden referat</h1></a>',
+	'user_profile_2' =>
+	'
+		</div>
+
+		<div class="col-xs-7">
+        	<dl class="dl-horizontal">
+                <!--<h1>Privat</h1>-->
+                <dt>F&oslash;dt:</dt><dd> %%profile_birthdate%%</dd>
+                <dt>Indmeldt:</dt><dd> %%profile_started%%</dd>
+                <dt>Udmeldt:</dt><dd> %%profile_ended%%</dd>
+                <dt>Sidst set online:</dt><dd> %%last_page_view%%.</dd>
+
+                <p>%%private_profile%%</p>
+                <dt>Adresse: </dt>
+                    <dd>%%private_address%% %%private_houseno%% %%private_houseletter%% %%private_housefloor%% %%private_houseplacement%%<br>
+                    %%private_zipno%% %%private_city%%, %%private_country%%<br>
+                    Telefon: %%private_phone%%, Mobil: %%private_mobile%%<br>
+                    Email: <a href=mailto:%%private_email%%>%%private_email%%</a><br>
+                    </dd>
+
+                <!--<h1>Arbejde</h1>-->
+                <dt>Virksomhed:</dt><dd> <a href="?biz=%%company_business%%#%%company_name%%">%%company_name%%</a></dd>
+                <dt>Stilling:</dt><dd> <a href="?search=%%company_position%%">%%company_position%%</a></dd>
+                <dt>Branche:</dt><dd> <a href="?biz=%%company_business%%">%%company_business%%</a></dd>
+				<ul class="social userpage">
+					<li><a class="facebook" href="%%company_facebook%%" target="_blank"></a></li>
+					<li><a class="linkedin" href="%%company_linkdin%%" target="_blank"></a></li>
+					<li><a class="twitter" href="%%company_twitter%%" target="_blank"></a></li>
+				</ul>
+                <p>%%company_profile%%</p>
+                <dt>Adresse:</dt>
+                   		<dd>
+                        %%company_address%%<br>
+                        %%company_zipno%% %%company_city%%, %%company_country%%<br>
+                        Telefon: %%company_phone%%<br>
+                        Mail: <a href=mailto:%%company_email%%>%%company_email%%</a><br>
+                        Web: <a href="%%company_web%%" target=_blank>%%company_web%%</a><br>
+                    	</dd>
+                <dt>M&oslash;dedeltagelse:</dt><dd> <a href=?dashboard=%%cid%%#%%uid%%>Vis detaljer</a></dd>
+				<br>
+				<dt>Send besked</dt>
+				<dd>
+					<form class=user_frm action=index.php?uid=%%uid%% method=post>
+						<input type=hidden name=uid value=%%uid%%>
+						<textarea name=message style="width:95%;height=200px;" class="form-control"></textarea><br>
+						<input type=submit value=Send class="btn">
+					</form>
+				</dd>
+			</dl>
+        </div>
+
+		</div>
+		</div><!-- #container -->
+		</div>
+	',
+	'club_missing_minutes' => '<a class="center" name=nominutes style="display:block; margin-top:25px;"><h2>M&oslash;der uden referat</h2></a>',
 	'meeting_links' => '
 		<div id=links><h1>Links</h1></div>
-		
+
 		<script>
 		  var links_data = jQuery.parseJSON(\'%%data%%\');
-		  
+
 		  $.each(links_data, function(i,j) {
 			var s = j.media_source;
 			var l = j.media_link;
-			
+
 			if (s == "vm")
 			{
 				var id = l.replace("http://vimeo.com/","");
@@ -2991,16 +3350,16 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			}
 			else if (s == "yt")
 			{
-				
+
 				var id = l.replace("http://youtu.be/", "");
 				var id = id.replace("http://www.youtube.com/watch?v=", "");
 				$(\'<iframe width="100%" height="300" src="//www.youtube.com/embed/\'+id+\'" frameborder="0" allowfullscreen></iframe>\').appendTo($("#links"));
-				
+
 			}
 		  });
-		  
+
 		</script>
-		
+
 	',
 	'meeting_minutes_edit' => '
 		<script>
@@ -3008,12 +3367,12 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		{
 			$("<br><input type=file name=minutes_images[] onchange=verify_image(this);>").appendTo($("#pics"));
 		}
-		
+
 		function add_links()
 		{
 			$("<br>Link: <input type=text name=links_link[]><select name=links_source[]><option value=fb>Facebook</option><option value=yt>Youtube</option><option value=vm>Vimeo</option></select>").appendTo($("#links"));
 		}
-		
+
 		function verify_image(what)
 		{
 			var fn = what.value;
@@ -3044,7 +3403,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		%%links_html%%
 		<div id="links">
 		</div>
-		<input type=button value="Tilføj flere links..." onclick="add_links();">
+		<input type=button value="Tilføj flere links..." onclick="add_links();" class="btn">
 		<h2>Billeder</h2>
 		%%images_html%%
 		<div id="pics">
@@ -3055,17 +3414,17 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
     <input type=file name=minutes_file id=minutes_file>
 		<h2>Deltagere</h2>
     <p><b>Antal deltagere</b></p>
-		<input type=text disabled name=minutes[minutes_number_of_participants] value="%%minutes_number_of_participants%%">
+		<input type=text disabled name=minutes[minutes_number_of_participants] value="%%minutes_number_of_participants%%" class="form-control">
 		<p><b>Antal udeblevet</b></p>
-		<input type=text disabled name=minutes[minutes_number_of_rejections] value="%%minutes_number_of_rejections%%">
+		<input type=text disabled name=minutes[minutes_number_of_rejections] value="%%minutes_number_of_rejections%%" class="form-control">
 		<p><b>Mødeprocent</b></p>
-		<input type=text disabled value="%%minutes_percentage%%%">
-		<p><a href=# onclick="if (confirm(\'Ønsker du at forlade denne side? Dine ændringer er ikke gemt!\')) document.location.href=\'?mid=%%mid%%\';">Bemærk: Endelig mødedeltagelse kan tilrettes på mødesiden (link)</a></p>
+		<input type=text disabled value="%%minutes_percentage%%%" class="form-control">
+		<p><a href=# onclick="if (confirm(\'&Oslash;nsker du at forlade denne side? Dine &aelig;ndringer er ikke gemt!\')) document.location.href=\'?mid=%%mid%%\';">Bemærk: Endelig m&oslash;dedeltagelse kan tilrettes på mødesiden (link)</a></p>
 
 		<h2>Referat</h2>
-		<p>Referat afsluttet <input type=checkbox name=finish_minutes id=finish_minutes></p>
-		<p>Udsend referat til medlemmer <input type=checkbox name=mail_minutes id=mail_minutes checked></p>
-		<input type=submit value="Gem mødereferat">
+		<p><label for=finish_minutes>Referat afsluttet</label> <input type=checkbox name=finish_minutes id=finish_minutes></p>
+		<p><label for=mail_minutes>Udsend referat til medlemmer</label> <input type=checkbox name=mail_minutes id=mail_minutes checked></p>
+		<input type=submit value="Gem mødereferat" class="btn">
 		</form>
 		<script>
 		function evaluate_meeting()
@@ -3148,7 +3507,7 @@ http://www.rtd.dk/?mid=%%mid%%
 Du er indkaldt til et arrangement i RTD den:
 Fra: %%start_time%% til %%end_time%%
 
-Bemærk: Du er mødeansvarlig!
+Bemærk: Du er m&oslash;deansvarlig!
 
 %%meeting_description%%
 
@@ -3158,7 +3517,7 @@ Arrangementet finder sted:
 Husk at melde afbud via hjemmesiden:
 http://www.rtd.dk/?mid=%%mid%%
 ',
-		'mail_invitation_duty_letters2_uid' => 
+		'mail_invitation_duty_letters2_uid' =>
 'Kære medlem
 
 Du er indkaldt til et arrangement i RTD den:
@@ -3168,7 +3527,7 @@ Bemærk: Du er blevet tildelt brevgennemgang (2)!
 
 %%meeting_description%%
 
-Følg dette link for at hente brevene: 
+Følg dette link for at hente brevene:
 http://www.rtd.dk/?mid=&collection=%%mid%%/2
 
 
@@ -3178,7 +3537,7 @@ Arrangementet finder sted:
 Husk at melde afbud via hjemmesiden:
 http://www.rtd.dk/?mid=%%mid%%
 ',
-		'mail_invitation_duty_letters1_uid' => 
+		'mail_invitation_duty_letters1_uid' =>
 'Kære medlem
 
 Du er indkaldt til et arrangement i RTD den:
@@ -3188,7 +3547,7 @@ Bemærk: Du er blevet tildelt brevgennemgang (1)!
 
 %%meeting_description%%
 
-Følg dette link for at hente brevene: 
+Følg dette link for at hente brevene:
 http://www.rtd.dk/?mid=&collection=%%mid%%/1
 
 
@@ -3198,7 +3557,7 @@ Arrangementet finder sted:
 Husk at melde afbud via hjemmesiden:
 http://www.rtd.dk/?mid=%%mid%%
 ',
-		'mail_invitation_duty_3min_uid' => 
+		'mail_invitation_duty_3min_uid' =>
 'Kære medlem
 
 Du er indkaldt til et arrangement i RTD den:
@@ -3214,7 +3573,7 @@ Arrangementet finder sted:
 Husk at melde afbud via hjemmesiden:
 http://www.rtd.dk/?mid=%%mid%%
 ',
-		'mail_invitation' => 
+		'mail_invitation' =>
 'Kære medlem
 
 Du er indkaldt til et arrangement i RTD den:
@@ -3252,42 +3611,42 @@ http://www.rtd.dk/?mid=%%mid%%
 										}
 										);
 									});
-								</script>								
+								</script>
 								<div id="slides">
 									<div class="slides_container">
 										<div>
 											<table width=100% cellspacing=5 cellpadding=5 border=0>
-											<tr>		
+											<tr>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_0_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_0_uid%%>%%member_0_profile_firstname%% %%member_0_profile_lastname%%</a><br>
 																%%member_0_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_0_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_1_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_1_uid%%>%%member_1_profile_firstname%% %%member_1_profile_lastname%%</a><br>
 																%%member_1_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_1_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_2_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_2_uid%%>%%member_2_profile_firstname%% %%member_2_profile_lastname%%</a><br>
 																%%member_2_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_2_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_3_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_3_uid%%>%%member_3_profile_firstname%% %%member_3_profile_lastname%%</a><br>
 																%%member_3_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_3_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_4_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_4_uid%%>%%member_4_profile_firstname%% %%member_4_profile_lastname%%</a><br>
 																%%member_4_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_4_clubname%%</a>
-												</td>								
+												</td>
 											</tr>
 											</table>
 										</div>
@@ -3295,82 +3654,82 @@ http://www.rtd.dk/?mid=%%mid%%
 									<div class="slides_container">
 										<div>
 											<table width=100% cellspacing=5 cellpadding=5 border=0>
-											<tr>		
+											<tr>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_5_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_5_uid%%>%%member_5_profile_firstname%% %%member_5_profile_lastname%%</a><br>
 																%%member_5_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_5_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
-																<img src="/uploads/user_image?uid=%%member_6_uid%%&landscape&w=100&h=150" width=100 height=100><br>
-																<a href=?uid=%%member_6_uid%%>%%member_6_profile_firstname%% %%member_6_profile_lastname%%</a><br>
-																%%member_6_company_position%%<br>
-																<a href=?cid=%%cid%%>%%member_6_clubname%%</a>
-												</td>								
+																<img src="/uploads/user_image?uid=%%member_4_uid%%&landscape&w=100&h=150" width=100 height=100><br>
+																<a href=?uid=%%member_4_uid%%>%%member_4_profile_firstname%% %%member_4_profile_lastname%%</a><br>
+																%%member_4_company_position%%<br>
+																<a href=?cid=%%cid%%>%%member_4_clubname%%</a>
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_7_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_7_uid%%>%%member_7_profile_firstname%% %%member_7_profile_lastname%%</a><br>
 																%%member_7_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_7_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_8_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_8_uid%%>%%member_8_profile_firstname%% %%member_8_profile_lastname%%</a><br>
 																%%member_8_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_8_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_9_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_9_uid%%>%%member_9_profile_firstname%% %%member_9_profile_lastname%%</a><br>
 																%%member_9_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_9_clubname%%</a>
-												</td>								
+												</td>
 											</tr>
 											</table>
 										</div>
 									</div>
-								
+
 									<div class="slides_container">
 										<div>
 											<table width=100% cellspacing=5 cellpadding=5 border=0>
-											<tr>		
+											<tr>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_10_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_10_uid%%>%%member_10_profile_firstname%% %%member_10_profile_lastname%%</a><br>
 																%%member_10_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_10_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
-																<img src="/uploads/user_image?uid=%%member_11_uid%%&landscape&w=100&h=150" width=100 height=100><br>
-																<a href=?uid=%%member_11_uid%%>%%member_11_profile_firstname%% %%member_11_profile_lastname%%</a><br>
-																%%member_11_company_position%%<br>
-																<a href=?cid=%%cid%%>%%member_11_clubname%%</a>
-												</td>								
+																<img src="/uploads/user_image?uid=%%member_col-sm-offset-2_uid%%&landscape&w=100&h=150" width=100 height=100><br>
+																<a href=?uid=%%member_col-sm-offset-2_uid%%>%%member_col-sm-offset-2_profile_firstname%% %%member_col-sm-offset-2_profile_lastname%%</a><br>
+																%%member_col-sm-offset-2_company_position%%<br>
+																<a href=?cid=%%cid%%>%%member_col-sm-offset-2_clubname%%</a>
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_12_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_12_uid%%>%%member_12_profile_firstname%% %%member_12_profile_lastname%%</a><br>
 																%%member_12_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_12_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_13_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_13_uid%%>%%member_13_profile_firstname%% %%member_13_profile_lastname%%</a><br>
 																%%member_13_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_13_clubname%%</a>
-												</td>								
+												</td>
 												<td valign=top>
 																<img src="/uploads/user_image?uid=%%member_14_uid%%&landscape&w=100&h=150" width=100 height=100><br>
 																<a href=?uid=%%member_14_uid%%>%%member_14_profile_firstname%% %%member_14_profile_lastname%%</a><br>
 																%%member_14_company_position%%<br>
 																<a href=?cid=%%cid%%>%%member_14_clubname%%</a>
-												</td>								
+												</td>
 											</tr>
 											</table>
 										</div>
 									</div>
-								
-								</div>								
+
+								</div>
 		',
 		'latestmembers_pre' => '<h1>Seneste medlemmer - hele landet</h1>
 								<script>
@@ -3383,7 +3742,7 @@ http://www.rtd.dk/?mid=%%mid%%
 										}
 										);
 									});
-								</script>								
+								</script>
 								<div id="slides">
 								<div class="slides_container"><div><table width=100% cellspacing=5 cellpadding=5 border=0><tr>
 								',
@@ -3400,19 +3759,19 @@ http://www.rtd.dk/?mid=%%mid%%
 		'statsbox_advanced_link' => '<div class=stats><a href=?stats>Vis mere...</a></div><br>',
 		'statsbox' => 	'<h3>Statistik</h3><br>
 						<div class=stats>
-							<li>Medlemmer: %%allmembers%%
-							<li>Æresmedlemmer: %%honorary%%
-							<li>Nye i år: %%newmembers%%
-							<li>Afgående i år: %%leavingmembers%%
-							<li>Gns. alder: %%avgage%% år
+							<li>Medlemmer: %%allmembers%%</li>
+							<li>Ærexsedlemmer: %%honorary%%</li>
+							<li>Nye i år: %%newmembers%%</li>
+							<li>Afgående i år: %%leavingmembers%%</li>
+							<li>Gns. alder: %%avgage%% år</li>
 						</div>
 						',
 		'club_latest_minutes' => '<h2>Seneste referater</h2>',
-		'club_archive' => '<h1>Mødearkiv</h1><a href=?cid=%%cid%%&archive>Arkiv over gamle referater</a>',
+		'club_archive' => '<div class="center arkiv_over"><a class="btn" href=?cid=%%cid%%&archive>Arkiv over gamle referater</a></div>',
     'club_other_meetings' => '
-    <div id=container_other_meetings>
-      <h1>Andre begivenheder</h1>
-	  <table width=100% cellspacing=0 cellpadding=0 border=0>
+    <div id=container_other_meetings class="center">
+      <h2>Andre begivenheder</h2>
+	  <table cellspacing=0 cellpadding=0 border=0>
 	  <tr><td width=50% valign=top>
 	  <p><b>Fødselsdage denne måned</b></p>
 	  <ul id=birthdays></ul>
@@ -3424,28 +3783,28 @@ http://www.rtd.dk/?mid=%%mid%%
     </div>
     <script>
       var other_data = jQuery.parseJSON(\'%%data%%\');
-	  
+
 	  $.each(other_data.birthday, function(i,j) {
 		$("#birthdays").append("<li><a href=?uid="+j.uid+">"+j.profile_firstname+" "+j.profile_lastname+", "+j.profile_birthdate+"</a>");
 	  });
-	  
+
       var c = 0;
       $.each(other_data.meetings, function(k,m) {
         $("#other_meetings").append("<li name=omid_link_"+m.omid+"><a href=#omid_link_"+m.omid+" onclick=show_om("+m.omid+")>"+m.title+" ("+m.start_time+")</a>");
         $("#other_meetings_data").append("<div id=omid_"+m.omid+"><h1>"+m.title+"</h1>"+m.start_time+" - "+m.end_time+"<br><br>"+m.description+"</div>")
       });
-      
+
       function show_om(omid)
       {
-        $("#omid_"+omid).dialog({modal:true});
-      
-        
+        $("#omid_"+omid).dialog({modal:true, width: 500});
+
+
       }
     </script>
     ',
     'club_other_meetings_secretary' => '
-    <div id=container_other_meetings>
-      <h1>Andre begivenheder</h1>
+    <!--<div id=container_other_meetings class="22">
+      <h2>Andre begivenheder</h2>
 	  <table width=100% cellspacing=0 cellpadding=0 border=0>
 	  <tr><td width=50% valign=top>
 	  <p><b>Fødselsdage denne måned</b></p>
@@ -3458,66 +3817,141 @@ http://www.rtd.dk/?mid=%%mid%%
     </div>
     <script>
       var other_data = jQuery.parseJSON(\'%%data%%\');
-	  
+
 	  $.each(other_data.birthday, function(i,j) {
 		$("#birthdays").append("<li><a href=?uid="+j.uid+">"+j.profile_firstname+" "+j.profile_lastname+", "+j.profile_birthdate+"</a>");
 	  });
-	  
+
       var c = 0;
       $.each(other_data.meetings, function(k,m) {
         $("#other_meetings").append("<li name=omid_link_"+m.omid+"><a href=#omid_link_"+m.omid+" onclick=show_om("+m.omid+")>"+m.title+" ("+m.start_time+")</a>");
         $("#other_meetings_data").append("<div id=omid_"+m.omid+"><h1>"+m.title+"</h1>"+m.start_time+" - "+m.end_time+"<br><br>"+m.description+"<p><a href=?cid="+m.cid+"&delete_omid="+m.omid+">Slet møde</a></div>")
       });
-      
+
       function show_om(omid)
       {
-        $("#omid_"+omid).dialog({modal:true});
-      
-        
+        $("#omid_"+omid).dialog({modal:true, width: 500});
       }
-    </script>
+    </script>-->
     ',
 		'club_future_meetings' => '
 		<div id=next></div>
-		<h2>Klubmøder</h2>
-		<div style="height: 330px; overflow: scroll; overflow-x: hidden;">
-		<table width=100% border=0>
-		<tr>
-			<td valign=top width=50%>Kommende møder:<table id=other></table></td>
-			<td valign=top width=50%>Seneste referater:<table id=minutes></table></td>
-		</tr>
-		</table>
+		<div class="container-out container-image future_meetings" style="background-image:url(img/section.jpg)">
+			<div class="title title-section">
+                <h2>Kommende m&oslash;der</h2>
+                <span class="sticker">
+                    <i class="icon fa fa-bullhorn"></i>
+                </span>
+			</div><!-- .title.title-section -->
+			<div data-animate="flipInY"> 
+				<div class="carousel-wrap 1">
+					<ul class="carousel-nav">
+								<li><a href="#" class="btn btn-icon-prev prev"></a></li>
+								<li><a href="#" class="btn btn-icon-next next"></a></li>
+					</ul>
+					<div class="carousel" data-visible="3" id=other>
+					</div>
+				</div>
+			</div>
 		</div>
-		
+
+		<div class="container-out container-light" >
+			<div class="title title-section">
+				<h2>M&oslash;de referater</h2>
+			</div>
+			<div data-animate="flipInY">
+				<div class="carousel-wrap 2">
+					<ul class="carousel-nav">
+						<li><a href="#" class="btn btn-icon-prev prev"></a></li>
+						<li><a href="#" class="btn btn-icon-next next"></a></li>
+					</ul>
+					<div class="carousel" data-visible="3" id=minutes>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script>
 				var data = jQuery.parseJSON(\'%%data%%\');
+				console.log(data);
 	      var i = 0;
 				$.each(data, function(k,m) {
 					if (i==0)
 					{
+                        var start_time = "";
+                        if(m.start_time == "null" || m.start_time == null)
+                        {
+                            start_time = "";
+                        }
+                        else
+                        {
+                            start_time = m.start_time;
+                        }
+
+                        var title = "";
+                        if(m.title == "null" || m.title == null)
+                        {
+                            title = "";
+                        }
+                        else
+                        {
+                            title = m.title+", ";
+                        }
+
 						if (m.images && m.images[0])
 						{
-							$("#next").append("<a href=?mid="+m.mid+"><h2>Næste møde: "+m.title+", "+m.start_time+"</h2><img width=100% src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300></a>");
+							$("#next").append("<div class=\"page-slider-wrap tp-banner-container\"><div class=tp-banner id=page-slider><ul><li><a href=?mid="+m.mid+"><img width=100% src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300><div class=\"tp-caption medium_bg_darkblue fadeout\" data-x=\"0\" data-y=\"400\" data-speed=\"500\" data-start=\"1200\" data-easing=\"Power4.easeOut\" style=\"color:#fff\">N&aelig;ste m&oslash;de: "+title+" "+start_time+"</div></a></li></ul></div></div><div class=clearfix></div>");
+
+                            $("#next").addClass("with_img");
+                            $(".club-page.club-page-header .container-image.future_meetings").addClass("have_top_img");
+                            $("#next").insertBefore(".club-page.club-page-header .container-out .col-xs-12.col-xs-4:eq(0)");
+
+                            jQuery("#next .tp-banner").revolution({
+                                delay:9000,
+                                startwidth:950,
+                                startheight:500,
+                                hideThumbs:10
+                            });
 						}
 						else
 						{
-							$("#next").append("<a href=?mid="+m.mid+"><h2>Næste møde: "+m.title+", "+m.start_time+"</h2><i>Intet billede lagt på af sekretær</i></a>");
+							$("#next").append("<a href=?mid="+m.mid+"><h2>N&aelig;ste m&oslash;de: "+m.title+", "+m.start_time+"</h2><i>Intet billede lagt p&acirc; af sekret&aelig;r</i></a>");
 						}
 					}
 					else
 					{
 						if (m.images && m.images[0])
 						{
-							$("#other").append("<tr><td valign=top><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+                            var mtitle = "";
+
+                            if(m.title != "" && m.title != null)
+                            {
+                                mtitle = "<a href=?mid="+m.mid+">"+m.title+"</a>";
+                            }
+                            else
+                            {
+                                mtitle = "";
+                            }
+
+							$("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 						else
 						{
-						$("#other").append("<tr><td valign=top><img src=/uploads/club_logos/0.jpg width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+                            var mtitle = "";
+                            if(m.title != "" && m.title != null)
+                            {
+                                mtitle = "<a href=?mid="+m.mid+">"+m.title+"</a>";
+                            }
+                            else
+                            {
+                                mtitle = "";
+                            }
+
+						    $("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 					}
 					i++;
-				}); 
-		
+				});
+
 		</script>
 		',
 		'club_minutes' => '
@@ -3526,66 +3960,127 @@ http://www.rtd.dk/?mid=%%mid%%
 				$.each(minutes_data, function(k,m) {
 						if (m.images[0])
 						{
-							$("#minutes").append("<tr><td valign=top><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+                            var mtitle = "";
+                            if(m.title != "" && m.title != null)
+                            {
+                                mtitle = "<a href=?mid="+m.mid+">"+m.title+"</a>";
+                            }
+                            else
+                            {
+                                mtitle = "";
+                            }
+
+							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 						else
 						{
-						$("#minutes").append("<tr><td valign=top><img src=/uploads/club_logos/0.jpg width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+                            var mtitle = "";
+                            if(m.title != "" && m.title != null)
+                            {
+                                mtitle = "<a href=?mid="+m.mid+">"+m.title+"</a>";
+                            }
+                            else
+                            {
+                                mtitle = "";
+                            }
+
+							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
-				}); 
-		
+				});
+
 		</script>
 		',
 		'club_minutes_archive' => '
-		<h1>Arkiv</h1>
-		Kalenderår: <select id=years onchange=y(this.value);></select>
-		<hr>
-		<table id=minutes width=100%>
-		</table>
+		<header class="devider-bottom ">
+			<h1>Arkiv</h1>
+			<p class="excerpt">Du finder her et arkiv over alle møder afholdt i klubbens regi</p>
+		</header>
+
+		<div id="archive-tab" style="display:inherit;"><!-- .archive-tab start -->
+			<ul class="pagination 74" style="display:inherit;" id="years">
+			</ul>
+
+		<div class="grid-wrap" id=minutes>
+
+		</div>
+		</div><!-- .archive-tab end -->
+
+		</div>
+		</div>
+		<div class="clearfix"></div><!-- .club-pge archive end -->
 		<script>
-				function y(v)
-				{
-					document.location.href="#"+v;
-				}
+        function y(v)
+        {
+            document.location.href="#"+v;
+        }
+		 $(document).ready(function() {   $("#archive-tab").tabs();  });
+
 				var minutes_data = jQuery.parseJSON(\'%%data%%\');
 				var old_y = 0;
+				var c=0;
+				var yt = "";
+				var yclose = "";
+				var html = "";
+				var tmp=0;
 				$.each(minutes_data, function(k,m) {
-						var y = m.start_time.substring(m.start_time.indexOf(",")+1);
-						var yt = "";
+						var y = $.trim(m.start_time.substring(m.start_time.indexOf(",")+1));
+
+				yt = "";yclose = "";
 						if (y!=old_y)
 						{
-							$("#years").append("<option value="+y+">"+y+"</option>");
-							yt = "<a name="+y+"><b>"+y+"</b></a>";
+							$("#years").append("<li><a href=\"#"+y+"\">"+y+"</a></li>");
+							yt += "<section id="+y+" class=\"posts grid\" data-columns=3>";
+							if(tmp > 0)
+							{
+								yclose += "</section>";
+							}
+							tmp++;
 							old_y=y;
+
 						}
+
+                        var title = "";
+                        if(m.title != "" && m.title != null)
+                        {
+                            title = "<a href=?mid="+m.mid+">"+m.title+"</a>";
+                        }
+                        else
+                        {
+                            title = "";
+                        }
+
 						if (m.images[0])
 						{
-							$("#minutes").append("<tr><td width=100px valign=top>"+yt+"</td><td valign=top><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+							/*$("#minutes").append(yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>");*/
+							html += yclose+yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>";
 						}
 						else
 						{
-						$("#minutes").append("<tr><td valign=top>"+yt+"</td><td valign=top><img src=/uploads/club_logos/0.jpg width=100></td><td valign=top><a href=?mid="+m.mid+">"+m.title+"<br>"+m.start_time+"</a></td></tr>");
+							/*$("#minutes").append(yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg?landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>");*/
+							html += yclose+yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg?landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>";
 						}
-				}); 
-		
+				});
+				html += "</div>"
+
+				$("#minutes").append(html);
+
 		</script>
 		',
 		'club_future_meetings_item' => '<li><a href=?mid=%%mid%%>%%start_time%%: %%title%%</a>',
-		
+
 		'club_secretary_tools' => '
-															<h1 onclick="$(\'#stools\').toggle();">Sekretærværktøjer</h1>
-															<p id=stools>
-															<a href=/uploads/article_file/?afid=50>Vejledning</a> |
-															<a href=?uid=-1>Opret medlem</a> |
-															<a href=?mid=-1&club=%%cid%%>Opret møde</a> |
-															<a href=?kbp>Kommende bestyrelsesposter</a> |
-															<a href=?cid=%%cid%%&edit>Rediger klub</a> |
-															<a href=?dashboard>Klub dashboard</a>
-															</p>
-															
-															',
-		'special_club_page' => '<h1>%%name%%</h1>',
-    'special_club_page_admin' => '<h1>Opret møde</h1>
+            <h3 style="clear:both;" onclick="$(\'#stools\').toggle();">Sekret&aelig;rv&aelig;rkt&oslash;jer</h3>
+            <p id=stools>
+            <a href=/uploads/article_file/?afid=50>Vejledning</a> |
+            <a href=?uid=-1>Opret medlem</a> |
+            <a href=?mid=-1&club=%%cid%%>Opret m&oslash;de</a> |
+            <a href=?kbp>Kommende bestyrelsesposter</a> |
+            <a href=?cid=%%cid%%&edit>Rediger klub</a> |
+            <a href=?dashboard>Klub dashboard</a>
+            </p>
+            ',
+    'special_club_page' => '<h1>%%name%%</h1>',
+    'special_club_page_admin' => '<h1>Opret m&oslash;fde</h1>
     <form action=?cid=%%cid%%>
     <p>Mødetitel<br><input type=text name=meeting[title]></p>
 		<p>Mødestart<br>
@@ -3596,16 +4091,16 @@ http://www.rtd.dk/?mid=%%mid%%
 		<input class=field id=loctext type=text name=meeting[location] value="" onkeyup=locate(this.value);></p>
 		<div id=locmap></div>
     <input type=hidden name=cid value=%%cid%%>
-    <input type=submit value=Opret>
+    <input type=submit value=Opret class="btn">
     </form>
 											<script>
 												function locate(what)
 												{
 													if (what=="") return;
 													var url = "/scripts/rtd/geocodeproxy.php?address=="+what+"&sensor=false";
-													
-													$.ajax( url ).done(function(data) 
-													{ 
+
+													$.ajax( url ).done(function(data)
+													{
 														var result = jQuery.parseJSON(data);
 														var lat = -1;
 														var lng = -1;
@@ -3615,20 +4110,20 @@ http://www.rtd.dk/?mid=%%mid%%
 															lng = v.geometry.location.lng;
 															found=true;
 														});
-														if (!found) 
+														if (!found)
 														{
 															$("#locmap").html("<i>Kunne ikke finde adressen. Indtast f.eks. Christiansborg, 1240 København K</i>");
 														}
 														else {
-															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=11&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+what+"&zoom=col-sm-offset-2&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
 															var url = "https://maps.google.dk/?q="+what;
 															$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 														}
-													});																										
+													});
 												}
-												
+
 												locate($("#loctext").val());
-												
+
 												$(function() {
 													$("#start_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
 													$("#end_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
@@ -3636,43 +4131,160 @@ http://www.rtd.dk/?mid=%%mid%%
                         </script>
     ',
     'club_header' => '
-											<h1>%%name%%</h1>
-                      <table width=100% border=0 cellspacing=0>
-                      <tr>
-                      <td>
-											<p>M&oslash;de: %%meeting_place%%, %%meeting_time%%</p>
-											<p>%%description%%</p>
-											<p>
-												Links
-												<ul>
-												<li><a href=?cid=%%cid%%&ics>Hent mødekalender som .ics</a>
-												<li><a href="?cid=%%cid%%&message" target=_blank>Send besked til klubmedlemmer</a>
-												<li><a href="%%webpage%%" target=_blank>Klubbens hjemmeside</a>
-												<li><a href=?cid=%%cid%%&gallery>Mødegalleri</a>
-												</ul>
-											</p>
-                      </td><td width=200px>
-                      <img style="border: 1px solid black;" src=/uploads/club_logos/%%logo%% width=200px align=right>
-                      </td></tr></table>
-										',
+                <div class="col-xs-12 col-xs-4">
+                <div class="member">
+                <div class="member-heading">
+                <h3>%%name%%</h3>
+                <a class="userpic" href="#">
+                <span class="btn btn-icon-user"></span>
+                <img src=/uploads/user_image?uid=%%uid%% width=300px height=500px>
+                </a>
+
+                <ul class="club_social social animation animation-from-right">
+                <li><a href="%%company_twitter%%" class="twitter" target="_blank"></a></li>
+                <li><a href="%%company_linkdin%%" class="linkedin" target="_blank"></a></li>
+                <li><a href="mailto:%%company_email%%" class="mail"></a></li>
+                </ul>
+
+                <div class="title">
+                <h3>Formand</h3>
+                <p><a href="/?uid=%%uid%%">%%profile_firstname%% %%profile_lastname%%</a></p>
+                <p>Mobil: %%private_phone%%</p>
+                <p>Mail: <a href=mailto:%%private_email%%>%%private_email%%</a></p>
+                </div>
+
+                </div><!-- .member-heading -->
+                </div>
+                </div>
+
+                <div class="col-xs-12 col-xs-8">
+                <div class="col-xs-12 col-xs-8">
+                <p>%%description%%</p>
+                <p><strong>M&oslash;de: %%meeting_place%%, %%meeting_time%%</strong></p>
+                </div>
+                <div class="col-xs-12 col-xs-4" style="text-align:center"><img style="border: 1px solid black;" src=/uploads/club_logos/%%logo%%></div>
+                <div class="col-xs-12 col-xs-4 club_links">
+                 <!--Links &nbsp;<br>-->
+                <br/>
+                    <a href=?cid=%%cid%%&ics class="btn btn-info margin-btm">Hent m&oslash;dekalender som .ics</a><br/>
+                    <a href="?cid=%%cid%%&message" target=_blank class="btn btn-default margin-btm">Send besked til klubmedlemmer</a><br/>
+                    <a href="%%webpage%%" target=_blank class="btn btn-default margin-btm">Klubbens hjemmeside</a><br/>
+                    <a href=?cid=%%cid%%&gallery class="btn btn-default margin-btm btn-block">M&oslash;degalleri</a><br/>
+                </div>
+                </div>
+
+		',
 		'club_members' => '
 				<div id=clubmembers></div>
 			<script>
 				var result = jQuery.parseJSON(\'%%members%%\');
-				html = "<table width=100%><tr>";
+
+				html = "<table width=100% class=clubmembers><tr>";
         var i = 0;
-				$.each(result, function(key,value) 
+				$.each(result, function(key,value)
 				{
-          html += "<td valign=top width=100px><a href=?uid="+value.uid+"><img border=1 width=100px src=/uploads/user_image?uid="+value.uid+"&landscape&w=100&h=150></a></td>";
-          html += "<td valign=top><a href=?uid="+value.uid+"><b>"+value.profile_firstname+" "+value.profile_lastname+"</b></a><br>"+value.roles+"<br>"+value.company_position+"<br>"+value.company_name+"<br>Mobil: "+value.private_mobile+"<br></td>";
+                    var profile_firstname = "";
+                    if(value.profile_firstname != "" && value.profile_firstname != null)
+                    {
+                        profile_firstname = value.profile_firstname;
+                    }
+                    else
+                    {
+                        profile_firstname = "";
+                    }
+
+                    var profile_lastname = "";
+                    if(value.profile_lastname != "" && value.profile_lastname != null)
+                    {
+                        profile_lastname = value.profile_lastname;
+                    }
+                    else
+                    {
+                        profile_lastname = "";
+                    }
+
+                    var roles = "";
+                    if(value.roles != "" && value.roles != null)
+                    {
+                        roles = value.roles;
+                    }
+                    else
+                    {
+                        roles = "";
+                    }
+
+                    var company_position = "";
+                    if(value.company_position != "" && value.company_position != null)
+                    {
+                        company_position = value.company_position;
+                    }
+                    else
+                    {
+                        company_position = "";
+                    }
+
+                    var company_name = "";
+                    if(value.company_name != "" && value.company_name != null)
+                    {
+                        company_name = value.company_name;
+                    }
+                    else
+                    {
+                        company_name = "";
+                    }
+
+                    var private_mobile = "";
+                    if(value.private_mobile != "" && value.private_mobile != null)
+                    {
+                        private_mobile = value.private_mobile;
+                    }
+                    else
+                    {
+                        private_mobile = "";
+                    }
+
+                    var fb_class = "";
+                    console.log(value.company_facebook);
+                    if(value.company_facebook != "" && typeof value.company_facebook !== "undefined")
+                    {
+                        fb_class = "<li><a href="+value.company_facebook+" class=facebook target=\"_blank\"></a></li>";
+                    }
+
+                    var link_class = "";
+                    if(value.company_linkdin != "" && typeof value.company_linkdin !== "undefined")
+                    {
+                        link_class = "<li><a href="+value.company_linkdin+" class=linkedin target=\"_blank\"></a></li>";
+                    }
+
+                    var mail_class = "";
+                    if(value.private_email != "")
+                    {
+                        mail_class = "<li><a href=mailto:"+value.private_email+" class=mail target=\"_blank\"></a></li>";
+                    }
+                    else if(value.company_email != "" && typeof value.company_email !== "undefined")
+                    {
+                        mail_class = "<li><a href=mailto:"+value.company_email+" class=mail target=\"_blank\"></a></li>";
+                    }
+
+
+
+                    var social = "";
+                    if(fb_class != "" || link_class != "" || mail_class != "")
+                    {
+                        social = "<ul class=social animation animation-from-right>"+fb_class+""+link_class+""+mail_class+"</ul>";
+                    }
+
+          html += "<div class=\"col-xs-4 all_members\"><div class=member><div class=member-heading><a class=userpic href=?uid="+value.uid+"><span class=\"btn btn-icon-user\"></span><img border=1 src=/uploads/user_image?uid="+value.uid+"&landscape&w=300&h=500></a>"+social+"<div class=title><h4><a href=?uid="+value.uid+">"+profile_firstname+" "+profile_lastname+"</a></h4><p><strong>"+roles+"</strong></p><p>"+company_position+"</p><p>"+company_name+"</p><p>Mobil: "+private_mobile+"</p></div></div></div></div>";
           i++;
-          if (i==2) { i=0; html += "</tr><tr>"; }					
+          if (i==2) { i=0; html += "</tr><tr>"; }
 				});
         html += "</tr></table>";
 				$("#clubmembers").append(html);
 			</script>
 		',
-		'club_board' => '<h2>Klubben</h2><input type=button value="Vis aktive og gamle medlemmer" onclick="document.location.href=document.location.href+\'&allmembers\';">',
+		'club_board' => '
+
+		',
 		/*'club_board_member' => '
 			<div class="slider-wrapper theme-bar">
 				<div id="club_board_members"></div>
@@ -3680,9 +4292,9 @@ http://www.rtd.dk/?mid=%%mid%%
 			<script>
 				var result = jQuery.parseJSON(\'%%data%%\');
 				html = "";
-				$.each(result, function(key,value) 
+				$.each(result, function(key,value)
 				{
-					html += "<a href=?uid="+value.uid+"><img src=/uploads/user_image?uid="+value.uid+"&landscape&w=578&h=300 title=\""+value.rolename+": "+value.firstname+" "+value.lastname+"\"></a>";
+					html += "<a href=?uid="+value.uid+"><img src=http://rtd.dk/uploads/user_image?uid="+value.uid+"&landscape&w=578&h=300 title=\""+value.rolename+": "+value.firstname+" "+value.lastname+"\"></a>";
 				});
 				$("#club_board_members").append(html);
 				$("#club_board_members").nivoSlider();
@@ -3690,23 +4302,34 @@ http://www.rtd.dk/?mid=%%mid%%
 		',*/
 		'club_board_member'=>'',
 		//'club_board_member' => '<a href="http://rtd.dk/%%image%%" rel="lightbox[roadtrip]" title="%%rolename%%: %%firstname%% %%lastname%%"><img class=board_member title="%%uid%%" src="http://rtd.dk/%%image%%"></a><span class=board_member>&nbsp;&nbsp;%%rolename%%: %%firstname%% %%lastname%%</span>',
-		'duty_meeting_responsible_uid' => 'Mødeansvarlig',
+		'duty_meeting_responsible_uid' => 'M&oslash;deansvarlig',
 		'duty_3min_uid' => '3. minutter',
 		'duty_letters1_uid' => 'Breve',
 		'duty_letters2_uid' => 'Breve (2)',
 		'duty_ext1_uid' => 'Ekstra',
 		'duty_ext2_uid' => 'Ekstra(2)',
-		'meeting_attendance_pre' => '</ul><h2>Mødedeltagelse</h2>
-		<p>Deltagere: %%total%%. Deltager fra klubben: %%accepted%% - frameldinger fra klubben: %%rejected%%. Mødeprocent: %%percentage%% %</p>
-		<table width=100% border=0><tr><th width=30%>Navn</th><th width=20%>Status</th><th>Besked</th><th>Klub</th></tr>',
+		'meeting_attendance_pre' => '</ul>
+		<div class="title title-section meeting_attandance_report">
+				<h3>M&oslash;dedeltagelse</h3>
+					<span class="sticker">
+				<i class="icon icomoon-users"></i>
+			</span>
+		</div><!-- .title.title-section -->
+		<table class="table meetstatistic table-condensed col-sm-offset-2" width="100%">
+		<tr>
+			<th width="1%">Deltagere</th><th width="1%">Deltagere fra klubben</th><th width="1%">frameldinger fra klubben</th><th>M&oslash;deprocent</th></tr>
+		<tr><td style="word-wrap:no-wrap">%%total%%</td><td> %%accepted%%</td><td>%%rejected%%</td><td><div class="skill"><div class="bar animated" data-value="%%percentage%%"></div></div></td></tr>
+		</table>
+
+		<table class="table table-striped" width="100%" border=0><tr><th width="20%">Navn</th><th width="15%">Status</th><th width="40%">Besked</th><th>Klub</th></tr>',
 		'meeting_attendance_post' => '</table>',
 		'meeting_attendance_secretary_add' => '
 		<hr>
-		Tilmeld medlem: 
+		Tilmeld medlem:
 		<select id=accept_uid>
-		<option value=0>-- vælg --</option>
+		<option value=0>-- v&aelig;lg --</option>
 		</select>
-		<input type=button onclick=signup() value=Tilmeld>
+		<input type=button onclick=signup() value=Tilmeld class="btn">
 		<script>
 			var signup_mid = 0;
 			function signup()
@@ -3732,16 +4355,16 @@ http://www.rtd.dk/?mid=%%mid%%
 		'meeting_attendance_no' => 'Afbud',
 		'meeting_attendance_idle' => 'Tilmeldt',
 		'meeting_attendance_item_edit' => '
-															<tr>
-																<td><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></td>
-																<td title="Svardato: %%response_date%%">%%status%% <br> 
-																<a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=0&attendance[comment]=Afmeldt+af+S">Afmeld</a>
-																<a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=1&attendance[comment]=Tilmeldt+af+S">Tilmeld</a>
-																</td>
-																<td>%%comment%%<br>Svardato: %%response_date%%</td>
-																<td>%%club_name%%</td>
-															</tr>
-															',
+            <tr class="attandance_list">
+                <td><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></td>
+                <td title="Svardato: %%response_date%%">%%status%% <br>
+                <a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=0&attendance[comment]=Afmeldt+af+S">Afmeld</a>
+                <a href="?mid=%%mid%%&attendance[uid]=%%uid%%&attendance[accept]=1&attendance[comment]=Tilmeldt+af+S">Tilmeld</a>
+                </td>
+                <td>%%comment%%<br>Svardato: %%response_date%%</td>
+                <td>%%club_name%%</td>
+            </tr>
+            ',
 
 		'meeting_attendance_item' => '
 															<tr>
@@ -3757,36 +4380,35 @@ http://www.rtd.dk/?mid=%%mid%%
 															<input type=hidden name=mid value=%%mid%%>
 															<input type=hidden name=attendance[uid] value=%%uid%%>
 															<p>
-															<input type=radio name=attendance[accept] value=1 checked>Ja, jeg kommer <br/>
-															<input type=radio name=attendance[accept] value=0>Nej, jeg kommer ikke  <br/>
+															<input type=radio name=attendance[accept] id=radio_check1 value=1 checked><label for=radio_check1>Ja, jeg kommer</label> <br/>
+															<input type=radio name=attendance[accept] id=radio_check2 value=0><label for=radio_check2>Nej, jeg kommer ikke</label>  <br/>
 															</p>
 															<p>
 															Kommentar til svar:<br>
-															<input type=text name=attendance[comment] value="" required>
+															<input type=text name=attendance[comment] value="" class="form-control" required>
 															</p>
-															<input type=submit value="Send svar">
+															<input type=submit value="Send svar" class="btn">
 															</form>
 		',
 		'save_meeting' => 'Gem møde',
-		'meeting_edit_header' => '<h1 onclick="$(\'#stools\').toggle();">Sekretærværktøjer</h1>	
+		'meeting_edit_header' => '<h1 onclick="$(\'#stools\').toggle();">Sekret&aelig;rv&aelig;rkt&oslash;jer</h1>
 															<p id=stools>
-															<a href=?mid=%%mid%%&edit>Rediger møde</a> |
-															<a href=# onclick="javascript:if(confirm(\'Bekræft sletning af møde\')) document.location.href=\'?mid=%%mid%%&delete\';">Slet møde</a> |
+															<a href=?mid=%%mid%%&edit>Rediger m&oslash;de</a> |
+															<a href=# onclick="javascript:if(confirm(\'Bekræft sletning af møde\')) document.location.href=\'?mid=%%mid%%&delete\';">Slet m&oslash;de</a> |
 															<a href=?mid=%%mid%%&minutes_edit>Rediger referat</a>
 															',
-		'meeting_duties' => '<a name=duty><h2>Pligter</h2></a>
-		<p>Brevgennemgang:
-		<ul>
-		<li><a href=?mid=%%mid%%&collection=%%mid%% target=_blank>Brev 1</a></li>
-		<li><a href=?mid=%%mid%%&collection=%%mid%%/2 target=_blank>Brev 2</a></li>
-		</ul></p><hr>Ansvarlige:
+		'meeting_duties' => '
+			<p>Brevgennemgang:</p>
+			<a class="btn btn-xs" href=?mid=%%mid%%&collection=%%mid%% target=_blank role="button">Brev 1</a>
+			<a class="btn btn-default" href=?mid=%%mid%%&collection=%%mid%%/2 target=_blank role="button">Brev 2</a>
+			<hr>Ansvarlige:
 		',
-		'meeting_duty' => '<li>%%duty%% - <a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a>',
-		'meeting_rating' => '<h2>Møderating</h2><p>Rating: %%rating%%/10 - %%count%% stemmer</p>',
+		'meeting_duty' => '<dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
+		'meeting_rating' => '<h3>Møderating</h3><p>Rating: %%rating%%/10 - %%count%% stemmer</p>',
     'meeting_files' =>
     '
     <div id=embed></div>
-    <h2>Vedhæftede filer</h2>
+    <h3>Vedhæftede filer</h3>
     <ul id=download_files></ul>
     <script>
 		var result = jQuery.parseJSON(\'%%files%%\');
@@ -3794,13 +4416,13 @@ http://www.rtd.dk/?mid=%%mid%%
 			if (value.filename.indexOf(".pdf")>0)
 			{
 				var file_url = "/uploads/meeting_file?mfid="+value.mfid;
-				var html = "<object data="+file_url+" width=100% height=500px><p>Kan ikke indlejre PDF. Download nedenfor i stedet.</p></object>";
-				$("#embed").append(html);				
+				var html = "<object data="+file_url+" width=100% height=0><p>Kan ikke indlejre PDF. Download nedenfor i stedet.</p></object>";
+				$("#embed").append(html);
 			}
       $("#download_files").append("<li><a href=/uploads/meeting_file?mfid="+value.mfid+">"+value.filename+"</a>");
-    }); 
+    });
     </script>
-    <h2>Mødebilleder</h2>
+    <h3 class="metting_title">Mødebilleder</h3>
     ',
     'meeting_rate_form' =>
     '
@@ -3812,21 +4434,21 @@ http://www.rtd.dk/?mid=%%mid%%
     <option value=3>3</option>
     <option value=4>4</option>
     <option value=5>5</option>
-    <option value=6>6</option>
+    <option value=4>4</option>
     <option value=7>7</option>
     <option value=8>8</option>
     <option value=9>9</option>
     <option value=10>10 - Bedst</option>
     </select>         </p>
     ',
-    'meeting_minutes' => 
-		'<h2>Referat</h2>
+    'meeting_minutes' =>
+		'<h3>Referat</h3>
 		<p>Skrevet: %%minutes_date%%, Tilmeldte: %%minutes_number_of_participants%%, Afmeldte: %%minutes_number_of_rejections%%</p>
-		<div id=ref0_content><h2>Mødereferat</h2>
+		<div id=ref0_content><h3>Mødereferat</h3>
 		<p>%%minutes%%</p></div>
-		<div id=ref1_content><h2>3 minutter</h2>
+		<div id=ref1_content><h3>3 minutter</h3>
 		<p>%%minutes_3min%%</p></div>
-		<div id=id=ref2_content><h2>Brevgenennemgang</h2>
+		<div id=ref2_content><h3>Brevgenennemgang</h3>
 		<p>%%minutes_letters%%</p></div>
     <script>
       if (!$("#ref0_content").html()) $("#ref0").hide();
@@ -3834,27 +4456,48 @@ http://www.rtd.dk/?mid=%%mid%%
       if (!$("#ref2_content").html()) $("#ref2").hide();
     </script>
 		',
-		'meeting_header' => "<div align=right><a target=_blank href=?mid=%%mid%%&print title=Udskriv><img src=/template/images/icon_print.png></a> <a href=?mid=%%mid%%&ics title='Tilføj til kalender'><img src=/template/images/icon_calendar.png></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
+		'meeting_header' => "<div align=right class=print_cal><a class=\"btn btn-gray meeting\" target=_blank href=?mid=%%mid%%&print title=Udskriv>Print</a> <a class=\"btn btn-gray meeting\" href=?mid=%%mid%%&ics title='Tilføj til kalender'>Kalender</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
 		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" target=_blank><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
 		'meeting_bottom_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800"  target=_blank"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300"></a>',
-		'meeting_invite' => '
-												<h1>%%title%%</h1><a href="?cid=%%cid%%"><h2>%%name%%</h2></a>
-												<p>%%meeting_description%%</p>
-												<p>Start: %%start_time%%, Slut: %%end_time%%</p>
-												<h2>Sted</h2>
-												<table width=100%>
-												<tr>
-												<td valign=top>%%location%%</td>
-												<td valign=top width=400><div id=locmap></div></td>
-												</tr></table>
+		'meeting_invite1' => '
+												<div class="content-left">
+													<div class="article-date">
+														<span class="type">
+															<span class="icon icomoon-clock"></span>
+														</span>
+														<span class="day">%%day%%</span>
+														<span class="month">%%month%%</span>
+														<span class="year">%%year%%</span>
+														<span class="time">%%starting_time%%<br/>-<br/>%%final_time%%
+														</span>
+													</div><!-- .date -->
+												</div><!-- .content-left -->
+												<div class="content-right">
+													<h1>%%title%%</h1>
+													<div class="text">
+														<a href="?cid=%%cid%%"><h2>%%name%%</h2></a>
+														<p>%%meeting_description%%</p>
+													</div>
+													<div class="row">',
+		'meeting_invite2' => '
+														<div class="col-xs-12 col-xs-4">
+															<h3 class="title">Lokation & dato</h3>
+															<b>%%day%%. %%fullday%% %%year%% %%starting_time%%-%%final_time%%</b><br/><br/>
+															<address>
+																%%location%%
+															</address>
+															<div id=locmap></div>
+
+													</div>
+												</div><!-- .content-right -->
 												<script>
 												function locate(what)
 												{
 													if (what=="") return;
 													var url = "/scripts/rtd/geocodeproxy.php?address=="+what+"&sensor=false";
-													
-													$.ajax( url ).done(function(data) 
-													{ 
+
+													$.ajax( url ).done(function(data)
+													{
 														var result = jQuery.parseJSON(data);
 														var lat = -1;
 														var lng = -1;
@@ -3864,42 +4507,42 @@ http://www.rtd.dk/?mid=%%mid%%
 															lng = v.geometry.location.lng;
 															found=true;
 														});
-														if (!found) 
+														if (!found)
 														{
 															$("#locmap").html("<i>Kan ikke vise kort!</i>");
 														}
 														else {
 															var whaturl = encodeURI(what);
-															
-															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=11&size=400x400&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+
+															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=col-sm-offset-2&size=400x400&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
 															var url = "https://maps.google.dk/?q="+whaturl;
 															$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 														}
-													});																										
+													});
 												}
-												
+
 												locate("%%location%%");
 												</script>
 												',
 		'meeting_edit' => '
-											<h1>Rediger møde</h1>
+											<h1>Rediger m&oslash;de</h1>
 											<table width=100%>
 											<tr>
 											<td valign=top>
 											<p>Titel<br>
-											<input class=field type=text name=meeting[title] value="%%title%%"></p>
-											
-											<p>Mødestart<br>
-											<input class=field type=text name=meeting[start_time] value="%%start_time%%" id=start_time></p>
-											<p>Mødeslut<br>
-											<input class=field type=text name=meeting[end_time] value="%%end_time%%" id=end_time></p>
-											</td>
-											<td valign=top width=300>
-											<p>Mødested<br>
-											<input class=field id=loctext type=text name=meeting[location] value="%%location%%" onkeyup=locate(this.value);></p>
+											<input class="field form-control" type=text name=meeting[title] value="%%title%%"></p>
+                                            
+                                            <p>M&oslash;dested<br>
+											<input class="field form-control" id=loctext type=text name=meeting[location] value="%%location%%" onkeyup=locate(this.value);></p>
 											<div id=locmap></div>
-											</td></tr></table>
-											<h2>Mødetekst</h2>
+                                            
+											<p>M&oslash;destart<br>
+											<input class="field form-control" type=text name=meeting[start_time] value="%%start_time%%" id=start_time></p>
+											<p>M&oslash;deslut<br>
+											<input class="field form-control" type=text name=meeting[end_time] value="%%end_time%%" id=end_time></p>
+											</td>
+											</tr></table>
+											<h2>M&oslash;detekst</h2>
 											<textarea name=meeting[description] class=ckeditor>%%meeting_description%%</textarea>
 											<h2>Pligter</h2>
 
@@ -3909,14 +4552,14 @@ http://www.rtd.dk/?mid=%%mid%%
 											<select name=meeting[duty_letters1_uid] id=duty_letters1_uid class=userlookup value="%%duty_letters1_uid%%">%%member_select%%</select></p>
 											<p>Brev 2<br>
 											<select name=meeting[duty_letters2_uid] id=duty_letters2_uid class=userlookup value="%%duty_letters2_uid%%">%%member_select%%</select></p>
-											<p>Mødeansvarlig<br>
+											<p>M&oslash;deansvarlig<br>
 											<select name=meeting[duty_meeting_responsible_uid] id=duty_meeting_responsible_uid class=userlookup value="%%duty_meeting_responsible_uid%%">%%member_select%%</select></p>
-											
-											<h2>Øvrige pligter</h2>
+
+											<h2>&Oslash;vrige pligter</h2>
 											<p>Pligt #1
 											<ul>
 											<p>Beskrivelse<br>
-											<input class=field type=text name=meeting[duty_ext1_text] id=duty_ext1_text class=userlookup value="%%duty_ext1_text%%"></p>
+											<input class=field type=text name=meeting[duty_ext1_text] id=duty_ext1_text class="userlookup form-control" value="%%duty_ext1_text%%"></p>
 											<p>Ansvarlig<br>
 											<select name=meeting[duty_ext1_uid] id=duty_ext1_uid class=userlookup value="%%duty_ext1_uid%%">%%member_select%%</select></p>
 											</ul>
@@ -3925,45 +4568,45 @@ http://www.rtd.dk/?mid=%%mid%%
 											<p>Pligt #2
 											<ul>
 											<p>Beskrivelse<br>
-											<input class=field type=text name=meeting[duty_ext2_text] id=duty_ext2_text class=userlookup value="%%duty_ext2_text%%"></p>
+											<input class="field form-control" type=text name=meeting[duty_ext2_text] id=duty_ext2_text class=userlookup value="%%duty_ext2_text%%"></p>
 											<p>Ansvarlig<br>
 											<select name=meeting[duty_ext2_uid] id=duty_ext2_uid class=userlookup value="%%duty_ext2_uid%%">%%member_select%%</select></p>
 											</ul>
 											</p>
-												
+
 											<p>Pligt #3
 											<ul>
 											<p>Beskrivelse<br>
-											<input class=field type=text name=meeting[duty_ext3_text] id=duty_ext3_text class=userlookup value="%%duty_ext3_text%%"></p>
+											<input class="field form-control" type=text name=meeting[duty_ext3_text] id=duty_ext3_text class=userlookup value="%%duty_ext3_text%%"></p>
 											<p>Ansvarlig<br>
 											<select name=meeting[duty_ext3_uid] id=duty_ext3_uid class=userlookup value="%%duty_ext3_uid%%">%%member_select%%</select></p>
 											</ul>
 											</p>
-												
+
 											<p>Pligt #4
 											<ul>
 											<p>Beskrivelse<br>
-											<input class=field type=text name=meeting[duty_ext4_text] id=duty_ext4_text class=userlookup value="%%duty_ext4_text%%"></p>
+											<input class="field form-control" type=text name=meeting[duty_ext4_text] id=duty_ext4_text class=userlookup value="%%duty_ext4_text%%"></p>
 											<p>Ansvarlig<br>
 											<select name=meeting[duty_ext4_uid] id=duty_ext4_uid class=userlookup value="%%duty_ext4_uid%%">%%member_select%%</select></p>
 											</ul>
 											</p>
-											
+
 											<h2>Billeder</h2>
-											<p>Tilføj (jpg/png/gif)<br>
+											<p>Tilf&oslash;j (jpg/png/gif)<br>
 											<input type="file" name="file" id="file" /></p>
 											<h2>Invitationer</h2>
-											<p><input type=checkbox name=send_invitations id=send_invitations>Udsend invitationer til medlemmer</p>
-												
-											
+											<p><input type=checkbox name=send_invitations id=send_invitations><label for="send_invitations">Udsend invitationer til medlemmer</label></p>
+
+
 											<script>
 												function locate(what)
 												{
 													if (what=="") return;
 													var url = "/scripts/rtd/geocodeproxy.php?address=="+what+"&sensor=false";
-													
-													$.ajax( url ).done(function(data) 
-													{ 
+
+													$.ajax( url ).done(function(data)
+													{
 														var result = jQuery.parseJSON(data);
 														var lat = -1;
 														var lng = -1;
@@ -3973,21 +4616,21 @@ http://www.rtd.dk/?mid=%%mid%%
 															lng = v.geometry.location.lng;
 															found=true;
 														});
-														if (!found) 
+														if (!found)
 														{
 															$("#locmap").html("<i>Kunne ikke finde adressen. Indtast f.eks. Christiansborg, 1240 København K</i>");
 														}
 														else {
 															var whaturl = encodeURI(what);
-															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=11&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
+															var img = "http://maps.googleapis.com/maps/api/staticmap?center="+whaturl+"&zoom=col-sm-offset-2&size=255x255&maptype=roadmap&markers=color:blue|label:O|"+lat+","+lng+"&sensor=false";
 															var url = "https://maps.google.dk/?q="+whaturl;
 															$("#locmap").html("<a href=\""+url+"\" target=_blank><img src=\""+img+"\"/></a>");
 														}
-													});																										
+													});
 												}
-												
+
 												locate($("#loctext").val());
-												
+
 												$(function() {
 													$("#duty_3min_uid").val("%%duty_3min_uid%%");
 													$("#duty_letters1_uid").val("%%duty_letters1_uid%%");
@@ -3997,17 +4640,17 @@ http://www.rtd.dk/?mid=%%mid%%
 													$("#duty_ext2_uid").val("%%duty_ext2_uid%%");
 													$("#duty_ext3_uid").val("%%duty_ext3_uid%%");
 													$("#duty_ext4_uid").val("%%duty_ext4_uid%%");
-												
+
 													$("#start_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
 													$("#end_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
-													
+
 													$("#start_time").change(
 														function() {
 															$("#end_time").val( $("#start_time").val() );
 														}
 													);
 												});
-												
+
 												function validatemeeting()
 												{
 													if ($("#send_invitations").is(":checked"))
@@ -4020,70 +4663,139 @@ http://www.rtd.dk/?mid=%%mid%%
 													}
 												}
 											</script>
-											',		
+											',
 		'country_all_country' => 'Hele landet',
 		'country_all_district' => 'Hele distriktet',
-		'country_latest_minutes' => '<h2>Seneste referater</h2>			
-				<div class="slider-wrapper theme-bar"><div id="country_future_minutes"></div></div>
-        <div id=country_titles></div>
+		'country_latest_minutes' => '
+				<div class="tp-banner-container">
+					<div class="tp-banner">
+						<ul id="country_future_minutes">
+
+						</ul>
+					</div>
+				</div>
+       <div class="tp-bannertimer tp-bottom"></div>
 		',
-		'country_future_minutes_item' => 
-		'
-			<script>
+		'country_future_minutes_item' =>
+		'<script>
 				var result = jQuery.parseJSON(\'%%data%%\');
+              //  console.log(result);
 				html = "";
         titles = "";
-				$.each(result, function(key,value) 
+				$.each(result, function(key,value)
 				{
-					html += "<img src=/uploads/meeting_image/?miid="+value.image+"&landscape&w=570&h=300 title=\"#mid-title-"+value.mid+"\"/>";
-          titles += "<div class=\"nivo-html-caption\" id=\"mid-title-"+value.mid+"\"><a href=?mid="+value.mid+" style=\"color: white;\">"+value.start_time+": "+value.title+", "+value.name+"</a></div>";
+                    var start_time = "";
+                    if(value.start_time == "null" || value.start_time == null)
+                    {
+                        start_time = "";
+                    }
+                    else
+                    {
+                        start_time = value.start_time;
+                    }
+
+                    var title = "";
+                    if(value.title == "null" || value.title == null)
+                    {
+                        title = "";
+                    }
+                    else
+                    {
+                        title = value.title;
+                    }
+
+                    var name = "";
+                    if(value.name == "null" || value.name == null)
+                    {
+                        name = "";
+                    }
+                    else
+                    {
+                        name = value.name;
+                    }
+
+					html += "<li data-href=?mid="+value.mid+" data-transition=\"fade\" data-slotamount=\"7\" data-masterspeed=\"1500\"><img src=/uploads/meeting_image/?miid="+value.image+"&landscape&w=570&h=300 title=\"#mid-title-"+value.mid+"\" /><div class=\"tp-caption very_big_white fadeout\" data-x=\"0\" data-y=\"310\" data-speed=\"500\" data-start=\"1200\" data-easing=\"Power4.easeOut\" style=\"color:#d4deed\"><a href=?mid="+value.mid+" style=\"color: white;\">"+title+"</a></div><div class=\"tp-caption medium_bg_darkblue fadeout\" data-x=\"0\" data-y=\"390\" data-speed=\"500\" data-start=\"1200\" data-easing=\"Power4.easeOut\" style=\"color:#d4deed\"><a href=?mid="+value.mid+" style=\"color: white;\">"+name+"</a></div><div class=\"tp-caption medium_bg_darkblue fadeout\" data-x=\"0\" data-y=\"440\" data-speed=\"500\" data-start=\"1200\" data-easing=\"Power4.easeOut\" style=\"color:#d4deed\"><a href=?mid="+value.mid+" style=\"color: white;\">"+start_time+"</a></div></li>";
 				});
+
 				$("#country_future_minutes").append(html);
-        $("#country_titles").append(titles);
-				$("#country_future_minutes").nivoSlider();
+                jQuery(".tp-banner").revolution({
+                    delay:9000,
+                    startwidth:950,
+                    startheight:500,
+                    hideThumbs:10
+                });
 			</script>
 		',
 		'country_future_meeting_item_pic' => '<img src="/uploads/meeting_image/?miid=%%miid%%&landscape&w=570&h=300" width=100%>',
 		'country_future_meeting_item_no_pic' => '',
 		'country_future_meeting_item' => '<li><a href=?mid=%%mid%%>%%start_time%%: %%title%%, %%name%%</a></li>',
-		'country_future_meetings' => '<h2>Kommende m&oslash;der</h2>
-		<table width=100% id=future_meetings>
-		</table>
+		'country_future_meetings' => '
+		<div class="container CountryPg" style="clear:both;">
+					<div class="title title-section">
+						<h2>Kommende m&oslash;der</h2>
+						<p>De vigtigste nyheder nu og her</p>
+						<span class=sticker>
+							<i class="icon fa fa-bullhorn"></i>
+						</span>
+					</div><!-- .title.title-section -->
+			<div data-animate=flipInY id=future_meetings>
+				<div class=carousel-wrap>
+					<ul class=carousel-nav>
+						<li><a href=# class="btn btn-icon-prev prev"></a></li>
+						<li><a href=# class="btn btn-icon-next next"></a></li>
+					</ul>
+					<div class=carousel data-visible=3>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
-			var future_meetings = jQuery.parseJSON("%%data%%");
+		$("#page-content").append($("#future_meetings").parent());
+			var future_meetings = jQuery.parseJSON(\'%%data%%\');
+            //console.log(future_meetings);
 			var c = -1;
-			var fm_html = "<tr>";
+			var fm_html = "";
 			$.each(future_meetings, function(k,v) {
+
+                var title = "";
+                if(v.title != "" && v.title != null)
+                {
+                    title = "<a href=?mid="+v.mid+">"+v.title+"</a>";
+                }
+                else
+                {
+                    title = "";
+                }
+
 				var img = v.images[0]?v.images[0].miid:"1";
-				fm_html += 
-					"<td valign=top width=150>"
-					+"<a href=?mid="+v.mid+">"
-					+"<img src=/uploads/meeting_image/?miid="+img+"&quad&s=150>"
+					fm_html +=
+					"<article class=\"post post-latest post-type-image\">"
+					+"<div class=\"post-heading\"><div class=thumbnail>"
+					+"<a class=link href=?mid="+v.mid+"><span class=\"btn btn-icon-link\"></span>"
+					+"<img src=/uploads/meeting_image/?miid="+img+"&landscape&w=570&h=300>"
 					+"</a>"
-					+"</td>"
-					+"<td valign=top>"
-					+"<a href=?mid="+v.mid+">"
-					+v.title
-					+"</a>"
-					+"<br>"
-					+v.start_time
-					+"<br>"
-					+v.name
-					+"</td>";
-				
-				if ((c%2) == 0)	fm_html += "</tr>\n";
+					+"</div></div>"
+					+"<div class=post-content><div class=title>"
+					+"<h2 class=h4>"+title+"</h2>"
+					+"<p class=meta>"
+					+"<span class=meta-date>"+v.start_time+"</span>"
+					+"<span class=meta-club>"+v.name+"</span>"
+					+"</p></div></div></article>";
+
+
+				if ((c%2) == 0)	fm_html += "";
 				c++;
 			});
-			
-			fm_html += "</tr>";
-			
-			$("#future_meetings").append(fm_html);
+
+			$("#future_meetings .carousel").append(fm_html);
+
 		</script>
 		',
-		'country_choose_district' => '<b>V&aelig;lg distrikt/landsdel</b><br>',
+		'country_choose_district' => '<b style="display: block;clear:both;">V&aelig;lg distrikt/landsdel</b><br>',
 		'country_choose_club' => '<b>V&aelig;lg klub/by</b><br>',
 		'country_header' => '<h1>Hele landet</h1>',
-		
+
 		'login_pretext' => '<h3>Login</h3>',
 		'login_prompt' => '
 			<div id=normal_login>
@@ -4094,13 +4806,13 @@ http://www.rtd.dk/?mid=%%mid%%
 			<input type=hidden name=redirect value="%%REQUEST_URI%%">
 			<input class=bar type=text id=login_username name=username value="Brugernavn" onfocus="this.value=\'\';"><br>
 			<input class=bar type=password id=login_password name=password value=""><br>
-			
-			<input type=submit value="Login"> <input type=checkbox name=remember> Husk login <br>
+
+			<input type=submit value="Login" class="btn"> <input type=checkbox name=remember> Husk login <br>
 			<a href=# onclick="send_password();">Glemt kodeord</a> |
 			<a href=# onclick="mummy_login();">Mumielogin</a><br/>
 			</form>
 			</center>
-			
+
 			</div>
 			<div id=mummy_login style="display:none">
 				<h3>Mumie</h3>
@@ -4108,15 +4820,15 @@ http://www.rtd.dk/?mid=%%mid%%
 				<form action=?mummy method=post>
 				<input type=text class=bar  name=club placeholder="Klub (f.eks. RT132)"><br>
 				<input type=password class=bar name=password><br>
-				<input type=submit value="Login"><br>
+				<input type=submit value="Login" class="btn"><br>
 				<a href="/?aid=3">Glemt kodeord</a> |
 				<a href=# onclick="normal_login();">RT login</a><br/>
 				</center>
-				</form>			
+				</form>
 			</div>
-			
-			
-			
+
+
+
 			<script>
 			function normal_login()
 			{
@@ -4151,11 +4863,11 @@ http://www.rtd.dk/?mid=%%mid%%
                         <a href=?uid=%%uid>%%profile_firstname%% %%profile_lastname%%</a>
                         <a href=?logout>Log af</a> | <a href=?uid=%%uid%%&edit>Rediger</a>
 						<br>
-                      <hr>                    
+                      <hr>
 						<span id=notify_link></span><br>
-												
+
                         <a href=?cid=%%cid%%>Min klub</a><br>
-  												
+
 												</div>
 <script src=/scripts/rtd/notification.js.php></script>',
 
@@ -4184,7 +4896,7 @@ http://www.rtd.dk/?mid=%%mid%%
 'nomination_accept_body' => 'Indstillingen for %%profile_firstname%% %%profile_lastname%% til %%accepted_role%% er d.d. godkendt. Kontakt LS/LF hvis du/I ikke er enige i beslutningen.',
 		'nominations' => '
 			<h1>Indstillinger %%role%%</h1>
-				<h2>Tilføj rolle</h2>
+				<h2>Tilf&oslash;j rolle</h2>
 				<ul id=addrole>
 				</ul>
 			<script>
@@ -4192,18 +4904,13 @@ http://www.rtd.dk/?mid=%%mid%%
 				$.each(roledata.add, function(key,value)
 				{
 					$("#addrole").append(
-						"<li>"+
-						value.profile_firstname+
-						" "+
-						value.profile_lastname+
-						", "+
-						value.club+
+						"<li>value.profile_firstname value.profile_lastname, "+value.club+
 						"<br> Start: "+
 						value.date_start+
 						", Slut: "+
 						value.date_end+
 						", Født: "+
-						value.profile_birthdate+						
+						value.profile_birthdate+
 						"<br>Kommentar: <i>"+
             value.nominator_comment+"</i><br>"+
 						"<a href=?nominations="+value.rid+"&nid="+value.nid+">Godkend %%role%%</a> | <a href=?nominations="+value.rid+"&nid="+value.nid+"&reject>Afvis %%role%%</a><br><br>"
@@ -4217,14 +4924,14 @@ http://www.rtd.dk/?mid=%%mid%%
 			<li class=parent>
 				<a href=#>HB</a>
 				<ul>
-					<li><a href=/uploads/article_file/?afid=49>Vejledning</a></li>
+                    <li><a href=/uploads/article_file/?afid=49>Vejledning</a></li>
 					<li><a href=?admin_download=newboards>Kommende bestyrelser</a></li>
 					<li><a href=?admin_download=future>Download: Kommende bestyrelser</a></li>
 					<li><a href=?admin_download=active&xml>Download: Medlemmer</a></li>
 					<li><a href=?admin_download=clubs>Download: Klubber</a></li>
-					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>	
+					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>
 				</ul>
-			</li>				
+			</li>
 		</ul>
 		',
 		'admin_box_secretary' => '
@@ -4232,18 +4939,17 @@ http://www.rtd.dk/?mid=%%mid%%
 			<li class=parent>
 				<a href=#>Sekretær</a>
 				<ul>
-					<li><a href=/uploads/article_file/?afid=50>Vejledning</a></li>
+                    <li><a href=/uploads/article_file/?afid=50>Vejledning</a></li>
 					<li><a href=?uid=-1>Opret medlem</a></li>
 					<li><a href=?mid=-1>Opret ordinært møde</a></li>
-          <li><a href=?omid>Opret uofficielt møde</a></li>
+                    <li><a href=?omid>Opret uofficielt møde</a></li>
 					<li><a href=?kbp>Kommende bestyrelse</a></li>
-					<li><a href=?cid=%%cid%%#nominutes>Opret referat</a></li>					
+					<li><a href=?cid=%%cid%%#nominutes>Opret referat</a></li>
 					<li><a href=?dashboard>Klub dashboard</a></li>
-          <li><a href=http://webmail.wannafind.dk/ target=_blank>Klubmail</a></li>
-		  <!--- atmail.php?account=%%mailbox%%&password=%%webmail_password%% --->
+                    <li><a href=http://webmail.wannafind.dk/ target=_blank>Klubmail</a></li>
 					<li><a href=?cid=%%cid%%&edit>Rediger klub</a></li>
 				</ul>
-			</li>				
+			</li>
 		</ul>
 		',
 		'admin_box' => '
@@ -4257,8 +4963,8 @@ http://www.rtd.dk/?mid=%%mid%%
 					<li><a href=?admin_download=clubmail>Opdater klubmails</a>
 					<li><a href=?takeover>Overtag profil</a></li>
 					<li><a href=http://ads.rtd.dk target=_blank>Webbanners</a></li>
-					<li><a href=?nominations=26>Æresmedlemsskaber</a></li>
-					<li><a href=?nominations=38>Klub TOTY</a></li>
+					<li><a href=?nominations=24>Ærexsedlemsskaber</a></li>
+                    <li><a href=?nominations=38>Klub TOTY</a></li>
 					<li><a href=?admin=article&edit=-1>Opret artikel</a></li>
 					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>
 					<li><a href=/cronjob.php?pwd=k4rk1ud>Kør cronjob</a></li>
@@ -4266,16 +4972,16 @@ http://www.rtd.dk/?mid=%%mid%%
 					<li><a href=?admin_download=stalker>Overvåg brugere</a></li>
 					<li><a href=?admin_download=backup_db>Backup DB</a></li>
 					<li><a href=/scripts/sqlbuddy target=_blank>DB Admin</a></li>
-					<li><a href=?admin_download=sms>SMS Admin</a></li>
+                    <li><a href=?admin_download=sms>SMS Admin</a></li>
 				</ul></li>
 			</ul>
 		<script>
 			var admincontent = jQuery.parseJSON(\'%%articles%%\');
-			
+
 			function admin_walk(data)
 			{
 				var html = "";
-				$.each(data, function(key,value) 
+				$.each(data, function(key,value)
 				{
 					html += "<li><a href=?admin=article&edit="+value.aid+">Rediger: "+value.title+"</a>";
 					if (value.children instanceof Object && value.children.length>0)
@@ -4288,7 +4994,7 @@ http://www.rtd.dk/?mid=%%mid%%
 				});
 				return html;
 			}
-			
+
 //			$("#adminarticles").append(admin_walk(admincontent.articles));
 //			$("#adminmenu").menu();
 		</script>
@@ -4313,20 +5019,20 @@ http://www.rtd.dk/?mid=%%mid%%
 		'article_pretext' => '',
 		'no_access' => '<h1>Ingen adgang</h1><p>Du har ikke rettigheder til at udføre den forespurgte handling. Kontakt din klubsekretær, LS eller WEB hvis du mener dette er en fejl.</p>'
 	);
-	
+
 	function term($t)
 	{
-		
+
 		global $terms;
-		if (isset($terms[$t])) 
+		if (isset($terms[$t]))
 		{
 			if (isset($_REQUEST['term_debug'])) return "{$t}:{$terms[$t]}";
 			return $terms[$t];
 		}
 		else die("Term: $t not defined - please do so in config_terms.php");
 	}
-	
-	function term_unwrap($t, $data, $json=false)  
+
+	function term_unwrap($t, $data, $json=false)
 	{
 		$str = term($t);
 		if (!empty($data))
@@ -4341,7 +5047,9 @@ http://www.rtd.dk/?mid=%%mid%%
 			else
 			{
 				$str = str_replace("%%data%%", addslashes(json_encode($data)), $str);
+
 			}
+			//$str = utf8_encode($str);
 		}
 		if (isset($_REQUEST['term_debug'])) return "{$t}:$str";
 		else return $str;
