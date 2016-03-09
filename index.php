@@ -427,10 +427,10 @@ if(isset($_GET['aid']))
     <?php
     if(!is_user_logged_in())
     {
-        ?>
+        ?>        
         <script> 
         jQuery(document).ready(function($) {            
-            $('#page-content .container .row .col-sm-12:eq(0)').hide();
+            //$('#page-content .container .row .col-sm-12:eq(0)').hide();
         });
         </script>
         <style>
@@ -462,11 +462,11 @@ if(isset($_GET['wid']))
     <?php
     if(!is_user_logged_in())
     {
-       ?>
+       ?>      
         <script>
         jQuery(document).ready(function($) {  
             $('.not-loggin #boxed .page-slider-wrap').remove();          
-            $('.not-loggin #page-content .container .row .col-sm-12:eq(0)').hide();
+            //$('.not-loggin #page-content .container .row .col-sm-12:eq(0)').hide();
         });
         </script>
         <?php 

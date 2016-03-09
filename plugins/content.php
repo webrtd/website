@@ -162,10 +162,18 @@ function homecontent()
     global $current_user;
     $content = '';
     if(!is_user_logged_in()) { 
-        $content = get_field('home_content',13);
+        
+        if(isset($_GET['wid']) || isset($_GET['aid']) || $_SERVER['REQUEST_URI'] == "/?mummy")
+        {
+            $content = '';
+        }
+        else
+        {
+            $content = get_field('home_content',13);
+        }
         ?>
         <style>
-        .index .container .home_content {display:none;}
+        .index .container .home_content {display:none;}        
         </style>
         <?php 
     }
@@ -249,8 +257,14 @@ function notloginslider()
     $cnt = '';
     if(!is_user_logged_in())
     {
-        
+        if(isset($_GET['wid']) || isset($_GET['aid']))
+        {
+            $cnt = '';
+        }
+        else
+        {
         $cnt .= '<div class="page-slider-wrap">'.do_shortcode('[rev_slider homepage]').'</div>';
+        }
     }   
     return $cnt;
 }

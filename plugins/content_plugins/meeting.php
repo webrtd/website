@@ -317,7 +317,7 @@
 
 			$meeting['location'] = strip_tags($meeting['location']);
 			$duties = logic_get_meeting_duties($meeting['mid']);
-		$stats = logic_meeting_stats($meeting);
+		    $stats = logic_meeting_stats($meeting);
 /*
 		echo "<!--";
 		$meeting['minutes_number_of_externals'] = $stats['external'];
@@ -399,7 +399,8 @@
 					
 					$html .= '</dl>';
                     if(!empty($duties)) {
-					$html .= term_unwrap('meeting_duties', $user);
+                       
+					$html .= term_unwrap('meeting_duties', $meeting);
                     }
 					$html .= '</div>';
 					$html .= term_unwrap('meeting_invite2', $meeting);
