@@ -28,7 +28,12 @@
 			logic_save_comment($_REQUEST['nid'],$_REQUEST['comment'],$did);
 		}
 
-		$html = "<div class=\"right-part\">";
+		$html = "<div class='tp-banner-container'>
+        <div class='tp-banner'>
+            <ul id='country_future_minutes'>
+            </ul>
+        </div>
+        </div><div class=\"right-part\">";
 		$header = term('country_header');
 		IF ($did!="")
 		{

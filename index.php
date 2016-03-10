@@ -339,7 +339,7 @@ if(isset($_GET['cid']))
 $(window).load(function(){
     $('.menu-top-menu-container').show();
     menu_coten();        
-    $('#main-menu ul.sub-menu').show();
+    //$('#main-menu ul.sub-menu').show();
 });
 
 function menu_coten()
@@ -391,7 +391,7 @@ if(isset($_GET['country']))
     <script>
     jQuery(document).ready(function($) {
         $('.col-md-10:eq(0) .page-slider-wrap').hide();
-        $('.page_content .tp-banner-container').insertAfter('.col-md-10:eq(0) .page-slider-wrap');
+        //$('.page_content .tp-banner-container').insertAfter('.col-md-10:eq(0) .page-slider-wrap');
 
 
         if($('.country_social li a.facebook').attr('href') == '')
@@ -491,36 +491,39 @@ if(isset($_GET['search']))
     
 
 <script>
-  $(function() {
-        $(window).scroll(function(){
+$(function() {    
+    
+    $('#page-content .col-xs-12 .news-page .post-type-image .text img').removeAttr('width');
+        
+    $(window).scroll(function(){                
+        
+     if ($(this).scrollTop() >= 1200 && $(this).scrollTop() <= 3200){ 
+     if(!$('.meetstatistic tr td .skill .bar').hasClass('animated_done')) {
+        $('.meetstatistic tr td .skill .bar').each(function(index, element) {
+            $(this).addClass('animated_done');
+            var main_val = '';
+            if($(this).data('value') > 100)
+            { 
+                main_val = 100;
+            }
+            else
+            { 
+                main_val = $(this).data('value');      
+            } 
             
-         if ($(this).scrollTop() >= 1800 && $(this).scrollTop() <= 3200){
-         if(!$('.meetstatistic tr td .skill .bar').hasClass('animated_done')) {
-            $('.meetstatistic tr td .skill .bar').each(function(index, element) {
-                $(this).addClass('animated_done');
-                var main_val = '';
-                if($(this).data('value') > 100)
-                { 
-                    main_val = 100;
-                }
-                else
-                { 
-                    main_val = $(this).data('value');      
-                } 
-                
-                var length = parseInt(main_val)+'%';
-                var txt_val = $(this).data('value')+'%';
-                $(this).text(txt_val);
-                $(this).animate({
-                  backgroundColor: "#007aff",
-                  color: "#fff",
-                  width: length,
-                }, 'fast' );
-            });
-         }
-         }
+            var length = parseInt(main_val)+'%';
+            var txt_val = $(this).data('value')+'%';
+            $(this).text(txt_val);
+            $(this).animate({
+              backgroundColor: "#007aff",
+              color: "#fff",
+              width: length,
+            }, 'fast' );
+        });
+     }
+     }
     });
-  });
-  </script>
+});
+</script>
  
   

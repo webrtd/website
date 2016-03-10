@@ -195,6 +195,7 @@ function mobilelogin()
     $cont = '';
 	if(is_user_logged_in() && isset($_SESSION['user'])) {
     $cont .= "<ul id='mobile-menu'>
+                <li><a href='?cid=".$_SESSION['user']['cid']."'>Min klub</a></li>  
                 <li><a href='/?logout'>Log ud</a></li>
 
                 <li>

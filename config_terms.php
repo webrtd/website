@@ -392,7 +392,7 @@ http://rtd.dk/?uid=%%uid%%
 	</form>
 	',
 	'district_calendar_show' =>
-	'<p><a class=btn href="?cal=%%name%%">Vis m&oslash;der i kalender</a></p>',
+	'<p><a class="btn dis_btn_link" href="?cal=%%name%%">Vis m&oslash;der i kalender</a></p>',
 	'calendar_map' => '
 	<h1>Kalender %%title%%</h1>
 	Dato:
@@ -1981,7 +1981,7 @@ $('#prev').click(function() {
 	</script>
 	',
 	'user_stats' =>
-	'<div id="page-content" class="meetstatistic_data" role="main"><div class="container container-light">
+	'<div id="page-content" class="meetstatistic_data" role="main"><div class="container container-light user_condensed">
 		<div class="title title-section">
 			<h2>M&oslash;destatistik</h2>
 
@@ -2240,7 +2240,7 @@ klubberne under landsforeningen Round Table Danmark.
 	'minutes_reminder_19days_text' => 'Der er endnu ikke oprettet referat for "%%title%%" som blev afholdt %%start_time%%. Det kan gøres via dette link: http://www.rtd.dk?mid=%%mid%%',
 	'minutes_completed_subject' => 'Mødereferat - %%name%%',
 	'minutes_completed_content' => 'Der er oprettet et mødereferat med titlen "%%title%%", afholdt %%start_time%%. Link til referat: http://www.rtd.dk/?mid=%%mid%%',
-  'district_chairman_post_news' =>
+  'district_chairman_post_news' =>  
   '<h2>Opret nyhed</h2>
   <form action=?country=%%did%% method=post id=dnews>
   Overskrift:<br><input type=text name=news[title] class="form-control"><br>
@@ -2680,7 +2680,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
   <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">-->
   <script>
     function confirm_delete(uid)
-    {
+    {        
       if (confirm("Bekræft - permanent sletning af brugerdata. Bør ikke anvendes ved udmelding/flytning."))
       {
         document.location.href="?uid=%%uid%%&permanent_delete";
@@ -2737,7 +2737,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	'user_nominated_ok' => '<p>Indstillingen er foretaget og vil blive behandlet af LS</p>',
 	'user_profile_edit_link' =>
 	'<h3 onclick="$(\'#tools\').toggle();">Profilv&aelig;rkt&oslash;jer</h3>
-    <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">
+    <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red user_edit_btn">
 	<p id=tools>
 	<a class="btn btn-white" href=?sendpassword=%%private_email%%>Nulstil kodeord</a> 
 	<a class="btn btn-white" href=?uid=%%uid%%&edit>Rediger profil</a> 
@@ -3422,8 +3422,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<p><a href=# onclick="if (confirm(\'&Oslash;nsker du at forlade denne side? Dine &aelig;ndringer er ikke gemt!\')) document.location.href=\'?mid=%%mid%%\';">Bemærk: Endelig m&oslash;dedeltagelse kan tilrettes på mødesiden (link)</a></p>
 
 		<h2>Referat</h2>
-		<p><label for=finish_minutes>Referat afsluttet</label> <input type=checkbox name=finish_minutes id=finish_minutes></p>
-		<p><label for=mail_minutes>Udsend referat til medlemmer</label> <input type=checkbox name=mail_minutes id=mail_minutes checked></p>
+		<p> <input type=checkbox name=finish_minutes id=finish_minutes><label for=finish_minutes>Referat afsluttet</label></p>
+		<p> <input type=checkbox name=mail_minutes id=mail_minutes checked><label for=mail_minutes>Udsend referat til medlemmer</label></p>
 		<input type=submit value="Gem mødereferat" class="btn">
 		</form>
 		<script>
@@ -3932,7 +3932,7 @@ http://www.rtd.dk/?mid=%%mid%%
                                 mtitle = "";
                             }
 
-							$("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
+							$("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=300&h=175></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 						else
 						{
@@ -3946,7 +3946,7 @@ http://www.rtd.dk/?mid=%%mid%%
                                 mtitle = "";
                             }
 
-						    $("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
+						    $("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 					}
 					i++;
@@ -3970,7 +3970,7 @@ http://www.rtd.dk/?mid=%%mid%%
                                 mtitle = "";
                             }
 
-							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=100&h=150 width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
+							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=300&h=175></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 						else
 						{
@@ -3984,7 +3984,7 @@ http://www.rtd.dk/?mid=%%mid%%
                                 mtitle = "";
                             }
 
-							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg width=100></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
+							$("#minutes").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg></a></div></div><div class=post-content><div class=title><h2 class=h5>"+mtitle+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 				});
 
@@ -4398,10 +4398,10 @@ http://www.rtd.dk/?mid=%%mid%%
 															<a href=?mid=%%mid%%&minutes_edit>Rediger referat</a>
 															',
 		'meeting_duties' => '
-			<p>Brevgennemgang:</p>
+			<!--<p>Brevgennemgang:</p>-->
 			<a class="btn btn-xs" href=?mid=%%mid%%&collection=%%mid%% target=_blank role="button">Brev 1</a>
 			<a class="btn btn-default" href=?mid=%%mid%%&collection=%%mid%%/2 target=_blank role="button">Brev 2</a>
-			<hr>Ansvarlige:
+			<br><b>Ansvarlige:</b>
 		',
 		'meeting_duty' => '<dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
 		'meeting_rating' => '<h3>Møderating</h3><p>Rating: %%rating%%/10 - %%count%% stemmer</p>',
@@ -4666,15 +4666,8 @@ http://www.rtd.dk/?mid=%%mid%%
 											',
 		'country_all_country' => 'Hele landet',
 		'country_all_district' => 'Hele distriktet',
-		'country_latest_minutes' => '
-				<div class="tp-banner-container">
-					<div class="tp-banner">
-						<ul id="country_future_minutes">
-
-						</ul>
-					</div>
-				</div>
-       <div class="tp-bannertimer tp-bottom"></div>
+		'country_latest_minutes' => '				
+        <div class="tp-bannertimer tp-bottom"></div>
 		',
 		'country_future_minutes_item' =>
 		'<script>
@@ -4733,7 +4726,8 @@ http://www.rtd.dk/?mid=%%mid%%
 		<div class="container CountryPg" style="clear:both;">
 					<div class="title title-section">
 						<h2>Kommende m&oslash;der</h2>
-						<p>De vigtigste nyheder nu og her</p>
+						<!--<p>De vigtigste nyheder nu og her</p>-->
+                        <p class="kal_btn"><a class=btn href="?cal=%%name%%">Vis m&oslash;der i kalender</a></p>
 						<span class=sticker>
 							<i class="icon fa fa-bullhorn"></i>
 						</span>
@@ -4754,6 +4748,10 @@ http://www.rtd.dk/?mid=%%mid%%
 		$("#page-content").append($("#future_meetings").parent());
 			var future_meetings = jQuery.parseJSON(\'%%data%%\');
             //console.log(future_meetings);
+            
+            var btn_href = $("p a.dis_btn_link").attr("href");
+            $(".CountryPg p.kal_btn a").attr("href",btn_href);
+            
 			var c = -1;
 			var fm_html = "";
 			$.each(future_meetings, function(k,v) {

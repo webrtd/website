@@ -166,11 +166,11 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'S')
                     {
-                        $role1 = strtolower('Klubsekretær');
+                        $role1 = strtolower('Klubsekret&aelig;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'I')
                     {
-                        $role1 = strtolower('Inspektør');
+                        $role1 = strtolower('Inspekt&oslash;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'K')
                     {
@@ -178,7 +178,7 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'N')
                     {
-                        $role1 = strtolower('Næstformand');
+                        $role1 = strtolower('N&aelig;stformand');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'DF')
                     {
@@ -206,7 +206,7 @@ function check_club_mail($club)
                     }            
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LS')
                     {
-                        $role1 = strtolower('Landssekretær');
+                        $role1 = strtolower('Landssekret&aelig;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'WEB')
                     {
@@ -218,7 +218,7 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'RED')
                     {
-                        $role1 = strtolower('Redaktør');
+                        $role1 = strtolower('Redakt&oslash;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'SHOP')
                     {
@@ -226,20 +226,20 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ÆM')
                     {
-                        $role1 = 'Æresmedlem';
+                        $role1 = '&AElig;resmedlem';
                     }            
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ALF')
-                    {
-                        $role1 = strtolower('afgående_landsformand');
+                    { 
+                        $role1 = strtolower('afg&aring;ende_landsformand');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LA')
                     {
                         $role1 = strtolower('Landsarkivar');
                     }
-                    
+                   
                     $u = new WP_User( $user->ID );                                     
                     $u->remove_role( 'subscriber' );
-                    if( role_exists( $role1 ) ) {
+                    if( role_exists( $role1 ) ) {                        
                         $u->add_role( $role1 ); 
                     }
                     else
@@ -277,11 +277,11 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'S')
                     {
-                        $role1 = strtolower('Klubsekretær');
+                        $role1 = strtolower('Klubsekret&aelig;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'I')
                     {
-                        $role1 = strtolower('Inspektør');
+                        $role1 = strtolower('Inspekt&oslash;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'K')
                     {
@@ -289,7 +289,7 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'N')
                     {
-                        $role1 = strtolower('Næstformand');
+                        $role1 = strtolower('N&aelig;stformand');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'DF')
                     {
@@ -317,7 +317,7 @@ function check_club_mail($club)
                     }            
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LS')
                     {
-                        $role1 = strtolower('Landssekretær');
+                        $role1 = strtolower('Landssekret&aelig;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'WEB')
                     {
@@ -329,7 +329,7 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'RED')
                     {
-                        $role1 = strtolower('Redaktør');
+                        $role1 = strtolower('Redakt&oslash;r');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'SHOP')
                     {
@@ -337,11 +337,11 @@ function check_club_mail($club)
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ÆM')
                     {
-                        $role1 = 'Æresmedlem';
+                        $role1 = '&AElig;resmedlem';
                     }            
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ALF')
                     {
-                        $role1 = strtolower('afgående_landsformand');
+                        $role1 = strtolower('afg&aring;ende_landsformand');
                     }
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LA')
                     {
@@ -369,7 +369,7 @@ function check_club_mail($club)
                 if ( is_wp_error($user) )
                     echo $user->get_error_message();                    
             }     
-                       
+           
 			$show_news = logic_should_show_news();
 			if (logic_should_update_details())
 			{
@@ -412,7 +412,7 @@ function check_club_mail($club)
 			wp_logout();
 			session_destroy(); //destroy the session
 			setcookie('RTD_LOGIN_COOKIE','');
-			header("location: http://dev.rtd.dk/"); //to redirect back to "index.php" after logging out
+			header("location: http://".$_SERVER['HTTP_HOST']); //to redirect back to "index.php" after logging out
 			exit();                            
 		}
 		else if (isset($_REQUEST['login']))
