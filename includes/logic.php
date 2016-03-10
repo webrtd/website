@@ -314,13 +314,13 @@
 			$uids[] = $u[$i]['uid'];
 			logic_save_mail($u[$i]['private_email'], $title, $content,$attachment_id,$uid);
 		}
-		if (NB_MAIL_POSTFIX=='@roundtable.dk')
+		if (USE_CLUB_MAILS)
 		{
 			$clubs = get_clubs_from_uids($uids);
 			foreach($clubs as $c)
 			{
 				$data = explode(" ",$c['name']);
-				$mail = strtolower($data[0])."@roundtable.dk";
+				$mail = strtolower($data[0]).CLUB_MAIL_HOST;
 				logic_save_mail($mail, $title, $content, $attachment_id, $uid);
 			}
 		}
