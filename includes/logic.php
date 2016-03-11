@@ -974,7 +974,13 @@
   function logic_upload_mail_attachment($fs)
   {
     $aid = put_mail_attachment(addslashes($fs['name']));
-    move_uploaded_file($fs['tmp_name'], MAIL_ATTACHMENT_UPLOAD_PATH.$aid);
+	if ($aid>0)
+	{
+		if (!move_uploaded_file($fs['tmp_name'], MAIL_ATTACHMENT_UPLOAD_PATH.$aid))
+		{
+			return -1;
+		}
+	}
     return $aid;
   }
 

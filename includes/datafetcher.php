@@ -2285,8 +2285,17 @@ order by last_page_view desc limit 25";
   {
 	$fn = addslashes($fn);
     $db = get_db();
-    $db->execute("insert into mass_mail_attachment (filename) values ('$fn')");
-    return $db->insertid();
+	$sql = "insert into mass_mail_attachment (filename) values ('$fn')";
+	if ($db->execute($sql))
+	{
+		$sql = "select aid from mass_mail_attachment where mass_mail_attachment.filename='$fn' order by aid desc limit 1";
+		$id = $db->fetchsinglevalue($db->execute($sql));
+		return $id;
+	}
+	else
+	{
+		return -1;
+	}
   }
 
   /**

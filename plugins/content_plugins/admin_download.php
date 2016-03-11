@@ -44,6 +44,7 @@ order by RD.shortname asc
 			  if (isset($_FILES['file']))
 			  {
 				$attachment_id = logic_upload_mail_attachment($_FILES['file']);
+				if ($attachment_id<0) return "Upload error";
 			  }
 			  if (isset($_REQUEST['testmail']))
 			  {
