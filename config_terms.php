@@ -596,7 +596,6 @@ $('#prev').click(function() {
 		<div class="col-xs-12">
 		<p style="float:left;">Klublogo<br>
 		<input type=file name=logo></p>
-		
 
 		<img src=/uploads/club_logos/%%logo%% width=100px><br>
 		</div>
