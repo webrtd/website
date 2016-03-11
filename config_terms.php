@@ -47,7 +47,7 @@ http://rtd.dk/?uid=%%uid%%
 ',
 	'club_message_prepare_send_club_admin' => '
 		<h4>Send besked til klubbens aktive medlemmer</h4>
-		<form action=?cid=%%cid%% method=post > 
+		<form action=?cid=%%cid%% method=post >
 		<center>
 		<textarea name=message style="width:99%;height:200px" class="form-control"></textarea>
 		</center>
@@ -597,6 +597,7 @@ $('#prev').click(function() {
 		<p style="float:left;">Klublogo<br>
 		<input type=file name=logo></p>
 		
+
 		<img src=/uploads/club_logos/%%logo%% width=100px><br>
 		</div>
         </div>
@@ -664,19 +665,19 @@ $('#prev').click(function() {
   'news_archive' =>
   '<div id=newsitems class=container-out news-page>
     <div class="title title-section">
-        <h3>Nyhedsarkiv</h3>  
+        <h3>Nyhedsarkiv</h3>
         <span class="sticker">
             <i class="icon fa fa-bullhorn"></i>
-        </span>      
+        </span>
     </div>
-    
+
   <div data-animate="flipInY">
         <div class="carousel-wrap">
             <ul class="carousel-nav">
                 <li><a href="#" class="btn btn-icon-prev prev"></a></li>
                 <li><a href="#" class="btn btn-icon-next next"></a></li>
             </ul><!-- .carousel-nav -->
-    
+
             <div class="carousel" data-visible="3">&nbsp;</div>
         </div>
     </div>
@@ -706,7 +707,7 @@ $('#prev').click(function() {
         html = html + "</p></div>";
         html = html + "<div class=text>"+cotn.substring(0,300)+"<a href=?news="+n.nid+">...L&aelig;s mere...</a></div>";
         html = html + "</div></article>";
-        
+
       //$("#newsitems").append("<li><a href=?news="+n.nid+">"+n.title+", "+n.posted+"</a>");
     });
     $("#newsitems .carousel").append(html);
@@ -731,24 +732,24 @@ $('#prev').click(function() {
 		var nc = jQuery.parseJSON(\'%%data%%\');
 		var html = "";
 		$("#nid").val(nc.nid);
-        
-		$.each(nc, function(i,c) { 
-                   
+
+		$.each(nc, function(i,c) {
+
           if (i!="nid")
-          {         
+          {
             html = html + "<li>";
             html = html + "<div class=comment><div class=comment-heading><a class=avatar href=#><span class=\"btn btn-icon-user\"></span>";
             html = html + "<img src=/uploads/user_image?uid="+c.uid+"&landscape&w=100&h=144 alt=Member></a></div>";
             html = html + "<div class=comment-content><div class=title><a href=?uid="+c.uid+">"+c.user.profile_firstname+" "+c.user.profile_lastname+"</a> <p class=meta><span class=meta-date>"+c.posted+"</span></p></div>";
-            html = html + "<div class=text>"+c.content+"</div></div></div></li>";                      				
+            html = html + "<div class=text>"+c.content+"</div></div></div></li>";
           }
-		});                
-        
+		});
+
 		$(".comments ul.comments-content").append(html);
-        
+
         var len = $( "ul.comments-content li" ).length;
         $(".comments > .title.title-main h4").append("<span>"+len+"</span>");
-        
+
 	</script>
 	',
 	'beta_latestnews_js' => '
@@ -787,7 +788,7 @@ $('#prev').click(function() {
                 }
 
                 var cotn = news_data.content;
-                
+
                 html = html + "<article class=\"post post-latest post-type-image\">";
                 html = html + "<div class=post-content>";
                 html = html + "<div class=title>";
@@ -805,7 +806,7 @@ $('#prev').click(function() {
             $(".news-page.container-out").show();
             //$(".container-out.news-page").insertAfter("#page-content .container .col-md-10 #content");
 		}
-                
+
 		$("#newss").css("display","block");
 		if($("#news").length > 0)
 		{
@@ -1356,38 +1357,38 @@ $('#prev').click(function() {
 	<b>Roller</b>
 	<ul>
 		Klubroller<br>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_1" value=4 id=M disabled> <label for="roles_1">Medlem</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_2" value=9 id=F disabled> <label for="roles_2">F</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_3" value=10 id=S disabled> <label for="roles_3">S</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=col-sm-offset-2 id=I disabled> <label for="roles_4">I</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_5" value=12 id=K disabled> <label for="roles_5">K</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=17 id=IRO disabled> <label for="roles_4">IRO</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=24 id=HM disabled> <label for="roles_7">&AElig;M</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_8" value=13 id=N disabled> <label for="roles_8">N<br></label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_1" value=4 id=M> <label for="roles_1">Medlem</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_2" value=9 id=F> <label for="roles_2">F</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_3" value=10 id=S> <label for="roles_3">S</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=col-sm-offset-2 id=I> <label for="roles_4">I</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_5" value=12 id=K> <label for="roles_5">K</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=17 id=IRO> <label for="roles_4">IRO</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=24 id=HM> <label for="roles_7">&AElig;M</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_8" value=13 id=N> <label for="roles_8">N<br></label>
 		<br>R&oslash;dk&aelig;de<br>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_9" value=14 id=DF disabled><label for="roles_9">DF</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_10" value=15 id=LF disabled><label for="roles_10">LF</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_col-sm-offset-2" value=14 id=VLF disabled><label for="roles_col-sm-offset-2">VLF</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_12" value=19 id=NIRO disabled><label for="roles_12">NIRO</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_13" value=34 id=ALF disabled><label for="roles_13">ALF<br></label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_9" value=14 id=DF><label for="roles_9">DF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_10" value=15 id=LF><label for="roles_10">LF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_col-sm-offset-2" value=14 id=VLF><label for="roles_col-sm-offset-2">VLF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_12" value=19 id=NIRO><label for="roles_12">NIRO</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_13" value=34 id=ALF><label for="roles_13">ALF<br></label>
 		<br>Bl&acirc;k&aelig;de<br>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=21 id=LS disabled><label for="roles_14">LS</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_15" value=22 id=WEB disabled><label for="roles_15">WEB</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=23 id=LK disabled><label for="roles_14">LK</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_17" value=24 id=RED disabled><label for="roles_17">RED</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_18" value=25 id=SHOP disabled><label for="roles_18">SHOP</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_19" value=37 id=LA disabled><label for="roles_19">LA</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=21 id=LS><label for="roles_14">LS</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_15" value=22 id=WEB><label for="roles_15">WEB</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=23 id=LK><label for="roles_14">LK</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_17" value=24 id=RED><label for="roles_17">RED</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_18" value=25 id=SHOP><label for="roles_18">SHOP</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_19" value=37 id=LA><label for="roles_19">LA</label>
 	</ul>
 	<b>Distrikter</b>
 	<ul>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_1" value=14 id=D1 disabled><label for="districts_1">Distrikt 1 - Nordjylland<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_2" value=15 id=D2 disabled><label for="districts_2">Distrikt 2 - Vestjylland<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_3" value=14 id=D3 disabled><label for="districts_3">Distrikt 3 - &Oslash;stjylland<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=17 id=D4 disabled><label for="districts_4">Distrikt 4 - Syd- og S&oslash;nderjylland<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_5" value=18 id=D5 disabled><label for="districts_5">Distrikt 5 - Trekantsomr&acirc;det og Fyn<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=19 id=D4 disabled><label for="districts_4">Distrikt 4 - Nordsj&aelig;lland<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_7" value=20 id=D7 disabled><label for="districts_7">Distrikt 7 - Sydsj&aelig;lland og Lolland-Falster<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_8" value=21 id=D8 disabled><label for="districts_8">Distrikt 8 - K&oslash;benhavn, Bornholm og Gr&oslash;nland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_1" value=14 id=D1><label for="districts_1">Distrikt 1 - Nordjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_2" value=15 id=D2><label for="districts_2">Distrikt 2 - Vestjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_3" value=16 id=D3><label for="districts_3">Distrikt 3 - &Oslash;stjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=17 id=D4><label for="districts_4">Distrikt 4 - Syd- og S&oslash;nderjylland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_5" value=18 id=D5><label for="districts_5">Distrikt 5 - Trekantsomr&acirc;det og Fyn<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=19 id=D4><label for="districts_4">Distrikt 4 - Nordsj&aelig;lland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_7" value=20 id=D7><label for="districts_7">Distrikt 7 - Sydsj&aelig;lland og Lolland-Falster<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_8" value=21 id=D8><label for="districts_8">Distrikt 8 - K&oslash;benhavn, Bornholm og Gr&oslash;nland<br></label>
 	</ul>
 	<script>
 	var role_count = 0;
@@ -1406,118 +1407,6 @@ $('#prev').click(function() {
 	function c(w) { if (w.checked) role_count--; else role_count++; }
 	function cd(w) { if (w.checked) district_count--; else district_count++; }
 	function enable(v) { $(v).removeAttr("disabled"); }
-	if (r == "WEB" || r=="LF" || r=="VLF" || r=="LS")
-	{
-    enable("#uid");
-    $("#sender").show();
-		enable("#M");
-		enable("#F");
-		enable("#S");
-		enable("#I");
-		enable("#K");
-		enable("#IRO");
-		enable("#HM");
-		enable("#N");
-		enable("#DF");
-		enable("#LF");
-		enable("#VLF");
-		enable("#NIRO");
-		enable("#ALF");
-		enable("#LS");
-		enable("#WEB");
-		enable("#LK");
-		enable("#RED");
-		enable("#SHOP");
-		enable("#LA");
-
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D4");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "ALF")
-	{
-		enable("#F");
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D4");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "LK")
-	{
-		enable("#K");
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D4");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "NIRO")
-	{
-		enable("#IRO");
-		enable("#DF");
-		enable("#LF");
-		enable("#VLF");
-		enable("#NIRO");
-		enable("#ALF");
-		enable("#LS");
-		enable("#WEB");
-		enable("#LK");
-		enable("#RED");
-		enable("#SHOP");
-		enable("#LA");
-		enable("#F");
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D4");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "SHOP")
-	{
-		enable("#S");
-		enable("#F");
-		enable("#K");
-		enable("#D1");
-		enable("#D2");
-		enable("#D3");
-		enable("#D4");
-		enable("#D5");
-		enable("#D4");
-		enable("#D7");
-		enable("#D8");
-	}
-	if (r == "DF")
-	{
-		var dn =  String(d).substring(d.length, d.length - 1)
-		enable("#M");
-		enable("#F");
-		enable("#S");
-		enable("#I");
-		enable("#K");
-		enable("#IRO");
-		enable("#HM");
-		enable("#N");
-
-		enable("#D"+dn);
-
-    $("#D"+dn).attr("checked", true);
-
-	}
 
 	</script>
 	<h1>Udsend</h1>
@@ -1571,39 +1460,39 @@ $('#prev').click(function() {
 		<div class="row">
 			<a name=hb><h1>Hovedbestyrelse</h1></a>
 			<div class="col-sm-12">
-				<div class="col-md-4 col-md-offset-2" id="lf"></div>
-				<div class="col-md-4" id="vlf"></div>
-				<div class="col-md-4 col-md-offset-2" id="iro"></div>
-				<div class="col-md-4" id="blank"></div>
+				<div class="" id="lf"></div>
+				<div class="" id="vlf"></div>
+				<div class="" id="iro"></div>
+				<div class="" id="blank"></div>
 			</div>
 		</div>
 		<div class="row">
 			<a name=df><h1>Distriktsformænd</h1></a>
 			<div class="col-sm-12">
-				<div class="col-md-4 col-md-offset-2" id="df1"></div>
-				<div class="col-md-4" id="df2"></div>
-				<div class="col-md-4 col-md-offset-2" id="df3"></div>
-				<div class="col-md-4" id="df4"></div>
-				<div class="col-md-4 col-md-offset-2" id="df5"></div>
-				<div class="col-md-4" id="df6"></div>
-				<div class="col-md-4 col-md-offset-2" id="df7"></div>
-				<div class="col-md-4" id="df8"></div>
+				<div class="" id="df1"></div>
+				<div class="" id="df2"></div>
+				<div class="" id="df3"></div>
+				<div class="" id="df4"></div>
+				<div class="" id="df5"></div>
+				<div class="" id="df6"></div>
+				<div class="" id="df7"></div>
+				<div class="" id="df8"></div>
 			</div>
 		</div>
 		<div class="row">
 			<a name=ex><h1>Eksekutiv komité</h1></a>
 			<div class="col-sm-12">
-				<div class="col-md-4 col-md-offset-2" id="ls"></div>
-				<div class="col-md-4" id="lk"></div>
-				<div class="col-md-4 col-md-offset-2" id="shop"></div>
-				<div class="col-md-4" id="web"></div>
-				<div class="col-md-4 col-md-offset-2" id="red"></div>
+				<div class="" id="ls"></div>
+				<div class="" id="lk"></div>
+				<div class="" id="shop"></div>
+				<div class="" id="web"></div>
+				<div class="" id="red"></div>
 			</div>
 		</div>
 		<div class="row">
 			<a name=others><h1>Øvrige</h1></a>
 			<div class="col-sm-12">
-				<div class="col-md-4 col-md-offset-2" id="alf"><p id="la"></p></div>
+				<div class="" id="alf"><p id="la"></p></div>
 
 			</div>
 		</div>
@@ -1615,12 +1504,39 @@ $('#prev').click(function() {
 		{
 			if (v)
 			{
-				var html = "";
+				/*var html = "";
 				html += "<a href=?uid="+v.uid+" title=\""+v.role+": "+v.profile_firstname+" "+v.profile_lastname+"\"><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=200&h=333><br>";
 				html += "<b>"+v.role+"</b><br>";
 				html += v.profile_firstname+" "+v.profile_lastname+"<br>";
 				html += v.district+", ";
 				html += v.club+"<br></a>";
+				return html;*/
+                console.log(v);
+
+                var con = "";
+                if(v.private_email != "")
+                {
+                    con += "<ul class=\"social\" animation=\"\" animation-from-right=\"\"><li><a href=mailto:"+v.private_email+" class=\"mail\" target=\"_blank\"></a></li></ul>";
+                }
+                else if(v.company_email != "")
+                {
+                    con += "<ul class=\"social\" animation=\"\" animation-from-right=\"\"><li><a href=mailto:"+v.company_email+" class=\"mail\" target=\"_blank\"></a></li></ul>";
+                }
+                else
+                {
+                    con += "";
+                }
+
+                var html = "";
+				html += "<div class=\"col-xs-4 all_members\"><div class=\"member\"><div class=\"member-heading\">";
+                html += "<a class=\"userpic\" href=?uid=\"+v.uid+\"><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=200&h=333></a>";
+                html += con;
+				html += "<div class=\"title\">";
+				html += "<h4><a href=?uid=\"+v.uid+\">"+v.profile_firstname+" "+v.profile_lastname+"</a></h4>";
+                html += "<p><strong>"+v.role+"</strong></p>";
+				html += "<p>"+v.district+"</p>";
+				html += "<p>"+v.club+"</p></div>";
+                html += "</div></div></div>";
 				return html;
 			}
 			else
@@ -1775,7 +1691,7 @@ $('#prev').click(function() {
 	<h1>Medlemsstatistik</h1>
 
 	<div id="memberstatchart" style="height:300px; width:100%;"></div>
-    
+
     <div class="memberchart_stat">
 	<table id=memberstat width=100%>
 	<tr><th>Klub&acirc;r</th><th>Medlemstal (start)</th><th>Medlemstal (slut)</th><th>Tilgang</th><th>Afgang</th><th>Exit</th></tr>
@@ -1888,13 +1804,13 @@ $('#prev').click(function() {
 		function biz(v)
 		{
 			document.location.href="?biz="+v;
-			
+
 		}
 
 		function company(v)
 		{
 			//document.location.href="?biz="+data.search+"#"+v;
-			
+
 			 $("html, body").animate({
        			 scrollTop: $("#"+v).offset().top-70
     		}, 1500);
@@ -1918,7 +1834,7 @@ $('#prev').click(function() {
 		$.each(data.results, function(k,v) {
 			if (v.company_name.indexOf(past)==-1)
 			{
-				
+
 				res_html += "<div class=clearfix></div><a id=\""+v.cid+"\" name=\""+v.company_name+"\"><h2>"+v.company_name+"</h2></a>";
 				past = v.company_name;
 				$("#company").append("<option value=\""+v.cid+"\">"+v.company_name+"</option>");
@@ -2240,7 +2156,7 @@ klubberne under landsforeningen Round Table Danmark.
 	'minutes_reminder_19days_text' => 'Der er endnu ikke oprettet referat for "%%title%%" som blev afholdt %%start_time%%. Det kan gøres via dette link: http://www.rtd.dk?mid=%%mid%%',
 	'minutes_completed_subject' => 'Mødereferat - %%name%%',
 	'minutes_completed_content' => 'Der er oprettet et mødereferat med titlen "%%title%%", afholdt %%start_time%%. Link til referat: http://www.rtd.dk/?mid=%%mid%%',
-  'district_chairman_post_news' =>  
+  'district_chairman_post_news' =>
   '<h2>Opret nyhed</h2>
   <form action=?country=%%did%% method=post id=dnews>
   Overskrift:<br><input type=text name=news[title] class="form-control"><br>
@@ -2433,7 +2349,7 @@ Round Table Danmark',
 		    </div>
             </div>
 		</div>
-		
+
 
 		<script>
 			$(function() {
@@ -2445,7 +2361,7 @@ Round Table Danmark',
 					console.log(value);
 					count++;
 					// $("#usrres").append("<li><a href=?uid="+value.uid+">"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+", Tlf: "+value.private_phone+"</a></li>");
-					
+
 					var profile_firstname = "";
                     if(value.profile_firstname != "" && value.profile_firstname != null)
                     {
@@ -2507,7 +2423,7 @@ Round Table Danmark',
                     }
 
                     var fb_class = "";
-                   
+
                     if(value.company_facebook != "" && typeof value.company_facebook !== "undefined")
                     {
                         fb_class = "<li><a href="+value.company_facebook+" class=facebook target=\"_blank\"></a></li>";
@@ -2536,11 +2452,11 @@ Round Table Danmark',
                     {
                        // social = "<ul class=social animation animation-from-right>"+fb_class+""+link_class+""+mail_class+"</ul>";
                     }
-					
-					
+
+
 					html2 = "<div class=\"col-xs-4 all_members\"><div class=member><div class=member-heading><a class=userpic href=?uid="+value.uid+"><span class=\"btn btn-icon-user\"></span><img border=1 src=/uploads/user_image?uid="+value.uid+"&landscape&w=300&h=500></a>"+social+"<div class=title><h4><a href=?uid="+value.uid+">"+profile_firstname+" "+profile_lastname+"</a></h4><p><strong>"+roles+"</strong></p><p>"+company_position+"</p><p>"+company_name+"</p><p>Mobil: "+private_mobile+"</p></div></div></div></div>";
 					$("#usrres").append(html2);
-					
+
 				});
 				if (count==0) { $("#usrres").append("<i>Ingen match</i>"); }
 				$("#usrtitle").append(" ("+count+")");
@@ -2676,11 +2592,11 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</script>
 	',
 	'user_role_add' => '
-  <!--<h1>Slet bruger permanent</h1>
-  <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">-->
+ 	 <h3>Slet bruger permanent</h3>
+  <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red">
   <script>
     function confirm_delete(uid)
-    {        
+    {
       if (confirm("Bekræft - permanent sletning af brugerdata. Bør ikke anvendes ved udmelding/flytning."))
       {
         document.location.href="?uid=%%uid%%&permanent_delete";
@@ -2737,14 +2653,14 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	'user_nominated_ok' => '<p>Indstillingen er foretaget og vil blive behandlet af LS</p>',
 	'user_profile_edit_link' =>
 	'<h3 onclick="$(\'#tools\').toggle();">Profilv&aelig;rkt&oslash;jer</h3>
-    <input type=button onclick=confirm_delete(%%uid%%) value="Slet bruger permanent" class="btn btn-red user_edit_btn">
+
 	<p id=tools>
-	<a class="btn btn-white" href=?sendpassword=%%private_email%%>Nulstil kodeord</a> 
-	<a class="btn btn-white" href=?uid=%%uid%%&edit>Rediger profil</a> 
-    <a class="btn btn-white" href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a> 
-	<a class="btn btn-white" href=# onclick=honorary(%%uid%%);>Indstil æres x-medlemsskab</a> 
-	<a class="btn btn-white" href=# onclick=onleave(%%uid%%);>Anmeld orlov</a> 
-    <a class="btn btn-white" href=# onclick=resign(%%uid%%);>Udmeld medlem</a> 
+	<a class="btn btn-white" href=?sendpassword=%%private_email%%>Nulstil kodeord</a>
+	<a class="btn btn-white" href=?uid=%%uid%%&edit>Rediger profil</a>
+    <a class="btn btn-white" href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a>
+	<a class="btn btn-white" href=# onclick=honorary(%%uid%%);>Indstil æres x-medlemsskab</a>
+	<a class="btn btn-white" href=# onclick=onleave(%%uid%%);>Anmeld orlov</a>
+    <a class="btn btn-white" href=# onclick=resign(%%uid%%);>Udmeld medlem</a>
 	<a class="btn btn-white" href=?uid=%%uid%%&move>Overf&oslash;r medlem</a>
 	<div id=onleave_dialog style="display:none">
 		<p>Orlov fra klubben</p>
@@ -3843,7 +3759,7 @@ http://www.rtd.dk/?mid=%%mid%%
                     <i class="icon fa fa-bullhorn"></i>
                 </span>
 			</div><!-- .title.title-section -->
-			<div data-animate="flipInY"> 
+			<div data-animate="flipInY">
 				<div class="carousel-wrap 1">
 					<ul class="carousel-nav">
 								<li><a href="#" class="btn btn-icon-prev prev"></a></li>
@@ -4531,11 +4447,11 @@ http://www.rtd.dk/?mid=%%mid%%
 											<td valign=top>
 											<p>Titel<br>
 											<input class="field form-control" type=text name=meeting[title] value="%%title%%"></p>
-                                            
+
                                             <p>M&oslash;dested<br>
 											<input class="field form-control" id=loctext type=text name=meeting[location] value="%%location%%" onkeyup=locate(this.value);></p>
 											<div id=locmap></div>
-                                            
+
 											<p>M&oslash;destart<br>
 											<input class="field form-control" type=text name=meeting[start_time] value="%%start_time%%" id=start_time></p>
 											<p>M&oslash;deslut<br>
@@ -4666,7 +4582,7 @@ http://www.rtd.dk/?mid=%%mid%%
 											',
 		'country_all_country' => 'Hele landet',
 		'country_all_district' => 'Hele distriktet',
-		'country_latest_minutes' => '				
+		'country_latest_minutes' => '
         <div class="tp-bannertimer tp-bottom"></div>
 		',
 		'country_future_minutes_item' =>
@@ -4748,10 +4664,10 @@ http://www.rtd.dk/?mid=%%mid%%
 		$("#page-content").append($("#future_meetings").parent());
 			var future_meetings = jQuery.parseJSON(\'%%data%%\');
             //console.log(future_meetings);
-            
+
             var btn_href = $("p a.dis_btn_link").attr("href");
             $(".CountryPg p.kal_btn a").attr("href",btn_href);
-            
+
 			var c = -1;
 			var fm_html = "";
 			$.each(future_meetings, function(k,v) {
