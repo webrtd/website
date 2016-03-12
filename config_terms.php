@@ -308,6 +308,7 @@ http://rtd.dk/?uid=%%uid%%
 		<script>
 			var peekers = jQuery.parseJSON(\'%%data%%\');
 			var peekhtml = "";
+			
 			$.each(peekers, function(i,m) {
                 var profile_firstname = "";
                 if(m.profile_firstname != "" && m.profile_firstname != null)
@@ -371,8 +372,8 @@ http://rtd.dk/?uid=%%uid%%
 	<h1>Popul&aelig;res&oslash;gninger</h1>
 	%%popularsearch%%
 	',
-	'randomuser_js' => '
-	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
+	'randomuser_js' => '    
+	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div id=duty_field class=stats></div><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
 	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500></td><td>");
 	document.write("<div class=title><h3><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></h3>");
 	document.write("%%company_position%%, ");
@@ -380,6 +381,15 @@ http://rtd.dk/?uid=%%uid%%
 	document.write("</div></a></div></div></div>");
 	$(".statistik h2").text("Statistik");
 	$(".statistik_content").addClass("col-xs-8");
+  
+        var dutydata = jQuery.parseJSON(notification_update_json);
+        var cnt = 0;
+        $.each(dutydata, function(key,value) {
+        cnt++;
+        var d = new Date(value.start_time);
+        $("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
+        });
+        if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");  
 	',
 	'user_on_leave_subj' => 'Orlov fra RTD - %%profile_firstname%% %%profile_lastname%%',
 	'user_on_leave_body' => 'Dags dato er %%profile_firstname%% %%profile_lastname%% på orlov fra RTD. Se mere på http://rtd.dk/?uid=%%uid%%',
@@ -1373,7 +1383,7 @@ $('#prev').click(function() {
 		<br>Bl&acirc;k&aelig;de<br>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=21 id=LS><label for="roles_14">LS</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_15" value=22 id=WEB><label for="roles_15">WEB</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=23 id=LK><label for="roles_14">LK</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_16" value=23 id=LK><label for="roles_16">LK</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_17" value=24 id=RED><label for="roles_17">RED</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_18" value=25 id=SHOP><label for="roles_18">SHOP</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_19" value=37 id=LA><label for="roles_19">LA</label>
@@ -1385,7 +1395,7 @@ $('#prev').click(function() {
 		<input type=checkbox onclick=cd(this); name=districts[] id="districts_3" value=16 id=D3><label for="districts_3">Distrikt 3 - &Oslash;stjylland<br></label>
 		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=17 id=D4><label for="districts_4">Distrikt 4 - Syd- og S&oslash;nderjylland<br></label>
 		<input type=checkbox onclick=cd(this); name=districts[] id="districts_5" value=18 id=D5><label for="districts_5">Distrikt 5 - Trekantsomr&acirc;det og Fyn<br></label>
-		<input type=checkbox onclick=cd(this); name=districts[] id="districts_4" value=19 id=D4><label for="districts_4">Distrikt 4 - Nordsj&aelig;lland<br></label>
+		<input type=checkbox onclick=cd(this); name=districts[] id="districts_6" value=19 id=D4><label for="districts_6">Distrikt 6 - Nordsj&aelig;lland<br></label>
 		<input type=checkbox onclick=cd(this); name=districts[] id="districts_7" value=20 id=D7><label for="districts_7">Distrikt 7 - Sydsj&aelig;lland og Lolland-Falster<br></label>
 		<input type=checkbox onclick=cd(this); name=districts[] id="districts_8" value=21 id=D8><label for="districts_8">Distrikt 8 - K&oslash;benhavn, Bornholm og Gr&oslash;nland<br></label>
 	</ul>
@@ -1723,7 +1733,7 @@ $('#prev').click(function() {
 
 	$("#dashboard").append(data.club.name);
 		$("#dashboardintro").append(data.club.description);
-		$("#dashboardlogo").append("<img border=1 width=100% src=\"/uploads/club_logos/"+data.club.logo+"\">");
+		$("#dashboardlogo").append("<img border=1 src=\"/uploads/club_logos/"+data.club.logo+"\">");
 		$("#download").append("<a href=?dashboard="+data.club.cid+"&download>Vis i tabelform</a>");
 		var i = 0;
 		$.each(data.club_stats, function(y,d) {
@@ -3915,7 +3925,7 @@ http://www.rtd.dk/?mid=%%mid%%
 			<ul class="pagination 74" style="display:inherit;" id="years">
 			</ul>
 
-		<div class="grid-wrap" id=minutes>
+		<div id=minutes>
 
 		</div>
 		</div><!-- .archive-tab end -->
@@ -3939,12 +3949,12 @@ http://www.rtd.dk/?mid=%%mid%%
 				var tmp=0;
 				$.each(minutes_data, function(k,m) {
 						var y = $.trim(m.start_time.substring(m.start_time.indexOf(",")+1));
-
-				yt = "";yclose = "";
+                        yt = "";
+                        yclose = "";
 						if (y!=old_y)
 						{
-							$("#years").append("<li><a href=\"#"+y+"\">"+y+"</a></li>");
-							yt += "<section id="+y+" class=\"posts grid\" data-columns=3>";
+							$("#years").append("<li><a class=btn href=\"#"+y+"\">"+y+"</a></li>");
+							yt += "<section id="+y+" class=\"row\">";
 							if(tmp > 0)
 							{
 								yclose += "</section>";
@@ -3967,12 +3977,12 @@ http://www.rtd.dk/?mid=%%mid%%
 						if (m.images[0])
 						{
 							/*$("#minutes").append(yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>");*/
-							html += yclose+yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>";
+							html += yclose+yt+"<article class=\"col-sm-4\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=300&h=175></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>";
 						}
 						else
 						{
 							/*$("#minutes").append(yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg?landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>");*/
-							html += yclose+yt+"<article class=\"post post-grid post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg?landscape&w=570&h=300></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div><div class=text><p>Phasellus elementum vel vulputate vivamus nam integer donec et aliquam sociosqu ultricies, himenaeos rhoncus erat magna at rutrum gravida aenean rutrum<a href=?mid="+m.mid+">...</a></p></div></div></article>";
+							html += yclose+yt+"<article class=\"col-sm-4\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/club_logos/0.jpg?landscape&w=300&h=175></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>";
 						}
 				});
 				html += "</div>"
@@ -4316,9 +4326,9 @@ http://www.rtd.dk/?mid=%%mid%%
 			<!--<p>Brevgennemgang:</p>-->
 			<a class="btn btn-xs" href=?mid=%%mid%%&collection=%%mid%% target=_blank role="button">Brev 1</a>
 			<a class="btn btn-default" href=?mid=%%mid%%&collection=%%mid%%/2 target=_blank role="button">Brev 2</a>
-			<br><b>Ansvarlige:</b>
+			<br><!--<b>Ansvarlige:</b>-->
 		',
-		'meeting_duty' => '<dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
+		'meeting_duty' => '<b>Ansvarlige:</b><dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
 		'meeting_rating' => '<h3>Møderating</h3><p>Rating: %%rating%%/10 - %%count%% stemmer</p>',
     'meeting_files' =>
     '
@@ -4816,8 +4826,9 @@ http://www.rtd.dk/?mid=%%mid%%
 				var roledata = jQuery.parseJSON(\'%%result%%\');
 				$.each(roledata.add, function(key,value)
 				{
+					console.log(value);
 					$("#addrole").append(
-						"<li>value.profile_firstname value.profile_lastname, "+value.club+
+						"<li>"+value.profile_firstname+" "+value.profile_lastname+", "+value.club+
 						"<br> Start: "+
 						value.date_start+
 						", Slut: "+

@@ -103,7 +103,7 @@
       $html .= "<div class=\"container-out clearfix Klubber\" style=\"clear:both;\">";
 	  $html .= "<div class=\"title title-section\">";
 	  $html .= term('district_clubs');  
-	  $html .= "<p>Klubber i distrikt ".$dis_num."</p><span class=sticker><i class=\"icon icomoon-shield\"></i></span>";
+	  $html .= "<span class=sticker><i class=\"icon icomoon-shield\"></i></span>";
       $html .= "</div>";
 	  $html .= "<div class=\"grid-wrap\">";
 	  $html .= "<section id=projects class=grid data-columns=4>";
@@ -162,7 +162,7 @@
 			{
 				$sel = "";
 				IF ($did == $country['districts'][$i]['did']) $sel="SELECTED";
-				$html .= "<option $sel value=\"?country={$country['districts'][$i]['did']}\">{".$country['districts'][$i]['name']."}: {".$country['districts'][$i]['description']."}</option>";
+				$html .= "<option $sel value=\"?country={$country['districts'][$i]['did']}\">".$country['districts'][$i]['name'].": ".$country['districts'][$i]['description']."</option>";
 			}
 			
 			$html .= "</select><br>";
@@ -173,7 +173,7 @@
   		$clubs = logic_get_clubs($did);
   		FOR ($i=0;$i<sizeof($clubs);$i++)
   		{
-  			$html .= "<option value=\"?cid={$clubs[$i]['cid']}\">{".$clubs[$i]['name']."}</option>";
+  			$html .= "<option value=\"?cid={$clubs[$i]['cid']}\">".$clubs[$i]['name']."</option>";
   		}
   		
   		$html .= "</select><br>";

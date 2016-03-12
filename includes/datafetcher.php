@@ -922,9 +922,10 @@
 	 *	@param date $new_enddate new end date for role assignment
 	 */
 	function update_specific_role_period($uid,$rid,$startdate,$new_enddate)
-	{
+	{        
 		$db = get_db();
-		$db->execute("update role set end_date='$new_enddate' where uid=$uid and rid=$rid and start_date='$startdate'");		
+        $new_enddate = date('Y-m-d',strtotime($new_enddate));
+		$db->execute("update role set end_date='$new_enddate' where uid=$uid and rid=$rid and start_date='$startdate'");     
 	}
 
 	/** 
@@ -933,9 +934,10 @@
 	 *	@param date $end_date end date (date("Y-m-d"))
 	 */	
 	function end_role_period($riid, $end_date)
-	{
+	{        
 		$db = get_db();
-		$db->execute("update role set end_date='$end_date' where riid=$riid");
+        $end_date = date('Y-m-d',strtotime($end_date));
+		$db->execute("update role set end_date='$end_date' where riid=$riid");     
 	}
 
 	/** 
@@ -958,9 +960,11 @@
 	 *	@param date $enddate end date of assignemnt
 	 */
 	function add_role1($uid, $rid, $startdate, $enddate)
-	{
+	{         
 		$db = get_db();
-		$db->execute("insert into role (uid,rid,start_date,end_date) values ('$uid', '$rid', '$startdate', '$enddate')");
+        $startdate = date('Y-m-d',strtotime($startdate));
+        $enddate = date('Y-m-d',strtotime($enddate));       
+		$db->execute("insert into role (uid,rid,start_date,end_date) values ('$uid', '$rid', '$startdate', '$enddate')");        
 	}
 
 
@@ -1065,7 +1069,8 @@
 	function update_role($uid, $rid, $startdate, $enddate)
 	{
 		$db = get_db();
-		
+		$startdate = date('Y-m-d',strtotime($startdate));
+        $enddate = date('Y-m-d',strtotime($enddate));
 		if ($db->fetchsinglevalue($db->execute("select count(*) from role where uid=$uid and rid=$rid"))>0)
 		{
 			$db->execute("update role set start_date='$startdate', end_date='$enddate' where uid=$uid and rid=$rid");
@@ -1147,7 +1152,7 @@
 	 */
 	function fetch_meeting_attendance($mid)
 	{
-		$sql = "select U.private_email, C.name as club_name,U.profile_firstname, U.profile_lastname, U.uid, MA.response_date, MA.comment, MA.accepted from meeting_attendance MA
+		$sql = "select U.private_email, C.name as club_name,U.profile_firstname, U.profile_lastname, U.profile_lastname, U.uid, MA.response_date, MA.comment, MA.accepted from meeting_attendance MA
 						inner join user U on U.uid=MA.uid
 						inner join club C on C.cid=U.cid
 						where mid=$mid
@@ -1316,7 +1321,7 @@
 	function fetch_members_by_roles($role_string)
 	{
 		return get_data("
-				select C.name as club,D.name as district,U.uid,U.profile_firstname,U.profile_lastname,RD.shortname as role_short,RD.description as role from user U
+				select C.name as club,D.name as district,U.uid,U.profile_firstname,U.profile_lastname,U.private_email,U.company_email,RD.shortname as role_short,RD.description as role from user U
 				inner join role R on R.uid=U.uid
 				inner join club C on C.cid=U.cid
 				inner join district D on D.did=C.district_did
@@ -1482,7 +1487,7 @@
 	{
 		$sql = "
 						select 
-						U.profile_ended, U.profile_started, U.uid,U.username,U.profile_firstname, U.profile_lastname, U.company_name, U.company_position, U.private_mobile, U.private_email,
+						U.profile_ended, U.profile_started, U.uid,U.username,U.profile_firstname, U.profile_lastname, U.company_name, U.company_position, U.private_mobile, U.private_email, U.company_email, U.company_facebook, U.company_linkdin, U.company_twitter,
 						(select max(weight) from role RR inner join role_definition RRD on RR.rid=RRD.rid where RR.uid=U.uid and RR.start_date<now() and RR.end_date>now()) as Weight  
 						from user U
 						inner join role R on R.uid=U.uid
@@ -1926,10 +1931,10 @@ order by R.end_date
 	function fetch_user_roles($uid)
 	{
 		return get_data("
-													select * from role R
-													inner join role_definition RD on RD.rid=R.rid
-													where R.uid=$uid order by start_date desc
-												");
+                select * from role R
+                inner join role_definition RD on RD.rid=R.rid
+                where R.uid=$uid order by start_date desc
+            ");
 	}
 	
 	/**

@@ -236,6 +236,10 @@ function check_club_mail($club)
                     {
                         $role1 = strtolower('Landsarkivar');
                     }
+                    else
+                    {
+                        $role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
+                    }
                    
                     $u = new WP_User( $user->ID );                                     
                     $u->remove_role( 'subscriber' );
@@ -346,6 +350,10 @@ function check_club_mail($club)
                     else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LA')
                     {
                         $role1 = strtolower('Landsarkivar');
+                    }
+                    else
+                    {
+                        $role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
                     }
 
                     $u = new WP_User( $user_id );                    

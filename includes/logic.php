@@ -307,6 +307,7 @@
 	
 	function logic_send_newsletter($roles,$districts,$title,$content,$attachment_id=0, $uid=0)
 	{
+
 		$uids = array();
 		$u = get_users1($roles,$districts);
 		for($i=0;$i<sizeof($u);$i++)
@@ -978,7 +979,7 @@
 	{
 		if (!move_uploaded_file($fs['tmp_name'], MAIL_ATTACHMENT_UPLOAD_PATH.$aid))
 		{
-			return -1;
+			return 0;
 		}
 	}
     return $aid;

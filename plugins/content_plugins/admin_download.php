@@ -13,7 +13,7 @@ where
 R.start_date<now() and R.end_date>now()
 order by RD.shortname asc
   ";
-  die(utf8_decode(get_html_table($sql)));
+  die(get_html_table($sql));
   }
 
     function future_role_print()
@@ -28,7 +28,7 @@ R.start_date>now()
 order by RD.shortname asc
 
   ";
-  die(utf8_decode(get_html_table($sql)));
+  die(get_html_table($sql));
   }
 
 	function newsletter()
@@ -290,13 +290,13 @@ order by RD.shortname asc
 		
 		$keys = array_keys($a[0]);
 		$table .= "<tr>";
-		foreach($keys as $k) $table .= "<th>{$k}</th>";
+		foreach($keys as $k) $table .= "<th>$k</th>";
 		$table .= "</tr>";
 		
 		foreach ($a as $e)
 		{
 			$table .= "<tr>";
-			foreach($e as $k=>$v) $table .= "<td>{".utf8_decode($v)."}</td>";
+			foreach($e as $k=>$v) $table .= "<td>".$v."</td>";
 			$table .= "</tr>";
 		}
 		
@@ -373,7 +373,7 @@ order by RD.shortname asc
 			$data = get_data($sql);
 			foreach($data as $row)
 			{
-				echo utf8_decode("CID_{$row['CID']} [shape=box,label=\"{$row['CLUB']},\\nChartret: {$row['CHARTERDATE']} af {$row['CHARTERCLUB']}\"];\n");
+				echo "CID_{$row['CID']} [shape=box,label=\"{$row['CLUB']},\\nChartret: {$row['CHARTERDATE']} af {$row['CHARTERCLUB']}\"];\n";
 				echo "CID_{$row['CHARTERCLUB_CID']} -- CID_{$row['CID']};\n";
 				//echo utf8_decode("\"{$row['CHARTERCLUB']}\" -> \"{$row['CLUB']}\"<br>");
 			}
@@ -484,7 +484,7 @@ order by RD.shortname asc
 			}
 			else if (isset($_REQUEST['table']))
 			{
-				die(utf8_decode(get_html_table($sql)));
+				die(get_html_table($sql));
 			}
 			else
 			{

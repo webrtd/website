@@ -185,7 +185,7 @@ function homecontent()
         </style>
         <?php 
     }
-    return utf8_decode($content);
+    return $content;
 }
 
 plugin_register('MOBILELOGIN', 'mobilelogin');
