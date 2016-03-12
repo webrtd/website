@@ -332,8 +332,8 @@
 	function put_banner($image, $mimetype, $startdate, $enddate, $position, $title)
 	{
 		$db = get_db();
-		$db->execute("insert into banner (image, mimetype, startdate, enddate, position, title) values ('$image', '$mimetype', '$startdate', '$enddate', '$position', '$title')");		
-		return $db->insertid();
+		$db->execute("insert into banner (image, mimetype, startdate, enddate, position, title) values ('$image', '$mimetype', '$startdate', '$enddate', '$position', '$title')");	
+		return get_single_value("select bid from banner order by id desc limit 1");
 	}
 
 
@@ -627,6 +627,21 @@
 		$db = get_db();
 		$db->execute("delete from article_file where afid='$afid'");
 	 }
+	 
+	 function get_single_value($sql)
+	 {
+		$db = get_db();
+		$rs = $db->execute($sql);
+		if ($db->NumRows($rs)>0)
+		{
+			return $db->FetchSingleValue($rs);
+		}
+		else
+		{
+			trigger_error("get_single_value failed");
+			die();
+		}
+	 }
 
 	 function put_article_file($aid, $mime, $filename, $show_in_gallery)
 	 {
@@ -639,7 +654,7 @@
 		if ($show_in_gallery) $show_in_gallery='1';
 		else $show_in_gallery ='0';
 		$db->execute("insert into article_file (aid, mimetype, filename, show_in_gallery) values ('$aid', '$mime', '$filename', '$show_in_gallery')");
-		return $db->insertid();
+		return get_single_value("select afid from article_file where aid='{$aid}' and filename='{$filename}' order by afid desc limit 1");
 	 }
 	
 	/**
@@ -1192,7 +1207,7 @@
 		$db = get_db();
 		$sql = "insert into meeting_image (mid,filepath,filename) values('$mid', '$fp', '$fn')";
 		$db->execute($sql);
-		return $db->insertid();
+		return get_single_value("select miid from meeting_image where mid='{$mid}' and filename='{$fn}' order by miid desc limit 1");
 	}
 
 	/**
@@ -1206,7 +1221,7 @@
 		$db = get_db();
 		$sql = "insert into meeting_file (mid,filepath,filename) values('$mid', '$fp', '$fn')";
 		$db->execute($sql);
-		return $db->insertid();
+		return get_single_value("select mfid from meeting_file where mid='{$mid}' and filename='{$fn}' order by mfid desc limit 1");
 	}
   
   /**
@@ -1539,8 +1554,7 @@
   {
     $db = get_db();
     $db->execute("insert into club (name) values ('No name')");
-    $cid = $db->insertid();
-    return $cid;
+	return get_single_value("select cid from club order by cid desc limit 1");
   }
   
   function delete_club($cid)
@@ -1574,8 +1588,7 @@
 			$values_sql = implode(",", $values);
 			$sql = "insert into user ($fields_sql) values ($values_sql)";
 			$db->execute($sql);
-			$uid = $db->insertid();
-			return $uid;
+			return get_single_value("select uid from user where cid='{$cid}' order by id desc limit 1");
 	}
 	
 	/**
@@ -1603,7 +1616,16 @@
 			$values_sql = implode(",", $values);
 			$sql = "insert into meeting ($fields_sql) values ($values_sql)";
 			$db->execute($sql);
-			$mid = $db->insertid();
+
+			$sel = array();
+			foreach($meeting as $key=>$value)
+			{
+				$sel[] = "{$key}='{$value}'";
+			}
+			$sel_sql = implode(" and ", $sel);
+			$sql = "select mid from meeting where {$sel_sql} order by mid desc limit 1";
+
+			$mid = $db->fetchsinglevalue($db->execute($sql));;
 		}
 		else
 		{
@@ -1643,7 +1665,7 @@
 		{
 			$sql = "insert into article (title, content, uid, last_update, public, weight, parent_aid, link) values ('$title', '$content', '$uid', now(), '$public', '$weight', '$parent_aid', '$link')";
 			$db->execute($sql);
-			return $db->insertid();
+			return get_single_value("select aid from article order by aid desc limit 1");
 		}
 		else
 		{
