@@ -400,7 +400,7 @@
 
 
 		$g_db->execute("insert into cronjob (ts) values (now())");
-		$logid = $g_db->insertid();
+		$logid = get_single_value("select id from cronjob order by id desc limit 1");
 		$ts = date("Y-m-d, H:i:s");
 		$log = "<h1>Run - $ts</h1>\n";
 
