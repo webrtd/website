@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -573,7 +573,9 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
 <!-- Retina js -->
 <script type="text/javascript" src="/template/js/retina.min.js"></script>
 <!-- FancyBox -->
-<script type="text/javascript" src="/template/js/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link href="/template/js/jquery.fancybox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/template/js/jquery.fancybox.js"></script>
+<script type="text/javascript" src="/template/js/jquery.fancybox-media.js"></script>
 
 <!-- Bootstrap js -->
 <script type="text/javascript" src="/template/js/bootstrap.min.js"></script>
@@ -611,6 +613,30 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
     });
 
 	$(document).ready(function(){
+/*var conte = "";
+			$('.meeting_technog .row .col-sm-4').each(function(index, element) {
+                var href11 = $(this).children('.thumbnail').children('a.fancybox').data('href');
+					conte += "{
+					href: href11,
+					title: 'this image links to bbc news',
+					link: 'http://www.bbc.co.uk/news/'}+','";
+            });	
+console.log(conte);
+		$(document).on('click','.col-sm-4 a.fancybox',function() {
+				
+        $.fancybox.open([		            
+        conte
+        ], {
+            beforeShow: function() {
+                $(".fancybox-image").wrap('<a href="' + this.link + '" />')
+            },
+            padding: 38,
+            nextEffect: 'fade',
+            prevEffect: 'fade'
+        });
+        return false;
+    });*/
+		
 		if( $("#news").length > 0 )
 		{}
 		else
@@ -619,6 +645,15 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
 				$(this).remove();
 			});
 		}
+                                
+        
+        $('.meeting_technog #links a.fancybox-media').fancybox({
+            openEffect  : 'none',
+            closeEffect : 'none',
+            helpers : {
+                media : {}
+            }
+        });
 	});
 
 	$('#main-menu').mouseover(function(){

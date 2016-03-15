@@ -69,17 +69,22 @@ http://rtd.dk/?uid=%%uid%%
 		<i>%%message%%</i>
 	',
 	'club_gallery' => '
-		<h1>Galleri</h1>
-		<a name=gallery><div style="height: 330px; overflow: scroll; overflow-x: hidden;" id=gallery></div><br></a>
-		<img width=100% src="/template/images/logo.png" id=gallery_pic>
+		<h1 style="clear:both;">Galleri</h1>
+        <div class="row gallery">
+        </div>
+		<!--<a name=gallery><div style="height: 330px; overflow: scroll; overflow-x: hidden;" id=gallery></div><br></a>-->
+		<img src="/template/images/logo.png" id=gallery_pic>
 		<script>
+            var host = "<?php echo $_SERVER["HTTP_HOST"]; ?>";
 			var gallery_data = jQuery.parseJSON(\'%%data%%\');
 			var gallery_html = "";
-			$.each(gallery_data, function(i,v) {
-				gallery_html = gallery_html + "<a href=#gallery onclick=gallery_show("+v.miid+")><img width=25% src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200 title=\'"+v.title+" ("+v.start_time+")\'></a>";
+            //alert(host);
+			$.each(gallery_data, function(i,v) {                
+				gallery_html = gallery_html + "<div class=col-sm-4><div class=thumbnail><a class=\"fancybox\" rel=\"gallery1\" href=/uploads/meeting_image/?miid="+v.miid+"><img src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200></a></div></div>";
 			});
-			$("#gallery").append(gallery_html);
 
+			$(".gallery.row").append(gallery_html);            
+            
 			function gallery_show(miid)
 			{
 				$("#gallery_pic").attr("src", "/uploads/meeting_image/?miid="+miid);
@@ -679,17 +684,10 @@ $('#prev').click(function() {
             <i class="icon fa fa-bullhorn"></i>
         </span>
     </div>
-
-  <div data-animate="flipInY">
-        <div class="carousel-wrap">
-            <ul class="carousel-nav">
-                <li><a href="#" class="btn btn-icon-prev prev"></a></li>
-                <li><a href="#" class="btn btn-icon-next next"></a></li>
-            </ul><!-- .carousel-nav -->
-
-            <div class="carousel" data-visible="3">&nbsp;</div>
-        </div>
-    </div>
+  
+    <div class="grid-wrap created">        
+        <section class="posts grid carousel11" data-columns="3"></section>
+    </div>  
   </div>
   <script>
     var newsitems = jQuery.parseJSON(\'%%data%%\');
@@ -719,7 +717,7 @@ $('#prev').click(function() {
 
       //$("#newsitems").append("<li><a href=?news="+n.nid+">"+n.title+", "+n.posted+"</a>");
     });
-    $("#newsitems .carousel").append(html);
+    $("#newsitems .carousel11").append(html);
   </script>
   ',
 	'news_item_comment' => '
@@ -1371,7 +1369,7 @@ $('#prev').click(function() {
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_3" value=10 id=S> <label for="roles_3">S</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=col-sm-offset-2 id=I> <label for="roles_4">I</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_5" value=12 id=K> <label for="roles_5">K</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=17 id=IRO> <label for="roles_4">IRO</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_6" value=17 id=IRO> <label for="roles_6">IRO</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=24 id=HM> <label for="roles_7">&AElig;M</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_8" value=13 id=N> <label for="roles_8">N<br></label>
 		<br>R&oslash;dk&aelig;de<br>
@@ -2079,14 +2077,15 @@ klub beklæde formandsposten.</p>
 
 
 		var htmlstr = "";
-		$.each(club_board_roles, function(key,value) {
-			var membershtml = "";
-			$.each(members, function(key,m) {
-			membershtml = membershtml +"<input onclick=\'eval_item(\""+value.description+"\",\""+m.roles+"\",\""+m.profile_ended+"\",\""+m.profile_started+"\");\' type=radio value="+m.uid+" name=role["+value.rid+"]>"+m.profile_firstname+" "+m.profile_lastname+", Ud: "+m.profile_ended+"<br>";
-		  });
-
-
-			 $("#board").append("<tr><td valign=top><b>"+value.description+"</b></td><td>"+membershtml+"<hr></td></tr>");
+		$.each(club_board_roles, function(key,value) 
+		{
+			var membershtml = "<select name=role["+value.rid+"]>";
+			$.each(members, function(key,m) 
+			{
+				membershtml += "<option value="+m.uid+" name=role["+value.rid+"]>"+m.profile_firstname+" "+m.profile_lastname+", Ud: "+m.profile_ended+"</option>";
+			});
+			membershtml += "</select>";
+			$("#board").append("<tr><td valign=top><b>"+value.description+"</b></td><td>"+membershtml+"<hr></td></tr>");
 	  });
 	</script>
 
@@ -2667,7 +2666,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	<a class="btn btn-white" href=?sendpassword=%%private_email%%>Nulstil kodeord</a>
 	<a class="btn btn-white" href=?uid=%%uid%%&edit>Rediger profil</a>
     <a class="btn btn-white" href=# onclick=ctoty(%%uid%%);>Indstil klub TOTY</a>
-	<a class="btn btn-white" href=# onclick=honorary(%%uid%%);>Indstil æres x-medlemsskab</a>
+	<a class="btn btn-white" href=# onclick=honorary(%%uid%%);>Indstil Æresmedlemsskab</a>
 	<a class="btn btn-white" href=# onclick=onleave(%%uid%%);>Anmeld orlov</a>
     <a class="btn btn-white" href=# onclick=resign(%%uid%%);>Udmeld medlem</a>
 	<a class="btn btn-white" href=?uid=%%uid%%&move>Overf&oslash;r medlem</a>
@@ -2697,10 +2696,10 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
   <input id=resign_text type=text name=resign_text><input type=button value="Udmeld" onclick=confirm_resignation();>
   </div>
   <div id=honorary_dialog style="display:none">
-  <p>Indstilling af ærexsedlemmer</p>
-  <p>1. Der kan på den ordinære generalforsamling udnævnes ærexsedlemmer for et år - dog kun et medlem for hver 10 klubmedlemmer. Landsformanden kan efter konkret vurdering dispensere herfra, såfremt klubben enstemmigt ønsker det.</p>
-  <p>2. Ingen kan udnævnes til ærexsedlem fra et tidspunkt før ophør af ordinært medlemskab i overensstemmelse med § 4 stk. 1 pkt. 1.</p>
-  <p>3. Et ærexsedlem har alle rettigheder i klubben, men ingen stemmeret. Klubben afgør selv kontingentforhold for ærexsedlemmer i forhold til klubben.</p>
+  <p>Indstilling af æresmedlemmer</p>
+  <p>1. Der kan på den ordinære generalforsamling udnævnes æresmsedlemmer for et år - dog kun et medlem for hver 10 klubmedlemmer. Landsformanden kan efter konkret vurdering dispensere herfra, såfremt klubben enstemmigt ønsker det.</p>
+  <p>2. Ingen kan udnævnes til æresmsedlem fra et tidspunkt før ophør af ordinært medlemskab i overensstemmelse med § 4 stk. 1 pkt. 1.</p>
+  <p>3. Et æresmedlem har alle rettigheder i klubben, men ingen stemmeret. Klubben afgør selv kontingentforhold for æresmsedlemmer i forhold til klubben.</p>
   <hr>
   <p>Skriv kommentar til indstilling af %%profile_firstname%% %%profile_lastname%% som ÆM</p>
   <input id=honorary_text type=text name=honorary_text><input type=button value="Indstil ÆM" onclick=confirm_honorary();>
@@ -3267,19 +3266,28 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		  $.each(links_data, function(i,j) {
 			var s = j.media_source;
 			var l = j.media_link;
-
+            
 			if (s == "vm")
 			{
 				var id = l.replace("http://vimeo.com/","");
-				$(\'<iframe src="//player.vimeo.com/video/\'+id+\'" width="100%" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>\').appendTo($("#links"));
+                var imgsrc = "";
+                $.getJSON("http://www.vimeo.com/api/v2/video/" + id + ".json?callback=?", {format: "json"}, function(data) {
+                 imgsrc = data[0].thumbnail_medium;
+                 $(\'<a class="fancybox-media" href="http://vimeo.com/\'+id+\'"><img src="\'+imgsrc+\'"></a>\').appendTo($("#links"));
+                });				
 			}
 			else if (s == "yt")
 			{
-
 				var id = l.replace("http://youtu.be/", "");
 				var id = id.replace("http://www.youtube.com/watch?v=", "");
-				$(\'<iframe width="100%" height="300" src="//www.youtube.com/embed/\'+id+\'" frameborder="0" allowfullscreen></iframe>\').appendTo($("#links"));
+                
+                var id11 = l.substr(l.indexOf("=") + 1);
+				$(\'<a class="fancybox-media" href="http://www.youtube.com/watch?v=\'+id11+\'"><img width="200px" src="http://img.youtube.com/vi/\'+id11+\'/hqdefault.jpg"></a>\').appendTo($("#links"));
 
+			}
+            else if (s == "fb")
+			{
+                $(\'<a class="btn btn-xs" href="\'+l+\'" target="_blank">Åbn facebook link</a>\').appendTo($("#links"));				
 			}
 		  });
 
@@ -3685,7 +3693,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		'statsbox' => 	'<h3>Statistik</h3><br>
 						<div class=stats>
 							<li>Medlemmer: %%allmembers%%</li>
-							<li>Ærexsedlemmer: %%honorary%%</li>
+							<li>Æresmedlemmer: %%honorary%%</li>
 							<li>Nye i år: %%newmembers%%</li>
 							<li>Afgående i år: %%leavingmembers%%</li>
 							<li>Gns. alder: %%avgage%% år</li>
@@ -4326,13 +4334,11 @@ http://www.rtd.dk/?mid=%%mid%%
 			<!--<p>Brevgennemgang:</p>-->
 			<a class="btn btn-xs" href=?mid=%%mid%%&collection=%%mid%% target=_blank role="button">Brev 1</a>
 			<a class="btn btn-default" href=?mid=%%mid%%&collection=%%mid%%/2 target=_blank role="button">Brev 2</a>
-			<br><!--<b>Ansvarlige:</b>-->
 		',
-		'meeting_duty' => '<b>Ansvarlige:</b><dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
+		'meeting_duty' => '<b class="heading_btn_txt">Ansvarlige:</b><dt>%%duty%%</dt><dd><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></dd>',
 		'meeting_rating' => '<h3>Møderating</h3><p>Rating: %%rating%%/10 - %%count%% stemmer</p>',
     'meeting_files' =>
-    '
-    <div id=embed></div>
+    '<!--<div id=embed></div>-->
     <h3>Vedhæftede filer</h3>
     <ul id=download_files></ul>
     <script>
@@ -4346,8 +4352,7 @@ http://www.rtd.dk/?mid=%%mid%%
 			}
       $("#download_files").append("<li><a href=/uploads/meeting_file?mfid="+value.mfid+">"+value.filename+"</a>");
     });
-    </script>
-    <h3 class="metting_title">Mødebilleder</h3>
+    </script>    
     ',
     'meeting_rate_form' =>
     '
@@ -4383,7 +4388,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		',
 		'meeting_header' => "<div align=right class=print_cal><a class=\"btn btn-gray meeting\" target=_blank href=?mid=%%mid%%&print title=Udskriv>Print</a> <a class=\"btn btn-gray meeting\" href=?mid=%%mid%%&ics title='Tilføj til kalender'>Kalender</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
 		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" target=_blank><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
-		'meeting_bottom_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800"  target=_blank"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300"></a>',
+		'meeting_bottom_image' => '<div class="col-sm-4"><div class="thumbnail"><a class="fancybox" rel="gallery1" href="/uploads/meeting_image/?miid=%%img%%&w=800" data-href="/uploads/meeting_image/?miid=%%img%%&w=800"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" alt="Image"></a></div></div>',                															
 		'meeting_invite1' => '
 												<div class="content-left">
 													<div class="article-date">
@@ -4462,7 +4467,8 @@ http://www.rtd.dk/?mid=%%mid%%
 											<div id=locmap></div>
 
 											<p>M&oslash;destart<br>
-											<input class="field form-control" type=text name=meeting[start_time] value="%%start_time%%" id=start_time></p>
+											<input class="field form-control" type=text name=meeting[start_time] value="%%start_time%%" id=start_time>
+                                            </p>
 											<p>M&oslash;deslut<br>
 											<input class="field form-control" type=text name=meeting[end_time] value="%%end_time%%" id=end_time></p>
 											</td>
@@ -4565,7 +4571,7 @@ http://www.rtd.dk/?mid=%%mid%%
 													$("#duty_ext2_uid").val("%%duty_ext2_uid%%");
 													$("#duty_ext3_uid").val("%%duty_ext3_uid%%");
 													$("#duty_ext4_uid").val("%%duty_ext4_uid%%");
-
+                                                    
 													$("#start_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
 													$("#end_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
 
@@ -4887,7 +4893,7 @@ http://www.rtd.dk/?mid=%%mid%%
 					<li><a href=?admin_download=clubmail>Opdater klubmails</a>
 					<li><a href=?takeover>Overtag profil</a></li>
 					<li><a href=http://ads.rtd.dk target=_blank>Webbanners</a></li>
-					<li><a href=?nominations=24>Ærexsedlemsskaber</a></li>
+					<li><a href=?nominations=24>Æresmedlemsskaber</a></li>
                     <li><a href=?nominations=38>Klub TOTY</a></li>
 					<li><a href=?admin=article&edit=-1>Opret artikel</a></li>
 					<li><a href=?admin_download=newsletter>Nyhedsbrev</a></li>

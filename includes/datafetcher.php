@@ -1599,6 +1599,7 @@
 	 */
 	function save_meeting($meeting, $mid)
 	{
+        
 		$db = get_db();
 		if ($mid<0)
 		{
@@ -1620,7 +1621,10 @@
 			$sel = array();
 			foreach($meeting as $key=>$value)
 			{
+                if($key != 'description')
+                {
 				$sel[] = "{$key}='{$value}'";
+                }
 			}
 			$sel_sql = implode(" and ", $sel);
 			$sql = "select mid from meeting where {$sel_sql} order by mid desc limit 1";
@@ -1644,7 +1648,7 @@
 
 
 	/**
-	 *	insert/update article
+	 *	insert/update article 
 	 *	@return int article id
 	 *	@param int $aid article id (-1 for new article)
 	 *	@param string $title article title

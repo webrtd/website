@@ -119,9 +119,11 @@
 			$images = "";
 			if (!empty($meeting['images']))
 			{
+                $i=1;
 				foreach ($meeting['images'] as $img)
 				{
-					$images .= "<p><img src=/uploads/meeting_image/?miid={$img['miid']}&w=100 width=100px><input type=checkbox name=deleteimage[] value={$img['miid']} id=\"check1\"><label for=\"check1\">Slet</label></p>";
+					$images .= "<p><img src=/uploads/meeting_image/?miid={$img['miid']}&w=100 width=100px><input type=checkbox name=deleteimage[] value={$img['miid']} id=\"check".$i."img\"><label for=\"check".$i."img\">Slet</label></p>";
+                    $i++;
 				}
 			}
 			
@@ -135,7 +137,7 @@
         for($i=0;$i<sizeof($meeting['files']);$i++)
         {
           $f = $meeting['files'][$i];
-          $files .= "<li><a href=/uploads/meeting_file?mfid={$f['mfid']} target=_blank>{$f['filename']}</a><br><input type=checkbox name=deletefile[] value={$f['mfid']} id=\"check3\"><label for=\"check3\">Slet</label>";
+          $files .= "<li><a href=/uploads/meeting_file?mfid={$f['mfid']} target=_blank>{$f['filename']}</a><br><input type=checkbox name=deletefile[] value={$f['mfid']} id=\"check".$i."files\"><label for=\"check".$i."files\">Slet</label>";
         }
       }
       $files .= "</ul>";
@@ -227,9 +229,11 @@
 		$images = "";
 		if (!empty($meeting['images']))
 		{
+            $i=1;
 			foreach ($meeting['images'] as $img)
 			{
-				$images .= "<p><img src=/uploads/meeting_image/?miid={$img['miid']} width=100px><input type=checkbox name=deleteimage[] value={$img['miid']} id=\"check2\"><label for=\"check2\">Slet</label></p>";
+				$images .= "<p><img src=/uploads/meeting_image/?miid={$img['miid']} width=100px><input type=checkbox name=deleteimage[] value={$img['miid']} id=\"check".$i."img\"><label for=\"check".$i."img\">Slet</label></p>";
+                $i++;
 			}
 		}
 		
@@ -376,12 +380,23 @@
                 $meeting['starting_time'] = $starting_time;
                 $meeting['final_time'] = $final_time;
                 $meeting['fullday'] = $fullday;
-                
+                    
+                    $files = logic_get_meeting_files($meeting['mid']);  
+                                
 					$html .= term_unwrap('meeting_invite1', $meeting);
 					$html .= '<div class="col-xs-12 col-sm-6">';
+                    if($files)
+                    {
+                    $html .= '<a class="btn btn-xs" href="/uploads/meeting_file?mfid='.$files[0]['mfid'].'">Download m&oslash;dereferat</a>';
+                    }
 					$html .= '<h3 class="title">Pligter</h3>';
 					$html .= '<dl class="dl-horizontal">';
                     //echo "<pre>"; print_r($duties);
+                    
+                    if(!empty($duties)) {                       
+					$html .= term_unwrap('meeting_duties', $meeting);
+                    }
+                    
 					foreach($duties as $duty => $user)
 					{ 
 						if (strstr($duty,'ext')!==false)
@@ -398,15 +413,24 @@
 					}
 					
 					$html .= '</dl>';
-                    if(!empty($duties)) {
-                       
-					$html .= term_unwrap('meeting_duties', $meeting);
-                    }
+                    
 					$html .= '</div>';
 					$html .= term_unwrap('meeting_invite2', $meeting);
 				$html .= '';
 			$html .= '</div></article>';
-
+            
+            // gallery images
+			if (sizeof($meeting['images'])>1)
+			{
+                $html .= "<div class='row'><h3>M&oslash;debilleder</h3>";
+				for ($i=1;$i<sizeof($meeting['images']);$i++)
+				{                    
+					$top_img = array('img' => $meeting['images'][$i]['miid']);
+					$html .= term_unwrap('meeting_bottom_image', $top_img);
+				}
+                $html .= "</div>";
+			}
+            
             //$html .= term_unwrap('meeting_invite', $meeting);
 			$links = logic_get_meeting_links($meeting['mid']);
 			if (!empty($links))
@@ -538,17 +562,7 @@
 			}
 			
 			$files = logic_get_meeting_files($meeting['mid']);
-      if (!empty($files)) $html .= term_unwrap('meeting_files', array('files'=>json_encode($files)));
-      
-			// gallery images
-			if (sizeof($meeting['images'])>1)
-			{
-				for ($i=1;$i<sizeof($meeting['images']);$i++)
-				{
-					$top_img = array('img' => $meeting['images'][$i]['miid']);
-					$html .= term_unwrap('meeting_bottom_image', $top_img);
-				}
-			}
+      if (!empty($files)) $html .= term_unwrap('meeting_files', array('files'=>json_encode($files)));      			
             
 			set_title($meeting['title']);	
 			$html .= '</div>
