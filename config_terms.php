@@ -75,10 +75,8 @@ http://rtd.dk/?uid=%%uid%%
 		<!--<a name=gallery><div style="height: 330px; overflow: scroll; overflow-x: hidden;" id=gallery></div><br></a>-->
 		<img src="/template/images/logo.png" id=gallery_pic>
 		<script>
-            var host = "<?php echo $_SERVER["HTTP_HOST"]; ?>";
 			var gallery_data = jQuery.parseJSON(\'%%data%%\');
 			var gallery_html = "";
-            //alert(host);
 			$.each(gallery_data, function(i,v) {                
 				gallery_html = gallery_html + "<div class=col-sm-4><div class=thumbnail><a class=\"fancybox\" rel=\"gallery1\" href=/uploads/meeting_image/?miid="+v.miid+"><img src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200></a></div></div>";
 			});
@@ -378,23 +376,14 @@ http://rtd.dk/?uid=%%uid%%
 	%%popularsearch%%
 	',
 	'randomuser_js' => '    
-	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div id=duty_field class=stats></div><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
+	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
 	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500></td><td>");
 	document.write("<div class=title><h3><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></h3>");
 	document.write("%%company_position%%, ");
 	document.write("<p>%%company_name%%</p>");
 	document.write("</div></a></div></div></div>");
 	$(".statistik h2").text("Statistik");
-	$(".statistik_content").addClass("col-xs-8");
-  
-        var dutydata = jQuery.parseJSON(notification_update_json);
-        var cnt = 0;
-        $.each(dutydata, function(key,value) {
-        cnt++;
-        var d = new Date(value.start_time);
-        $("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
-        });
-        if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");  
+	$(".statistik_content").addClass("col-xs-8");           
 	',
 	'user_on_leave_subj' => 'Orlov fra RTD - %%profile_firstname%% %%profile_lastname%%',
 	'user_on_leave_body' => 'Dags dato er %%profile_firstname%% %%profile_lastname%% på orlov fra RTD. Se mere på http://rtd.dk/?uid=%%uid%%',
@@ -1536,10 +1525,10 @@ $('#prev').click(function() {
 
                 var html = "";
 				html += "<div class=\"col-xs-4 all_members\"><div class=\"member\"><div class=\"member-heading\">";
-                html += "<a class=\"userpic\" href=?uid=\"+v.uid+\"><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=200&h=333></a>";
+                html += "<a class=\"userpic\" href=?uid="+v.uid+"><span class=\"btn btn-icon-user\"></span><img src=/uploads/user_image?uid="+v.uid+"&landscape&w=200&h=333></a>";
                 html += con;
 				html += "<div class=\"title\">";
-				html += "<h4><a href=?uid=\"+v.uid+\">"+v.profile_firstname+" "+v.profile_lastname+"</a></h4>";
+				html += "<h4><a href=?uid="+v.uid+">"+v.profile_firstname+" "+v.profile_lastname+"</a></h4>";
                 html += "<p><strong>"+v.role+"</strong></p>";
 				html += "<p>"+v.district+"</p>";
 				html += "<p>"+v.club+"</p></div>";
@@ -1987,99 +1976,28 @@ klub beklæde formandsposten.</p>
 	</form>
 	<script>
 		var club_board_roles = jQuery.parseJSON(\'%%board_roles%%\');
-		var new_board_selection = new Object();
-
-		Object.size = function(obj) {
-			var size=0,key;
-			for(key in obj) {
-				if (obj.hasOwnProperty(key)) size++;
-			}
-			return size;
-		}
 
 		function validate_kbp(frm)
 		{
-			var err = "";
-
-			if (Object.size(new_board_selection) != club_board_roles.length)
+			var ret = true;
+			
+			$.each(club_board_roles, function(k,v)
 			{
-				alert("Fejl: Alle poster i bestyrelsen skal udfyldes for indstillingen kan foretages");
-				return false;
-			}
-
-			var old_board_count = 0;
-			$.each(club_board_roles, function(key,value) {
-				if (value)
+				var id = "#role"+v.rid;
+				if ($(id).val()==0 && ret)
 				{
-					// exclude iro
-					if (key != 17) old_board_count++;
+					alert("Fejl: Alle poster i bestyrelsen skal udfyldes før indstillingen kan foretages");
+					ret = false;
 				}
-		  });
-
-		  if (old_board_count==0)
-		  {
-		  	err += "- Mindst 1 medlem fra den siddende bestyrelse skal genvælges til den nye bestyrelse.\n";
-		  }
-
-		  if (old_board_count>3)
-		  {
-		  	err += "- Højest 3 medlemmer fra den siddende bestyrelse kan genvælges.\n";
-		  }
-
-			// if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);
-
-			return true;
+			});
+			return ret;
 		}
 
-		function eval_item(cur_role,r,d,s)
-		{
-			var role_start_date = $.datepicker.parseDate("yy-mm-dd", "%%period_start%%");
-			var d = $.datepicker.parseDate("yy-mm-dd", d);
-			var s = $.datepicker.parseDate("yy-mm-dd", s);
-
-			var err = "";
-
-			if (d<role_start_date)
-			{
-				err += "- Det valgte medlem er udtrådt af Round Table Danmark ved tiltrædelsestidspunktet.\n";
-			}
-
-			/*
-			if (r.indexOf(cur_role)!=-1)
-			{
-				err += "- Det valgte medlem bestrider den valgte post i indeværende periode.\n";
-			}*/
-
-			var already_member_of_board = false;
-			for (var i=0; i<club_board_roles.length; i++)
-			{
-				if (r.indexOf(club_board_roles[i].description)!=-1)
-				{
-					already_member_of_board = true;
-				}
-			}
-
-			new_board_selection[cur_role] = already_member_of_board;
-
-			var diff_ms = Math.abs(role_start_date.getTime() - s.getTime());
-			var diff_s = diff_ms / 1000;
-			var diff_m = diff_s / 40;
-			var diff_h = diff_m / 40;
-			var diff_d = diff_h / 24;
-
-			if (diff_d<345) err += "- Medlemmet skal have været medlem af Round Table Danmark i 1 år ved tiltrædelsestidspunkt.\n";
-
-
-			if (err != "") alert("Følgende punkter kræver dispensation fra LF:\n"+err);
-		}
 		var members = jQuery.parseJSON(\'%%club_members%%\');
-
-
-
 		var htmlstr = "";
 		$.each(club_board_roles, function(key,value) 
 		{
-			var membershtml = "<select name=role["+value.rid+"]>";
+			var membershtml = "<select id=role"+value.rid+" name=role["+value.rid+"]><option value=0>-</option>";
 			$.each(members, function(key,m) 
 			{
 				membershtml += "<option value="+m.uid+" name=role["+value.rid+"]>"+m.profile_firstname+" "+m.profile_lastname+", Ud: "+m.profile_ended+"</option>";
@@ -4388,7 +4306,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		',
 		'meeting_header' => "<div align=right class=print_cal><a class=\"btn btn-gray meeting\" target=_blank href=?mid=%%mid%%&print title=Udskriv>Print</a> <a class=\"btn btn-gray meeting\" href=?mid=%%mid%%&ics title='Tilføj til kalender'>Kalender</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
 		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" target=_blank><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
-		'meeting_bottom_image' => '<div class="col-sm-4"><div class="thumbnail"><a class="fancybox" rel="gallery1" href="/uploads/meeting_image/?miid=%%img%%&w=800" data-href="/uploads/meeting_image/?miid=%%img%%&w=800"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" alt="Image"></a></div></div>',                															
+		'meeting_bottom_image' => '<div class="col-sm-4"><div class="thumbnail"><a class="fancybox" rel="gallery1" href="javascript:void(0);" data-href="/uploads/meeting_image/?miid=%%img%%&w=800"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" alt="Image"></a></div></div>',                															
 		'meeting_invite1' => '
 												<div class="content-left">
 													<div class="article-date">
@@ -4572,8 +4490,8 @@ http://www.rtd.dk/?mid=%%mid%%
 													$("#duty_ext3_uid").val("%%duty_ext3_uid%%");
 													$("#duty_ext4_uid").val("%%duty_ext4_uid%%");
                                                     
-													$("#start_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
-													$("#end_time").datetimepicker({dateFormat:"yy-mm-dd",timeFormat:"HH:mm:ss"});
+													$("#start_time").datetimepicker({timeFormat: "HH:mm:ss"});
+													$("#end_time").datetimepicker({timeFormat: "hh:mm:ss"});
 
 													$("#start_time").change(
 														function() {

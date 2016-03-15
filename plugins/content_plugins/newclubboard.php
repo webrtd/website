@@ -26,7 +26,7 @@
 			foreach ($_REQUEST['role'] as $rid => $uid)
 			{
 				$event_data[$rid] = $uid;
-				logic_add_role($uid, $rid, $start, $end);
+				logic_add_role1($uid, $rid, $start, $end);
 			}
 
 			event_new_club_board($_SESSION['user']['cid'], $event_data);
