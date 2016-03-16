@@ -719,7 +719,7 @@
 		$empty_fields = false;
 		foreach($data as $key => $value)
 		{
-			if ($value=="") $empty_fields = true;
+			if ($value=="" && $key != 'private_housefloor' && $key != 'private_houseplacement') $empty_fields = true;
 		}
 		if ($empty_fields)
 		{
@@ -1549,9 +1549,7 @@ END:VCALENDAR"
 	}
 
 	function logic_upload_meeting_image($filestruct, $mid)
-	{		
-		
-		
+	{						
 		$folder =MEETING_IMAGES_UPLOAD_PATH.$mid;
 		if (!is_array($filestruct['name']))
 		{
@@ -1572,7 +1570,9 @@ END:VCALENDAR"
 			}
 		}
 		else
-		{
+		{ 
+            if($filestruct['name'][0] != '')
+            {           
 			for($i=0;$i<sizeof($filestruct['name']);$i++)
 			{
 				if (!is_dir(MEETING_IMAGES_UPLOAD_PATH.$mid))
@@ -1592,6 +1592,7 @@ END:VCALENDAR"
 					save_meeting_image($fn, $filestruct['name'][$i], $mid);
 				}
 			}
+            }
 		}
 	}
 
@@ -3108,9 +3109,7 @@ END:VCARD
 		return get_data($sql);
 	}
  }
- 
- 
-     function logic_wordpress_role_exists( $role ) {
+      function logic_wordpress_role_exists( $role ) {
     
       if( ! empty( $role ) ) {
         return $GLOBALS['wp_roles']->is_role( $role );

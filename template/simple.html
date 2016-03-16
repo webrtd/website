@@ -550,12 +550,12 @@
 
 <!--<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>-->
 <script type="text/javascript" src="/template/js/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="/scripts/timepicker/timepicker.js"></script>
+<script type="text/javascript" src="/template/js/jquery-ui-timepicker-addon.js"></script>
 
 <script type="text/javascript" src="/template/js/actions.js"></script>
 <script type="text/javascript" src="/template/js/mobile.js"></script>
 
-<script type="text/javascript" src="/template/js/jquery-ui-1.10.4.custom.min.js"></script>
+%%INCLUDEJS%%
 
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
 
@@ -577,6 +577,8 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
 <script type="text/javascript" src="/template/js/jquery.fancybox.js"></script>
 <script type="text/javascript" src="/template/js/jquery.fancybox-media.js"></script>
 
+<link href="/template/js/prettyPhoto.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/template/js/jquery.prettyPhoto.js"></script>
 <!-- Bootstrap js -->
 <script type="text/javascript" src="/template/js/bootstrap.min.js"></script>
 
@@ -599,7 +601,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
 <script type="text/javascript" src="/template/js/jquery.counterup.min.js"></script>
 
-<script>
+<script charset="utf-8">
 
     $(window).load(function() {
         $('.counter').counterUp({
@@ -612,30 +614,16 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur
 
     });
 
-	$(document).ready(function(){
-/*var conte = "";
-			$('.meeting_technog .row .col-sm-4').each(function(index, element) {
-                var href11 = $(this).children('.thumbnail').children('a.fancybox').data('href');
-					conte += "{
-					href: href11,
-					title: 'this image links to bbc news',
-					link: 'http://www.bbc.co.uk/news/'}+','";
-            });	
-console.log(conte);
-		$(document).on('click','.col-sm-4 a.fancybox',function() {
-				
-        $.fancybox.open([		            
-        conte
-        ], {
-            beforeShow: function() {
-                $(".fancybox-image").wrap('<a href="' + this.link + '" />')
-            },
-            padding: 38,
-            nextEffect: 'fade',
-            prevEffect: 'fade'
-        });
-        return false;
-    });*/
+	$(document).ready(function(){	
+	
+		$(".meeting_technog .col-sm-4 a[rel^='prettyPhoto'], .club-page-header .col-sm-4 a[rel^='prettyPhoto']").prettyPhoto({
+			animationSpeed: 'normal', /* fast/slow/normal */
+			opacity: 0.80, /* Value between 0 and 1 */
+			showTitle: true, /* true/false */
+			social_tools: false,
+			overlay_gallery: false,
+			show_title: false
+		});	
 		
 		if( $("#news").length > 0 )
 		{}

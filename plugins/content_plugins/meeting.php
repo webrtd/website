@@ -54,7 +54,7 @@
     	$html = "";
 		
     		if ($_REQUEST['minutes_edit']=='save')
-    		{
+    		{                
 				$meeting = logic_save_meeting_minutes($meeting['mid'], $_REQUEST['minutes']);
 				logic_upload_meeting_image($_FILES['minutes_images'],$meeting['mid']);
 				logic_upload_meeting_file($_FILES['minutes_file'],$meeting['mid']);
@@ -145,18 +145,35 @@
 			$meeting['files_html'] = $files;
 			
 		$links = logic_get_meeting_links($meeting['mid']);
-		$links_html = "<ul>";
-			
+		$links_html = "<ul class='meting_links'>";
+        $k=1;	
+        		
 		foreach($links as $l)
 		{
-			switch ($l['media_source'])
-			{
-				case 'vm': $icon = "http://www.imagineersystems.com/front-page/++resource++imagineer.style.images/vimeoLogo.png"; break;
-				case 'fb': $icon = "http://www.gscsga.org/_/rsrc/1254623087646/home/facebook-logo-PNG.png"; break;
-				case 'yt': $icon = "http://www.imagineersystems.com/products/plug-ins/++resource++imagineer.style.images/youtubeLogo.png"; break;
-				
-			}
-			$links_html .= "<a href='{$l['media_link']}' target=_blank><img src='{$icon}'></a><label for=\"check4\"> Slet:</label> <input type=checkbox name=deletelink[] value={$l['mlid']} id=\"check4\"><br>";
+            if($l['media_source'] == 'vm')
+            {
+                $link = $l['media_link'];
+                $link = str_replace('http://vimeo.com/', 'http://vimeo.com/api/v2/video/', $link) . '.php';
+                $html_returned = unserialize(file_get_contents($link));
+                $thumb_url = $html_returned[0]['thumbnail_small'];
+
+                $icon = $thumb_url;
+                $wid = '';
+            }
+            else if($l['media_source'] == 'fb')
+            {
+                $icon = "http://dev.rtd.dk/template/images/facebook.jpg";
+                $wid = '';
+            }
+            else if($l['media_source'] == 'yt')
+            {
+                $link = substr($l['media_link'], strpos($l['media_link'], "=") + 1);
+                $icon = "http://img.youtube.com/vi/".$link."/2.jpg";
+                $wid = '100px';
+            }
+            			
+			$links_html .= "<li><a href='{$l['media_link']}' target=_blank><img width='{$wid}' src='{$icon}'></a><input type=checkbox name=deletelink[] value={$l['mlid']} id=\"check".$k."link\"><label for=\"check".$k."link\"> Slet</label></li>";
+            $k++;
 		}
 		
 		$links_html .= "</ul>";

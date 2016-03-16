@@ -162,27 +162,51 @@
 	{
 		$html = "";
 
-		if (isset($_REQUEST['data'])) $data = $_REQUEST['data'];
-		else $data=array(
-		"profile_firstname" => "",
-		"profile_lastname" => "",
-		"profile_birthdate" => "",
-		"profile_started" => "",
-		"private_address" => "",
-		"private_houseno" => "",
-		"private_houseletter" => "",
-		"private_housefloor" => "",
-		"private_houseplacement" => "",
-		"private_zipno" => "",
-		"private_city" => "",
-		"private_phone" => "",
-		"private_mobile" => "",
-		"private_email" => ""
-		);
+		if (isset($_REQUEST['data']))
+        {
+            $data = $_REQUEST['data'];
+        }
+		else
+        {
+            $data=array(
+                "profile_firstname" => "",
+                "profile_lastname" => "",
+                "profile_birthdate" => "",
+                "profile_started" => "",
+                "private_address" => "",
+                "private_houseno" => "",
+                "private_houseletter" => "",
+                "private_housefloor" => "",
+                "private_houseplacement" => "",
+                "private_zipno" => "",
+                "private_city" => "",
+                "private_phone" => "",
+                "private_mobile" => "",
+                "private_email" => ""
+            );
+        }
 
 		if (isset($_REQUEST['data']))
 		{
-			$uid = logic_create_user($_REQUEST['data'], $_SESSION['user']['cid']);
+            if($_REQUEST['data']['profile_birthdate'] != '')
+            {
+                $_REQUEST['data']['profile_birthdate'] = date('Y-m-d',strtotime($_REQUEST['data']['profile_birthdate']));
+            }
+            else
+            {
+                $_REQUEST['data']['profile_birthdate'] = '';
+            }
+            
+            if($_REQUEST['data']['profile_started'] != '')
+            {
+                $_REQUEST['data']['profile_started'] = date('Y-m-d',strtotime($_REQUEST['data']['profile_started']));
+            }
+            else
+            {
+                $_REQUEST['data']['profile_started'] = '';
+            }                    
+                        
+			$uid = logic_create_user1($_REQUEST['data'], $_SESSION['user']['cid']);
 			if ($uid>0)
 			{
 				cache_invalidate("stats");

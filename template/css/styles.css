@@ -12,7 +12,7 @@
 }
 #page-content.not_home+.title.title-section,
 .homepage #page-content+.title.title-section {
-    clear: both
+    clear: both;
 }
 #page-content .container .col-md-10,
 .country_pages .page_content>.col-md-10.col-xs-12,
@@ -543,7 +543,21 @@ p a.dis_btn_link {display:none;}
 .meeting_technog .content-right dl.dl-horizontal .heading_btn_txt {display:none;}
 .meeting_technog .content-right dl.dl-horizontal b.heading_btn_txt:first-of-type {display:block;}
 
-.meeting_technog #links a.fancybox-media {display:block; margin:10px 0;}
+.meeting_technog #links a.fancybox-media {margin:0 10px; position:relative;}
+.meeting_technog #links a.fancybox-media:after { 
+    content:''; 
+    background:url(../images/play_button.png) no-repeat;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 75px;
+    top: 0;
+}
+
+.page_content .col-xs-12 form ul.meting_links li {padding:0 0 5px;}
+.page_content .col-xs-12 form ul.meting_links li label {vertical-align:top;}
+.page_content #newsitems .grid-wrap.created {opacity:1;}
+.pp_pic_holder {position:fixed !important; top:0 !important;}
 
 @media (max-width: 980px) {
 	.country_pages .Klubber #projects{margin-left:-30px !important;}
