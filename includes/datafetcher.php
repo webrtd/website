@@ -1588,7 +1588,7 @@
 			$values_sql = implode(",", $values);
 			$sql = "insert into user ($fields_sql) values ($values_sql)";
 			$db->execute($sql);
-			return get_single_value("select uid from user where cid='{$cid}' order by id desc limit 1");
+			return get_single_value("select uid from user where cid='{$cid}' order by uid desc limit 1");
 	}
 	
 	/**
