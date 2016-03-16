@@ -719,7 +719,7 @@
 		$empty_fields = false;
 		foreach($data as $key => $value)
 		{
-			if ($value=="" && $key != 'private_housefloor' && $key != 'private_houseplacement') $empty_fields = true;
+			if ($value=="" && $key != 'private_housefloor' && $key != 'private_houseplacement' && $key != 'private_houseletter') $empty_fields = true;
 		}
 		if ($empty_fields)
 		{

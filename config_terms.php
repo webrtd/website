@@ -2432,39 +2432,39 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	<div class="row">
 		<h1>Stamdata</h1>
 		<div class="col-xs-12 col-md-4">
-		<p>Fornavn<br>
+		<p>Fornavn *<br>
   		<input type=text name=data[profile_firstname] value="%%profile_firstname%%" id=firstname class=form-control></p>
-  		<p>Fødselsdato<br>
+  		<p>Fødselsdato *<br>
   		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate class="form-control form-datepicker"></p>
 		</div>
 
 		<div class="col-xs-12 col-md-4">
-  		<p>Efternavn<br>
+  		<p>Efternavn *<br>
   		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" id=lastname class=form-control></p>
-  		<p>Charterdato<br>
+  		<p>Charterdato *<br>
   		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate class="form-control form-datepicker"></p>
 		</div>
 	</div>
 	<div class="row">
 		<h1>Kontaktoplysninger</h1>
 		<div class="col-xs-12 col-md-4">
-		<p>Adresse<br>
+		<p>Adresse *<br>
 		<input id=vej type=text name=data[private_address] value="%%private_address%%" class=form-control></p>
-  		<p>Telefon<br>
+  		<p>Telefon *<br>
 		<input type=text name=data[private_phone] value="%%private_phone%%" class=form-control></p>
 		</div>
 
 		<div class="col-xs-12 col-md-4">
-  		<p>Hus nr.<br>
+  		<p>Hus nr. *<br>
 		<input id=nr type=text name=data[private_houseno] value="%%private_houseno%%" class=form-control></p>
-  		<p>Mobil<br>
+  		<p>Mobil *<br>
 		<input type=text name=data[private_mobile] value="%%private_mobile%%" class=form-control></p>
 		</div>
 
 		<div class="col-xs-12 col-md-4">
   		<p>Hus bogstav<br>
 		<input id=type=text name=data[private_houseletter] value="%%private_houseletter%%" class=form-control></p>
-  		<p>Mail<br>
+  		<p>Mail *<br>
 		<input type=text name=data[private_email] value="%%private_email%%" id=mail class=form-control></p>
 		</div>
 
@@ -2476,9 +2476,9 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</div>
 
 		<div class="col-xs-12 col-md-4">
-  		<p>Post nr<br>
+  		<p>Post nr *<br>
 		<input type=text name=data[private_zipno] value="%%private_zipno%%" class=form-control></p>
-  		<p>By<br>
+  		<p>By *<br>
 		<input type=text name=data[private_city] value="%%private_city%%" class=form-control></p>
 		</div>
 	</div>
@@ -2495,12 +2495,12 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			});
 
 			function newuser(frm)
-			{                         
+			{                          
 				for (var i=0; i<frm.elements.length; i++)
 				{
-				  if (frm.elements[i].value=="" && i != 11 && i != 10)
+				  if (frm.elements[i].value=="" && i != 11 && i != 10 && i != 8)
 				  {
-					alert("Alle felter skal udfyldes!");
+					alert("Alle felter med * skal udfyldes!");
 					return false;
 				  }
 				}
