@@ -144,10 +144,13 @@ global $current_user;
 		</ul>';
 	}
 	else
-	{  
-	    wp_logout();
-		session_destroy(); //destroy the session
-		setcookie('RTD_LOGIN_COOKIE','');
+	{   
+        if(!isset($_SESSION['user']))
+        { 
+	        wp_logout();
+            session_destroy(); //destroy the session
+            setcookie('RTD_LOGIN_COOKIE','');
+        }				
 		$cont = '<ul class="user-nav">
 			<li><a class="btn btn-primary btn-lg" href="#login-register" data-toggle="modal" title="Log in">Log Ind</a></li>
 		</ul>';
@@ -173,7 +176,7 @@ function homecontent()
         }
         ?>
         <style>
-        .index .container .home_content {display:none;}        
+        .index .container .home_content {display:none;}   
         </style>
         <?php 
     }
@@ -181,7 +184,7 @@ function homecontent()
     {
         ?>
         <style>
-        .index #page-content .container .row:first-child {display:none;}
+        .index #page-content > .container > .row:first-child {display:none;}
         </style>
         <?php 
     }
@@ -229,7 +232,7 @@ function usersidebar()
     if(isset($_GET['uid']) && is_user_logged_in())
     {
         
-        $cnt .= '<div class="col-xs-12 col-sm-4 col-md-2 desktop_left" id="banners">
+        $cnt .= '<div class="col-xs-12 col-sm-4 col-md-2 desktop_left asdasa" id="banners">
         %%BANNER_2%%
         %%BANNER_3%%
         </div>';
@@ -268,6 +271,30 @@ function notloginslider()
         }
     }   
     return $cnt;
+}
+
+plugin_register('INCLUDEJS', 'includejs');
+function includejs()
+{
+    if(is_user_logged_in())
+    {
+        if(!isset($_GET['mid']))
+        {            
+             return '<script type="text/javascript" src="/template/js/jquery-ui-1.10.4.custom.min.js"></script>';
+        }  
+        else
+        {
+            ?>
+            <style>
+            .ui-timepicker-div .ui_tpicker_millisec_label, .ui-timepicker-div .ui_tpicker_millisec, .ui-timepicker-div .ui_tpicker_millisec, .ui-timepicker-div .ui_tpicker_microsec_label, .ui-timepicker-div .ui_tpicker_microsec, .ui-timepicker-div .ui_tpicker_timezone_label, .ui-timepicker-div .ui_tpicker_timezone {display:none !important;}
+            .ui-timepicker-div .ui_tpicker_time_label {float:left;}
+            .ui-timepicker-div .ui_tpicker_time input {color:#444;}
+            .ui-timepicker-div .ui-slider a.ui-slider-handle {border:1px solid #ccc; background-color:#007aff;}
+            </style>
+            <?php
+            return '';
+        }
+    }   
 }
 
 /*CUSTOM END*/
