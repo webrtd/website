@@ -78,7 +78,7 @@ http://rtd.dk/?uid=%%uid%%
 			var gallery_data = jQuery.parseJSON(\'%%data%%\');
 			var gallery_html = "";
 			$.each(gallery_data, function(i,v) {                
-				gallery_html = gallery_html + "<div class=col-sm-4><div class=thumbnail><a class=\"fancybox\" rel=\"gallery1\" href=/uploads/meeting_image/?miid="+v.miid+"><img src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200></a></div></div>";
+				gallery_html = gallery_html + "<div class=col-sm-4><div class=thumbnail><a rel=\"prettyPhoto[gallery1]\" href=/uploads/meeting_image/?miid="+v.miid+"><img src=/uploads/meeting_image/?miid="+v.miid+"&quad&s=200></a></div></div>";
 			});
 
 			$(".gallery.row").append(gallery_html);            
@@ -2495,10 +2495,10 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			});
 
 			function newuser(frm)
-			{
+			{                         
 				for (var i=0; i<frm.elements.length; i++)
 				{
-				  if (frm.elements[i].value=="")
+				  if (frm.elements[i].value=="" && i != 11 && i != 10)
 				  {
 					alert("Alle felter skal udfyldes!");
 					return false;
@@ -4306,7 +4306,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		',
 		'meeting_header' => "<div align=right class=print_cal><a class=\"btn btn-gray meeting\" target=_blank href=?mid=%%mid%%&print title=Udskriv>Print</a> <a class=\"btn btn-gray meeting\" href=?mid=%%mid%%&ics title='Tilføj til kalender'>Kalender</a>&nbsp;&nbsp;&nbsp;&nbsp;</div>",
 		'meeting_top_image' => '<a href="/uploads/meeting_image/?miid=%%img%%&w=800" target=_blank><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" width=100%></a>',
-		'meeting_bottom_image' => '<div class="col-sm-4"><div class="thumbnail"><a class="fancybox" rel="gallery1" href="javascript:void(0);" data-href="/uploads/meeting_image/?miid=%%img%%&w=800"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" alt="Image"></a></div></div>',                															
+		'meeting_bottom_image' => '<div class="col-sm-4"><div class="thumbnail"><a rel="prettyPhoto[gallery1]" href="/uploads/meeting_image/?miid=%%img%%&w=800" data-href="/uploads/meeting_image/?miid=%%img%%&w=800"><img src="/uploads/meeting_image/?miid=%%img%%&landscape&w=570&h=300" alt="Image"></a></div></div>',                															
 		'meeting_invite1' => '
 												<div class="content-left">
 													<div class="article-date">
