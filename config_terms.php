@@ -375,8 +375,20 @@ http://rtd.dk/?uid=%%uid%%
 	<h1>Popul&aelig;res&oslash;gninger</h1>
 	%%popularsearch%%
 	',
-	'randomuser_js' => '    
-	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
+	'randomuser_js' => ' 
+	//console.log("dslkdskl");
+	//var dutydata = jQuery.parseJSON(notification_update_json);
+	//console.log(dutydata);
+	/* var cnt = 0;
+	$.each(dutydata, function(key,value) {
+		cnt++;
+		var d = new Date(value.start_time);
+		$("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
+	});
+	if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");*/
+	
+					
+	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div id=duty_field class=stats></div><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
 	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500></td><td>");
 	document.write("<div class=title><h3><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></h3>");
 	document.write("%%company_position%%, ");
@@ -3191,7 +3203,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
                 var imgsrc = "";
                 $.getJSON("http://www.vimeo.com/api/v2/video/" + id + ".json?callback=?", {format: "json"}, function(data) {
                  imgsrc = data[0].thumbnail_medium;
-                 $(\'<a class="fancybox-media" href="http://vimeo.com/\'+id+\'"><img src="\'+imgsrc+\'"></a>\').appendTo($("#links"));
+                 $(\'<a class="fancybox-media" rel="prettyPhoto" href="http://vimeo.com/\'+id+\'"><img src="\'+imgsrc+\'"></a>\').appendTo($("#links"));
                 });				
 			}
 			else if (s == "yt")
@@ -3200,7 +3212,7 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 				var id = id.replace("http://www.youtube.com/watch?v=", "");
                 
                 var id11 = l.substr(l.indexOf("=") + 1);
-				$(\'<a class="fancybox-media" href="http://www.youtube.com/watch?v=\'+id11+\'"><img width="200px" src="http://img.youtube.com/vi/\'+id11+\'/hqdefault.jpg"></a>\').appendTo($("#links"));
+				$(\'<a class="fancybox-media" rel="prettyPhoto" href="http://www.youtube.com/watch?v=\'+id11+\'"><img width="200px" src="http://img.youtube.com/vi/\'+id11+\'/hqdefault.jpg"></a>\').appendTo($("#links"));
 
 			}
             else if (s == "fb")
@@ -4490,8 +4502,8 @@ http://www.rtd.dk/?mid=%%mid%%
 													$("#duty_ext3_uid").val("%%duty_ext3_uid%%");
 													$("#duty_ext4_uid").val("%%duty_ext4_uid%%");
                                                     
-													$("#start_time").datetimepicker({timeFormat: "HH:mm:ss"});
-													$("#end_time").datetimepicker({timeFormat: "hh:mm:ss"});
+													$("#start_time").datetimepicker({dateFormat: "yy-mm-dd",timeFormat: "HH:mm:ss"});
+													$("#end_time").datetimepicker({dateFormat: "yy-mm-dd",timeFormat: "HH:mm:ss"});
 
 													$("#start_time").change(
 														function() {
