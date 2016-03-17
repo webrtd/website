@@ -1416,9 +1416,9 @@ END:VCALENDAR"
 		$duty_text = "";
 		foreach($duties as $d => $v)
 		{
-			$duty_text .= "- ".logic_get_duty_text($meeting, $d).': '.$v['profile_firstname'].' '.$v['profile_lastname']."\n";		
+			$duty_text .= "- ".utf8_encode(html_entity_decode(logic_get_duty_text($meeting, $d))).': '.$v['profile_firstname'].' '.$v['profile_lastname']."\n";		
 		}
-		$meeting['duty_text'] = $duty_text;
+		$meeting['duty_text'] = ($duty_text);
 	
 	
 		
@@ -1427,13 +1427,19 @@ END:VCALENDAR"
 			$to .= $members[$i]['private_email']."; ";
 		}
 		
-		$meeting['meeting_description'] = htmlentities(strip_tags($meeting['meeting_description']));
+		$meeting['meeting_description'] = utf8_encode(html_entity_decode(strip_tags($meeting['meeting_description'])));
 
-		$content = term_unwrap('mail_invitation',$meeting);
+		$content = (term_unwrap('mail_invitation',$meeting));
 		$title = term_unwrap('mail_invitation_subject',$meeting);
-
+		 
+		if ($_SESSION['user']['username']=='kaae') 
+		{
+			die( ($content));
+		}
+		
 		
 		logic_save_mail($to, $title, $content, $attachment_id, $_SESSION['user']['uid']);
+		//die($content);
 		
 	}
 	
