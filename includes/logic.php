@@ -3124,6 +3124,41 @@ END:VCARD
       return false;
     }
 	
+	function logic_remove_wordpress_roles($user)
+	{
+		$userdata = get_userdata( $user->ID );
+		$old_role = $userdata->roles;                 
+		$u = new WP_User( $user->ID );               
+		for($k=0;$k<count($old_role);$k++)
+		{
+			$u->remove_role( $old_role[$k] );                     
+		}       
+		$u->add_role( 'subscriber' );         
+	}
+	
+	function logic_add_wordpress_roles($user_id)
+	{
+		$u = new WP_User( $user_id );                                     
+		$u->remove_role( 'subscriber' );
+		for($k=0;$k<count($_SESSION['user']['active_roles']);$k++)
+		{ 
+			$role = $_SESSION['user']['active_roles'][$k];
+			$role1 = $role['shortname'];
+			
+			if ($role1 == "Admin") $role1 = 'administrator';
+		   
+			if( logic_wordpress_role_exists( $role1 ) ) {                        
+				$u->add_role( $role1 ); 
+			}
+			else
+			{
+				add_role( $role1, $role1, array( 'read' => true, 'level_0' => true ) );
+				$u->add_role( $role1 );
+			}
+												
+		}                                    
+	}
+	
 	function logic_wordpress_synch_user_roles()
 	{
 		if(email_exists($_SESSION['user']['private_email']))
@@ -3133,118 +3168,10 @@ END:VCARD
 			$creds['user_password'] = 'admin@2015';
 			$creds['remember'] = true;
 			$user = wp_signon( $creds, false );
-
-			$userdata = get_userdata( $user->ID );
-			$old_role = $userdata->roles;                 
-			$u = new WP_User( $user->ID );               
-			for($k=0;$k<count($old_role);$k++)
-			{
-				//unset($old_role[$k]);                                                         
-				$u->remove_role( $old_role[$k] );                     
-			}       
-			$u->add_role( 'subscriber' );         
 			
-			$role1 = '';
-			for($k=0;$k<count($_SESSION['user']['active_roles']);$k++)
-			{ 
-				if($_SESSION['user']['active_roles'][$k]['shortname'] == 'Medlem' || $_SESSION['user']['active_roles'][$k]['shortname'] == 'Xmedlem'
-				|| $_SESSION['user']['active_roles'][$k]['shortname'] == 'Orlov' || $_SESSION['user']['active_roles'][$k]['shortname'] == 'Mumie')
-				{
-					$role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'F')
-				{
-					$role1 = strtolower('Klubformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'S')
-				{
-					$role1 = strtolower('Klubsekret&aelig;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'I')
-				{
-					$role1 = strtolower('Inspekt&oslash;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'K')
-				{
-					$role1 = strtolower('Kasserer');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'N')
-				{
-					$role1 = strtolower('N&aelig;stformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'DF')
-				{
-					$role1 = strtolower('Distriktsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LF')
-				{
-					$role1 = strtolower('Landsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'VLF')
-				{
-					$role1 = strtolower('Vicelandsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'IRO')
-				{
-					$role1 = 'IRO';
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'Admin')
-				{
-					$role1 = 'administrator';
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'NIRO')
-				{
-					$role1 = 'NIRO';
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LS')
-				{
-					$role1 = strtolower('Landssekret&aelig;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'WEB')
-				{
-					$role1 = strtolower('Webmaster');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LK')
-				{
-					$role1 = strtolower('Landskasserer');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'RED')
-				{
-					$role1 = strtolower('Redakt&oslash;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'SHOP')
-				{
-					$role1 = strtolower('Shopkeeper');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ÆM')
-				{
-					$role1 = '&AElig;resmedlem';
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ALF')
-				{ 
-					$role1 = strtolower('afg&aring;ende_landsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LA')
-				{
-					$role1 = strtolower('Landsarkivar');
-				}
-				else
-				{
-					$role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
-				}
-			   
-				$u = new WP_User( $user->ID );                                     
-				$u->remove_role( 'subscriber' );
-				if( logic_wordpress_role_exists( $role1 ) ) {                        
-					$u->add_role( $role1 ); 
-				}
-				else
-				{
-					add_role( $role1, $role1, array( 'read' => true, 'level_0' => true ) );
-					$u->add_role( $role1 );
-				}
-													
-			}                                    
+			logic_remove_wordpress_roles($user);
+			logic_add_wordpress_roles($user->ID);
+								
 											  
 			if ( is_wp_error($user) )
 				echo $user->get_error_message();                  
@@ -3259,107 +3186,7 @@ END:VCARD
 			
 			$user_id = wp_insert_user( $userdata ) ;
 			
-			$role1 = '';
-			for($k=0;$k<count($_SESSION['user']['active_roles']);$k++)
-			{
-				if($_SESSION['user']['active_roles'][$k]['shortname'] == 'Medlem' || $_SESSION['user']['active_roles'][$k]['shortname'] == 'Xmedlem'
-				|| $_SESSION['user']['active_roles'][$k]['shortname'] == 'Orlov' || $_SESSION['user']['active_roles'][$k]['shortname'] == 'Mumie')
-				{
-					$role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'F')
-				{
-					$role1 = strtolower('Klubformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'S')
-				{
-					$role1 = strtolower('Klubsekret&aelig;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'I')
-				{
-					$role1 = strtolower('Inspekt&oslash;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'K')
-				{
-					$role1 = strtolower('Kasserer');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'N')
-				{
-					$role1 = strtolower('N&aelig;stformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'DF')
-				{
-					$role1 = strtolower('Distriktsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LF')
-				{
-					$role1 = strtolower('Landsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'VLF')
-				{
-					$role1 = strtolower('Vicelandsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'IRO')
-				{
-					$role1 = 'IRO';
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'Admin')
-				{
-					$role1 = 'administrator';
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'NIRO')
-				{
-					$role1 = 'NIRO';
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LS')
-				{
-					$role1 = strtolower('Landssekret&aelig;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'WEB')
-				{
-					$role1 = strtolower('Webmaster');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LK')
-				{
-					$role1 = strtolower('Landskasserer');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'RED')
-				{
-					$role1 = strtolower('Redakt&oslash;r');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'SHOP')
-				{
-					$role1 = strtolower('Shopkeeper');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ÆM')
-				{
-					$role1 = '&AElig;resmedlem';
-				}            
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'ALF')
-				{
-					$role1 = strtolower('afg&aring;ende_landsformand');
-				}
-				else if($_SESSION['user']['active_roles'][$k]['shortname'] == 'LA')
-				{
-					$role1 = strtolower('Landsarkivar');
-				}
-				else
-				{
-					$role1 = strtolower($_SESSION['user']['active_roles'][$k]['shortname']);
-				}
-
-				$u = new WP_User( $user_id );                    
-				$u->remove_role( 'subscriber' );
-				if( logic_wordpress_role_exists( $role1 ) ) {
-					$u->add_role( $role1 ); 
-				}
-				else
-				{
-					add_role( $role1, $role1, array( 'read' => true, 'level_0' => true ) );
-					$u->add_role( $role1 );
-				}
-				
-			}
+			logic_add_wordpress_roles($user_id);
 			
 			$creds = array();
 			$creds['user_login'] = $_SESSION['user']['username'];
