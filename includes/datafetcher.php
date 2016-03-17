@@ -1618,16 +1618,7 @@
 			$sql = "insert into meeting ($fields_sql) values ($values_sql)";
 			$db->execute($sql);
 
-			$sel = array();
-			foreach($meeting as $key=>$value)
-			{
-                if($key != 'description')
-                {
-				$sel[] = "{$key}='{$value}'";
-                }
-			}
-			$sel_sql = implode(" and ", $sel);
-			$sql = "select mid from meeting where {$sel_sql} order by mid desc limit 1";
+			$sql = "select mid from meeting where cid={$meeting['cid']} order by mid desc limit 1";
 
 			$mid = $db->fetchsinglevalue($db->execute($sql));;
 		}
