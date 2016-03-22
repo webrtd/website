@@ -389,7 +389,18 @@
                 $fullday = date('F',strtotime($meeting['start_time']));
                 $year = date('Y',strtotime($meeting['start_time']));
                 $starting_time = date('H:i',strtotime($meeting['start_time']));
-                $final_time = date('H:i',strtotime($meeting['end_time']));
+				
+				$startdate = date('Y-m-d',strtotime($meeting['start_time']));
+				$enddate = date('Y-m-d',strtotime($meeting['end_time']));
+				
+				if(strtotime($startdate) == strtotime($enddate))
+				{
+                	$final_time = date('H:i',strtotime($meeting['end_time']));
+				}
+				else
+				{
+					$final_time = date('d M F Y H:i',strtotime($meeting['end_time']));
+				}
                 
                 $meeting['day'] = $day;
                 $meeting['month'] = $month;

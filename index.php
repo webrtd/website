@@ -157,6 +157,8 @@ if(is_user_logged_in())
             {
                 $('.container-light.statistik .col-xs-12.random_mem').insertBefore('.col-sm-4.col-md-2 .banner2');
             }
+			$('#leftbox.box').insertBefore('#banners .random_mem');
+			$('#leftbox.box').show();
         }
 
         if($('.col-sm-4.col-md-2').hasClass('home-right')) {
@@ -191,17 +193,7 @@ if(is_user_logged_in())
             jQuery('.homepage #content .title-section > .fa-minus').removeClass('fa-minus');
             jQuery('.homepage #content .title-section > .fa-plus p').text('Vis aktuelt');
             jQuery('#notify_build').slideToggle('slow');
-        });
-        
-        if($('.meeting_technog h3.metting_title').length > 0)
-        {
-            var nxt = $('.meeting_technog h3.metting_title').next();
-
-            if(nxt.length <= 0)
-            {
-                $('.meeting_technog h3.metting_title').hide();
-            }
-        }
+        });                
 
     });
     </script>

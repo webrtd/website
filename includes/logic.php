@@ -3131,6 +3131,7 @@ END:VCARD
 		$u = new WP_User( $user->ID );               
 		for($k=0;$k<count($old_role);$k++)
 		{
+			echo "<li>- Removing {$old_role[$k]} from user";
 			$u->remove_role( $old_role[$k] );                     
 		}       
 		$u->add_role( 'subscriber' );         
@@ -3148,10 +3149,12 @@ END:VCARD
 			if ($role1 == "Admin") $role1 = 'administrator';
 		   
 			if( logic_wordpress_role_exists( $role1 ) ) {                        
+				echo "<li>+ Adding {$role1} to user";
 				$u->add_role( $role1 ); 
 			}
 			else
 			{
+				echo "<li>! Adding {$role1} to system";
 				add_role( $role1, $role1, array( 'read' => true, 'level_0' => true ) );
 				$u->add_role( $role1 );
 			}

@@ -408,9 +408,10 @@ order by RD.shortname asc
 				C.name as Klub, 
 				D.name as Distrikt
 				from user U
+				inner join role R on R.uid=U.uid 
 				inner join club C on U.cid=C.cid
 				inner join district D on C.district_did=D.did
-				where U.profile_ended='".date("Y")."-06-30' and U.xtable_transfer>0
+				where R.end_date='".date("Y")."-06-30' and U.xtable_transfer>0 and R.rid=".MEMBER_ROLE_RID."
 				order by U.profile_firstname";
 				$xml = (get_xml($sql));
 				header('Content-Description: File Transfer');

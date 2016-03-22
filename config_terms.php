@@ -375,20 +375,8 @@ http://rtd.dk/?uid=%%uid%%
 	<h1>Popul&aelig;res&oslash;gninger</h1>
 	%%popularsearch%%
 	',
-	'randomuser_js' => ' 
-	//console.log("dslkdskl");
-	//var dutydata = jQuery.parseJSON(notification_update_json);
-	//console.log(dutydata);
-	/* var cnt = 0;
-	$.each(dutydata, function(key,value) {
-		cnt++;
-		var d = new Date(value.start_time);
-		$("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
-	});
-	if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");*/
-	
-					
-	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div id=duty_field class=stats></div><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
+	'randomuser_js' => '							
+	document.write("<div class=\"col-xs-12 random_mem col-sm-offset-2\"><div class=member><div class=member-heading><a href=?uid=%%uid%% class=userpic><span class=\"btn btn-icon-user\"></span>");
 	document.write("<img src=/uploads/user_image?uid=%%uid%%&landscape&w=300&h=500></td><td>");
 	document.write("<div class=title><h3><a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a></h3>");
 	document.write("%%company_position%%, ");
@@ -3666,17 +3654,17 @@ http://www.rtd.dk/?mid=%%mid%%
     </script>
     ',
     'club_other_meetings_secretary' => '
-    <!--<div id=container_other_meetings class="22">
-      <h2>Andre begivenheder</h2>
+    <div id=container_other_meetings class="22">
+      <!--<h2>Andre begivenheder</h2>-->
 	  <table width=100% cellspacing=0 cellpadding=0 border=0>
 	  <tr><td width=50% valign=top>
-	  <p><b>Fødselsdage denne måned</b></p>
-	  <ul id=birthdays></ul>
-	  </td><td width=50% valign=top>
+	  <p class="center"><b>Fødselsdage denne måned</b></p>
+	  <ul id=birthdays class="center"></ul>
+	  </td><!--<td width=50% valign=top>
 	  <p><b>Møder</b></p>
       <ul id=other_meetings></ul>
-	  </td></tr></table>
-      <div id=other_meetings_data style="display:none"></div>
+	  </td>--></tr></table> 
+      <!--<div id=other_meetings_data style="display:none"></div>-->
     </div>
     <script>
       var other_data = jQuery.parseJSON(\'%%data%%\');
@@ -3685,7 +3673,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		$("#birthdays").append("<li><a href=?uid="+j.uid+">"+j.profile_firstname+" "+j.profile_lastname+", "+j.profile_birthdate+"</a>");
 	  });
 
-      var c = 0;
+      /*var c = 0;
       $.each(other_data.meetings, function(k,m) {
         $("#other_meetings").append("<li name=omid_link_"+m.omid+"><a href=#omid_link_"+m.omid+" onclick=show_om("+m.omid+")>"+m.title+" ("+m.start_time+")</a>");
         $("#other_meetings_data").append("<div id=omid_"+m.omid+"><h1>"+m.title+"</h1>"+m.start_time+" - "+m.end_time+"<br><br>"+m.description+"<p><a href=?cid="+m.cid+"&delete_omid="+m.omid+">Slet møde</a></div>")
@@ -3694,8 +3682,8 @@ http://www.rtd.dk/?mid=%%mid%%
       function show_om(omid)
       {
         $("#omid_"+omid).dialog({modal:true, width: 500});
-      }
-    </script>-->
+      }*/
+    </script>
     ',
 		'club_future_meetings' => '
 		<div id=next></div>
@@ -4342,7 +4330,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		'meeting_invite2' => '
 														<div class="col-xs-12 col-xs-4">
 															<h3 class="title">Lokation & dato</h3>
-															<b>%%day%%. %%fullday%% %%year%% %%starting_time%%-%%final_time%%</b><br/><br/>
+															<b>%%day%%. %%fullday%% %%year%% %%starting_time%% - %%final_time%%</b><br/><br/>
 															<address>
 																%%location%%
 															</address>
@@ -4731,11 +4719,7 @@ http://www.rtd.dk/?mid=%%mid%%
 <script src=/scripts/rtd/notification.js.php></script>',
 
 		'login_content' => '
-												<h3>MEDLEM</h3>
-												<div class=profile id=profilebox>
-                        <a href=?uid=%%uid%%>%%profile_firstname%% %%profile_lastname%%</a><br>
-                        <a href=?logout>Log af</a> | <a href=?uid=%%uid%%&edit>Rediger</a> | <a href=?cid=%%cid%%>Min klub</a>
-						<br>
+						<div class=profile id=profilebox>                        
                         <hr>Kommende pligter:<div id=duty_field class=stats></div>
                         <script>
 							var dutydata = jQuery.parseJSON(notification_update_json);

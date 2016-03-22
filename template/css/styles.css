@@ -558,6 +558,14 @@ p a.dis_btn_link {display:none;}
 .page_content .col-xs-12 form ul.meting_links li label {vertical-align:top;}
 .page_content #newsitems .grid-wrap.created {opacity:1;}
 .pp_pic_holder {position:fixed !important; top:0 !important;}
+.carousel11 article .post-content {
+    background-color: #f7f7f7;
+    padding: 30px 15px 30px 30px;
+}
+
+#leftbox.box {display:none;}
+#profilebox {padding:0 0 15px 15px;}
+#profilebox #duty_field li {list-style:none;}
 
 @media (max-width: 980px) {
 	.country_pages .Klubber #projects{margin-left:-30px !important;}
