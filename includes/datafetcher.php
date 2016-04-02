@@ -70,6 +70,18 @@
 		return get_data("select name,cid from club order by name");
 	}
 	
+	
+	function get_nomination_html($sp)
+	{
+		$sql = "
+			select club.name, role_definition.shortname, nomination.approved, nomination.nomination_date, nominator_comment, user.profile_firstname, user.profile_lastname from nomination
+			inner join user on user.uid=nomination.uid
+			inner join club on club.cid=user.cid
+			inner join role_definition on role_definition.rid=nomination.rid
+			where nomination.date_start>='{$sp}' order by club.name asc, nomination.date_start desc";
+		return $sql.get_html_table($sql);
+	}
+	
 	/**
 	 *	get html table from an sql query
 	 *	@param string $sql sql query

@@ -332,6 +332,11 @@ order by RD.shortname asc
 		$f = $_REQUEST['admin_download'];
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
+		if ($f == 'nomination_print')
+		{
+			return logic_get_nominations_overview();
+		}
+		
 		if ($f == 'sms')
 		{
 			return sms();
@@ -408,10 +413,9 @@ order by RD.shortname asc
 				C.name as Klub, 
 				D.name as Distrikt
 				from user U
-				inner join role R on R.uid=U.uid 
 				inner join club C on U.cid=C.cid
 				inner join district D on C.district_did=D.did
-				where R.end_date='".date("Y")."-06-30' and U.xtable_transfer>0 and R.rid=".MEMBER_ROLE_RID."
+				where U.profile_ended='".date("Y")."-06-30' and U.xtable_transfer>0
 				order by U.profile_firstname";
 				$xml = (get_xml($sql));
 				header('Content-Description: File Transfer');
