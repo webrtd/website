@@ -39,7 +39,7 @@ order by RD.shortname asc
 			$title = $_REQUEST['title'];
 			$content = $_REQUEST['content'];
 			  $attachment_id = 0;
-			  $uid = $_REQUEST['sender_uid'];
+			  $uid = isset($_REQUEST['sender_uid'])?$_REQUEST['sender_uid']:"";
 			  if (!is_numeric($uid)) $uid=$_SESSION['user']['uid'];
 			  if (isset($_FILES['file']))
 			  {
