@@ -693,8 +693,8 @@
 			logic_log(__FUNCTION__, 'SQL Injection CID'+addslashes($cid));
 			die();
 		}
-		$data = get_one_data_row("select did from club where cid={$cid}");
-		return $data['did'];
+		$data = get_one_data_row("select district_did from club where cid={$cid}");
+		return $data['district_did'];
 	}
 
 	/**
@@ -725,7 +725,8 @@
 			select mid,title,start_time,cid from meeting
 			where 
 			title like '%$q%' or
-			description like '%$q%'
+			description like '%$q%' or 
+			tags like '%$q%'
 			order by start_time desc
 		");
 	}
@@ -1365,7 +1366,8 @@
 	*/
 	function get_district_name($did)
 	{
-		return get_one_data_row("select name from district where did=$did");
+		$sql = "select name from district where did=$did";
+		return get_one_data_row($sql);
 	}
 	
 	
@@ -2109,7 +2111,7 @@ order by R.end_date
 			logic_log(__FUNCTION__, 'SQL Injection TSID'+addslashes($tsid));
 			die();
 		}
-		return get_data("select * from tabler_service_item where tsid=$tsid order by posted desc");
+		return get_data("select * from tabler_service_item where tsid=$tsid order by location asc");
 	}
 
 	/**
@@ -2482,6 +2484,8 @@ limit 1");
 		}
 		$seed = addslashes($seed);
 	$sql = "delete from meeting_letters where cid={$cid} and collid={$seed}";
+			 
+
 	fire_sql($sql);
   }
   
@@ -2522,6 +2526,7 @@ limit 1");
 		";
 		}
 	}
+	
 	return get_data($sql);
   }
   	function fetch_meeting_gallery($cid)
@@ -2574,10 +2579,10 @@ order by M.start_time desc
 			  C.cid != $cid and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 6 month) and
+              start_time>date_sub(now(), interval 2 month) and
               minutes_date>date_sub(now(), interval 6 month) 
               group by C.cid 
-			  order by rand($seed)
+			  order by start_time desc, rand($seed)
               limit $limit";
     }
     else
@@ -2588,10 +2593,10 @@ order by M.start_time desc
               C.district_did=$did and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 6 month) and
+              start_time>date_sub(now(), interval 2 month) and
               minutes_date>date_sub(now(), interval 6 month) 
 			  group by C.cid 
-              order by rand($seed)
+			  order by start_time desc, rand($seed)
               limit $limit";
     }
 //	echo "$sql \n";

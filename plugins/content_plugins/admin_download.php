@@ -332,6 +332,35 @@ order by RD.shortname asc
 		$f = $_REQUEST['admin_download'];
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
+		if ($f == 'minutes_age')
+		{
+			if (isset($_REQUEST['m'])) $m = $_REQUEST['m'];
+			else $m = 0;
+			
+			$s = logic_get_club_year_start($m);
+			$e = logic_get_club_year_end($m);
+			
+			$left = substr(logic_get_club_year_start($m-1), 0, 4).'-'.substr(logic_get_club_year_end($m-1), 0, 4);
+			$right = substr(logic_get_club_year_start($m+1), 0, 4).'-'.substr(logic_get_club_year_end($m+1), 0, 4);
+		
+			$ml = $m-1;
+			$mr = $m+1;
+			$now = substr(logic_get_club_year_start($m), 0, 4).'-'.substr(logic_get_club_year_end($m), 0, 4);
+		
+			return "<h1>{$now}</h1><a href=?admin_download=minutes_age&m={$ml} class=btn>{$left}</a> <a href=?admin_download=minutes_age&m={$mr} class=btn>{$right}</a><br><br>".get_html_table(
+			"
+select 
+ district.name Distrikt,
+ club.name Klub, 
+ (select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is null) IkkeAfsluttede,
+ (select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}') TotalAntal
+from club
+inner join district on district.did=club.district_did
+order by district.name, club.name
+			");
+		}
+		
+		
 		if ($f == 'nomination_print')
 		{
 			return logic_get_nominations_overview();

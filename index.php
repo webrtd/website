@@ -7,6 +7,17 @@
 	require_once './includes/sessionhandler.php';
 
 	include './wordpress/wp-load.php';
+	
+
+	if (defined('FORCE_DOMAIN') && FORCE_DOMAIN)
+	{
+		if (strpos($_SERVER['HTTP_HOST'], 'www.')!==false)
+		{
+			$server = str_replace('www.', '', $_SERVER['HTTP_HOST']);
+			header("location: http://{$server}{$_SERVER['REQUEST_URI']}");
+			die();
+		}
+	}
 
 	if (defined("FORCE_SECURE_CONNECTION") && FORCE_SECURE_CONNECTION)
 	{
