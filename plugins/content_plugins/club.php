@@ -309,6 +309,8 @@ $ics .=
 		$meetings = logic_fetch_future_meetings_for_club($club['cid'],"asc",100);
 		$minutes = logic_fetch_minutes_this_year($club['cid'],"desc", 30);
     $other_meetings = array("meetings" => logic_get_other_meetings($club['cid']), "birthday" => logic_get_club_birthdays($club['cid']));
+		
+		$meetings[0]['title'] = stripslashes($meetings[0]['title']);		
 		$html .= term_unwrap('club_future_meetings', $meetings, true);
 		if (logic_is_admin() || logic_is_club_secretary($club['cid']))
 		{

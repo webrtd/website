@@ -109,7 +109,7 @@ function check_club_mail($club)
 	
 
 	function manual_login()
-	{       
+	{        
         update_option('issession','no');             
 		$user = logic_login($_REQUEST['username'], $_REQUEST['password']);
 		if ($user!==false) 
@@ -140,11 +140,11 @@ function check_club_mail($club)
 			}
 			if (!isset($_REQUEST['redirect']) || $_REQUEST['redirect'] == '/?logout')
 			{
-					$html .= "<script>document.location.href='/';</script>";
+				$html .= "<script>document.location.href='{$_SERVER['HTTP_REFERER']}';</script>";
 			}
 			else
 			{		
-					$html .= "<script>document.location.href='{$_REQUEST['redirect']}';</script>";
+				$html .= "<script>document.location.href='{$_REQUEST['redirect']}';</script>";
 			}
 			
 			if (logic_is_secretary() || logic_is_chairman()) check_club_mail(logic_get_club($_SESSION['user']['cid']));

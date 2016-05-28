@@ -229,7 +229,8 @@ else
     ?>
     <script>
     jQuery(document).ready(function($) {
-        $('body').addClass('not-loggin');
+        $('body').addClass('not-loggin');	
+		$('ul.user-nav li a.btn-lg').trigger('click');	
         $('.container .right-part').addClass('col-xs-12 col-sm-8 col-md-10');
     });
     </script>

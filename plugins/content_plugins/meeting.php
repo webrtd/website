@@ -255,7 +255,10 @@
 		}
 		
 		$images .= "<br>";
-		
+
+		$did = get_district_for_club($cid);
+		$dname = get_district_name( $did );
+		$meeting['district'] = $dname['name'];
 		
 		$html = "<form action=. method=post enctype=\"multipart/form-data\" onsubmit='return validatemeeting();'>
 						<input type=hidden name=mid value=\"$mid\">
