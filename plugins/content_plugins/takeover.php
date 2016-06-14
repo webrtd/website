@@ -33,7 +33,7 @@
 			else 
 			{
 				$_SESSION['user'] = $user;
-				$_SESSION['user']['active_roles'] = fetch_active_roles($user['uid']);
+				$_SESSION['user']['active_roles'] = fetch_active_roles($user['uid'],true);
 				logic_wordpress_synch_user_roles();
 				header("location: /");
 			}
