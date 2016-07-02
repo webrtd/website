@@ -1,4 +1,6 @@
 <?php
+/*echo "<pre>";
+print_r($_SERVER); exit;*/
 //phpinfo();
 	require_once 'config.php';
 	require_once 'config_terms.php';
@@ -224,7 +226,7 @@ if(is_user_logged_in())
     </style>
     <?php
 }
-else
+else if((!isset($_GET['wid']) || $_GET['wid'] == '711' || $_GET['wid'] == '455') && $_GET['aid'] != '3' && $_SERVER['REQUEST_URI'] != '/')
 {
     ?>
     <script>

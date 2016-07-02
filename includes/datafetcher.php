@@ -331,6 +331,49 @@
 		return $data;
 	}
 	
+	
+	function get_user_monitor_tag($tags, $cid=false, $did=false)
+	{
+		if (empty($tags)) return array();
+
+		$tags_clean = array();
+		foreach($tags as $i=>$v)
+		{
+			$v = trim($v);
+			if ($v != '' && $v!=' ') $tags_clean[]=$v;
+		}
+		
+		
+		$tags_sql = "user.monitor_tags like '%#".implode("%' or user.monitor_tags like '%#", $tags_clean)."%'";
+		
+		
+		if ($cid === false)
+		{
+			if ($did !== false)
+			{
+				$sql = "select user.uid,user.private_email from user inner join club on club.cid=user.cid where club.district_did={$did} and user.profile_ended>now() and ($tags_sql)";
+			}
+			else
+			{
+				$sql = "select user.uid,user.private_email from user where user.profile_ended>now() and ($tags_sql)";
+			}
+		}
+		else
+		{
+			if ($did !== false)
+			{
+				$sql = "select user.uid,user.private_email from user inner join club on club.cid=user.cid where club.district_did={$did} and user.profile_ended>now() and user.cid!={$cid} and ($tags_sql)";
+			}
+			else
+			{
+				$sql = "select user.uid,user.private_email from user where user.profile_ended>now() and user.cid!={$cid} and ($tags_sql)";
+			}
+		}
+		
+		return get_data($sql);
+
+	}
+	
 	/**
 	 * put banner into db
 	 * @param binary $image image data
@@ -1976,6 +2019,8 @@ order by R.end_date
 	function save_user($uid,$data)
 	{
 		$db = get_db();
+		$get_user = get_data("select * from user where uid='".$uid."'");
+		
 		$values = array();
 		foreach($data as $key => $value)
 		{
@@ -1983,9 +2028,11 @@ order by R.end_date
 			$values[] = "$key='$value'";
 		}			
 		$values_sql = implode(",",$values);
-		$sql = "update user set $values_sql where uid=$uid";
+		$sql = "update user set $values_sql where uid=$uid";		
 		//die($sql);
 		$db->execute($sql);
+		$sql1 = "update wp_users set user_login='".$data['username']."' where user_login='".$get_user[0]['username']."'";			
+		$db->execute($sql1);		
 	}
 
   /**

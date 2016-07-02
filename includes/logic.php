@@ -1401,7 +1401,10 @@ END:VCALENDAR"
 		$meeting = logic_get_meeting($mid);
 		$duties = logic_get_meeting_duties($mid);
 		$members = fetch_meeting_attendance($mid);
-				
+		$club = logic_get_club($meeting['cid']);
+
+		$monitor = get_user_monitor_tag(explode('#', $meeting['tags']), $meeting['cid'], $club['district_did']);
+	
 		clear_minutes_collection_cache($meeting['cid'], $mid);
 		clear_minutes_collection_cache($meeting['cid'], $mid."992");
 		
@@ -1427,18 +1430,24 @@ END:VCALENDAR"
 			$to .= $members[$i]['private_email']."; ";
 		}
 		
+		
+		
 		$meeting['meeting_description'] = utf8_encode(html_entity_decode(strip_tags($meeting['meeting_description'])));
 
 		$content = (term_unwrap('mail_invitation',$meeting));
 		$title = term_unwrap('mail_invitation_subject',$meeting);
-		 
-		if ($_SESSION['user']['username']=='kaae') 
-		{
-			die( ($content));
-		}
-		
 		
 		logic_save_mail($to, $title, $content, $attachment_id, $_SESSION['user']['uid']);
+		
+		
+		$title = term_unwrap('mail_monitor_invitation_subject', $meeting); 
+
+		for ($i=0; $i<sizeof($monitor); $i++)
+		{
+			logic_save_mail($monitor[$i]['private_email'], $title, $content, $attachment_id, $_SESSION['user']['uid']);
+		}
+
+
 		//die($content);
 		
 	}

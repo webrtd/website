@@ -148,7 +148,7 @@ global $current_user;
         if(!isset($_SESSION['user']))
         { 
 	        wp_logout();
-            session_destroy(); //destroy the session
+            //session_destroy(); //destroy the session
             setcookie('RTD_LOGIN_COOKIE','');
         }				
 		$cont = '<ul class="user-nav">
