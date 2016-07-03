@@ -2413,7 +2413,7 @@ order by last_page_view desc limit 25";
 	return get_one_data_row("select * from user U
 inner join role R on R.uid=U.uid
 inner join club C on C.cid=U.cid
-where U.profile_image!='' and U.company_name!='' and R.rid=6 and R.start_date<now() and R.end_date>now()
+where U.profile_image!='' and U.company_name!='' and R.rid=".MEMBER_ROLE_RID." and R.start_date<now() and R.end_date>now()
 order by rand()
 limit 1");
   }
