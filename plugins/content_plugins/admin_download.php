@@ -2,6 +2,21 @@
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
 	content_plugin_register('admin_download', 'content_admin_download', 'Download');
+	
+	
+	function dashboard_data()
+	{
+	$sql = "select district.name, 
+(select count(*) from user inner join club on user.cid=club.cid where (user.profile_image is null or user.profile_image='') and club.district_did=district.did and user.profile_ended>now()) as missing_photo, 
+(select count(*) from user inner join club on user.cid=club.cid where (user.private_email not like '%@%' or user.company_email not like '%@%') and club.district_did=district.did and user.profile_ended>now()) as missing_email,
+(select count(*) from user inner join club on user.cid=club.cid where (user.private_phone='' or user.private_mobile='' or user.company_phone='') and club.district_did=district.did and user.profile_ended>now()) as missing_phone,
+(select count(*) from user inner join club on user.cid=club.cid where (user.private_profile='' or user.private_profile is null) and club.district_did=district.did and user.profile_ended>now()) as missing_profile,
+(select count(*) from user inner join club on user.cid=club.cid where club.district_did=district.did and user.profile_ended>now()) as total_profiles_checked
+from district order by district.did asc ";
+	return "<h1>Profil overblik</h1>".(get_html_table($sql));	
+	
+	}
+	
 
   function role_print()
   {
@@ -330,6 +345,13 @@ order by RD.shortname asc
 	function content_admin_download()
 	{
 		$f = $_REQUEST['admin_download'];
+		
+		if ($f == 'profile_dashboard')
+		{
+			return dashboard_data();
+		}
+		
+		
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
 		if ($f == 'minutes_age')
