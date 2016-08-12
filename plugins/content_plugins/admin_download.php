@@ -369,17 +369,19 @@ order by RD.shortname asc
 			$mr = $m+1;
 			$now = substr(logic_get_club_year_start($m), 0, 4).'-'.substr(logic_get_club_year_end($m), 0, 4);
 		
-			return "<h1>{$now}</h1><a href=?admin_download=minutes_age&m={$ml} class=btn>{$left}</a> <a href=?admin_download=minutes_age&m={$mr} class=btn>{$right}</a><br><br>".get_html_table(
-			"
+			$sql = "
 select 
- district.name Distrikt,
- club.name Klub, 
- (select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is null) IkkeAfsluttede,
- (select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}') TotalAntal
-from club
-inner join district on district.did=club.district_did
-order by district.name, club.name
-			");
+district.name Distrikt, 
+club.name Klub, 
+(select avg(minutes_number_of_participants) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsDeltagere,
+(select avg(minutes_number_of_rejections) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsFrameldte,
+(select avg(100.0*minutes_number_of_participants/(minutes_number_of_rejections+minutes_number_of_participants)) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsProcent,
+(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is null) IkkeAfsluttede, 
+(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}') TotalAntal 
+from club inner join district on district.did=club.district_did order by district.name, club.name
+			";
+		
+			return "<h1>{$now}</h1><a href=?admin_download=minutes_age&m={$ml} class=btn>{$left}</a> <a href=?admin_download=minutes_age&m={$mr} class=btn>{$right}</a><br><br>".get_html_table($sql);
 		}
 		
 		
