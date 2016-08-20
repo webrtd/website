@@ -1424,13 +1424,19 @@ END:VCALENDAR"
 		$meeting['duty_text'] = ($duty_text);
 	
 	
-		
+		$error_mails = array();	
 		for($i=0;$i<sizeof($members);$i++)
 		{
-			$to .= $members[$i]['private_email']."; ";
+			$email = $members[$i]['private_email'];
+			if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) 
+			{
+				array_push($error_mails, $email);
+			}
+			else
+			{
+				$to .= $email."; ";
+			}
 		}
-		
-		
 		
 		$meeting['meeting_description'] = utf8_encode(html_entity_decode(strip_tags($meeting['meeting_description'])));
 
@@ -1447,7 +1453,7 @@ END:VCALENDAR"
 			logic_save_mail($monitor[$i]['private_email'], $title, $content, $attachment_id, $_SESSION['user']['uid']);
 		}
 
-
+		return $error_mails;
 		//die($content);
 		
 	}

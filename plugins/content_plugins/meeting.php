@@ -9,7 +9,7 @@
 
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
-	content_plugin_register('mid', 'content_handle_meeting', 'Møde');
+	content_plugin_register('mid', 'content_handle_meeting', 'M?de');
 
  
     function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br><div>')
@@ -210,7 +210,11 @@
 			
 			if (isset($_REQUEST['send_invitations']))
 			{
-				logic_send_invitations($mid);
+				$errors = logic_send_invitations($mid);
+				if (!empty($errors))
+				{
+					die(term_unwrap('meeting_error_send', array('ERROR'=>implode($errors,', '))));
+				}
 			}
 			
 			header("location: /?mid=$mid");
@@ -598,6 +602,13 @@
 			set_title($meeting['title']);	
 			$html .= '</div>
 			</div>'	;
+			
+			if (logic_may_edit_meeting($meeting['cid']))
+			{
+				$html .= term_unwrap('meeting_views', array('DATA'=>json_encode(fetch_meeting_views($meeting['mid']))));
+			}
+			
+			
 			return $html;
 		}
 	}

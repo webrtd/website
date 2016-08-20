@@ -42,6 +42,20 @@
 			fire_sql("insert into user_path_tracker (uid,uri,ts) values ('{$uid}', '{$uri}', now())");
 	}
 
+	function fetch_meeting_views($mid)
+	{
+	if (!is_numeric($mid))
+	{
+		logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($mid));
+		die();
+	}
+		$sql ="SELECT distinct(user_path_tracker.uid), user.profile_firstname, user.profile_lastname, club.name FROM `user_path_tracker` 
+inner join user on user_path_tracker.uid=user.uid
+inner join club on user.cid=club.cid 
+where user_path_tracker.uri='/?mid={$mid}'";
+		return get_data($sql);
+	}
+
 	function fetch_future_duties($uid,$limit)
 	{
 	if (!is_numeric($uid))
@@ -49,19 +63,7 @@
 		logic_log(__FUNCTION__, 'SQL Injection UID'+addslashes($uid));
 		die();
 	}
-	$sql = "
-	select * from meeting where
-	end_time>now() and
-	(duty_3min_uid={$uid} or
-	duty_letters1_uid={$uid} or
-	duty_letters2_uid={$uid} or
-	duty_meeting_responsible_uid={$uid} or
-	duty_ext1_uid={$uid} or
-	duty_ext2_uid={$uid} or
-	duty_ext3_uid={$uid} or
-	duty_ext4_uid={$uid} or
-	duty_ext5_uid={$uid})
-	order by start_time asc limit {$limit}";
+		$sql = "select * from meeting where meeting.end_time>now() and meeting.cid=(select user.cid from user where user.uid={$uid}) order by meeting.start_time asc limit {$limit}";
 	return get_data($sql);
 	}
   
@@ -2019,7 +2021,7 @@ order by R.end_date
 	function save_user($uid,$data)
 	{
 		$db = get_db();
-		$get_user = get_data("select * from user where uid='".$uid."'");
+		$u = fetch_user($uid);
 		
 		$values = array();
 		foreach($data as $key => $value)
@@ -2031,8 +2033,7 @@ order by R.end_date
 		$sql = "update user set $values_sql where uid=$uid";		
 		//die($sql);
 		$db->execute($sql);
-		$sql1 = "update wp_users set user_login='".$data['username']."' where user_login='".$get_user[0]['username']."'";			
-		$db->execute($sql1);		
+		
 	}
 
   /**
@@ -2413,7 +2414,7 @@ order by last_page_view desc limit 25";
 	return get_one_data_row("select * from user U
 inner join role R on R.uid=U.uid
 inner join club C on C.cid=U.cid
-where U.profile_image!='' and U.company_name!='' and R.rid=".MEMBER_ROLE_RID." and R.start_date<now() and R.end_date>now()
+where U.profile_image!='' and U.company_name!='' and R.rid=6 and R.start_date<now() and R.end_date>now()
 order by rand()
 limit 1");
   }

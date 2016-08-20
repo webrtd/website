@@ -2,6 +2,8 @@
 /*
 Wordpress pages content
 */
+
+//include "../../wordpress/wp-load.php";
 function content()
 {
     if(isset($_GET['aid']))
@@ -18,7 +20,11 @@ function content()
                 )
             );
         $post = get_posts($args);
+		
+		//echo "<pre>";
+		//print_r($post);
         
+		
         if($post)
         {
             $content1 = $post[0]->post_content;
@@ -35,10 +41,10 @@ function content()
             return $content;
         }
     }
-    else if(isset($_GET['wid']))
+    else if(logic_get_wp_page_id()!==false)
     {
-       $post = get_post($_GET['wid']); 
-       
+       $post = get_post(logic_get_wp_page_id()); 
+	          
         $content1 = $post->post_content;
         $content11 = apply_filters('the_content', $content1);
         
