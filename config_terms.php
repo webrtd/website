@@ -1,5 +1,18 @@
 <?php
 	$terms = array(
+		'meeting_views' => '<script>
+		{
+			var data = $.parseJSON(\'%%DATA%%\');
+			var html = "<h1>Hvem har set m&oslash;det</h1><p>F&oslash;lgende medlemmer har set dette m&oslash;de:<ul><ul>";
+			$.each(data, function(k,v) {
+				html += "<li><a href=/?uid="+v.uid+">"+v.profile_firstname+" "+v.profile_lastname+", "+v.name+"</a></li>";
+			}
+			);
+			html += "</ul><ul></p>";
+			document.write(html);
+		}
+		</script>',
+		'meeting_error_send' => '<script>alert("Invitationen er udsendt, men ikke til disse e-mails:\n%%ERROR%%");history.go(-1);</script>',
     'rtidatahub_js' => '
 			{
 				var nationalboard_json = "%%NATIONALBOARD%%";
@@ -51,7 +64,7 @@ http://rtd.dk/?uid=%%uid%%
 		<center>
 		<textarea name=message style="width:99%;height:200px" class="form-control"></textarea>
 		</center>
-		<input type=checkbox value=sms name=sms class="form-control">Send som SMS
+		<p><input type=checkbox name=sms id=sms><label for=sms>Send som SMS</label></p>
 		<input type=submit value="Send besked" class="btn">
 		</form>
 	',
@@ -771,7 +784,7 @@ $('#prev').click(function() {
 			var html  = "";
 
 //			$("#news").append();
-
+console.log(news_data_json);
 			$.each(news_data_json, function(i,news_data) {
                 var title = "";
                 if(news_data.title != "" && news_data.title != null)
@@ -1353,20 +1366,20 @@ $('#prev').click(function() {
 	<b>Roller</b>
 	<ul>
 		Klubroller<br>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_1" value=4 id=M> <label for="roles_1">Medlem</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_1" value=6 id=M> <label for="roles_1">Medlem</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_2" value=9 id=F> <label for="roles_2">F</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_3" value=10 id=S> <label for="roles_3">S</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=col-sm-offset-2 id=I> <label for="roles_4">I</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_4" value=11 id=I> <label for="roles_4">I</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_5" value=12 id=K> <label for="roles_5">K</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_6" value=17 id=IRO> <label for="roles_6">IRO</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=24 id=HM> <label for="roles_7">&AElig;M</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_7" value=26 id=HM> <label for="roles_7">&AElig;M</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_8" value=13 id=N> <label for="roles_8">N<br></label>
 		<br>R&oslash;dk&aelig;de<br>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_9" value=14 id=DF><label for="roles_9">DF</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_10" value=15 id=LF><label for="roles_10">LF</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_col-sm-offset-2" value=14 id=VLF><label for="roles_col-sm-offset-2">VLF</label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_col-sm-offset-2" value=16 id=VLF><label for="roles_col-sm-offset-2">VLF</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_12" value=19 id=NIRO><label for="roles_12">NIRO</label>
-		<input type=checkbox onclick=c(this); name=roles[] id="roles_13" value=34 id=ALF><label for="roles_13">ALF<br></label>
+		<input type=checkbox onclick=c(this); name=roles[] id="roles_13" value=36 id=ALF><label for="roles_13">ALF<br></label>
 		<br>Bl&acirc;k&aelig;de<br>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_14" value=21 id=LS><label for="roles_14">LS</label>
 		<input type=checkbox onclick=c(this); name=roles[] id="roles_15" value=22 id=WEB><label for="roles_15">WEB</label>
@@ -1488,7 +1501,7 @@ $('#prev').click(function() {
 		<div class="row">
 			<a name=others><h1>Øvrige</h1></a>
 			<div class="col-sm-12">
-				<div class="" id="alf"><p id="la"></p></div>
+				<div class="" id="alf"><p id="la"></p><p id="near"></p></div>
 
 			</div>
 		</div>
@@ -1559,29 +1572,111 @@ $('#prev').click(function() {
 		$("#red").append(makehtml(data.RED));
 		$("#la").append(makehtml(data.LA));
 		$("#alf").append(makehtml(data.ALF));
+		$("#near").append(makehtml(data.NEAR));
 	</script>
 	',
 	'tabler_service' => '
 	<h1>Tablerservice</h1>
 	<p>Tablerservice er en intern markedsplads/idekatalog til brug for klubberne ved planlægning af møder og netværksarrangementer. Står du med kendskab til en god taler eller den perfekte lokation til et møde opfordres du til at tilføje den i kataloget.</p>
+	<!--- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#opret-ts">Opret indlæg</button> --->
+	<div class="modal fade" id="ts-opret" role="dialog">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-body">
+			<form id=newentry method=post onsubmit="return fixts()" action=?ts>
+			<input type=submit value=Gem class="btn btn-default">
+			<button type="button" class="btn" data-dismiss="modal">Fortryd</button>
+			<h4 class="modal-title">Opret indlæg</h4>
+			<table width=100%>
+			<tr><td width=50% valign=top>
+			<b>Overskrift</b><br><input required type=text name=item[headline] class="form-control"><br>
+			<b>Distrikt</b><br><select required id=tsdis class="form-control">
+			<option value="Hele landet">Hele landet</option>
+			<option value="Distrikt 1">Distrikt 1</option>
+			<option value="Distrikt 2">Distrikt 2</option>
+			<option value="Distrikt 3">Distrikt 3</option>
+			<option value="Distrikt 4">Distrikt 4</option>
+			<option value="Distrikt 5">Distrikt 5</option>
+			<option value="Distrikt 6">Distrikt 6</option>
+			<option value="Distrikt 7">Distrikt 7</option>
+			<option value="Distrikt 8">Distrikt 8</option>
+			</select><br>
+			<b>Sted</b><br><input required type=text id=tsloc name=item[location] class="form-control"><br>
+			</td><td valign=top>
+			<b>Pris</b><br><input id=price type=text name=item[price] class="form-control" onkeyup=><br>
+			<b>Tid</b><br><input type=text name=item[duration] class="form-control"><br>
+			<b>Udbydes af tabler</b><br><select required id=tsorg class="form-control">
+			<option value="|RT|">Tabler</option>
+			<option value="|EX|">Ex-Tabler</option>
+			<option value="|LC|">Lady Circler</option>
+			<option value="|TT|">Tangent</option>
+			<option value="">Ekstern</option>
+			</select><br>
+			<b>Kontakt</b><br><input required type=text id=tscon name=item[contact] class="form-control"><br>
+			</td></tr></table>
+			<b>Tekst</b><br>
+			<textarea required name=item[description]></textarea>
+			</form>
+		</div>
+	  </div>
+	</div>
+	</div>
+
+	
 	<p id=data></p>
-	<form id=newentry method=post action=?ts><h1>Opret indlæg</h1>
-	<table width=100%>
-	<tr><td width=50% valign=top>
-	<b>Overskrift</b><br><input type=text name=item[headline] class="form-control"><br>
-	<b>Sted</b><br><input type=text name=item[location] class="form-control"><br>
-	</td><td valign=top>
-	<b>Pris</b><br><input id=price type=text name=item[price] class="form-control" onkeyup=><br>
-	<b>Tid</b><br><input type=text name=item[duration] class="form-control"><br>
-	<b>Kontakt</b><br><input type=text name=item[contact] class="form-control"><br>
-	</td></tr></table>
-	<b>Tekst</b><br>
-	<textarea name=item[description] class=ckeditor></textarea>
-	<input type=submit value=Gem class="btn">
-	</form>
 	<script>
 		var data = jQuery.parseJSON(\'%%data%%\');
+		
+		function fixts()
+		{
+			var o = $("#tsorg").val();
+			var c = $("#tscon").val();
+			$("#tscon").val(o+c);
+		
+			var l = $("#tsloc").val();
+			var d = $("#tsdis").val();
+			$("#tsloc").val(d+", "+l);
+			return true;
+		}
+		
+		
+		function get_tabler_data(con)
+		{
+			if (con.indexOf("|RT|")!=-1)
+			{
+				return { org: "Tabler", contact: con.replace("|RT|", "") };
+			}
+			if (con.indexOf("|EX|")!=-1)
+			{
+				return { org: "Ex-Tabler", contact: con.replace("|EX|", "") };
+			}
+			if (con.indexOf("|LC|")!=-1)
+			{
+				return { org: "Lady Circler", contact: con.replace("|LC|", "") };
+			}
+			if (con.indexOf("|TT|")!=-1)
+			{
+				return { org: "Tangent", contact: con.replace("|TT|", "") };
+			}
+			else 
+			{
+				return { org: "Ekstern", contact: con };
+			}
+		
+		}
+		
 
+		function html_modal_content(content,id)
+		{
+			console.log(content);
+			return "<div class=\"modal fade\" id=\"ts-"+id+"\" role=\"dialog\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-body\"><p><button type=button class=btn data-dismiss=modal>Luk</button>"+content+"</p></div></div></div></div>";
+		}
+		
+		function html_modal_button(label, id)
+		{
+			return "<button type=\"button\" class=\"btn btn-info btn-lg\" data-toggle=\"modal\" data-target=\"#ts-"+id+"\">"+label+"</button> ";
+		}
+		
 		function delitem(i)
 		{
 			if (confirm("Bekræft sletning af indlæg"))
@@ -1593,12 +1688,45 @@ $('#prev').click(function() {
 		if (data.category)
 		{
 			$("#newentry").get(0).setAttribute("action", "?ts="+data.category.tsid);
-			$("#data").append("<a href=?ts>Tilbage til oversigt</a><h1>"+data.category.headline+"</h1><div id=items></div>");
+			// $("#data").append("<h1>"+data.category.headline+"</h1><div id=items></div>");
+			$("#data").append("<div id=items></div>");
+			var item_html = "";
+			var button_html = "";
+			
+			var title = "";
+			
+			
+			button_html = "<p><table width=100% class=\"table table-striped\"><tr><th>Distrikt</th><th>Virksomhed</th><th>Udbydes af tabler</th><th></th></tr>";
+			
+			
 			$.each(data.items, function(i,item) {
-				if(item.may_edit) { $("#items").append("<p><a href=# onclick=delitem("+item.tid+");>Slet indl&aelig;g</a></p>"); }
-				$("#items").append("<p><b>"+item.headline+"</b></p><p>Sted: "+item.location+"</p><p>Kontakt: "+item.contact+"</p><p>Pris: "+item.price+"</p><p>Tid: "+item.duration+"</p>");
-				$("#items").append("<ul>"+item.description+"</ul><hr>");
+				var del_html = "";
+				if(item.may_edit) del_html = " <a class=btn href=# onclick=delitem("+item.tid+");>Slet indl&aelig;g</a>";
+				
+				var split_loc = item.location.split(",");
+				console.log(split_loc);
+				if (split_loc[0] != title)
+				{
+					title = split_loc[0];
+					// button_html += "<h1>"+title+"</h1>";
+				}
+				
+				var contact = get_tabler_data(item.contact);
+				var txt = (item.description + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
+				item_html += html_modal_content(
+					del_html+"<h4>"+item.headline+", "+item.location+"</h4>"+
+					"<p>Kontakt: "+contact.contact+" Pris: "+item.price+" Tid: "+item.duration+"</p>"+
+					"<p>"+txt+"</p>",
+					item.tid
+				);
+				
+				button_html += "<tr><td>"+title+"</td><td>"+item.headline+"</td><td>"+contact.org+"</td><td>"+html_modal_button("Vis", item.tid)+"</td></tr>";
 			});
+			
+			button_html += "</table></p>";
+			
+			button_html = html_modal_button("+ Opret indlæg", "opret") + button_html;
+			$("#items").append(button_html+item_html);
 		}
 		else
 		{
@@ -1892,6 +2020,36 @@ $('#prev').click(function() {
 		});
 	</script>
 	',
+		'user_duties' => '
+		<div id="page-content" class="meetstatistic_data" role="main"><div class="container container-light user_condensed">
+				<div class="title title-section">
+					<h2>Pligter</h2>
+
+					<span class="sticker">
+						<i class="icon icomoon-stats"></i>
+					</span>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<table id=hisduty class="table table-condensed 22" width="100%">
+						<tr>
+							<th>Dato</th>
+							<th>Pligt</th>
+							<th>M&oslash;de</th>
+						</tr>
+						</table>
+					</div>
+				</div>
+			</div></div>
+					<script>
+		var duties = jQuery.parseJSON(\'%%data%%\');
+		$.each(duties, function(k,data) 
+		{
+			$("#hisduty").append("<tr><td>"+data.Tidspunkt+"</td><td>"+data.Pligt+"</td><td><a href=?mid="+data.MID+">"+data.Moede+"</a></td></tr>");
+//			console.log(k,data);
+		});
+		</script>
+		',
 	'user_stats' =>
 	'<div id="page-content" class="meetstatistic_data" role="main"><div class="container container-light user_condensed">
 		<div class="title title-section">
@@ -2173,8 +2331,8 @@ Medlemsbrevene er vores vigtigste kommunikationxsiddel.</p>
 	</form>
 	<script>
 		$(function() {
-			//$("#startdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-			//$("#enddate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+			$("#startdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+			$("#enddate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
 		});
 	</script>
 	',
@@ -2490,8 +2648,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<script>
 
 			$(function() {
-				//$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				//$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,minDate:"-35Y"});
+				$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,minDate:"-40Y"});
 			});
 
 			function newuser(frm)
@@ -2546,8 +2704,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 	</ul>
 		<script>
 			$(function() {
-				//$("#new_role_start").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				//$("#new_role_end").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				$("#new_role_start").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				$("#new_role_end").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
 
 				var roles = jQuery.parseJSON(\'%%roles_json%%\');
 				var html = "";
@@ -2641,9 +2799,10 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
     }
     function ctoty(uid)
 	{
-		if (confirm("Bekræft indstilling af medlem som tabler of the year i klubben for indeværende klubår"))
+		var ctoty = prompt("Bekræft og motiver indstilling af medlem som tabler of the year i klubben for indeværende år");
+		if (ctoty != null)
 		{
-			document.location.href="?uid=%%uid%%&ctoty=%%uid%%";
+			document.location.href="?uid=%%uid%%&ctoty="+ctoty;
 		}
 	}
 	function onleave(uid)
@@ -2676,6 +2835,9 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		<p>Efternavn<br>
 		<input type=text name=data[profile_lastname] value="%%profile_lastname%%" class=form-control></p>
 		<p>Fødselsdato<br>
+<!---		<input type=number id=input_y min="1900" max="9999" placeholder="År" class=form-control />
+		<input type=number id=input_m min="1" max="12" placeholder="Måned" class=form-control />
+		<input type=number id=input_d min="1" max="31" placeholder="Dag" class=form-control />--->
 		<input type=text name=data[profile_birthdate] value="%%profile_birthdate%%" id=birthdate class="form-control form-datepicker"></p>
 		<p>Charterdato<br>
 		<input type=text name=data[profile_started] value="%%profile_started%%" id=charterdate class="form-control form-datepicker"></p>
@@ -2746,6 +2908,24 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
         <p>Twitter<br>
 		<input type=text name=data[company_twitter] value="%%company_twitter%%" class=form-control></p>
 		<hr>
+		<p>Notifikationer (hold CTRL nede for at vælge flere)<br>
+		<select multiple class="form-control" id=meeting_tags_sel size=10  style="height:200px" onchange=update_tags("#meeting_tags_sel")>
+			<option value="#Hjemmemøde">Hjemmemøde</option>
+			<option value="#Udemøde">Udemøde</option>
+			<option value="#Foredrag">Foredrag</option>
+			<option value="#Netværksmøde">Netværksmøde</option>
+			<option value="#Virksomhedsbesøg">Virksomhedsbesøg</option>
+			<option value="#Action">Action</option>
+			<option value="#Generalforsamling">Generalforsamling</option>
+			<option value="#LM-Arrangør">LM-Arrangør</option>
+			<option value="#DM-Arrangør">DM-Arrangør</option>
+      <option value="#Distriktsmøde">Distriktsmøde (arrangerende klub)</option>
+      <option value="#Landsmøde">Landsmøde (arrangerende klub)</option>
+		</select><br>
+		<input type=button value="Nulstil notifikationer" onclick="javascript:$(\'#meeting_tags\').val(\'\');" /><br>
+		<input type=text required name=data[monitor_tags] id=meeting_tags value="%%monitor_tags%%" readonly>
+		</p>
+		<hr>
 		<p>Overførsel til EX-Table<br>
 		<select name=data[xtable_transfer] id=xtable>
 			<option value=1>Ja tak, Ex Table Danmark må gerne kontakte mig når jeg fylder 40</option>
@@ -2760,6 +2940,16 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</form>
 		<button class="btn" value="Fortryd &aelig;ndringer" onclick="javascript:window.history.back();">Fortryd &aelig;ndringer</button>
 		<script>
+			function update_tags(t)
+			{
+				var tags = "";
+				$(t + " :selected").each(function(i,s)
+				{
+					var v = $(s).val();
+					tags += v + " ";
+				});
+				$("#meeting_tags").val(tags);
+			}
 			function add_biz()
 			{
 				var b = prompt("Indtast branchenavn:");
@@ -2790,8 +2980,8 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			});
 
 			$(function() {
-				//$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
-				//$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,yearsRange:"-40:c",});
+				$("#charterdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true});
+				$("#birthdate").datepicker({dateFormat:"yy-mm-dd",changeYear: true,yearsRange:"-40:c",});
 			});
 		</script>
 		',
@@ -2937,7 +3127,34 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 			<p>Webside<br>
 			<input type=text name=data[company_web] value="%%company_web%%" class=form-control></p>
 			<i>Husk http:// foran linket</i>
+		</td></tr>
+		<td>
+			<p>Facebook<br>
+			<input type=text name=data[company_facebook] value="%%company_facebook%%" class=form-control></p>
+		</td>
+		<td>
+			<p>Linkdin<br>
+			<input type=text name=data[company_linkdin] value="%%company_linkdin%%" class=form-control></p>
+		</td>
+		<td>
+			<p>Twitter<br>
+			<input type=text name=data[company_twitter] value="%%company_twitter%%" class=form-control></p>
 		</td></tr></table>
+		<hr>
+		<p>Notifikationer (hold CTRL nede for at vælge flere)<br>
+		<select multiple class="form-control" id=meeting_tags_sel size=10  style="height:200px" onchange=update_tags("#meeting_tags_sel")>
+			<option value="#Hjemmemøde">Hjemmemøde</option>
+			<option value="#Udemøde">Udemøde</option>
+			<option value="#Foredrag">Foredrag</option>
+			<option value="#Netværksmøde">Netværksmøde</option>
+			<option value="#Virksomhedsbesøg">Virksomhedsbesøg</option>
+			<option value="#Action">Action</option>
+			<option value="#Generalforsamling">Generalforsamling</option>
+			<option value="#LM-Arrangør">LM-Arrangør</option>
+			<option value="#DM-Arrangør">DM-Arrangør</option>
+		</select><br>
+		<input type=button value="Nulstil notifikationer" onclick="javascript:$(\'#meeting_tags\').val(\'\');" /><br>
+		<input type=text required name=data[monitor_tags] id=meeting_tags value="%%monitor_tags%%" readonly>
 		<hr>
 		<p>Overførsel til EX-Table<br>
 		<select name=data[xtable_transfer] id=xtable>
@@ -2956,6 +3173,16 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</tr></table>
 		</form>
 		<script>
+			function update_tags(t)
+			{
+				var tags = "";
+				$(t + " :selected").each(function(i,s)
+				{
+					var v = $(s).val();
+					tags += v + " ";
+				});
+				$("#meeting_tags").val(tags);
+			}
 			function add_biz()
 			{
 				var b = prompt("Indtast branchenavn:");
@@ -3173,6 +3400,20 @@ mindre der foreligger en af landsformanden godkendt særlig motivering.</p>
 		</div>
 		</div><!-- #container -->
 		</div>
+		<table width=100%>
+		<tr>
+		 
+				<script>
+					if ("%%company_twitter%%"!="")
+					{
+						document.write("<td width=50%><a class=\'twitter-timeline\' data-height=400 href=\'%%company_twitter%%\'>Tweets</a> <script async src=\'//platform.twitter.com/widgets.js\' charset=\'utf-8\'></"+"script></td>");
+					}
+					if ("%%company_linkdin%%"!="")
+					{
+						document.write("<td width=50%><script src=\'//platform.linkedin.com/in.js\' type=\'text/javascript\'></s"+"cript><script type=\'IN/MemberProfile\' data-id=\'%%company_linkdin%%\' data-format=\'inline\'></"+"script></td>");
+					}
+				</script>
+		</tr></table>
 	',
 	'club_missing_minutes' => '<a class="center" name=nominutes style="display:block; margin-top:25px;"><h2>M&oslash;der uden referat</h2></a>',
 	'meeting_links' => '
@@ -3447,6 +3688,7 @@ http://www.rtd.dk/?mid=%%mid%%
 %%meeting_description%%
 
 ',
+		'mail_monitor_invitation_subject' => 'RTD Mødeforslag: %%title%%',
 		'mail_invitation_subject' => 'RTD Mødeindkaldelse: %%title%%',
 		'admin_term_edit' => 'Rediger sprog',
 		'latestmembers' =>
@@ -3660,11 +3902,11 @@ http://www.rtd.dk/?mid=%%mid%%
 	  <tr><td width=50% valign=top>
 	  <p class="center"><b>Fødselsdage denne måned</b></p>
 	  <ul id=birthdays class="center"></ul>
-	  </td><!--<td width=50% valign=top>
+	  </td><td width=50% valign=top>
 	  <p><b>Møder</b></p>
       <ul id=other_meetings></ul>
-	  </td>--></tr></table> 
-      <!--<div id=other_meetings_data style="display:none"></div>-->
+	  </td></tr></table> 
+      <div id=other_meetings_data style="display:none"></div>
     </div>
     <script>
       var other_data = jQuery.parseJSON(\'%%data%%\');
@@ -3673,7 +3915,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		$("#birthdays").append("<li><a href=?uid="+j.uid+">"+j.profile_firstname+" "+j.profile_lastname+", "+j.profile_birthdate+"</a>");
 	  });
 
-      /*var c = 0;
+      var c = 0;
       $.each(other_data.meetings, function(k,m) {
         $("#other_meetings").append("<li name=omid_link_"+m.omid+"><a href=#omid_link_"+m.omid+" onclick=show_om("+m.omid+")>"+m.title+" ("+m.start_time+")</a>");
         $("#other_meetings_data").append("<div id=omid_"+m.omid+"><h1>"+m.title+"</h1>"+m.start_time+" - "+m.end_time+"<br><br>"+m.description+"<p><a href=?cid="+m.cid+"&delete_omid="+m.omid+">Slet møde</a></div>")
@@ -3682,7 +3924,7 @@ http://www.rtd.dk/?mid=%%mid%%
       function show_om(omid)
       {
         $("#omid_"+omid).dialog({modal:true, width: 500});
-      }*/
+      }
     </script>
     ',
 		'club_future_meetings' => '
@@ -3762,6 +4004,7 @@ http://www.rtd.dk/?mid=%%mid%%
                                 startheight:500,
                                 hideThumbs:10
                             });
+							$("#other").append("<article class=\"post post-latest post-type-image\"><div class=post-heading><div class=thumbnail><a class=link href=?mid="+m.mid+"><span class=\"btn btn-icon-link\"></span><img src=/uploads/meeting_image/?miid="+m.images[0].miid+"&landscape&w=300&h=175></a></div></div><div class=post-content><div class=title><h2 class=h5>"+title+"</h2><p class=meta><span class=meta-date>"+m.start_time+"</span></p></div></div></article>");
 						}
 						else
 						{
@@ -4176,6 +4419,29 @@ http://www.rtd.dk/?mid=%%mid%%
 		'meeting_attendance_post' => '</table>',
 		'meeting_attendance_secretary_add' => '
 		<hr>
+    Tilmeld andre:
+    <select id=foreign_uid><option value=0>-- v&aelig;lg --</option></select>
+    <input type=button onclick=foreign_signup() value=Tilmeld class=btn>
+    <script>
+    var foreign_mid = 0;
+    {
+      var data = jQuery.parseJSON(\'%%data%%\');
+      foreign_mid = data.mid;
+      $.each(data.allmembers, function(a,b) {
+        var c = "<option value="+b.uid+">"+b.club+": "+b.member+"</option>";
+        $("#foreign_uid").append(c);
+      });
+    }
+		function foreign_signup()
+		{
+			var uid = $("#foreign_uid").val();
+			if (uid!=0)
+			{
+				document.location.href="?mid="+signup_mid+"&attendance[uid]="+uid+"&attendance[accept]=1&attendance[comment]=Tilmeldt";
+			}
+		}
+    </script>
+    <br>
 		Tilmeld medlem:
 		<select id=accept_uid>
 		<option value=0>-- v&aelig;lg --</option>
@@ -4244,6 +4510,7 @@ http://www.rtd.dk/?mid=%%mid%%
 		'save_meeting' => 'Gem møde',
 		'meeting_edit_header' => '<h1 onclick="$(\'#stools\').toggle();">Sekret&aelig;rv&aelig;rkt&oslash;jer</h1>
 															<p id=stools>
+                              <a href=# onclick="javascript:if(confirm(\'Konverter m&oslash;det til commandoraid (afmeld alle deltagere)?\')) document.location.href=\'?mid=%%mid%%&commandoraid\';">Commandoraid</a> |
 															<a href=?mid=%%mid%%&edit>Rediger m&oslash;de</a> |
 															<a href=# onclick="javascript:if(confirm(\'Bekræft sletning af møde\')) document.location.href=\'?mid=%%mid%%&delete\';">Slet m&oslash;de</a> |
 															<a href=?mid=%%mid%%&minutes_edit>Rediger referat</a>
@@ -4325,6 +4592,23 @@ http://www.rtd.dk/?mid=%%mid%%
 													<div class="text">
 														<a href="?cid=%%cid%%"><h2>%%name%%</h2></a>
 														<p>%%meeting_description%%</p>
+														<p id=tags></p>
+														<script>
+														
+														{
+															var tags_str = "%%tags%%";
+															var tags_arr = tags_str.split(" ");
+															var html = "";
+															for (var i=0; i<tags_arr.length; ++i)
+															{
+																var url = encodeURIComponent(tags_arr[i]);
+																html += "<a href=\"?search="+url+"\">"+tags_arr[i]+"</a> ";
+															}
+															$("#tags").html(html);
+														}
+														
+														
+														</script>
 													</div>
 													<div class="row">',
 		'meeting_invite2' => '
@@ -4379,10 +4663,27 @@ http://www.rtd.dk/?mid=%%mid%%
 											<td valign=top>
 											<p>Titel<br>
 											<input class="field form-control" type=text name=meeting[title] value="%%title%%"></p>
-
                                             <p>M&oslash;dested<br>
 											<input class="field form-control" id=loctext type=text name=meeting[location] value="%%location%%" onkeyup=locate(this.value);></p>
 											<div id=locmap></div>
+											
+											<p>Mødetype (hold CTRL nede for at vælge flere)<br>
+											
+											<select multiple class="form-control" id=meeting_tags_sel size=10  style="height:200px" onchange=update_tags("#meeting_tags_sel")>
+												<option value="#Hjemmemøde">Hjemmemøde</option>
+												<option value="#Udemøde">Udemøde</option>
+												<option value="#Foredrag">Foredrag</option>
+												<option value="#Netværksmøde">Netværksmøde</option>
+												<option value="#Virksomhedsbesøg">Virksomhedsbesøg</option>
+												<option value="#Action">Action</option>
+												<option value="#Generalforsamling">Generalforsamling</option>
+												<option value="#LM-Arrangør">LM-Arrangør</option>
+												<option value="#DM-Arrangør">DM-Arrangør</option>
+                        <option value="#Distriktsmøde">Distriktsmøde (arrangerende klub)</option>
+                        <option value="#Landsmøde">Landsmøde (arrangerende klub)</option>
+											</select><br>
+											<input type=text required name=meeting[tags] id=meeting_tags value="%%tags%%" readonly>
+											</p>
 
 											<p>M&oslash;destart<br>
 											<input class="field form-control" type=text name=meeting[start_time] value="%%start_time%%" id=start_time>
@@ -4449,6 +4750,17 @@ http://www.rtd.dk/?mid=%%mid%%
 
 
 											<script>
+												function update_tags(t)
+												{
+													var tags = ("#%%district%%").replace(" ", "_")+" ";
+													$(t + " :selected").each(function(i,s)
+													{
+														var v = $(s).val();
+														tags += v + " ";
+													});
+													$("#meeting_tags").val(tags);
+												}
+											
 												function locate(what)
 												{
 													if (what=="") return;
@@ -4720,16 +5032,25 @@ http://www.rtd.dk/?mid=%%mid%%
 
 		'login_content' => '
 						<div class=profile id=profilebox>                        
-                        <hr>Kommende pligter:<div id=duty_field class=stats></div>
+                        <h2>Møder</h2><div id=duty_field_1 class=stats></div>
+                        <h2>DM og LM</h2><div id=dm_lm class=stats></div>
                         <script>
+                        var lmdm_data = jQuery.parseJSON(not_meetings);
+                        $.each(lmdm_data, function(k,v){
+                          var d = new Date(v.start_time);
+                          $("#dm_lm").append("<a href=/?mid="+v.mid+">"+v.title+" ("+v.club+")</a><br>");
+                        });
+                        
 							var dutydata = jQuery.parseJSON(notification_update_json);
 							var cnt = 0;
 							$.each(dutydata, function(key,value) {
 								cnt++;
 								var d = new Date(value.start_time);
-								$("#duty_field").append("<li><a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+value.duty+"</a>");
+								var duty = value.duty;
+								if (duty.indexOf("-")==duty.length-2) duty += " Ingen pligter";
+								$("#duty_field_1").append("<a href=\"?mid="+value.mid+"#duty\" title=\""+value.title+" ("+value.start_time+")\">"+duty+"</a><br>");
 							});
-							if (cnt==0) $("#duty_field").append("<li><i>Ingen</i>");
+							if (cnt==0) $("#duty_field_1").append("<i>Ingen</i><br>");
 						</script>
 												</div>
 ',

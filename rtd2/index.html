@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="iso-8859-1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" id="viewport"
+  content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+
+    <meta name="description" content="round table app">
+    <meta name="author" content="3kings.dk">
+
+
+    <title>RTD2</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="include/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="include/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="include/bootstrap/theme.css" rel="stylesheet">
+	<link href="include/bootstrap/sticky-footer-navbar.css" rel="stylesheet">
+
+	
+	<style>
+		.rtd-logo
+		{
+			padding: 10px;
+		}
+		#infopanel, #mainpanel
+		{
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	</style>
+	
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container"> 
+			<div class="navbar-header rtd-logo">
+				<!--- <a href=#><img src="img/rtd-transparent.gif" width=30 /></a> --->
+				<form onsubmit="return show_search_from_front_query();">
+					<input type=search class="form-control" placeholder="Hvad søger du?" id="front_search_input">
+				</form>
+			</div>
+		</div>      
+	</nav>
+  
+	<div id="infopanel"></div>
+    <div  id="mainpanel"></div> <!-- class="container" role="main" /container -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="include/jquery/jquery.min.js"></script>
+    <script src="include/bootstrap/js/bootstrap.min.js"></script>
+	
+	
+	<script type="text/javascript" src="include/rtd/rtd_terms.js"></script>
+	<script type="text/javascript" src="include/rtd/rtd_gps.js"></script>
+	<script type="text/javascript" src="include/rtd/rtd_show.js"></script>
+	<script type="text/javascript" src="include/rtd/rtd_is.js"></script>
+	<script type="text/javascript" src="include/rtd/rtd_do.js"></script>
+	<script type="text/javascript" src="include/rtd/rtd.js"></script>
+
+	
+  </body>
+</html>

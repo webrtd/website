@@ -22,7 +22,7 @@
 	
 	function build_token($user)
 	{
-		$token_salt = "1-2-3-I-LOVE-RTD";
+		$token_salt = "1-2-3-I-LOVE-RTD-2016";
 		$uid = $user['uid'];
 		$str = $token_salt.$user['password'];
 		$sql = "select md5(concat('{$token_salt}',password,uid)) as token from user where uid={$uid}";
@@ -40,7 +40,7 @@
 		
 	function verify_token($token)
 	{
-		$token_salt = "1-2-3-I-LOVE-RTD";
+		$token_salt = "1-2-3-I-LOVE-RTD-2016";
 		$sql = "select uid,username,password from user where STRCMP(md5(concat('{$token_salt}',password,uid)),'{$token}')=0";
 		$data = get_one_data_row($sql);
 		if (isset($data['uid'])) 
@@ -479,6 +479,19 @@
 		,false, false, false, false, 'did = district to fetch meetings (blank for whole country).'
 	);
 	
+
+	function soap_get_meetings($cid, $token)
+	{
+		if (!verify_token($token)) return false;
+		logic_log(__FUNCTION__, $cid);		 
+		return json_encode(logic_get_club_meetings($cid));		
+	}
+	$server->register('soap_get_meetings',
+			array('token'=>'xsd:string','cid' => 'xsd:int'),
+			array('cid' => 'xsd:string')
+		,false, false, false, false, 'cid = club to fetch meetings.'
+	);
+
 	
 	function soap_fetch_future_meetings_for_club($cid,$token)
 	{

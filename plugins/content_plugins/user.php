@@ -97,14 +97,14 @@
 				logic_user_on_leave($user);
 			}
 
-            /*if (isset($_REQUEST['ctoty']))
+            if (isset($_REQUEST['ctoty']))
 			{
 				if (logic_is_club_secretary($user['cid']))
 				{
 					logic_nominate_role($user['uid'], logic_get_club_year_start(), logic_get_club_year_end(), CTOTY_RID, $_REQUEST['ctoty']);
 					$html .= term('user_nominated_ok');
 				}
-			}*/
+			}
 
 			if (isset($_REQUEST['honorary']))
 			{
@@ -149,11 +149,16 @@
 
 		$html .= term_unwrap('user_stats', array('data'=>addslashes(json_encode($stats))));
 
+		$duty = logic_get_duty_user($user['uid']);
+		$html .= term_unwrap('user_duties', array('data'=>addslashes(json_encode($duty))));
+		
+		
 		if ($user['view_tracker'])
 		{
 			$peek = logic_get_user_tracker($user['uid']);
 			if (!empty($peek)) $html .= term_unwrap('user_viewed', $peek, true);
 		}
+		
 
 		return $html;
 	}

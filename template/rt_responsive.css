@@ -1,0 +1,149 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+  padding: 0px;
+  margin: 0px;
+  
+}
+
+
+h3
+{
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 11px;
+	margin: 0px;
+	padding: 0px;
+	font-weight: bolder;	
+}
+
+/* STRUCTURE */
+
+#pagewrap {
+	padding: 5px;
+	width: 1252px;
+	margin: 20px auto;
+}
+#header {
+	/*height: 100px;*/
+	padding: 0 15px;
+}
+#left {
+	width: 290px;
+	float: left;
+	padding: 5px 5px;
+}
+
+#middle {
+	width: 585px; /* Account for margins + border values */
+	float: left;
+	padding: 5px 15px;
+	margin: 0px 5px 5px 5px;
+}
+
+#right {
+	width: 270px;
+	padding: 5px 15px;
+	float: left;
+}
+#footer {
+	clear: both;
+	padding: 0 15px;
+}
+
+/************************************************************************************
+MEDIA QUERIES
+*************************************************************************************/
+/* for 980px or less */
+@media screen and (max-width: 980px) {
+	
+	#pagewrap {
+		width: 94%;
+	}
+	#left {
+		width: 41%;
+		padding: 1% 4%;
+	}
+	#middle {
+		width: 41%;
+		padding: 1% 4%;
+		margin: 0px 0px 5px 5px;
+		float: right;
+	}
+	
+	#right {
+		clear: both;
+		padding: 1% 4%;
+		width: auto;
+		float: none;
+	}
+
+	#header, #footer {
+		padding: 1% 4%;
+	}
+}
+
+/* for 700px or less */
+@media screen and (max-width: 600px) {
+
+	#left {
+		width: auto;
+		float: none;
+	}
+	
+	#middle {
+		width: auto;
+		float: none;
+		margin-left: 0px;
+	}
+	
+	#right {
+		width: auto;
+		float: none;
+	}
+
+}
+
+/* for 480px or less */
+@media screen and (max-width: 480px) {
+
+	#header {
+		height: auto;
+	}
+	h1 {
+		font-size: 2em;
+	}
+	#right {
+		display: none;
+	}
+
+}
+
+
+
+
+#left {
+	/*background: red;*/
+	/*background: #f8f8f8;*/
+}
+#right {
+	background: green;
+	/*background: #f0efef;*/
+}
+#header, #left, #middle, #right {
+	margin-bottom: 5px;
+}
+
+#pagewrap, #header, #left, #middle, #right, #footer {
+	/*border: solid 1px #ccc;*/
+}
+
+#box
+{
+	padding: 5px;
+	margin-bottom: 10px;
+	background: #f8f8f8;
+}
+

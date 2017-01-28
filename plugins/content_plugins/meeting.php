@@ -9,7 +9,7 @@
 
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
-	content_plugin_register('mid', 'content_handle_meeting', 'M?de');
+	content_plugin_register('mid', 'content_handle_meeting', 'M�de');
 
  
     function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br><div>')
@@ -494,9 +494,25 @@
 			
 			
 			
-				if (logic_is_club_secretary($meeting['cid']) || logic_is_admin())
+				if (logic_is_club_secretary($meeting['cid']) || logic_is_admin() || logic_is_national_board_member())
 				{
-					$html .= term_unwrap('meeting_attendance_secretary_add', array("members"=>logic_get_active_club_members($meeting['cid']), "mid" => $meeting['mid']), true);
+          if (isset($_REQUEST['commandoraid']))
+          {            
+            fire_sql("update meeting_attendance set accepted=0, response_date=now(), comment='Commandoraid' where mid='{$meeting['mid']}'");
+            /*die("update meeting_attendance set accepted=0, response_date=now(), comment='Commandoraid' where mid='{$meeting['mid']}'");*/
+          }
+          
+        
+          $foreign_data = get_data(
+            "select role.uid, (select concat(user.profile_firstname,' ', user.profile_lastname) from user where user.uid=role.uid) as member , role.end_date, now(),
+(select (select name from club where club.cid=user.cid) from user where user.uid=role.uid) as club
+
+from role where (role.rid=26 or role.rid=6) and (role.end_date>now() and role.start_date<now()) order by club asc"
+          );
+					$html .= term_unwrap('meeting_attendance_secretary_add', 
+          array("allmembers"=>$foreign_data,
+                "members"=>logic_get_active_club_members($meeting['cid']), 
+                "mid" => $meeting['mid']), true);
 				}
 			
 			

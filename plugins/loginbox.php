@@ -183,7 +183,16 @@ function check_club_mail($club)
 		{
             update_option('issession','no');
 			$data = addslashes(json_encode(logic_get_duties($_SESSION['user']['uid'])));
-			return "<script>var notification_update_json = '$data';</script>".term_unwrap('login_content', $_SESSION['user']);
+      
+      $s = logic_get_club_year_start(); 
+      $e = logic_get_club_year_end();
+      $sql = "select mid, title, start_time, (select name from club where club.cid=meeting.cid) as club from meeting where start_time>'{$s}' and end_time<'{$e}' and (tags like '%Distriktsmøde%' or tags like '%Landsmøde%') order by start_time asc";
+      $meetings = addslashes(json_encode(get_data($sql)));
+      
+ /*     $meetings = fetch_meetings("where start_time>'{$s}' and end_time<'{$e}' (tags like '%DM-arrangør%' or tags like '%LM-arrangør%')")
+      $meetings = addslashes(json_encode($meetings));
+*/      
+			return "<script>var notification_update_json = '$data'; var not_meetings='$meetings';</script>".term_unwrap('login_content', $_SESSION['user']);
 		}
 		else
 		{  

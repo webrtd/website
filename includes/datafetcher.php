@@ -94,7 +94,7 @@ where user_path_tracker.uri='/?mid={$mid}'";
 		$data = get_data($sql);
 		if (empty($data)) return "Empty data";
 		
-		$html = "<table border=1>";
+		$html = "<table class='table table-striped table-bordered table-hover table-condensed'>";
 
 		$first_row = true;
 		foreach($data as $row)
@@ -553,11 +553,14 @@ where user_path_tracker.uri='/?mid={$mid}'";
 			logic_log(__FUNCTION__, 'SQL Injection DID'+addslashes($did));
 			die();
 		}
+		
+		
+		$df_rid = get_single_value("select rid from role_definition where shortname='".DISTRICT_CHAIRMAN_SHORT."'");
     return get_one_data_row("
       select U.uid, U.username, U.profile_firstname, U.profile_lastname, U.private_email, U.private_mobile, U.company_facebook, U.company_linkdin, U.company_twitter from user U
       inner join role R on R.uid=U.uid
       inner join club C on U.cid=C.cid
-      where R.rid=14 and C.district_did=$did and R.start_date<now() and R.end_date>now()
+      where R.rid={$df_rid} and C.district_did={$did} and R.start_date<now() and R.end_date>now()
     ");
   }           
  

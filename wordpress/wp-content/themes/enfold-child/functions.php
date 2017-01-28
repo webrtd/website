@@ -81,6 +81,11 @@ add_action( 'wp_enqueue_scripts', 'remove_head_scripts' );
 
 // END Custom Scripting to Move JavaScript
 
+/*$wp_roles = new WP_Roles();
+$names = $wp_roles->get_names();
+$wp_roles->remove_role(utf8_encode("afgående_landsformand"));
+print_r($names);*/
+
 /*add_role( 'medlem', 'Medlem', array( 'read' => true, 'level_0' => true ) );
 add_role( 'xmedlem', 'Xmedlem', array( 'read' => true, 'level_0' => true ) );
 add_role( 'orlov', 'Orlov', array( 'read' => true, 'level_0' => true ) );

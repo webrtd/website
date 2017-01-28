@@ -72,6 +72,7 @@
   {
 		try
 		{
+			/*
 			$mail = new PHPMailer(true);
 			//$mail->IsSMTP();
 			$mail->IsMail();
@@ -79,6 +80,21 @@
 			 $mail->Host     = SMTP_SERVER;
 			
 			$mail->SMTPDebug =true;
+			*/
+			
+			
+			$mail = new PHPMailer;
+			$mail->isSMTP();                                      // Set mailer to use SMTP
+			$mail->Host = SMTP_SERVER;                     // Specify main and backup SMTP servers
+			$mail->SMTPAuth = true;                               // Enable SMTP authentication
+			$mail->Username = SMTP_USER;   // SMTP username
+			$mail->Password = SMTP_PASSWORD;                           // SMTP password
+			$mail->SMTPSecure = 'tls';                            // Enable encryption, only 'tls' is accepted
+
+			//$mail->From = 'YOU@YOUR_DOMAIN_NAME';
+			//$mail->FromName = 'Mailer';
+			//$mail->addAddress('bar@example.com');                 // Add a recipient			
+			
 			$subj = strip_tags(html_entity_decode($subj,ENT_COMPAT,'UTF-8'));
 			
 			$mail->IsHTML(true);
@@ -86,7 +102,9 @@
 			
 			
 			
-			$mail->SetFrom($from);
+			//			$mail->SetFrom($from);
+			$mail->SetFrom(MASS_MAILER_REPLY_MAIL);
+			$mail->AddReplyTo($from);
 			$mail->Sender=$from;
 
 			
@@ -419,8 +437,8 @@
 	
 		if (has_errors())
 		{
-			echo "mailing ".print_r($errors,true);
-			do_mail(ADMIN_MAIL,ADMIN_MAIL,"Website cronjob log $logid","Log output:\n".print_r($errors,true));	
+			// echo "mailing ".print_r($errors,true);
+			// do_mail(ADMIN_MAIL,ADMIN_MAIL,"Website cronjob log $logid","Log output:\n".print_r($errors,true));	
 		}
 		
 		echo $log;

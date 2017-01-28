@@ -292,6 +292,9 @@
 		
 		if ($ext!="")
 		{
+      unlink(CLUB_LOGO_PATH."{$cid}.png");
+      unlink(CLUB_LOGO_PATH."{$cid}.jpg");
+      unlink(CLUB_LOGO_PATH."{$cid}.gif");
 			$newf = $cid.$ext;
 			$newfn = CLUB_LOGO_PATH.$newf;
 			move_uploaded_file($data['tmp_name'], $newfn);
@@ -1395,6 +1398,45 @@ END:VCALENDAR"
 		}
 		return $text;
 	}
+
+	function logic_get_duty_user($uid)
+	{
+		$sql = "select meeting.title as Moede, meeting.mid as MID, meeting.start_time as Tidspunkt,
+IF(meeting.duty_3min_uid={$uid}, '3 minutter', 
+   IF(meeting.duty_letters1_uid={$uid}, 'Brevgennemgang', 
+      IF(meeting.duty_letters2_uid={$uid}, 'Brevgennemgang', 
+         IF(meeting.duty_meeting_responsible_uid={$uid}, 'Mødeansvarlig', 
+            IF(meeting.duty_ext1_uid={$uid}, meeting.duty_ext1_text, 
+               IF(meeting.duty_ext2_uid={$uid}, meeting.duty_ext2_text, 
+                  IF(meeting.duty_ext3_uid={$uid}, meeting.duty_ext3_text, 
+                     IF(meeting.duty_ext4_uid={$uid}, meeting.duty_ext4_text, 
+                        IF(meeting.duty_ext5_uid={$uid}, meeting.duty_ext5_text, 'Andet')
+                       )
+                    )
+                 )
+              )
+           )
+        )
+     )
+  ) 
+
+as Pligt
+
+
+from meeting where 
+(meeting.duty_3min_uid={$uid} or
+meeting.duty_letters1_uid={$uid} or
+meeting.duty_letters2_uid={$uid} or
+meeting.duty_meeting_responsible_uid={$uid} or
+meeting.duty_ext1_uid={$uid} or
+meeting.duty_ext2_uid={$uid} or
+meeting.duty_ext3_uid={$uid} or
+meeting.duty_ext4_uid={$uid} or
+meeting.duty_ext5_uid={$uid})
+order by meeting.start_time DESC";
+		return get_data($sql);
+	}
+
   
 	function logic_send_invitations($mid)
 	{
@@ -1673,7 +1715,7 @@ END:VCALENDAR"
 	function logic_save_meeting_attendance($cid, $mid,$uid,$accept,$comment="")
 	{
 		//if (logic_is_admin() || (logic_is_secretary() && $cid==$_SESSION['user']['cid']))
-		if ($_SESSION['user']['uid']==$uid || logic_may_edit_meeting($cid))
+		if ($_SESSION['user']['uid']==$uid || logic_may_edit_meeting($cid) || logic_is_national_board_member())
 		{
 			save_meeting_attendance($mid,$uid,$accept,$comment);
 			event_meeting_attendance($mid,$cid,$uid,$comment,$accept);

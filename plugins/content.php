@@ -7,10 +7,10 @@
 */
 
 $query_age = (isset($_GET['aid']) ? $_GET['aid'] : null);
-$query_age1 = logic_get_wp_page_id()!==false?logic_get_wp_page_id():null;
+$query_age1 = (isset($_GET['wid']) ? $_GET['wid'] : null);
 
 //if(($query_age != '' && $query_age != 15 && $query_age != 13 && $query_age != 17 && $query_age != 7 && $query_age != 18 && $query_age != 19 && $query_age != 20 && $query_age != 21 && $query_age != 22 && $query_age != 23 && $query_age != 24 && $query_age != 25) || isset($_GET['wid']))
-if(logic_get_wp_page_id()!==false)
+if(isset($_GET['wid']))
 {
     plugin_register('CONTENT', 'content');
     
@@ -166,7 +166,7 @@ function homecontent()
     $content = '';
     if(!is_user_logged_in()) { 
         
-        if(logic_get_wp_page_id()!==false || isset($_GET['aid']) || $_SERVER['REQUEST_URI'] == "/?mummy" || $_SERVER['REQUEST_URI'] == "/?nb")
+        if(isset($_GET['wid']) || isset($_GET['aid']) || $_SERVER['REQUEST_URI'] == "/?mummy" || $_SERVER['REQUEST_URI'] == "/?nb")
         {
             $content = '';
         }
@@ -261,7 +261,7 @@ function notloginslider()
     $cnt = '';
     if(!is_user_logged_in())
     {
-        if(logic_get_wp_page_id()!==false || isset($_GET['aid']))
+        if(isset($_GET['wid']) || isset($_GET['aid']))
         {
             $cnt = '';
         }

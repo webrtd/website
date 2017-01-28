@@ -8,7 +8,7 @@
 		{
 			die("<script>alert('Navn og afsender mail mangler!');history.go(-1);</script>");
 		}
-		$allowable_mails = array("lf", "vlf", "ls", "web", "iro");
+		$allowable_mails = array("lf", "vlf", "ls", "web", "iro","df1","df2","df3", "df4", "df5", "df6", "df7", "df8");
 		if (in_array($_REQUEST['who'], $allowable_mails)) 
 		{
 			$body = "Besked fra {$_REQUEST['name']} - {$_REQUEST['email']}\n\n{$_REQUEST['body']}";

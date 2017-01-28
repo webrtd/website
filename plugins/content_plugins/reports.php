@@ -407,14 +407,57 @@
 	
 	}
 	
+	
+	function do_networker()
+	{
+		$sql = "select C.name as club, D.name as district, M.minutes_number_of_participants, M.minutes_number_of_rejections, M.title, M.minutes_date, M.end_time from meeting M 
+		inner join club C on M.cid=C.cid
+		inner join district D on D.did=C.district_did
+		where  M.start_time>'".logic_get_club_year_start()."' and M.end_time<now()
+		";
+		// M.minutes_date is not null and
+		die(get_html_table($sql));
+	}
+	
+	function do_wall_of_fame()
+	{
+		$html = "";
+		
+		
+		$archive = date("Y")-1942;
+		
+		for ($i=0; $i<$archive; $i++)
+		{
+			$start = logic_get_club_year_start(-$i);
+			$end = str_replace("-07-01", "-12-31", $start);
+			$sql = "SELECT CONCAT_WS(' ',user.profile_firstname,user.profile_lastname) as Navn, role_definition.description as Rolle, club.name as Klub, district.name as Distrikt FROM user inner join club on user.cid=club.cid inner join district on district.did=club.district_did inner join role on role.uid=user.uid inner join role_definition on role_definition.rid=role.rid WHERE role_definition.shortname IN ('NIRO','VLF','LF','LS','LK','WEB','SHOP','DF','ALF','LA','RED') AND role.start_date<'{$end}' AND role.end_date>'{$start}' order by role_definition.weight desc, district.name";
+			$html .= "<h1>Hovedbestyrelse ".substr($start,0,4)."-".(substr($start,0,4)+1)."</h1>";
+			$html .= get_html_table($sql);
+		
+		}
+		return $html;
+	}
+	
+	
 	function content_handle_reports()
 	{
+		if (isset($_REQUEST['f']) && $_REQUEST['f']=='walloffame')
+		{
+			return do_wall_of_fame();
+		}
+		
+	
 		if (!logic_is_member()) return term('article_must_be_logged_in');
 
 		if (isset($_REQUEST['f']))
 		{
 			$f = $_REQUEST['f'];
-			
+
+
+			if ($f=='networker')
+			{
+				do_networker();
+			}
 			if ($f=='post')
 			{
 				do_member_adresses();

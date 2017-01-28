@@ -16,6 +16,16 @@ from district order by district.did asc ";
 	return "<h1>Profil overblik</h1>".(get_html_table($sql));	
 	
 	}
+
+	function missing_minutes()
+	{
+		$sql = "
+		SELECT CONCAT('<A TARGET=_blank HREF=/?mid=', meeting.mid, '>', club.name, ' ', meeting.start_time, ' ', meeting.title,'</A>') as HTML 
+		FROM meeting 
+		INNER JOIN club ON club.cid=meeting.cid 
+		WHERE meeting.minutes IS NULL AND meeting.end_time<NOW() ORDER BY club.name ASC,meeting.start_time DESC";
+		return '<h1>Manglende referater</h1>'.get_html_table($sql,true);
+	}
 	
 
   function role_print()
@@ -351,6 +361,8 @@ order by RD.shortname asc
 			return dashboard_data();
 		}
 		
+		if ($f=='minutes') return missing_minutes();
+		
 		
 		if (!logic_is_national_board_member()) return term('article_must_be_logged_in');
 
@@ -371,17 +383,18 @@ order by RD.shortname asc
 		
 			$sql = "
 select 
-district.name Distrikt, 
-club.name Klub, 
+district.name Distrikt,  
+concat('<a target=_blank href=?dashboard=', club.cid, '>', club.name, '</a>') as Klub,
 (select avg(minutes_number_of_participants) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsDeltagere,
 (select avg(minutes_number_of_rejections) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsFrameldte,
 (select avg(100.0*minutes_number_of_participants/(minutes_number_of_rejections+minutes_number_of_participants)) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is not null) GnsProcent,
-(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}' and meeting.minutes_date is null) IkkeAfsluttede, 
-(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}') TotalAntal 
+(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<=NOW() and meeting.minutes_date is null) ManglerReferat, 
+(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<=NOW()) TotalAfholdt,
+(select count(*) from meeting where meeting.cid=club.cid and meeting.start_time>='{$s}' and meeting.end_time<='{$e}') TotalPlanlagt
 from club inner join district on district.did=club.district_did order by district.name, club.name
 			";
 		
-			return "<h1>{$now}</h1><a href=?admin_download=minutes_age&m={$ml} class=btn>{$left}</a> <a href=?admin_download=minutes_age&m={$mr} class=btn>{$right}</a><br><br>".get_html_table($sql);
+			return "<h1>{$now}</h1><a href=?admin_download=minutes_age&m={$ml} class=btn>{$left}</a> <a href=?admin_download=minutes_age&m={$mr} class=btn>{$right}</a><br><br>".get_html_table($sql,true);
 		}
 		
 		

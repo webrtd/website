@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>RTD | %%TITLE%%</title>
+	<link rel="stylesheet" href="/scripts/jquery/css/cupertino/jquery-ui-1.9.1.custom.min.css"/>
+	
+	
+	<script src="/scripts/ckeditor/ckeditor.js"></script>
+  	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+	<script src="http://hotmonitor.org/ajaxdepot/multiplefileupload/jquery.MultiFile.js"></script>
+  
+	<script src="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.js"></script>
+	<link href="http://cdn.jsdelivr.net/lightbox2/2.51/lightbox.css" rel="stylesheet" />
+  	<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>	
+	<script src="/scripts/timepicker/timepicker.js"></script>
+	
+	<script type="text/javascript" src="/template/js/actions.js"></script>
+	<script type="text/javascript" src="/template/js/mobile.js"></script>
+
+	
+
+	<script type="text/javascript" src="/scripts/nivo-slider/jquery.nivo.slider.js"></script>
+	
+  	<link rel="shortcut icon" href="/img/rtdnew_favicon.gif" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="/template/css/rtl_danmark1.css"> 
+
+    <link rel="stylesheet" href="/scripts/nivo-slider/themes/bar/bar.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/scripts/nivo-slider/nivo-slider.css" type="text/css" media="screen" />
+
+<!---
+<script type="text/javascript" src="//cookiebadge.dk/scripts/37295658b712ab05af458facdce17d9a.js"></script>	  
+--->
+</head>
+<body bgcolor=black>
+<div id=cookie_disclaimer style="padding:5px;color:white;font-size:14pt;"><center>Vi bruger <a href=http://rtd.dk/?aid=28>cookies</a>. Lev med det eller forlad siden. <input type=button value=OK onclick=acceptCookies();></center></div>
+<div style="background-color:white">
+
+
+<table border="0" cellspacing=5 cellpadding=0 align="center">
+	<!--- menu --->
+	<tr>
+		<td colspan=3 >
+			<div id="header">
+				<div id="logo">
+					<a href="/" title="Round Table Denmark"><img border=0 src="/template/images/logo.png" alt="Round Table Denmark" /></a>
+				</div>
+				<div id="search">
+					<form action="/">
+						<input class="bar" name="search" type="search" title="Indtast søgesætning. Skriv f.eks. 'danske bank' for at finde alle forekomster af sætningen 'danske bank' eller skriv 'danske +bank' for at søge efter alle forekomster af ordene 'danske' og 'bank'" value="">
+						<input class="soeg" type="submit" value="SØG"><br>
+						<a href=?biz>Branchekartotek</a>
+					</form>
+				</div>
+			</div>
+<div id="menu">
+	<ul id="menu_container">
+		%%ADMINBOX%%
+		%%ARTICLEBOX%%
+	</ul>
+</div>			
+		</td>
+	</tr>
+	<tr>
+		<td valign="top"  width=195px id=content>
+			<!-- left column -->
+			<div class="box" id="leftbox">
+				%%LOGINBOX%%
+			</div>
+			<div class="box" id="soeg">
+				%%STATSBOX%%
+			</div>
+			%%BANNER_1%%
+		</td>
+		<td valign="top" width=570px id=content>
+		<!-- content -->
+    
+		<div class=box>
+		<div style="padding:5px" id=contentbox>%%CONTENT%%</div></div>
+		
+		</td>
+		<td valign=top width=195px id=content>
+			<!-- right column -->
+			<script src="/scripts/rtd/randomtabler.js.php"></script>
+			%%BANNER_2%%
+			%%BANNER_3%%		
+		</td>
+	</tr>
+</table>
+
+</div>
+<div style="display:none" id=send_message_dialog>
+	<form action=/ method=post>
+	<input type=hidden name=msg[uid] id=send_message_uid value=0>
+	<h1>Send besked</h1>
+	Besked til <span id=send_message_name></span><br>
+	<b>Emne</b><br>
+	<input type=text name=msg[subject]><br>
+	<b>Besked</b><br>
+	<textarea style="width:100%;height:200px" name=msg[message]></textarea><br>
+	<input type=submit value=Send>
+	</form>	
+</div>
+<script>
+	function send_message(uid,name)
+	{
+		$("#send_message_name").append(name);
+		$("#send_message_uid").val(uid);
+		$("#send_message_dialog").dialog({modal:true});
+	}
+</script>
+<div style="background-color:black">
+<table align=center style="color:gray;height:100%" cellspacing=10 cellpadding=5>
+	<tr>
+		<td valign=top>
+		<b>RT Links</b><br>
+		<li><a href=http://m.rtd.dk target=_blank>RTD Mobil</a>
+		<li><a href=http://shop.rtd.dk target=_blank>RTD Shop</a>
+		<li><a href=?ts>Tabler Service</a>
+		<li><a href=http://www.rtinternational.org target=_blank>Round Table International</a>
+		</td>
+		<td valign=top>
+		<b>Seneste referater</b><br>
+		%%LATEST_MINUTES%%
+		</td>
+		<td valign=top>
+		<b>Næste møder</b><br>
+		%%LATEST_MEETINGS%%
+		</td>
+		<td valign=top>
+		<b>Kontakt og info</b><br>
+		<li><a href=?aid=3>Kontakt via mail</a>
+		<li><a href=http://www.linkedin.com/groups?gid=48578 target=_blank>Kontakt via LinkedIn</a>
+		<li><a href=https://www.facebook.com/roundtabledk target=_blank>Kontakt via Facebook</a>
+		</td>
+	</tr>
+</table>
+</div>
+<a title="Web Analytics" href="http://clicky.com/100596967"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" width=0 border="0" /></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100596967); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100596967ns.gif" /></p></noscript>
+<script type="text/javascript">
+var _urq = _urq || [];
+_urq.push(['initSite', 'ea490a01-4019-4999-b660-3222522d0685']);
+(function() {
+var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+ur.src = 'http://sdscdn.userreport.com/userreport.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+})();
+</script>
+<!-- begin olark code -->
+<script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
+f[z]=function(){
+(a.s=a.s||[]).push(arguments)};var a=f[z]._={
+},q=c.methods.length;while(q--){(function(n){f[z][n]=function(){
+f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={
+0:+new Date};a.P=function(u){
+a.p[u]=new Date-a.p[0]};function s(){
+a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){
+hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){
+return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){
+b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{
+b.contentWindow[g].open()}catch(w){
+c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{
+var t=b.contentWindow[g];t.write(p());t.close()}catch(x){
+b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
+loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
+/* custom configuration goes here (www.olark.com/documentation) */
+olark.identify('1825-665-10-8847');/*]]>*/</script><noscript><a href="https://www.olark.com/site/1825-665-10-8847/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+<!-- end olark code -->
+
+
+<script>
+function rtd_createCookie(name, value, days) {
+    var expires;
+
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = escape(name) + "=" + escape(value) + expires + "; path=/";
+}
+
+function rtd_readCookie(name) {
+    var nameEQ = escape(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return unescape(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+{
+	var cookie_name = 'rtd_cookie_banner_2014';
+	$("#cookie_disclaimer").hide();
+	if (rtd_readCookie(cookie_name)==null)
+	{
+		$("#cookie_disclaimer").show('slow');
+	}
+	
+	function acceptCookies() {
+		rtd_createCookie(cookie_name, 'yes sir', 7);
+		$("#cookie_disclaimer").hide('slow');
+	}
+}
+</script>
+
+</body>
+</html>

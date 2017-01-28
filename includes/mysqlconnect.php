@@ -68,6 +68,9 @@ class MySQLConnect3Kings
     }
 
 	function InsertID() {
+		echo "<pre>";
+		debug_print_backtrace();
+		die("mysql_insert_id");
 	    return mysql_insert_id($this->m_Link);
 	}
 
@@ -87,8 +90,8 @@ class MySQLConnect3Kings
 							$sender_mail = MASS_MAILER_REPLY_MAIL;  
 							$mail = new PHPMailer();
 									
-							
-							$error = "QUERY FAILED: \n\n".$p_Query."\n\nSQL ERROR:\n\n".mysql_error()."\n\nTRACE:\n\n".$trace."\n\nSESSION:\n\n".print_r($_SESSION,true)."\n\nSERVER:\n\n".print_r($_SERVER,true);
+
+							$error = "QUERY FAILED: \n\n".$p_Query."\n\nSQL ERROR:\n\n".mysql_error()."\n\nTRACE:\n\n".$trace;
 
 							$mail->From     = $sender_mail;
 							$mail->FromName = $sender;
