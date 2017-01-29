@@ -7,10 +7,10 @@
 */
 
 $query_age = (isset($_GET['aid']) ? $_GET['aid'] : null);
-$query_age1 = (isset($_GET['wid']) ? $_GET['wid'] : null);
+$query_age1 = logic_get_wp_page_id()!==false?logic_get_wp_page_id():null;
 
 //if(($query_age != '' && $query_age != 15 && $query_age != 13 && $query_age != 17 && $query_age != 7 && $query_age != 18 && $query_age != 19 && $query_age != 20 && $query_age != 21 && $query_age != 22 && $query_age != 23 && $query_age != 24 && $query_age != 25) || isset($_GET['wid']))
-if(isset($_GET['wid']))
+if(logic_get_wp_page_id()!==false)
 {
     plugin_register('CONTENT', 'content');
     
@@ -166,7 +166,7 @@ function homecontent()
     $content = '';
     if(!is_user_logged_in()) { 
         
-        if(isset($_GET['wid']) || isset($_GET['aid']) || $_SERVER['REQUEST_URI'] == "/?mummy" || $_SERVER['REQUEST_URI'] == "/?nb")
+        if(logic_get_wp_page_id()!==false || isset($_GET['aid']) || $_SERVER['REQUEST_URI'] == "/?mummy" || $_SERVER['REQUEST_URI'] == "/?nb")
         {
             $content = '';
         }
@@ -174,9 +174,18 @@ function homecontent()
         {
             $content = get_field('home_content',13);
         }
+		
+		if(isset($_GET['page_id']) && $_GET['page_id'] != '')
+		{
+			?>
+            <style>
+			.index #page-content > .container > .row:first-child {display:none;}
+			</style>
+            <?php
+		}
         ?>
         <style>
-        .index .container .home_content {display:none;}   
+        .index .container .home_content {display:none;}   		
         </style>
         <?php 
     }
@@ -236,7 +245,7 @@ function usersidebar()
         %%BANNER_2%%
         %%BANNER_3%%
         </div>';
-    }   
+    } 
     return $cnt;
 }
 
@@ -247,11 +256,12 @@ function generalsidebar()
     if(!isset($_GET['uid']) && is_user_logged_in())
     {
         
-        $cnt .= '<div class="col-xs-12 col-sm-4 col-md-2 desktop_left firsadvert" id="banners">
+        $cnt .= '<div class="col-xs-12 col-sm-4 col-md-2 desktop_left firsadvert 11" id="banners">		
         %%BANNER_2%%
         %%BANNER_3%%
+		%%ADVERTISE_WIDGET%%	
         </div>';
-    }   
+    }  
     return $cnt;
 }
 
@@ -261,7 +271,7 @@ function notloginslider()
     $cnt = '';
     if(!is_user_logged_in())
     {
-        if(isset($_GET['wid']) || isset($_GET['aid']))
+        if(logic_get_wp_page_id()!==false || isset($_GET['aid']))
         {
             $cnt = '';
         }
@@ -297,6 +307,27 @@ function includejs()
     }   
 }
 
+plugin_register('FOOTERMENU1', 'footermenu1');
+function footermenu1()
+{
+	return wp_nav_menu(array('menu' => 'Footer menu 1', 'echo' => 0));
+}
+
+plugin_register('FOOTERMENU2', 'footermenu2');
+function footermenu2()
+{ 
+	return wp_nav_menu(array('menu' => 'Footer menu 2', 'echo' => 0));
+}
 /*CUSTOM END*/
 
+plugin_register('ADVERTISE_WIDGET', 'advertise_widget');
+function advertise_widget()
+{ 
+	ob_start();
+	dynamic_sidebar( 'sidebar-3' ); 
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output;
+}
+}
 ?>

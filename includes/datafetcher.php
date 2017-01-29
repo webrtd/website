@@ -2037,6 +2037,10 @@ order by R.end_date
 		//die($sql);
 		$db->execute($sql);
 		
+		if(isset($data['username']) && trim($data['username']) != trim($u['username'])) {
+		$sql1 = "update wp_users set user_login='".$data['username']."' where user_login='".$u['username']."'";			
+		$db->execute($sql1);		
+		}
 	}
 
   /**
@@ -2417,7 +2421,7 @@ order by last_page_view desc limit 25";
 	return get_one_data_row("select * from user U
 inner join role R on R.uid=U.uid
 inner join club C on C.cid=U.cid
-where U.profile_image!='' and U.company_name!='' and R.rid=6 and R.start_date<now() and R.end_date>now()
+where U.profile_image!='' and U.company_name!='' and R.rid=".MEMBER_ROLE_RID." and R.start_date<now() and R.end_date>now()
 order by rand()
 limit 1");
   }
@@ -2630,8 +2634,8 @@ order by M.start_time desc
 			  C.cid != $cid and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 2 month) and
-              minutes_date>date_sub(now(), interval 6 month) 
+              start_time>date_sub(now(), interval 12 month) and
+              minutes_date>date_sub(now(), interval 16 month) 
               group by C.cid 
 			  order by start_time desc, rand($seed)
               limit $limit";
@@ -2644,8 +2648,8 @@ order by M.start_time desc
               C.district_did=$did and
 			  C.cid not in ({$omit_cids}) and
 			  M.mid not in ({$omit_mids}) and
-              start_time>date_sub(now(), interval 2 month) and
-              minutes_date>date_sub(now(), interval 6 month) 
+              start_time>date_sub(now(), interval 12 month) and
+              minutes_date>date_sub(now(), interval 16 month) 
 			  group by C.cid 
 			  order by start_time desc, rand($seed)
               limit $limit";

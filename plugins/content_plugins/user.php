@@ -31,14 +31,12 @@
 
 		$user['businesses_list'] = addslashes(json_encode(logic_get_business_list()));
 
-
 		if (logic_is_admin())
 		{
-
 			if (isset($_FILES['profile_image'])) logic_upload_profile_image($user['uid'], $_FILES['profile_image']);
 			if (isset($_REQUEST['data']))
-			{
-				logic_update_member_expiration($user['uid'], $data['profile_birthdate'], $data['profile_started']);
+			{ 
+				logic_update_member_expiration($user['uid'], $data['profile_birthdate'], $data['profile_started']);				
 				$user = logic_save_user($user['uid'], $data);
 				$user['businesses_list'] = addslashes(json_encode(logic_get_business_list()));
 
@@ -55,8 +53,9 @@
 				$user = logic_save_user($user['uid'], $data);
 				$user['businesses_list'] = addslashes(json_encode(logic_get_business_list()));
 				$_SESSION['user'] = array_merge($_SESSION['user'], $user);
+				
 				show_user($user['uid']);
-			}
+			} 
 			return term_unwrap('user_profile_edit_user', $user);
 		}
 		else if (logic_is_club_secretary($user['cid']))
@@ -158,7 +157,6 @@
 			$peek = logic_get_user_tracker($user['uid']);
 			if (!empty($peek)) $html .= term_unwrap('user_viewed', $peek, true);
 		}
-		
 
 		return $html;
 	}

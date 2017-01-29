@@ -40,7 +40,7 @@
       	$html.= term_unwrap("news_item_comment", $comment_data, true);
       }    	
       else $did=0;
-
+	  
       $html.= term_unwrap("news_archive", logic_get_news($did,10),true);
     	return $html;
     }

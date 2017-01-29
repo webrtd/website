@@ -13,9 +13,8 @@
 	function content_handle_nationalboard()
 	{
 		//if (!logic_is_member()) return term('article_must_be_logged_in');
-		
-		$data = logic_get_national_board();
-		return term_unwrap('national_board', $data, true);		
+		$data = logic_get_national_board();		
+		return term_unwrap('national_board', $data, true);				
 	}
 
 ?>

@@ -9,7 +9,7 @@
 
 	if ($_SERVER['REQUEST_URI'] == $_SERVER['PHP_SELF']) header("location: /");
 		
-	content_plugin_register('mid', 'content_handle_meeting', 'Mï¿½de');
+	content_plugin_register('mid', 'content_handle_meeting', 'Møde');
 
  
     function fix_minutes($text, $allowed_tags = '<b><i><sup><sub><em><strong><u><br><div>')

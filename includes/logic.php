@@ -916,7 +916,7 @@
 		}
 		
 		
-		$expire_date = "{$expire_year}-06-30";
+		$expire_date = "{$expire_year}-".CLUB_YEAR_END;
 		
 		logic_log(__FUNCTION__, "UID: {$uid}, Birth: {$birthdate}, Expire:{$expire_date}");
 		
@@ -1480,6 +1480,8 @@ order by meeting.start_time DESC";
 			}
 		}
 		
+		
+		
 		$meeting['meeting_description'] = utf8_encode(html_entity_decode(strip_tags($meeting['meeting_description'])));
 
 		$content = (term_unwrap('mail_invitation',$meeting));
@@ -1963,11 +1965,11 @@ order by meeting.start_time DESC";
 	{
 		if (date('m')<7)
 		{
-			return (date("Y")-1+$year_modify).'-07-01';
+			return (date("Y")-1+$year_modify).'-'.CLUB_YEAR_START;
 		}
 		else
 		{
-			return (date("Y")+$year_modify).'-07-01';
+			return (date("Y")+$year_modify).'-'.CLUB_YEAR_START;
 		}
 	}
 
@@ -1976,11 +1978,11 @@ order by meeting.start_time DESC";
 	{
 		if (date('m')<7)
 		{
-			return (date("Y")+$year_modify).'-06-30';
+			return (date("Y")+$year_modify).'-'.CLUB_YEAR_END;
 		}
 		else
 		{
-			return (date("Y")+1+$year_modify).'-06-30';
+			return (date("Y")+1+$year_modify).'-'.CLUB_YEAR_END;
 		}
 	}
 	
@@ -2052,7 +2054,7 @@ order by meeting.start_time DESC";
 	
 
 	function logic_get_stats()
-	{
+	{ 
 		$ys = logic_get_club_year_start();
 		$ye = logic_get_club_year_end();
 		return array(
@@ -2291,7 +2293,10 @@ order by meeting.start_time DESC";
 	function logic_get_calendar_meetings()
 	{
 		$districts = fetch_country();
-		$districts[] = array("name" => "RTI", "did" => "0");
+		if (MASS_MAILER_REPLY_WHO == 'Round Table Denmark')
+		{
+			$districts[] = array("name" => "RTI", "did" => "0");
+		}
 		$data = array();
 		foreach ($districts as $d)
 		{
@@ -2447,7 +2452,7 @@ $ics .=
 	
 	function logic_get_national_board()
 	{
-		$data = fetch_members_by_roles(NATIONAL_BOARD_ROLES);
+		$data = fetch_members_by_roles(NATIONAL_BOARD_ROLES);       
 		$new_data = array();
 		for ($i=0;$i<sizeof($data);$i++)
 		{
@@ -2564,7 +2569,7 @@ $ics .=
 		if (isset($_SESSION['user']) && isset($_SESSION['user']['active_roles']))
 		{
 			foreach ($_SESSION['user']['active_roles'] as $key => $data)
-			{
+			{ 
 				if ($data['rid'] == ADMIN_ROLE_RID) 
 				{
 					return true;
@@ -2686,26 +2691,26 @@ $ics .=
 		}
 		
 		
-
 		if (!$user) return false;
 		else
-		{
+		{        
 			if (!$server_login)
-			{
+			{                 
 				$pwdenc = $user['password'] == md5($password);
 				
 				if ($user['password'] == md5($password))
-				{
+				{                
 				}
 				else if ($user['password'] == $password)
-				{
+				{                
 				}
 				else
-				{
-					logic_log(__FUNCTION__, "Login failed (wrong username/password) {$username}");
+				{					
+                    logic_log(__FUNCTION__, "Login failed (wrong username/password) {$username}");
 					return false;
 				}
 			}
+            
 		}
 
 		// check if you are a current user
@@ -2745,11 +2750,12 @@ $ics .=
 		// exclude previously used minutes
 		$omit_data = get_minutes_collection_cache($cid,'',logic_get_club_year_start());
 		foreach($omit_data as $d) $omit .= ",{$d['mid']}";
-
+		
 
 		$district = get_minutes_collection($cid,$seed,$did,5,$omit,$cid);
 		foreach($district as $m) $omit .= ",{$m['mid']}";
 		foreach($district as $m)  $omitc .= ",{$m['cid']}";
+	
 		
 		$remainder = max(0,10 - sizeof($district));
 
@@ -3262,6 +3268,21 @@ END:VCARD
 			if ( is_wp_error($user) )
 				echo $user->get_error_message();                    
 		}     
+	}
+	function logic_get_wp_page_id()
+	{
+		if (isset($_REQUEST['page_id']))
+		{
+			return $_REQUEST['page_id'];
+		}
+		else if (isset($_REQUEST['wid']))
+		{
+			return $_REQUEST['wid'];
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	?>

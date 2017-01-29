@@ -183,7 +183,7 @@
 	  $html .= term_unwrap('district_calendar_show', array('name'=>$cal));
 						
 		// future meetings        
-		$html .= term_unwrap('country_future_meetings', $country['meetings'], true);
+		if (!empty($country['meetings']))	$html .= term_unwrap('country_future_meetings', $country['meetings'], true);
 /*		
 		FOR ($i=0;$i<sizeof($country['meetings']);$i++)
 		{

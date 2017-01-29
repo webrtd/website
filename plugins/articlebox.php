@@ -83,7 +83,7 @@
         //$menu_list = recursive_function($parent=0);
         //$content .= $menu_list;	
 		//return $content;
-        return wp_nav_menu(array('menu' => 'top-menu', 'echo' => 0, 'menu_class' => 'collapse navbar-collapse nav slide', 'menu_id' => 'main-menu'));       
+        return wp_nav_menu(array('menu' => WP_MENU_NAME, 'echo' => 0, 'menu_class' => 'collapse navbar-collapse nav slide', 'menu_id' => 'main-menu'));       
 	}       
     
 /*function recursive_function($parent,$list='') {  

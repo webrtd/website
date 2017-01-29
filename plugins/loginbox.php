@@ -109,11 +109,13 @@ function check_club_mail($club)
 	
 
 	function manual_login()
-	{        
+	{  
+	   
         update_option('issession','no');             
 		$user = logic_login($_REQUEST['username'], $_REQUEST['password']);
+		
 		if ($user!==false) 
-		{
+		{ 
 			$_SESSION['user'] = $user;
 			$html = "";		
 			
@@ -126,7 +128,7 @@ function check_club_mail($club)
 				);
 				setcookie("RTD_LOGIN_COOKIE", serialize($cookie), time()+3600*24*30, "/");
 			}
-                            
+             
 			logic_wordpress_synch_user_roles();
 							
 			$show_news = logic_should_show_news();
@@ -152,13 +154,16 @@ function check_club_mail($club)
 			die($html);
 			
 		}
-		else $error_str = term('login_incorrect');
+		else 
+		{			
+		$error_str = term('login_incorrect'); 
+		}
 	}
 	
 	function loginbox()
 	{                
 		if (!logic_is_member() && isset($_COOKIE['RTD_LOGIN_COOKIE']))
-		{
+		{			
 			auto_login();
 		}
 		$error_str = "";
@@ -175,7 +180,7 @@ function check_club_mail($club)
 			exit();                            
 		}
 		else if (isset($_REQUEST['login']))
-		{
+		{			
 			manual_login();
 		}         
         

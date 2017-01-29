@@ -60,7 +60,11 @@
 	function content_handle_gallery($club)
 	{
 		$data = logic_get_meeting_gallery($club['cid']);
-		return club_header($club).term_unwrap('club_gallery', $data, true);
+		if(!empty($data))
+		{
+			$gal_data = term_unwrap('club_gallery', $data, true);
+		}		
+		return club_header($club).$gal_data;
 	}
 
 	function content_handle_message($club)
@@ -320,9 +324,9 @@ $ics .=
 		{
 			$html .= term_unwrap('club_other_meetings', $other_meetings, true);
 		}
-
-
+		if(!empty($minutes)) {		
 		$html .= term_unwrap('club_minutes', $minutes, true);
+		}
 		$html .= term_unwrap('club_archive', $club);
 /*
 		for($i=0;$i<sizeof($meetings);$i++)
