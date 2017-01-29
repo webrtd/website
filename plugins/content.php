@@ -329,5 +329,4 @@ function advertise_widget()
 	ob_end_clean();
 	return $output;
 }
-}
 ?>
