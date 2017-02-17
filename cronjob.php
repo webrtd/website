@@ -15,6 +15,7 @@
 	require_once $path.'/config_terms.php';
 	require_once $path.'/includes/mysqlconnect.php';
 	require_once $path.'/includes/logic.php';
+	require_once $path.'/includes/pushbots.php';
 	
 	
 	require_once $path.'/includes/PHPMailer-phpmailer-5.2.0/class.phpmailer.php';
@@ -116,7 +117,17 @@
 				$r = trim($r);
 				if (!empty($r))
 				{
-					$mail->AddAddress($r, $r); 
+					$mail->AddAddress($r, $r);
+          
+          $sql = "select uid from user where private_email='{$r}' or company_email='{$r}' limit 1";
+          $data = get_data($sql);
+          if (sizeof($data)>0)
+          {
+            $uid = $data[0]['uid'];
+            pushbots_send($uid, "Ny besked: {$subj}");
+          }
+          
+           
 				}
 			}
 			

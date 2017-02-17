@@ -13,7 +13,7 @@
 		{
 			$body = "Besked fra {$_REQUEST['name']} - {$_REQUEST['email']}\n\n{$_REQUEST['body']}";
 			$subj = $_REQUEST['subject'];
-			save_mail("{$_REQUEST['who']}@rtd.dk", $subj, $body);
+			save_mail($_REQUEST['who'].NB_MAIL_POSTFIX, $subj, $body);
 /*		
 				$mail = new PHPMailer();
 				$mail->IsSMTP();
